@@ -24,6 +24,7 @@
 #include "graph.hpp"
 #include "valueint.hpp"
 #include "valuebool.hpp"
+#include "valuefloat.hpp"
 #include "valuestruct.hpp"
 #include "valuestring.hpp"
 
@@ -32,11 +33,10 @@ void test(void)
 {
 /*	// Double dispatching
 	PTR_Value varleft(new ValueInt(5));
-	PTR_Value varright(new ValueInt(3));
+	PTR_Value varright(new ValueFloat(3.4f));
+	PTR_Value varsub(new ValueFloat(2.0f));
 
-	PTR_Value result = varleft->add(*varright);
-	result->printVal();
-	cout << endl;
+	cout << varleft->add(*varright)->div(*varsub)->toString() << endl; // 4.2
 */
 
 /*	// Structs
@@ -50,15 +50,15 @@ void test(void)
 	cout << vs.toString() << endl;
 */
 
-	// Memory leaks
-	/*
+/*	// Memory leaks
+
 	Value* i = new ValueInt(5);
 	Value* j = new ValueBool(true);
 	Value* k = new ValueString("bagr");
 	// delete j;
 	delete i;
 	// delete k;
-	*/
+*/
 }
 
 

@@ -3,10 +3,11 @@ BaseObject
 	Vertex
 	Edge
 	Variable
-		VariableNull
+		ValueAdapter
+			VariableNull
+			VariableString
+			VariableStruct
 		VariableBool
 		VariableInt
 		VariableFloat
-		VariableString
 //		VariableArray
-		VariableStruct

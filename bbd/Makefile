@@ -41,25 +41,31 @@ lines:
 baseobject.o: baseobject.hpp general.hpp
 edge.o: edge.hpp general.hpp baseobject.hpp
 graph.o: graph.hpp general.hpp vertex.hpp valuestruct.hpp value.hpp
-graph.o: baseobject.hpp valuenull.hpp edge.hpp
+graph.o: baseobject.hpp valuenull.hpp valueadapter.hpp edge.hpp
 main.o: general.hpp graph.hpp vertex.hpp valuestruct.hpp value.hpp
-main.o: baseobject.hpp valuenull.hpp edge.hpp valueint.hpp valuebool.hpp
-main.o: valuestring.hpp
-valuebool.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp
-valuebool.o: valueint.hpp valuefloat.hpp valuestring.hpp valuestruct.hpp
+main.o: baseobject.hpp valuenull.hpp valueadapter.hpp edge.hpp valueint.hpp
+main.o: valuebool.hpp valuefloat.hpp valuestring.hpp
+valueadapter.o: valueadapter.hpp value.hpp general.hpp baseobject.hpp
+valueadapter.o: valuenull.hpp valuebool.hpp valueint.hpp valuefloat.hpp
+valueadapter.o: valuestring.hpp valuestruct.hpp
+valuebool.o: value.hpp general.hpp baseobject.hpp valuenull.hpp
+valuebool.o: valueadapter.hpp valuebool.hpp valueint.hpp valuefloat.hpp
+valuebool.o: valuestring.hpp valuestruct.hpp
 value.o: value.hpp general.hpp baseobject.hpp valuebool.hpp
 valuefloat.o: value.hpp general.hpp baseobject.hpp valuenull.hpp
-valuefloat.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
-valuefloat.o: valuestruct.hpp
-valueint.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp
-valueint.o: valueint.hpp valuefloat.hpp valuestring.hpp valuestruct.hpp
-valuenull.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp
-valuenull.o: valueint.hpp valuefloat.hpp valuestring.hpp valuestruct.hpp
+valuefloat.o: valueadapter.hpp valuebool.hpp valueint.hpp valuefloat.hpp
+valuefloat.o: valuestring.hpp valuestruct.hpp
+valueint.o: value.hpp general.hpp baseobject.hpp valuenull.hpp
+valueint.o: valueadapter.hpp valuebool.hpp valueint.hpp valuefloat.hpp
+valueint.o: valuestring.hpp valuestruct.hpp
+valuenull.o: value.hpp general.hpp baseobject.hpp valuenull.hpp
+valuenull.o: valueadapter.hpp valuebool.hpp valueint.hpp valuefloat.hpp
+valuenull.o: valuestring.hpp valuestruct.hpp
 valuestring.o: value.hpp general.hpp baseobject.hpp valuenull.hpp
-valuestring.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
-valuestring.o: valuestruct.hpp
+valuestring.o: valueadapter.hpp valuebool.hpp valueint.hpp valuefloat.hpp
+valuestring.o: valuestring.hpp valuestruct.hpp
 valuestruct.o: value.hpp general.hpp baseobject.hpp valuenull.hpp
-valuestruct.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
-valuestruct.o: valuestruct.hpp
+valuestruct.o: valueadapter.hpp valuebool.hpp valueint.hpp valuefloat.hpp
+valuestruct.o: valuestring.hpp valuestruct.hpp
 vertex.o: vertex.hpp general.hpp valuestruct.hpp value.hpp baseobject.hpp
-vertex.o: valuenull.hpp
+vertex.o: valuenull.hpp valueadapter.hpp

@@ -33,7 +33,7 @@
 ////
 
 ValueString::ValueString(const string& val)
-	: Value(),
+	: ValueAdapter(),
 	m_val(val)
 {
 
@@ -50,117 +50,42 @@ ValueString::~ValueString()
 
 // +
 PTR_Value ValueString::add(const Value& right)       const { return right.add(*this); }
-PTR_Value ValueString::add(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::add(const ValueBool& left)    const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::add(const ValueInt& left)     const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::add(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::add(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::add(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
 
 // -
 PTR_Value ValueString::sub(const Value& right)       const { return right.sub(*this); }
-PTR_Value ValueString::sub(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::sub(const ValueBool& left)    const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::sub(const ValueInt& left)     const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::sub(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::sub(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::sub(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
 
 // *
 PTR_Value ValueString::mult(const Value& right)      const { return right.mult(*this); }
-PTR_Value ValueString::mult(const ValueNull& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::mult(const ValueBool& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::mult(const ValueInt& left)    const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::mult(const ValueFloat& left)  const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::mult(const ValueString& left) const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::mult(const ValueStruct& left) const { return PTR_Value(new ValueNull()); }
 
 // /
 PTR_Value ValueString::div(const Value& right)       const { return right.div(*this); }
-PTR_Value ValueString::div(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::div(const ValueBool& left)    const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::div(const ValueInt& left)     const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::div(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::div(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::div(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
 
 // %
 PTR_Value ValueString::mod(const Value& right)       const { return right.mod(*this); }
-PTR_Value ValueString::mod(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::mod(const ValueBool& left)    const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::mod(const ValueInt& left)     const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::mod(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::mod(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueString::mod(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
 
 // ==
 PTR_Value ValueString::eq(const Value& right)        const { return right.eq(*this); }
-PTR_Value ValueString::eq(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::eq(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::eq(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::eq(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueString::eq(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
-PTR_Value ValueString::eq(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
 
 // !=
 PTR_Value ValueString::ne(const Value& right)        const { return right.ne(*this); }
-PTR_Value ValueString::ne(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::ne(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::ne(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::ne(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueString::ne(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
-PTR_Value ValueString::ne(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
 
 // <=
 PTR_Value ValueString::le(const Value& right)        const { return right.le(*this); }
-PTR_Value ValueString::le(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::le(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::le(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::le(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueString::le(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
-PTR_Value ValueString::le(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
 
 // >=
 PTR_Value ValueString::ge(const Value& right)        const { return right.ge(*this); }
-PTR_Value ValueString::ge(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::ge(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::ge(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::ge(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueString::ge(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
-PTR_Value ValueString::ge(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
 
 // <
 PTR_Value ValueString::lt(const Value& right)        const { return right.lt(*this); }
-PTR_Value ValueString::lt(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::lt(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::lt(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::lt(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueString::lt(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
-PTR_Value ValueString::lt(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
 
 // >
 PTR_Value ValueString::gt(const Value& right)        const { return right.gt(*this); }
-PTR_Value ValueString::gt(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::gt(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::gt(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
-PTR_Value ValueString::gt(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueString::gt(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
-PTR_Value ValueString::gt(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
 
 // !
-PTR_Value ValueString::logNOT(void)  const { return PTR_Value(new ValueBool(m_val.empty())); }
-
-// - (unary)
-PTR_Value ValueString::subUn(void)   const { return PTR_Value(new ValueNull()); }
-
-// ++ (prefix)
-PTR_Value ValueString::incPre(void)  { return PTR_Value(new ValueNull()); }
-
-// -- (prefix)
-PTR_Value ValueString::decPre(void)  { return PTR_Value(new ValueNull()); }
-
-// ++ (postfix)
-PTR_Value ValueString::incPost(void) { return PTR_Value(new ValueNull()); }
-
-// -- (postfix)
-PTR_Value ValueString::decPost(void) { return PTR_Value(new ValueNull()); }
+PTR_Value ValueString::logNOT(void)                  const { return PTR_Value(new ValueBool(m_val.empty())); }
