@@ -1,0 +1,12 @@
+BaseObject
+	Graph
+	Vertex
+	Edge
+	Variable
+		VariableNull
+		VariableBool
+		VariableInt
+		VariableFloat
+		VariableString
+//		VariableArray
+		VariableStruct

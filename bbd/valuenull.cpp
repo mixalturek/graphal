@@ -1,0 +1,168 @@
+/*
+ *      valuenull.cpp
+ *
+ *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
+ *
+ *      This program is free software; you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation; either version 2 of the License, or
+ *      (at your option) any later version.
+ *
+ *      This program is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *
+ *      You should have received a copy of the GNU General Public License
+ *      along with this program; if not, write to the Free Software
+ *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ *      MA 02110-1301, USA.
+ */
+
+
+#include "value.hpp"
+#include "valuenull.hpp"
+#include "valuebool.hpp"
+#include "valueint.hpp"
+#include "valuefloat.hpp"
+#include "valuestring.hpp"
+#include "valuestruct.hpp"
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+ValueNull::ValueNull()
+	: Value()
+{
+
+}
+
+
+ValueNull::~ValueNull()
+{
+
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+// TODO: "Warning: Operation argument is NULL variable"
+
+// +
+PTR_Value ValueNull::add(const Value& right)       const { return right.add(*this); }
+PTR_Value ValueNull::add(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::add(const ValueBool& left)    const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::add(const ValueInt& left)     const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::add(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::add(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::add(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
+
+// -
+PTR_Value ValueNull::sub(const Value& right)       const { return right.sub(*this); }
+PTR_Value ValueNull::sub(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::sub(const ValueBool& left)    const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::sub(const ValueInt& left)     const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::sub(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::sub(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::sub(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
+
+// *
+PTR_Value ValueNull::mult(const Value& right)      const { return right.mult(*this); }
+PTR_Value ValueNull::mult(const ValueNull& left)   const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::mult(const ValueBool& left)   const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::mult(const ValueInt& left)    const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::mult(const ValueFloat& left)  const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::mult(const ValueString& left) const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::mult(const ValueStruct& left) const { return PTR_Value(new ValueNull()); }
+
+// /
+PTR_Value ValueNull::div(const Value& right)       const { return right.div(*this); }
+PTR_Value ValueNull::div(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::div(const ValueBool& left)    const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::div(const ValueInt& left)     const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::div(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::div(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::div(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
+
+// %
+PTR_Value ValueNull::mod(const Value& right)       const { return right.mod(*this); }
+PTR_Value ValueNull::mod(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::mod(const ValueBool& left)    const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::mod(const ValueInt& left)     const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::mod(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::mod(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueNull::mod(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
+
+// ==
+PTR_Value ValueNull::eq(const Value& right)        const { return right.eq(*this); }
+PTR_Value ValueNull::eq(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::eq(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::eq(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::eq(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::eq(const ValueString& left)   const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::eq(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
+
+// !=
+PTR_Value ValueNull::ne(const Value& right)        const { return right.ne(*this); }
+PTR_Value ValueNull::ne(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::ne(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::ne(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::ne(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::ne(const ValueString& left)   const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::ne(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
+
+// <=
+PTR_Value ValueNull::le(const Value& right)        const { return right.le(*this); }
+PTR_Value ValueNull::le(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::le(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::le(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::le(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::le(const ValueString& left)   const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::le(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
+
+// >=
+PTR_Value ValueNull::ge(const Value& right)        const { return right.ge(*this); }
+PTR_Value ValueNull::ge(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::ge(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::ge(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::ge(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::ge(const ValueString& left)   const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::ge(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
+
+// <
+PTR_Value ValueNull::lt(const Value& right)        const { return right.lt(*this); }
+PTR_Value ValueNull::lt(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::lt(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::lt(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::lt(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::lt(const ValueString& left)   const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::lt(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
+
+// >
+PTR_Value ValueNull::gt(const Value& right)        const { return right.gt(*this); }
+PTR_Value ValueNull::gt(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::gt(const ValueBool& left)     const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::gt(const ValueInt& left)      const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::gt(const ValueFloat& left)    const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::gt(const ValueString& left)   const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::gt(const ValueStruct& left)   const { return PTR_Value(new ValueBool(false)); }
+
+// !
+PTR_Value ValueNull::logNOT(void)  const { return PTR_Value(new ValueBool(true)); }
+
+// - (unary)
+PTR_Value ValueNull::subUn(void)   const { return PTR_Value(new ValueNull()); }
+
+// ++ (prefix)
+PTR_Value ValueNull::incPre(void)  { return PTR_Value(new ValueNull()); }
+
+// -- (prefix)
+PTR_Value ValueNull::decPre(void)  { return PTR_Value(new ValueNull()); }
+
+// ++ (postfix)
+PTR_Value ValueNull::incPost(void) { return PTR_Value(new ValueNull()); }
+
+// -- (postfix)
+PTR_Value ValueNull::decPost(void) { return PTR_Value(new ValueNull()); }

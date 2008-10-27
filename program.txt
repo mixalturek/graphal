@@ -1,0 +1,259 @@
+/*
+Uvažovat paralelní hrany???!!!
+	trojrozměrné pole hran u matice sousednosti
+	jak označovat hrany? [počátek][konec] už není jednoznačné
+	TODO: nahradit matici sousednosti za nějaký druh spojové reprezentace? Množiny hran apod. by se takhle implementovaly asi líp...
+Python
+	naprogramovat grafové třídy v Pythonu a zkusit použít
+	http://www.python.org/doc/ext/embedding.html
+	http://docs.python.org/lib/module-pdb.html
+	jednoduché na implementaci, ale vlastní interpret jednodušší na použití
+Implementace krokování
+	rekurzivní volání execute() na stromovou strukturu, krokování pomocí synchronizace vláken
+	lineární pole instrukcí, virtuální procesor
+Jak uložit pozici ve zdrojových kódech?
+	zaznamenat si pozici příkazu, bloku, funkce a ukládat to do těchto tříd ve stromě
+	lexan vrací změnu pozice jako token, virtuální instrukce, problémy s gramatikou?
+Je třeba předávání parametrů odkazem?
+	ne, možné uložit data do struktury a vrátit ji
+Deklarace proměnných
+	jako v C, povinná - hodilo by se při automatickém generování C kódu
+	jako v C, nepovinná - tohle asi ne
+	nepovinná jako v Javascriptu (var jmeno) - asi zbytečné
+Viditelnost proměnných
+	neomezovat na úroveň bloků
+	viditelnost pouze na úrovni funkce
+	globální proměnné pomocí buildin funkcí
+Množina vrcholů, množina hran
+	TODO: jsou na to použitelné iterátory + vlastnosti?
+Automatické generování C/Java zdrojových kódů?
+	aneb po zkušenostech s GWT proč ne? :-)
+	komentáře asi ignorovat
+Ukázka existujících algoritmů (zkusit si je přepsat do navrženého jazyka)
+Formát vstupních souborů
+*/
+
+/*
+Preprocesor
+	#include('filename')
+	#define('name', 'value')
+
+Data types (internal)
+	no declarations
+	no "const" modifier
+	null
+	bool
+	int
+	float
+	string
+	array, struct
+		graph
+		vertex, vertex iterator
+		edge, edge iterator
+
+Conditions, loops, etc. (c-style)
+	if
+	if-else
+	for
+	while
+	switch
+	foreach(value; iterableObject) doSomething(value);
+
+Structured jumps (c-style)
+	return
+	break
+	continue
+
+Buildin functions
+	isDefined()
+	isVARIABLETYPE() query
+	toVARIABLETYPE() casts
+	setGlobal('variable name', variable)
+	getGlobal('variable name')
+	echo()/print()
+	exit()
+	rand()
+	math, string, file, etc.
+*/
+
+
+
+///////////////////////////////////////////////////////////////////////////
+//// Array, stack, queue, map
+
+a = new array();
+
+a[0] = 10;
+a['name'] = 'value';
+a.lenght();
+
+a.pushBack(item);
+a.getBack();
+a.popBack();
+
+a.pushFront(item);
+a.getFront();
+a.popFront();
+
+a.push(position, item);
+a.get(position);
+a.pop(position);
+
+
+///////////////////////////////////////////////////////////////////////////
+//// Function calls
+
+function someFunc(self, parameter)
+{
+
+}
+
+someFunc(object, parameter);
+object.someFunc(parameter);
+
+
+///////////////////////////////////////////////////////////////////////////
+//// Graphs
+
+// Graph, Vertex, Edge, VertexIterator, EdgeIterator
+
+/*
+TODO:
+Vytváření grafu
+Přepojit hranu
+Přidat vrchol
+Přidat hranu
+Umazat vrchol
+Umazat hranu
+*/
+
+// g ... graph
+// v ... vertex
+// e ... edge
+// vi ... vertex iterator
+// ei ... edge iterator
+
+
+g = new graph();
+
+g.load('filename');
+g.dump('filename');
+g.clear();
+
+g.setOriented(bool);
+g.isOriented();
+
+g.setPropertyToAllVertices();
+g.setPropertyForAllEdges();
+
+g.getRandomVertex();
+g.getRandomEdge();
+
+
+
+v.getDegree();
+v.getNeighbors();// return iterator
+
+vi = g.getVertexIterator();
+vi.setFilterFunction('function name');
+vi.hasNext();
+vi.getNext();
+
+
+
+ei = g.getEdgeIterator();
+ei.setFilterFunction('function name');
+ei.hasNext();
+ei.getNext();
+
+
+//---------------- Color all vertex neighbors to red
+vi = v.getNeighbors();
+while(vi.hasNext())
+{
+	tmp = vi.getNext();
+	tmp.setProperty('color', 'red');
+}
+
+// ...or using foreach
+foreach(neighbor; v.getNeighbors())
+	neighbor.setProperty('color', 'red');
+
+
+
+//---------------- Recursive depth first search
+function dfs(v)
+{
+	v.setProperty('visited', true);
+
+	foreach(i; v.getNeighbors())
+	{
+		DOBEFORE(i);
+		if(i.getProperty('visited') == false)
+			dfs(i);
+		DOAFTER(i);
+	}
+}
+
+
+//----------------
+ bool BFS(const std::vector<Vertex>& graph, int start, int end) {
+   std::queue<int> next;
+   std::vector<int> parent(graph.size(), -1) ;
+   next.push(start);
+   parent[start] = start;
+   while (!next.empty()) {
+     int u = next.front();
+     next.pop();
+     // Here is the point where you can examine the u th vertex of graph
+     // For example:
+     if (u == end) return true;
+     for (std::vector<int>::const_iterator j = graph[u].out.begin(); j != graph[u].out.end(); ++j) {
+       // Look through neighbors.
+       int v = *j;
+       if (parent[v] == -1) {
+         // If v is unvisited.
+         parent[v] = u;
+         next.push(v);
+       }
+     }
+   }
+   return false;
+ }
+//----------------
+
+//----------------
+ 1  function Dijkstra(Graph, source):
+ 2      for each vertex v in Graph:           // Initializations
+ 3          dist[v] := infinity               // Unknown distance function from source to v
+ 4          previous[v] := undefined          // Previous node in optimal path from source
+ 5      dist[source] := 0                     // Distance from source to source
+ 6      Q := the set of all nodes in Graph    // All nodes in the graph are unoptimized - thus are in Q
+ 7      while Q is not empty:                 // The main loop
+ 8          u := node in Q with smallest dist[]
+ 9          remove u from Q
+10          for each neighbor v of u:         // where v has not yet been removed from Q.
+11              alt := dist[u] + dist_between(u, v)
+12              if alt < dist[v]              // Relax (u,v)
+13                  dist[v] := alt
+14                  previous[v] := u
+15      return previous[]
+
+
+
+///////////////////////////////////////////////////////////////////////////
+//// IMPLEMENTATION DETAILS
+
+
+
+source code position tracking, debugging
+	if, else, for, while, foreach, switch
+	commands (expression ended by ';' character)
+	blocks begin and end
+	functions declarations
+	breakpoints?
+
+
+
+
+

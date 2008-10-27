@@ -1,0 +1,13 @@
+Reprezentace grafu
+	maticová reprezentace není možná kvůli paralelním hranám, počáteční a koncový vrchol by neurčoval hranu jednoznačně, další problémy, preferovaná univerzálnost
+	pole vrcholů a pole hran
+	jednoduché na implementaci
+	jednoduché vracení množin vrcholů a hranám
+	pomalé? nepředpokládají se extrémně velké grafy
+
+orientované grafy
+	návrhový vzor Stav
+
+proměnné
+	hierarchie tříd, ne jen jedna třída
+	double dispatch pattern - http://en.wikipedia.org/wiki/Double_dispatch

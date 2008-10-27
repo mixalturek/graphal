@@ -1,0 +1,14 @@
+
+[project]
+name=bbd
+base_path=/home/woq/projects/diplomka/bbd/
+make_in_base_path=true
+description=
+run_cmd=
+
+[files]
+current_page=0
+FILE_NAME_0=1561;1;0;16;1;1;0;/home/woq/projects/diplomka/bbd/main.cpp;
+FILE_NAME_1=1026;1;0;16;1;1;0;/home/woq/projects/diplomka/bbd/general.hpp;
+FILE_NAME_2=877;1;0;16;1;1;0;/home/woq/projects/diplomka/bbd/baseobject.cpp;
+FILE_NAME_3=1347;1;0;16;1;1;0;/home/woq/projects/diplomka/bbd/baseobject.hpp;
