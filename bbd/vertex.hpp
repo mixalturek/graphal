@@ -20,29 +20,45 @@
  */
 
 
-#ifndef __VERTEX_HPP__
-#define __VERTEX_HPP__
+#ifndef VERTEX_HPP
+#define VERTEX_HPP
 
+#include <set>
 #include "general.hpp"
 #include "valuestruct.hpp"
 
 class Graph;
+class Edge;
 
-class Vertex : public BaseObject
+enum ORIENTATION
+{
+	BEGIN = true,
+	END = false
+};
+
+
+class Vertex : public ValueStruct
 {
 public:
 	Vertex(Graph* graph);
-	~Vertex(void) { }
+	virtual ~Vertex();
 
 	virtual string toString(void) const { return "Vertex"; } // TODO:
 
-	void setDeleted(bool deleted) { m_deleted = deleted; }
-	bool isDeleted(void) { return m_deleted; }
+	void addEdge(Edge* edge, ORIENTATION orientation);
+	void deleteEdge(Edge* edge, ORIENTATION orientation);
+
+	set< pair<Edge*, ORIENTATION> >& getEdges(void) { return m_edges; }
+
+	uint getDegree(void) const { return m_edges.size(); }
+	set<Edge *> getNeighbors(void);
 
 private:
 	Graph* m_graph;
-	bool m_deleted;
-	ValueStruct m_properties;
+	set< pair<Edge*, ORIENTATION> > m_edges;
+
+public:
+	// TODO: prekryt operatory z ValueStruct!!!!!
 };
 
 #endif

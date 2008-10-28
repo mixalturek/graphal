@@ -21,17 +21,22 @@
 
 
 #include "edge.hpp"
+#include "vertex.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Edge::Edge(Graph* graph, uint begin, uint end)
-	:
+Edge::Edge(Graph* graph, Vertex* begin, Vertex* end)
+	: ValueStruct(),
 	m_graph(graph),
-	m_id_begin(begin),
-	m_id_end(end),
-	m_deleted(false)
+	m_begin(begin),
+	m_end(end)
+{
+
+}
+
+Edge::~Edge()
 {
 
 }

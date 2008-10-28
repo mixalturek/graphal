@@ -1,13 +1,17 @@
 BaseObject
 	Graph
-	Vertex
-	Edge
-	Variable
+	Value
 		ValueAdapter
-			VariableNull
-			VariableString
-			VariableStruct
-		VariableBool
-		VariableInt
-		VariableFloat
-//		VariableArray
+			ValueNull
+			ValueString
+			ValueStruct
+				Vertex
+				Edge
+		ValueBool
+		ValueInt
+		ValueFloat
+
+TODO:
+ValueNull -> singleton
+ValueBool -> singleton "with two instances" (true, false)
+Remove ValueNull from each instance of ValueStruct (make static or singleton)

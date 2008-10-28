@@ -20,29 +20,33 @@
  */
 
 
-#ifndef __EDGE_HPP__
-#define __EDGE_HPP__
+#ifndef EDGE_HPP
+#define EDGE_HPP
 
 #include "general.hpp"
-#include "baseobject.hpp"
+#include "valuestruct.hpp"
 
 class Graph;
+class Vertex;
 
-class Edge : public BaseObject
+class Edge : public ValueStruct
 {
 public:
-	Edge(Graph* graph, uint begin, uint end);
-	~Edge(void) { }
+	Edge(Graph* graph, Vertex* begin, Vertex* end);
+	virtual ~Edge();
 
 	virtual string toString(void) const { return "Edge"; } // TODO:
 
-	void setDeleteFlag(bool deleted) { m_deleted = deleted; }
+	Vertex* getBeginVertex(void) { return m_begin; }
+	Vertex* getEndVertex(void)   { return m_end; }
 
 private:
-	Graph* m_graph;
-	uint m_id_begin;
-	uint m_id_end;
-	bool m_deleted;
+	Graph*  m_graph;
+	Vertex* m_begin;
+	Vertex* m_end;
+
+public:
+	// TODO: prekryt operatory z ValueStruct!!!!!
 };
 
 #endif

@@ -27,9 +27,38 @@
 ////
 
 Vertex::Vertex(Graph* graph)
-	:
+	: ValueStruct(),
 	m_graph(graph),
-	m_deleted(false)
+	m_edges()
 {
 
+}
+
+Vertex::~Vertex()
+{
+
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Vertex::addEdge(Edge* edge, ORIENTATION orientation)
+{
+	m_edges.insert(pair<Edge*, ORIENTATION>(edge, orientation));
+}
+
+void Vertex::deleteEdge(Edge* edge, ORIENTATION orientation)
+{
+	m_edges.erase(pair<Edge*, ORIENTATION>(edge, orientation));
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+set<Edge *> Vertex::getNeighbors(void)
+{
+	// TODO: implement the method body
+	return set<Edge *>();
 }

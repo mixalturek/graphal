@@ -29,7 +29,7 @@
 #include "value.hpp"
 #include "valuenull.hpp"
 
-
+// TODO: strings and numbers should be used as indices
 #define KEY_TYPE string
 
 class ValueStruct: public ValueAdapter

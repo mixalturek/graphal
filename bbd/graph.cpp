@@ -21,23 +21,69 @@
 
 
 #include "graph.hpp"
+#include "vertex.hpp"
+#include "edge.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Vertex& Graph::createNewVertex(void)
+Graph::Graph(bool oriented)
+	: BaseObject(),
+	m_oriented(oriented),
+	m_vertices(),
+	m_edges()
 {
-	m_vertices.push_back(Vertex(this));
-	return m_vertices.back();
+
+}
+
+Graph::~Graph()
+{
+	set<Vertex*>::const_iterator vit;
+	for(vit = m_vertices.begin(); vit != m_vertices.end(); vit++)
+		delete *vit;
+
+	set<Edge*>::const_iterator eit;
+	for(eit = m_edges.begin(); eit != m_edges.end(); eit++)
+		delete *eit;
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Edge& Graph::createNewEdge(uint begin, uint end)
+Vertex* Graph::generateVertex(void)
 {
-	m_edges.push_back(Edge(this, begin, end));
-	return m_edges.back();
+	Vertex* vertex = new Vertex(this);
+	m_vertices.insert(vertex);
+	return vertex;
+}
+
+Edge* Graph::generateEdge(Vertex* begin, Vertex* end)
+{
+	Edge* edge = new Edge(this, begin, end);
+	m_edges.insert(edge);
+	begin->addEdge(edge, BEGIN);
+	end->addEdge(edge, END);
+	return edge;
+}
+
+void Graph::deleteVertex(Vertex* vertex)
+{
+	set< pair<Edge*, ORIENTATION> >& edges = vertex->getEdges();
+
+	set< pair<Edge*, ORIENTATION> >::iterator it;
+	for(it = edges.begin(); it != edges.end(); it++)
+		deleteEdge(it->first);
+
+	m_vertices.erase(vertex);
+	delete vertex;
+}
+
+void Graph::deleteEdge(Edge* edge)
+{
+	edge->getBeginVertex()->deleteEdge(edge, BEGIN);
+	edge->getEndVertex()->deleteEdge(edge, END);
+	m_edges.erase(edge);
+	delete edge;
 }

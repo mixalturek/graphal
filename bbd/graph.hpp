@@ -20,29 +20,42 @@
  */
 
 
-#ifndef __GRAPH_HPP__
-#define __GRAPH_HPP__
+#ifndef GRAPH_HPP
+#define GRAPH_HPP
 
-#include <vector>
+#include <set>
 #include "general.hpp"
-#include "vertex.hpp"
-#include "edge.hpp"
+#include "baseobject.hpp"
 
-class Graph : public BaseObject
+class Vertex;
+class Edge;
+
+class Graph : public BaseObject // TODO: ValueAdapter
 {
 public:
-	Graph(void) { }
-	~Graph(void) { }
+	Graph(bool oriented = false);
+	virtual ~Graph();
 
 	virtual string toString(void) const { return "Graph"; } // TODO:
 
-public:
-	Vertex& createNewVertex(void);
-	Edge& createNewEdge(uint begin, uint end);
+	bool isOriented(void) const { return m_oriented; }
+
+	Vertex* generateVertex(void);
+	Edge* generateEdge(Vertex* begin, Vertex* end);
+
+	void deleteVertex(Vertex* vertex);
+	void deleteEdge(Edge* edge);
+
+	uint getNumVertices(void) const { return m_vertices.size(); }
+	uint getNumEdges(void) const { return m_edges.size(); }
 
 private:
-	vector<Vertex> m_vertices;
-	vector<Edge> m_edges;
+	bool m_oriented;
+	set<Vertex*> m_vertices;
+	set<Edge*> m_edges;
+
+public:
+	// TODO: prekryt operatory z ValueAdapter!!!!!
 };
 
 #endif

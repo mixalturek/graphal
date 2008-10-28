@@ -39,12 +39,13 @@ lines:
 # DO NOT DELETE
 
 baseobject.o: baseobject.hpp general.hpp
-edge.o: edge.hpp general.hpp baseobject.hpp
-graph.o: graph.hpp general.hpp vertex.hpp valuestruct.hpp value.hpp
-graph.o: baseobject.hpp valuenull.hpp valueadapter.hpp edge.hpp
-main.o: general.hpp graph.hpp vertex.hpp valuestruct.hpp value.hpp
-main.o: baseobject.hpp valuenull.hpp valueadapter.hpp edge.hpp valueint.hpp
-main.o: valuebool.hpp valuefloat.hpp valuestring.hpp
+edge.o: edge.hpp general.hpp valuestruct.hpp value.hpp baseobject.hpp
+edge.o: valuenull.hpp valueadapter.hpp vertex.hpp
+graph.o: graph.hpp general.hpp baseobject.hpp vertex.hpp valuestruct.hpp
+graph.o: value.hpp valuenull.hpp valueadapter.hpp edge.hpp
+main.o: general.hpp graph.hpp baseobject.hpp valueint.hpp value.hpp
+main.o: valuebool.hpp valuefloat.hpp valuestruct.hpp valuenull.hpp
+main.o: valueadapter.hpp valuestring.hpp vertex.hpp edge.hpp
 valueadapter.o: valueadapter.hpp value.hpp general.hpp baseobject.hpp
 valueadapter.o: valuenull.hpp valuebool.hpp valueint.hpp valuefloat.hpp
 valueadapter.o: valuestring.hpp valuestruct.hpp

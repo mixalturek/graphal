@@ -27,6 +27,9 @@
 #include "valuefloat.hpp"
 #include "valuestruct.hpp"
 #include "valuestring.hpp"
+#include "graph.hpp"
+#include "vertex.hpp"
+#include "edge.hpp"
 
 
 void test(void)
@@ -58,6 +61,56 @@ void test(void)
 	// delete j;
 	delete i;
 	// delete k;
+*/
+
+/*	// Graphs
+	Graph g;
+
+	cout << "------------------ new vertices" << endl;
+	Vertex* v1 = g.generateVertex();
+	cout << "v1->getID(): " << v1->getID() << endl;
+	Vertex* v2 = g.generateVertex();
+	cout << "v2->getID(): " << v2->getID() << endl;
+	Vertex* v3 = g.generateVertex();
+	cout << "v3->getID(): " << v3->getID() << endl;
+	Vertex* v4 = g.generateVertex();
+	cout << "v4->getID(): " << v4->getID() << endl;
+
+	cout << "Vertices: " << g.getNumVertices() << " = 4" << endl;
+	cout << "Edges: " << g.getNumEdges() << " = 0" << endl;
+
+	cout << "------------------ new edges" << endl;
+	Edge* e1 = g.generateEdge(v1, v2);
+	cout << "e1->getID(): " << e1->getID() << endl;
+	Edge* e2 = g.generateEdge(v2, v3);
+	cout << "e2->getID(): " << e2->getID() << endl;
+	Edge* e3 = g.generateEdge(v3, v4);
+	cout << "e3->getID(): " << e3->getID() << endl;
+
+	cout << "Vertices: " << g.getNumVertices() << " = 4" << endl;
+	cout << "Edges: " << g.getNumEdges() << " = 3" << endl;
+	cout << "Degree: " << v1->getDegree() << " = 1" << endl;
+	cout << "Degree: " << v2->getDegree() << " = 2" << endl;
+	cout << "Degree: " << v3->getDegree() << " = 2" << endl;
+	cout << "Degree: " << v4->getDegree() << " = 1" << endl;
+
+	cout << "------------------ delete edge" << endl;
+	g.deleteEdge(e1); e1 = NULL;
+	cout << "Vertices: " << g.getNumVertices() << " = 4" << endl;
+	cout << "Edges: " << g.getNumEdges() << " = 2" << endl;
+	cout << "Degree: " << v1->getDegree() << " = 0" << endl;
+	cout << "Degree: " << v2->getDegree() << " = 1" << endl;
+	cout << "Degree: " << v3->getDegree() << " = 2" << endl;
+	cout << "Degree: " << v4->getDegree() << " = 1" << endl;
+
+	cout << "------------------ delete vertex" << endl;
+	g.deleteVertex(v2);	v2 = NULL;
+	cout << "Vertices: " << g.getNumVertices() << " = 3" << endl;
+	cout << "Edges: " << g.getNumEdges() << " = 1" << endl;
+	cout << "Degree: " << v1->getDegree() << " = 0" << endl;
+	// cout << "Degree: " << v2->getDegree() << " = 1" << endl;
+	cout << "Degree: " << v3->getDegree() << " = 1" << endl;
+	cout << "Degree: " << v4->getDegree() << " = 1" << endl;
 */
 }
 
