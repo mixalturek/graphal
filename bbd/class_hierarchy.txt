@@ -1,6 +1,6 @@
 BaseObject
 	Graph
-	Value
+	Value (interaface)
 		ValueAdapter
 			ValueNull
 			ValueString
@@ -10,6 +10,11 @@ BaseObject
 		ValueBool
 		ValueInt
 		ValueFloat
+	Logger (singleton)
+	Lexan
+	LexanIterator (interface)
+		LexanIteratorFile
+		LexanIteratorString
 
 TODO:
 ValueNull -> singleton

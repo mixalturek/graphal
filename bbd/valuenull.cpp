@@ -67,15 +67,19 @@ PTR_Value ValueNull::mod(const Value& right)       const { return right.mod(*thi
 
 // ==
 PTR_Value ValueNull::eq(const Value& right)        const { return right.eq(*this); }
+PTR_Value ValueNull::eq(const ValueNull& left)     const { return PTR_Value(new ValueBool(true)); }
 
 // !=
 PTR_Value ValueNull::ne(const Value& right)        const { return right.ne(*this); }
+PTR_Value ValueNull::ne(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
 
 // <=
 PTR_Value ValueNull::le(const Value& right)        const { return right.le(*this); }
+PTR_Value ValueNull::le(const ValueNull& left)     const { return PTR_Value(new ValueBool(true)); }
 
 // >=
 PTR_Value ValueNull::ge(const Value& right)        const { return right.ge(*this); }
+PTR_Value ValueNull::ge(const ValueNull& left)     const { return PTR_Value(new ValueBool(true)); }
 
 // <
 PTR_Value ValueNull::lt(const Value& right)        const { return right.lt(*this); }

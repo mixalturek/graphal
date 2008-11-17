@@ -11,3 +11,100 @@ orientované grafy
 proměnné
 	hierarchie tříd, ne jen jedna třída
 	double dispatch pattern - http://en.wikipedia.org/wiki/Double_dispatch
+
+////////////////////////////////////////////////////////////////////////////
+//// Návrh gramatiky
+
+Z větší části převzatý Borsch a rozšířený
+http://woq.nipax.cz/borsch/devel.php
+
+Tool na počítání first, follow, konflitky v gramatice
+http://moon.felk.cvut.cz/~xvagner/x36pjp/cv/parsingtbl.php
+
+Priorita operátorů
+http://programujte.com/index.php?akce=clanek&cl=2005041405-c++-2-lekce-dodatek
+
+
+Prefixové ++ a -- operátory mají nižší prioritu než postfixové, toto bylo v Borschi špatně!!!
+b = (a+++ ++c);
+b = (a++ + ++c);
+b = (a+++c++);
+atd.
+
+C# gramatika to řeší tak, že prefixové ++/-- jsou v gramatice na stejné úrovni jako ostatní unární operátory
+
+unary-expression:
+    primary-expression
+    + unary-expression
+    - unary-expression
+    ! unary-expression
+    ~ unary-expression
+    pre-increment-expression
+    pre-decrement-expression
+    cast-expression
+
+pre-increment-expression:
+    ++ unary-expression
+
+pre-decrement-expression:
+    -- unary-expression
+
+
+Postfixové ++/-- jsou v C# na úrovni volání funkcí funkce(), přístupu k indexům pole pole[] a přístupu k položkám objektů objekt.hodnota
+
+primary-no-array-creation-expression:
+    literal
+    simple-name
+    member-access
+    parenthesized-expression
+    invocation-expression
+    element-access
+    this-access
+    base-access
+    post-increment-expression
+    post-decrement-expression
+    object-creation-expression
+    delegate-creation-expression
+    typeof-expression
+    checked-expression
+    unchecked-expression
+
+statement-expression:
+    invocation-expression
+    object-creation-expression
+    assignment
+    post-increment-expression
+    post-decrement-expression
+    pre-increment-expression
+    pre-decrement-expression
+
+post-increment-expression:
+    primary-expression ++
+
+post-decrement-expression:
+    primary-expression --
+
+http://www.jaggersoft.com/csharp_grammar.html
+http://msdn.microsoft.com/en-us/library/aa664812(VS.71).aspx
+
+
+
+Rozhodl jsem se, ze switch nakonec nebudu implementovat. Standardni z C++ je kvuli breakum relativne slozity na vytvoreni, a proto jsem uvazoval o nejakem zjednodusenem ve stylu
+
+switch(E)
+{
+	case(num|str)
+		cmd();
+
+	case(num|str)
+	{
+		cmd();
+		cmd();
+	}
+
+	default
+		cmd();
+}
+
+Potom jsem si rekl, ze by se case mohlo prejmenovat na if a default na else (aby bylo mene klicovych slov), napsal si to a dosel k nazoru, ze to na prvni pohled vypada uplne stejne jako nekolik obycejnych if-else za sebou akorat navic zanorene v sekci swich :-)
+

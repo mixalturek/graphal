@@ -1,5 +1,5 @@
 /*
- *      general.hpp
+ *      lexaniteratorfile.cpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -19,46 +19,42 @@
  *      MA 02110-1301, USA.
  */
 
-
-#ifndef __GENERAL_HPP__
-#define __GENERAL_HPP__
-
-/////////////////////////////////////////////////////////////////////////////
-//// Compiler switches
-
-#define DEBUG
-#define CHECK_MEMORY_LEAKS
+#include <stdexcept>
+#include "lexaniteratorfile.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
-//// Macros
+////
 
-// gettext
-#define _(str) (str)
-
-// throw alias
-#ifdef DEBUG
-#define THROW(obj)                                         \
-{                                                          \
-	cout << "[exception] " << __FILE__ << ":" << __LINE__  \
-		<< " function " << __FUNCTION__ << "()" << endl;   \
-	throw (obj);                                           \
+LexanIteratorFile::LexanIteratorFile(const string& filename)
+	: LexanIterator(),
+	m_filename(filename),
+	m_file(filename.c_str(), ios::in),
+	m_line(1)
+{
+	if(!m_file.is_open())
+		THROW(runtime_error(_("Unable to open included file: ") + filename));
 }
-#else
-#define THROW(obj) { throw (obj); }
-#endif
+
+LexanIteratorFile::~LexanIteratorFile(void)
+{
+	m_file.close();
+}
 
 
 /////////////////////////////////////////////////////////////////////////////
-//// Includes
+////
 
-#include <iostream>
-using namespace std;
+char LexanIteratorFile::get(void)
+{
+	char c = m_file.get();
+	if(c == '\n')
+		m_line++;
 
+	return c;
+}
 
-/////////////////////////////////////////////////////////////////////////////
-//// Data types
-
-typedef unsigned int uint;
-
-#endif
+void LexanIteratorFile::unget(void)
+{
+	m_file.unget();
+}

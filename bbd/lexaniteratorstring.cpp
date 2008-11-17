@@ -1,5 +1,5 @@
 /*
- *      general.hpp
+ *      lexaniteratorstring.cpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -19,46 +19,39 @@
  *      MA 02110-1301, USA.
  */
 
-
-#ifndef __GENERAL_HPP__
-#define __GENERAL_HPP__
+#include "lexaniteratorstring.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
-//// Compiler switches
+////
 
-#define DEBUG
-#define CHECK_MEMORY_LEAKS
+LexanIteratorString::LexanIteratorString(const string& name, const string& value)
+	: LexanIterator(),
+	m_name(name),
+	m_value(value),
+	m_pos(0)
+{
 
-
-/////////////////////////////////////////////////////////////////////////////
-//// Macros
-
-// gettext
-#define _(str) (str)
-
-// throw alias
-#ifdef DEBUG
-#define THROW(obj)                                         \
-{                                                          \
-	cout << "[exception] " << __FILE__ << ":" << __LINE__  \
-		<< " function " << __FUNCTION__ << "()" << endl;   \
-	throw (obj);                                           \
 }
-#else
-#define THROW(obj) { throw (obj); }
-#endif
+
+LexanIteratorString::~LexanIteratorString(void)
+{
+
+}
 
 
 /////////////////////////////////////////////////////////////////////////////
-//// Includes
+////
 
-#include <iostream>
-using namespace std;
+char LexanIteratorString::get(void)
+{
+	if(m_pos < m_value.length())
+		return m_value[m_pos++];
+	else
+		return EOF;
+}
 
-
-/////////////////////////////////////////////////////////////////////////////
-//// Data types
-
-typedef unsigned int uint;
-
-#endif
+void LexanIteratorString::unget(void)
+{
+	if(m_pos > 0)
+		m_pos--;
+}

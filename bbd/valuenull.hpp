@@ -54,15 +54,19 @@ public:
 
 	// ==
 	virtual PTR_Value eq(const Value&      right) const;
+	virtual PTR_Value eq(const ValueNull&  left)  const;
 
 	// !=
 	virtual PTR_Value ne(const Value&      right) const;
+	virtual PTR_Value ne(const ValueNull&  left)  const;
 
 	// <=
 	virtual PTR_Value le(const Value&      right) const;
+	virtual PTR_Value le(const ValueNull&  left)  const;
 
 	// >=
 	virtual PTR_Value ge(const Value&      right) const;
+	virtual PTR_Value ge(const ValueNull&  left)  const;
 
 	// <
 	virtual PTR_Value lt(const Value&      right) const;

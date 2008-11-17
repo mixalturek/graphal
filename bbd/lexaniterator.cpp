@@ -1,5 +1,5 @@
 /*
- *      general.hpp
+ *      lexaniterator.cpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -19,46 +19,19 @@
  *      MA 02110-1301, USA.
  */
 
-
-#ifndef __GENERAL_HPP__
-#define __GENERAL_HPP__
+#include "lexaniterator.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
-//// Compiler switches
+////
 
-#define DEBUG
-#define CHECK_MEMORY_LEAKS
+LexanIterator::LexanIterator(void)
+	: BaseObject()
+{
 
-
-/////////////////////////////////////////////////////////////////////////////
-//// Macros
-
-// gettext
-#define _(str) (str)
-
-// throw alias
-#ifdef DEBUG
-#define THROW(obj)                                         \
-{                                                          \
-	cout << "[exception] " << __FILE__ << ":" << __LINE__  \
-		<< " function " << __FUNCTION__ << "()" << endl;   \
-	throw (obj);                                           \
 }
-#else
-#define THROW(obj) { throw (obj); }
-#endif
 
+LexanIterator::~LexanIterator(void)
+{
 
-/////////////////////////////////////////////////////////////////////////////
-//// Includes
+}
 
-#include <iostream>
-using namespace std;
-
-
-/////////////////////////////////////////////////////////////////////////////
-//// Data types
-
-typedef unsigned int uint;
-
-#endif

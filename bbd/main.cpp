@@ -20,7 +20,9 @@
  */
 
 #include <typeinfo>
+#include <stdexcept>
 #include "general.hpp"
+#include "logger.hpp"
 #include "graph.hpp"
 #include "valueint.hpp"
 #include "valuebool.hpp"
@@ -117,12 +119,31 @@ void test(void)
 
 int main(int argc, char** argv)
 {
-	test();
+	try
+	{
+		test();
 
 #ifdef CHECK_MEMORY_LEAKS
-	BaseObject::printMemoryLeaks();
+		BaseObject::printMemoryLeaks();
 #endif // CHECK_MEMORY_LEAKS
 
-	cout << "Total number of created objects: " << BaseObject::getMaxID() << endl;
+		cout << _("Total number of created objects: ") << BaseObject::getMaxID() << endl;
+	}
+	catch(runtime_error& ex)
+	{
+		ERROR << ex.what() << endl;
+		return 1;
+	}
+	catch(exception& ex)
+	{
+		ERROR << ex.what() << endl;
+		return 1;
+	}
+	catch(...)
+	{
+		ERROR << _("Unknown exception catched!") << endl;
+		return 1;
+	}
+
 	return 0;
 }

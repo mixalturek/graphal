@@ -1,4 +1,4 @@
-TARGET		= graphs
+TARGET		= bbd
 CC			= g++
 CFLAGS		= -std=c++98 -pedantic -Wall
 LDFLAGS		=
@@ -43,8 +43,17 @@ edge.o: edge.hpp general.hpp valuestruct.hpp value.hpp baseobject.hpp
 edge.o: valuenull.hpp valueadapter.hpp vertex.hpp
 graph.o: graph.hpp general.hpp baseobject.hpp vertex.hpp valuestruct.hpp
 graph.o: value.hpp valuenull.hpp valueadapter.hpp edge.hpp
-main.o: general.hpp graph.hpp baseobject.hpp valueint.hpp value.hpp
-main.o: valuebool.hpp valuefloat.hpp valuestruct.hpp valuenull.hpp
+lexan.o: lexan.hpp general.hpp baseobject.hpp lexaniterator.hpp
+lexan.o: lexantokens.hpp lexaniteratorstring.hpp lexaniteratorfile.hpp
+lexan.o: logger.hpp
+lexaniterator.o: lexaniterator.hpp general.hpp baseobject.hpp
+lexaniteratorfile.o: lexaniteratorfile.hpp general.hpp lexaniterator.hpp
+lexaniteratorfile.o: baseobject.hpp
+lexaniteratorstring.o: lexaniteratorstring.hpp general.hpp lexaniterator.hpp
+lexaniteratorstring.o: baseobject.hpp
+logger.o: logger.hpp general.hpp
+main.o: general.hpp logger.hpp graph.hpp baseobject.hpp valueint.hpp
+main.o: value.hpp valuebool.hpp valuefloat.hpp valuestruct.hpp valuenull.hpp
 main.o: valueadapter.hpp valuestring.hpp vertex.hpp edge.hpp
 valueadapter.o: valueadapter.hpp value.hpp general.hpp baseobject.hpp
 valueadapter.o: valuenull.hpp valuebool.hpp valueint.hpp valuefloat.hpp
