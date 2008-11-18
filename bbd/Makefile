@@ -38,7 +38,7 @@ lines:
 
 # DO NOT DELETE
 
-baseobject.o: baseobject.hpp general.hpp
+baseobject.o: baseobject.hpp general.hpp logger.hpp
 edge.o: edge.hpp general.hpp valuestruct.hpp value.hpp baseobject.hpp
 edge.o: valuenull.hpp valueadapter.hpp vertex.hpp
 graph.o: graph.hpp general.hpp baseobject.hpp vertex.hpp valuestruct.hpp
@@ -52,9 +52,11 @@ lexaniteratorfile.o: baseobject.hpp
 lexaniteratorstring.o: lexaniteratorstring.hpp general.hpp lexaniterator.hpp
 lexaniteratorstring.o: baseobject.hpp
 logger.o: logger.hpp general.hpp
-main.o: general.hpp logger.hpp graph.hpp baseobject.hpp valueint.hpp
-main.o: value.hpp valuebool.hpp valuefloat.hpp valuestruct.hpp valuenull.hpp
-main.o: valueadapter.hpp valuestring.hpp vertex.hpp edge.hpp
+main.o: general.hpp baseobject.hpp logger.hpp tests.hpp
+tests.o: tests.hpp general.hpp logger.hpp valueint.hpp value.hpp
+tests.o: baseobject.hpp valuefloat.hpp valuebool.hpp valuestring.hpp
+tests.o: valueadapter.hpp valuestruct.hpp valuenull.hpp graph.hpp vertex.hpp
+tests.o: edge.hpp
 valueadapter.o: valueadapter.hpp value.hpp general.hpp baseobject.hpp
 valueadapter.o: valuenull.hpp valuebool.hpp valueint.hpp valuefloat.hpp
 valueadapter.o: valuestring.hpp valuestruct.hpp

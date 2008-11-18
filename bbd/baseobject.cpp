@@ -24,6 +24,7 @@
 
 #ifdef CHECK_MEMORY_LEAKS
 #include <typeinfo>
+#include "logger.hpp"
 #endif // CHECK_MEMORY_LEAKS
 
 
@@ -61,14 +62,11 @@ BaseObject::~BaseObject()
 #ifdef CHECK_MEMORY_LEAKS
 void BaseObject::printMemoryLeaks(void)
 {
-	cerr << "================== BaseObject::printMemoryLeaks(void) ==================" << endl;
-
 	set<BaseObject*>::const_iterator it;
 	for(it = m_allocated_objects.begin(); it != m_allocated_objects.end(); it++)
-		cerr << "id = " << (*it)->getID() << ", type = " << typeid(**it).name()
+		ERROR << "id = " << (*it)->getID() << ", type = " << typeid(**it).name()
 			<< ", tostring = " << (*it)->toString() << ", mem = " << *it << endl;
 
-	cerr << endl;
-	cerr << "Total number of memory leaks: " << m_allocated_objects.size() << endl;
+	INFO << "Number of memory leaks: " << m_allocated_objects.size() << endl;
 }
 #endif // CHECK_MEMORY_LEAKS

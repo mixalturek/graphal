@@ -15,6 +15,7 @@ BaseObject
 	LexanIterator (interface)
 		LexanIteratorFile
 		LexanIteratorString
+	Tests
 
 TODO:
 ValueNull -> singleton

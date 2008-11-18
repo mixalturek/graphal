@@ -1,5 +1,5 @@
 /*
- *      main.cpp
+ *      tests.hpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -19,42 +19,34 @@
  *      MA 02110-1301, USA.
  */
 
-#include <typeinfo>
-#include <stdexcept>
+
+#ifndef TESTS_HPP
+#define TESTS_HPP
+
 #include "general.hpp"
-#include "baseobject.hpp"
-#include "logger.hpp"
-#include "tests.hpp"
 
-
-int main(int argc, char** argv)
+class Tests
 {
-	try
-	{
-		Tests tests;
-		tests.run();
+public:
+	Tests();
+	virtual ~Tests();
+
+	void run(void);
+
+private:
+	bool testResult(const string& testName, bool result);
 
 #ifdef CHECK_MEMORY_LEAKS
-		BaseObject::printMemoryLeaks();
+	bool testMemoryLeaks(void);
 #endif // CHECK_MEMORY_LEAKS
 
-		INFO << _("Number of created objects: ") << BaseObject::getMaxID() << endl;
-	}
-	catch(runtime_error& ex)
-	{
-		ERROR << ex.what() << endl;
-		return 1;
-	}
-	catch(exception& ex)
-	{
-		ERROR << ex.what() << endl;
-		return 1;
-	}
-	catch(...)
-	{
-		ERROR << _("Unknown exception catched!") << endl;
-		return 1;
-	}
+	bool testDoubleDispatching(void);
+	bool testVariableStruct(void);
+	bool testGraphs(void);
 
-	return 0;
-}
+	// Template
+	// bool test(void);
+
+};
+
+#endif /* TESTS_HPP */

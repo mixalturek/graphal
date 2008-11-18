@@ -48,6 +48,7 @@ private:
 	static set<BaseObject*> m_allocated_objects;
 
 public:
+	static uint getNumberOfLeaks(void) { return m_allocated_objects.size(); }
 	static void printMemoryLeaks(void);
 #endif // CHECK_MEMORY_LEAKS
 };
