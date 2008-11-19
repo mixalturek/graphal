@@ -43,6 +43,7 @@ private:
 	bool testDoubleDispatching(void);
 	bool testVariableStruct(void);
 	bool testGraphs(void);
+	bool testLexanTerminalSymbols(void);
 
 	// Template
 	// bool test(void);

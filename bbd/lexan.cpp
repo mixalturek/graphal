@@ -41,7 +41,7 @@ Lexan::Lexan(const string& source, bool filename)
 	if(filename)
 		m_source.push(new LexanIteratorFile(source));
 	else
-		m_source.push(new LexanIteratorString(source, "init"));
+		m_source.push(new LexanIteratorString("init", source));
 }
 
 Lexan::~Lexan(void)
@@ -198,7 +198,6 @@ LEXTOKEN Lexan::nextToken(void)
 				m_string = c;
 				break;
 			}
-
 			if(c == '0')
 			{
 				state = ST_INT_ZERO;
@@ -301,12 +300,14 @@ LEXTOKEN Lexan::nextToken(void)
 			{
 				delete m_source.top();
 				m_source.pop();
-				state = ST_DEFAULT;// Just for sure ;-)
+				// state = ST_DEFAULT;// We are here
 				break;
 			}
 
 			ERROR << getSource() << _(":") << getPos()
-				<< _(" Unexpected character: ") << c << endl;
+				<< _(" Unexpected character: '")
+				<< (char)c << "' (ascii " << c << ")" << endl;
+
 			return LEX_ERROR;
 
 		case ST_CPP_COMMENT:		// //
@@ -341,6 +342,11 @@ LEXTOKEN Lexan::nextToken(void)
 				ERROR << getSource() << _(":") << getPos()
 					<< _(" Unexpected end of source: unterminated /* c-style */ comment")
 					<< endl;
+
+				delete m_source.top();
+				m_source.pop();
+				state = ST_DEFAULT;
+
 				return LEX_ERROR;
 			}
 
@@ -368,6 +374,11 @@ LEXTOKEN Lexan::nextToken(void)
 				ERROR << getSource() << _(":") << getPos()
 					<< _(" Unexpected end of source: unterminated /* c-style */ comment")
 					<< endl;
+
+				delete m_source.top();
+				m_source.pop();
+				state = ST_DEFAULT;
+
 				return LEX_ERROR;
 			}
 
@@ -408,6 +419,11 @@ LEXTOKEN Lexan::nextToken(void)
 				ERROR << getSource() << _(":") << getPos()
 					<< _(" Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
+
+				delete m_source.top();
+				m_source.pop();
+				state = ST_DEFAULT;
+
 				return LEX_ERROR;
 			}
 
@@ -508,12 +524,16 @@ LEXTOKEN Lexan::nextToken(void)
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
+				delete m_source.top();
+				m_source.pop();
+				state = ST_DEFAULT;
+
 				return LEX_ERROR;
 			}
 
 			WARN << getSource() << _(":") << getPos()
-				<< _("Unrecognized escape sequence in \"string\" constant: ")
-				<< c << endl;
+				<< _("Unrecognized escape sequence in \"string\" constant: '")
+				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += '\\';
 			m_string += c;
@@ -540,12 +560,16 @@ LEXTOKEN Lexan::nextToken(void)
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
+				delete m_source.top();
+				m_source.pop();
+				state = ST_DEFAULT;
+
 				return LEX_ERROR;
 			}
 
 			WARN << getSource() << _(":") << getPos()
-				<< _("Character is not valid in \"string\" HEX escape sequence context: ")
-				<< c << endl;
+				<< _("Character is not valid in \"string\" HEX escape sequence context: '")
+				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += "\\x";
 			unget();
@@ -576,12 +600,16 @@ LEXTOKEN Lexan::nextToken(void)
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
+				delete m_source.top();
+				m_source.pop();
+				state = ST_DEFAULT;
+
 				return LEX_ERROR;
 			}
 
 			WARN << getSource() << _(":") << getPos()
-				<< _("Character is not valid in \"string\" HEX escape sequence context: ")
-				<< c << endl;
+				<< _("Character is not valid in \"string\" HEX escape sequence context: '")
+				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += "\\x";
 			m_string += (m_int < 10) ? '0' + m_int : 'a' + m_int - 10;// TODO: lower/upper
@@ -602,12 +630,17 @@ LEXTOKEN Lexan::nextToken(void)
 				ERROR << getSource() << _(":") << getPos()
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
+
+				delete m_source.top();
+				m_source.pop();
+				state = ST_DEFAULT;
+
 				return LEX_ERROR;
 			}
 
 			WARN << getSource() << _(":") << getPos()
-				<< _("Character is not valid in \"string\" OCT escape sequence context: ")
-				<< c << endl;
+				<< _("Character is not valid in \"string\" OCT escape sequence context: '")
+				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += '\\';
 			m_string += '0' + m_int;
@@ -645,12 +678,17 @@ LEXTOKEN Lexan::nextToken(void)
 				ERROR << getSource() << _(":") << getPos()
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
+
+				delete m_source.top();
+				m_source.pop();
+				state = ST_DEFAULT;
+
 				return LEX_ERROR;
 			}
 
 			WARN << getSource() << _(":") << getPos()
-				<< _("Character is not valid in \"string\" OCT escape sequence context: ")
-				<< c << endl;
+				<< _("Character is not valid in \"string\" OCT escape sequence context: '")
+				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += '\\';
 			m_string += '0' + (m_int>>3);
@@ -693,8 +731,8 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c >= '8' && c <= '9')
 			{
 				ERROR << getSource() << _(":") << getPos()
-					<< _("This number is not valid in \"string\" OCT escape sequence context: ")
-					<< c << endl;
+					<< _("This number is not valid in \"string\" OCT escape sequence context: '")
+					<< (char)c << "' (ascii " << c << ")" << endl;
 
 				return LEX_ERROR;
 			}
@@ -725,8 +763,8 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c >= '8' && c <= '9')
 			{
 				ERROR << getSource() << _(":") << getPos()
-					<< _("This number is not valid in \"string\" OCT escape sequence context: ")
-					<< c << endl;
+					<< _("This number is not valid in \"string\" OCT escape sequence context: '")
+					<< (char)c << "' (ascii " << c << ")" << endl;
 				return LEX_ERROR;
 			}
 
@@ -897,8 +935,8 @@ LEXTOKEN Lexan::nextToken(void)
 
 			unget();
 			ERROR << getSource() << _(":") << getPos()
-				<< _("Unexpected character, this is not operator &&: ")
-				<< c << endl;
+				<< _("Unexpected character, this is not operator &&: '")
+				<< (char)c << "' (ascii " << c << ")" << endl;
 			return LEX_ERROR;
 
 		case ST_OP_OR:
@@ -907,8 +945,8 @@ LEXTOKEN Lexan::nextToken(void)
 
 			unget();
 			ERROR << getSource() << _(":") << getPos()
-				<< _("Unexpected character, this is not operator ||: ")
-				<< c << endl;
+				<< _("Unexpected character, this is not operator ||: '")
+				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			return LEX_ERROR;
 
@@ -1029,5 +1067,71 @@ void Lexan::parseDefine(void)
 		WARN << getSource() << _(":") << getPos()
 			<< _("Redefining macro: ") << name << endl;
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+string Lexan::getTokenName(LEXTOKEN token)
+{
+	static string table[] =
+	{
+		"LEX_EOF",		// End of file
+		"LEX_ERROR",		// Error
+
+		"LEX_FUNCTION",		// function
+		"LEX_RETURN",		// return
+		"LEX_IF",			// if
+		"LEX_ELSE",		// else
+		"LEX_WHILE",		// while
+		"LEX_FOR",		// for
+		"LEX_FOREACH",		// foreach
+		"LEX_BREAK",		// break
+		"LEX_CONTINUE",		// continue
+		"LEX_NULL",		// null
+		"LEX_TRUE",		// true
+		"LEX_FALSE",		// false
+
+		"LEX_LVA",		// {		vinculum
+		"LEX_RVA",		// }
+		"LEX_LPA",		// (		parenthesis
+		"LEX_RPA",		// )
+		"LEX_LSA",		// [		square bracket
+		"LEX_RSA",		// ]
+		"LEX_COMMA",		// ,
+		"LEX_SEMICOLON",		// ;
+		"LEX_DOT",		// .
+
+		"LEX_OP_ASSIGN",		// =
+		"LEX_OP_EQUAL",		// ==
+		"LEX_OP_NOT_EQ",		// !=
+		"LEX_OP_LESS",		// <
+		"LEX_OP_LESS_EQ",		// <=
+		"LEX_OP_GREATER",		// >
+		"LEX_OP_GREATER_EQ",	// >=
+		"LEX_OP_PLUS",		// +
+		"LEX_OP_PLUS_AS",		// +=
+		"LEX_OP_PLUS_PLUS",	// ++
+		"LEX_OP_MINUS",		// -
+		"LEX_OP_MINUS_AS",	// -=
+		"LEX_OP_MINUS_MINUS",	// --
+		"LEX_OP_MULT",		// *
+		"LEX_OP_MULT_AS",		// *=
+		"LEX_OP_DIV",		// /
+		"LEX_OP_DIV_AS",		// /=
+		"LEX_OP_MOD",		// %
+		"LEX_OP_MOD_AS",		// %=
+		"LEX_OP_NOT",		// !
+		"LEX_OP_AND",		// &&
+		"LEX_OP_OR",		// ||
+
+		"LEX_INT",		// 58		+ int
+		"LEX_FLOAT",		// 0.58		+ float
+		"LEX_STRING",		// "str",'str'	+ string
+		"LEX_NAME"		// identifier	+ string
+	};
+
+	return table[token];
 }
 

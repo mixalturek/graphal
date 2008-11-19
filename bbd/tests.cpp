@@ -30,7 +30,7 @@
 #include "graph.hpp"
 #include "vertex.hpp"
 #include "edge.hpp"
-
+#include "lexan.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -83,6 +83,7 @@ void Tests::run(void)
 	failed += !testDoubleDispatching();
 	failed += !testVariableStruct();
 	failed += !testGraphs();
+	failed += !testLexanTerminalSymbols();
 
 	// Template
 	// failed += !test();
@@ -201,6 +202,70 @@ bool Tests::testGraphs(void)
 	// verify(v2->getDegree() == 1); // deleted
 	verify(v3->getDegree() == 1);
 	verify(v4->getDegree() == 1);
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testLexanTerminalSymbols(void)
+{
+	bool result = true;
+
+	Lexan lexan(
+		"function return if else while for foreach break continue { } ( ) [ ] "
+		", ; . ! = += -= *= /= %= || && < > <= >= == != + - * / % ++ -- "
+		"null true false", false);
+
+	LEXTOKEN tok;
+
+	tok = lexan.nextToken(); verify(tok == LEX_FUNCTION);
+	tok = lexan.nextToken(); verify(tok == LEX_RETURN);
+	tok = lexan.nextToken(); verify(tok == LEX_IF);
+	tok = lexan.nextToken(); verify(tok == LEX_ELSE);
+	tok = lexan.nextToken(); verify(tok == LEX_WHILE);
+	tok = lexan.nextToken(); verify(tok == LEX_FOR);
+	tok = lexan.nextToken(); verify(tok == LEX_FOREACH);
+	tok = lexan.nextToken(); verify(tok == LEX_BREAK);
+	tok = lexan.nextToken(); verify(tok == LEX_CONTINUE);
+	tok = lexan.nextToken(); verify(tok == LEX_LVA);
+	tok = lexan.nextToken(); verify(tok == LEX_RVA);
+	tok = lexan.nextToken(); verify(tok == LEX_LPA);
+	tok = lexan.nextToken(); verify(tok == LEX_RPA);
+	tok = lexan.nextToken(); verify(tok == LEX_LSA);
+	tok = lexan.nextToken(); verify(tok == LEX_RSA);
+	tok = lexan.nextToken(); verify(tok == LEX_COMMA);
+	tok = lexan.nextToken(); verify(tok == LEX_SEMICOLON);
+	tok = lexan.nextToken(); verify(tok == LEX_DOT);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_NOT);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_ASSIGN);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_PLUS_AS);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_MINUS_AS);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_MULT_AS);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_DIV_AS);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_MOD_AS);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_OR);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_AND);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_LESS);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_GREATER);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_LESS_EQ);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_GREATER_EQ);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_EQUAL);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_NOT_EQ);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_PLUS);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_MINUS);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_MULT);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_DIV);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_MOD);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_PLUS_PLUS);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_MINUS_MINUS);
+	tok = lexan.nextToken(); verify(tok == LEX_NULL);
+	tok = lexan.nextToken(); verify(tok == LEX_TRUE);
+	tok = lexan.nextToken(); verify(tok == LEX_FALSE);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+
+	// TODO: int, floats, string, escape sequences, include, define...
 
 	return testResult(__FUNCTION__, result);
 }

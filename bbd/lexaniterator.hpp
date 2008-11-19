@@ -34,8 +34,8 @@ public:
 	virtual char get(void) = 0;
 	virtual void unget(void) = 0;
 
-	virtual const string& getSource(void) const = 0;
-	virtual uint getPos(void) const = 0;
+	virtual const string getSource(void) const = 0;
+	virtual int getPos(void) const = 0;
 };
 
 #endif

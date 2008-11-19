@@ -56,7 +56,7 @@ main.o: general.hpp baseobject.hpp logger.hpp tests.hpp
 tests.o: tests.hpp general.hpp logger.hpp valueint.hpp value.hpp
 tests.o: baseobject.hpp valuefloat.hpp valuebool.hpp valuestring.hpp
 tests.o: valueadapter.hpp valuestruct.hpp valuenull.hpp graph.hpp vertex.hpp
-tests.o: edge.hpp
+tests.o: edge.hpp lexan.hpp lexaniterator.hpp lexantokens.hpp
 valueadapter.o: valueadapter.hpp value.hpp general.hpp baseobject.hpp
 valueadapter.o: valuenull.hpp valuebool.hpp valueint.hpp valuefloat.hpp
 valueadapter.o: valuestring.hpp valuestruct.hpp

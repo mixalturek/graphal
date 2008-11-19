@@ -36,13 +36,13 @@ public:
 	virtual char get(void);
 	virtual void unget(void);
 
-	virtual const string& getSource(void) const { return m_name; }
-	virtual uint getPos(void) const { return m_pos; }
+	virtual const string getSource(void) const { return _("Macro ") + m_name; }
+	virtual int getPos(void) const { return m_pos; }
 
 private:
 	string m_name;
 	string m_value;
-	uint m_pos;
+	int m_pos;
 };
 
 #endif

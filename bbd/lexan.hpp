@@ -35,13 +35,16 @@ public:
 	Lexan(const string& source, bool filename = true);
 	~Lexan(void);
 
+	virtual string toString(void) const { return "Lexan"; };
+
 	LEXTOKEN nextToken(void);
+	static string getTokenName(LEXTOKEN token);
 
 	int getInt(void) const { return m_int; }
 	float getFloat(void) const { return m_float; }
 	const string& getString(void) const { return m_string; }
 
-	inline const string& getSource(void) const { return m_source.top()->getSource(); }
+	inline const string getSource(void) const { return m_source.top()->getSource(); }
 	inline uint getPos(void) const { return m_source.top()->getPos(); }
 
 private:

@@ -37,8 +37,8 @@ public:
 	virtual char get(void);
 	virtual void unget(void);
 
-	virtual const string& getSource(void) const { return m_filename; }
-	virtual uint getPos(void) const { return m_line; }
+	virtual const string getSource(void) const { return _("File ") + m_filename; }
+	virtual int getPos(void) const { return m_line; }
 
 private:
 	string m_filename;

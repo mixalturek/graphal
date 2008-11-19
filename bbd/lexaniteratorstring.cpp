@@ -28,7 +28,7 @@ LexanIteratorString::LexanIteratorString(const string& name, const string& value
 	: LexanIterator(),
 	m_name(name),
 	m_value(value),
-	m_pos(0)
+	m_pos(-1)
 {
 
 }
@@ -44,8 +44,9 @@ LexanIteratorString::~LexanIteratorString(void)
 
 char LexanIteratorString::get(void)
 {
-	if(m_pos < m_value.length())
-		return m_value[m_pos++];
+	// It has to be incremented every call, unget() could be called
+	if(++m_pos < (int)m_value.length())
+		return m_value[m_pos];
 	else
 		return EOF;
 }
