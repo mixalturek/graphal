@@ -44,6 +44,11 @@ private:
 	bool testVariableStruct(void);
 	bool testGraphs(void);
 	bool testLexanTerminalSymbols(void);
+	bool testLexanInt(void);
+	bool testLexanFloat(void);
+	bool testLexanString(void);
+	bool testLexanComments(void);
+	bool testLexanSourceCode(void);
 
 	// Template
 	// bool test(void);

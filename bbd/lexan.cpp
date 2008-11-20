@@ -129,41 +129,41 @@ bool Lexan::expandMacro(void)
 
 enum LEXSTATE
 {
-	ST_DEFAULT,		// default, begin
+	ST_DEFAULT,         // default, begin
 
-	ST_CPP_COMMENT,		// //
-	ST_C_COMMENT,		// /.*
-	ST_C_COMMENT_END,	// *./
+	ST_CPP_COMMENT,     // //
+	ST_C_COMMENT,       // /.*
+	ST_C_COMMENT_END,   // *./
 
-	ST_NAME,		// identifier
+	ST_NAME,            // identifier
 
-	ST_STRING,		// "
-	ST_STRING_ESC,		// \.
-	ST_STRING_ESC_HEX,	// \x
-	ST_STRING_ESC_HEX_1,	// \xA
-	ST_STRING_ESC_OCT,	// \12
-	ST_STRING_ESC_OCT_1,	// \123
+	ST_STRING,          // "
+	ST_STRING_ESC,      // \.
+	ST_STRING_ESC_HEX,  // \x
+	ST_STRING_ESC_HEX_1,// \xA
+	ST_STRING_ESC_OCT,  // \12
+	ST_STRING_ESC_OCT_1,// \123
 
-	ST_INT,			// 5
-	ST_INT_ZERO,		// 0
-	ST_INT_OCT,		// 02
-	ST_INT_HEX,		// 0xffe
-	ST_FLOAT,		// 0.58
-	ST_EXP_SIGN,		// 15e-
-	ST_EXP,			// 15e4
-	ST_DOT,
+	ST_INT,             // 5
+	ST_INT_ZERO,        // 0
+	ST_INT_OCT,         // 02
+	ST_INT_HEX,         // 0xffe
+	ST_FLOAT,           // 0.58
+	ST_EXP_SIGN,        // 15e-
+	ST_EXP,             // 15e4
+	ST_DOT,             // .
 
-	ST_OP_ASSIGN,		// =
-	ST_OP_NOT,		// !
-	ST_OP_LESS,		// <
-	ST_OP_GREATER,		// >
-	ST_OP_PLUS,		// +
-	ST_OP_MINUS,		// -
-	ST_OP_MULT,		// *
-	ST_OP_DIV,		// /
-	ST_OP_MOD,		// %
-	ST_OP_AND,		// &&
-	ST_OP_OR		// ||
+	ST_OP_ASSIGN,       // =
+	ST_OP_NOT,          // !
+	ST_OP_LESS,         // <
+	ST_OP_GREATER,      // >
+	ST_OP_PLUS,         // +
+	ST_OP_MINUS,        // -
+	ST_OP_MULT,         // *
+	ST_OP_DIV,          // /
+	ST_OP_MOD,          // %
+	ST_OP_AND,          // &&
+	ST_OP_OR            // ||
 };
 
 
@@ -507,7 +507,7 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c == '\r')// Trash MS Windows \r
 			{
 				WARN << getSource() << _(":") << getPos()
-					<< _("Detected \\r character (CR, 13 in ascii) in string escape sequence after backslash. This would be without problem if you want to use multiline string here and your script uses CR-LF style of line ending (common for text editors under MS Windows)")
+					<< _(" Detected \\r character (CR, 13 in ascii) in string escape sequence after backslash. This would be without problem if you want to use multiline string here and your script uses CR-LF style of line ending (common for text editors under MS Windows)")
 					<< endl;
 
 				// Stay in this state and hope \n will continue
@@ -521,7 +521,7 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c == EOF)
 			{
 				ERROR << getSource() << _(":") << getPos()
-					<< _("Unexpected end of source: unterminated \"string\" constant")
+					<< _(" Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
 				delete m_source.top();
@@ -532,7 +532,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 
 			WARN << getSource() << _(":") << getPos()
-				<< _("Unrecognized escape sequence in \"string\" constant: '")
+				<< _(" Unrecognized escape sequence in \"string\" constant: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += '\\';
@@ -557,7 +557,7 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c == EOF)
 			{
 				ERROR << getSource() << _(":") << getPos()
-					<< _("Unexpected end of source: unterminated \"string\" constant")
+					<< _(" Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
 				delete m_source.top();
@@ -568,7 +568,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 
 			WARN << getSource() << _(":") << getPos()
-				<< _("Character is not valid in \"string\" HEX escape sequence context: '")
+				<< _(" Character is not valid in \"string\" HEX escape sequence context: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += "\\x";
@@ -597,7 +597,7 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c == EOF)
 			{
 				ERROR << getSource() << _(":") << getPos()
-					<< _("Unexpected end of source: unterminated \"string\" constant")
+					<< _(" Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
 				delete m_source.top();
@@ -608,7 +608,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 
 			WARN << getSource() << _(":") << getPos()
-				<< _("Character is not valid in \"string\" HEX escape sequence context: '")
+				<< _(" Character is not valid in \"string\" HEX escape sequence context: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += "\\x";
@@ -628,7 +628,7 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c == EOF)
 			{
 				ERROR << getSource() << _(":") << getPos()
-					<< _("Unexpected end of source: unterminated \"string\" constant")
+					<< _(" Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
 				delete m_source.top();
@@ -639,7 +639,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 
 			WARN << getSource() << _(":") << getPos()
-				<< _("Character is not valid in \"string\" OCT escape sequence context: '")
+				<< _(" Character is not valid in \"string\" OCT escape sequence context: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += '\\';
@@ -657,7 +657,7 @@ LEXTOKEN Lexan::nextToken(void)
 				if(m_int > 255)
 				{
 					WARN << getSource() << _(":") << getPos()
-						<< _("The value of \"string\" OCT escape sequence is too big ( > 0377)")
+						<< _(" The value of \"string\" OCT escape sequence is too big ( > 0377)")
 						<< endl;
 
 					m_string += '\\';
@@ -676,7 +676,7 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c == EOF)
 			{
 				ERROR << getSource() << _(":") << getPos()
-					<< _("Unexpected end of source: unterminated \"string\" constant")
+					<< _(" Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
 				delete m_source.top();
@@ -687,7 +687,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 
 			WARN << getSource() << _(":") << getPos()
-				<< _("Character is not valid in \"string\" OCT escape sequence context: '")
+				<< _(" Character is not valid in \"string\" OCT escape sequence context: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += '\\';
@@ -731,7 +731,7 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c >= '8' && c <= '9')
 			{
 				ERROR << getSource() << _(":") << getPos()
-					<< _("This number is not valid in \"string\" OCT escape sequence context: '")
+					<< _(" This number is not valid in \"string\" OCT escape sequence context: '")
 					<< (char)c << "' (ascii " << c << ")" << endl;
 
 				return LEX_ERROR;
@@ -763,7 +763,7 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c >= '8' && c <= '9')
 			{
 				ERROR << getSource() << _(":") << getPos()
-					<< _("This number is not valid in \"string\" OCT escape sequence context: '")
+					<< _(" This number is not valid in \"string\" OCT escape sequence context: '")
 					<< (char)c << "' (ascii " << c << ")" << endl;
 				return LEX_ERROR;
 			}
@@ -935,7 +935,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 			unget();
 			ERROR << getSource() << _(":") << getPos()
-				<< _("Unexpected character, this is not operator &&: '")
+				<< _(" Unexpected character, this is not operator &&: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 			return LEX_ERROR;
 
@@ -945,13 +945,13 @@ LEXTOKEN Lexan::nextToken(void)
 
 			unget();
 			ERROR << getSource() << _(":") << getPos()
-				<< _("Unexpected character, this is not operator ||: '")
+				<< _(" Unexpected character, this is not operator ||: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			return LEX_ERROR;
 
 		default:
-			THROW(runtime_error(_("Undefined state, this should never happen.")));
+			THROW(runtime_error(_(" Undefined state, this should never happen.")));
 			break;
 		}
 	}
@@ -997,7 +997,7 @@ void Lexan::parseInclude(void)
 	}
 
 #ifdef DEBUG
-	DBG << getSource() << _(":") << getPos() << _( "Including file: ") << filename << endl;
+	DBG << getSource() << _(":") << getPos() << _( " Including file: ") << filename << endl;
 #endif // DEBUG
 
 	m_source.push(new LexanIteratorFile(filename));
@@ -1065,7 +1065,7 @@ void Lexan::parseDefine(void)
 	if(ret.second == false)
 	{
 		WARN << getSource() << _(":") << getPos()
-			<< _("Redefining macro: ") << name << endl;
+			<< _(" Redefining macro: ") << name << endl;
 	}
 }
 

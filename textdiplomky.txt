@@ -108,3 +108,10 @@ switch(E)
 
 Potom jsem si rekl, ze by se case mohlo prejmenovat na if a default na else (aby bylo mene klicovych slov), napsal si to a dosel k nazoru, ze to na prvni pohled vypada uplne stejne jako nekolik obycejnych if-else za sebou akorat navic zanorene v sekci swich :-)
 
+
+
+http://zdrojak.root.cz/clanky/javascript-implementace-v-prohlizecich/
+http://links.twibright.com/doc/projektova.pdf - links projektová dokumentace
+http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
+
+

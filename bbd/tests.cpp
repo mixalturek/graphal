@@ -84,6 +84,11 @@ void Tests::run(void)
 	failed += !testVariableStruct();
 	failed += !testGraphs();
 	failed += !testLexanTerminalSymbols();
+	failed += !testLexanInt();
+	failed += !testLexanFloat();
+	failed += !testLexanString();
+	failed += !testLexanComments();
+	failed += !testLexanSourceCode();
 
 	// Template
 	// failed += !test();
@@ -261,14 +266,264 @@ bool Tests::testLexanTerminalSymbols(void)
 	tok = lexan.nextToken(); verify(tok == LEX_NULL);
 	tok = lexan.nextToken(); verify(tok == LEX_TRUE);
 	tok = lexan.nextToken(); verify(tok == LEX_FALSE);
-	tok = lexan.nextToken(); verify(tok == LEX_EOF);
-	tok = lexan.nextToken(); verify(tok == LEX_EOF);
-	tok = lexan.nextToken(); verify(tok == LEX_EOF);
 
-	// TODO: int, floats, string, escape sequences, include, define...
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
 
 	return testResult(__FUNCTION__, result);
 }
+
+
+bool Tests::testLexanInt(void)
+{
+	bool result = true;
+	LEXTOKEN tok;
+	int i;
+
+	Lexan lexan(
+		"2 26 999999999 2147483647 -2147483647 0 05 006 0362457 0x20 0x20e9 0xff 0x36a5d 25,356", false);
+
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 2);
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 26);
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 999999999);
+
+	// INT_MAX
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 2147483647);
+
+	// INT_MIN
+	tok = lexan.nextToken(); verify(tok == LEX_OP_MINUS);
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 2147483647);
+
+	// OCT
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 0);
+
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 05);
+
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 006);
+
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 0362457);
+
+	// HEX
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 0x20);
+
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 0x20e9);
+
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 0xff);
+
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 0x36a5d);
+
+	// This is not float (comma instead of dot)
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 25);
+	tok = lexan.nextToken(); verify(tok == LEX_COMMA);
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 356);
+
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testLexanFloat(void)
+{
+	bool result = true;
+	LEXTOKEN tok;
+	float f;
+
+	Lexan lexan(
+		". .= .1 .12 .12e6 0.12e6 0.0 .0 0. 25.3688 12e-1 12e+1 25e7", false);
+
+	tok = lexan.nextToken(); verify(tok == LEX_DOT);
+	tok = lexan.nextToken(); verify(tok == LEX_DOT);
+	tok = lexan.nextToken(); verify(tok == LEX_OP_ASSIGN);
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f == 0.1f);
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f > 0.11999999f && f < 1.12000001f);
+	// DBG << f << endl; // Displays 0.12
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f > 119999.99 && f < 120000.01);
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f > 119999.99 && f < 120000.01);
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f == 0.0f);
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f == 0.0f);
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f == 0.0f);
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f > 25.36879f && f < 25.368801f);
+
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f == 12e-1f);
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f == 12e+1f);
+
+	// This is mapped to float
+	tok = lexan.nextToken(); verify(tok == LEX_FLOAT);
+	f = lexan.getFloat(); verify(f == 25e7);
+
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testLexanString(void)
+{
+	bool result = true;
+	LEXTOKEN tok;
+	string str;
+
+	Lexan lexan(
+		"  \"privet, mir\"  \"rm -rf c:\\\\windows\\\\\"  \"begin-\\x30-end\"  \"begin-\\x20-end\"  "
+		"  \"begin-\\065-end\"  \"begin-\\066-end\"  \"begin-\\111-end\" "
+		"  \"begin-\\112-end\"  \"begin-\\377-end\"  "
+		, false);
+
+	tok = lexan.nextToken(); verify(tok == LEX_STRING);
+	str = lexan.getString(); verify(str == "privet, mir");
+
+	tok = lexan.nextToken(); verify(tok == LEX_STRING);
+	str = lexan.getString(); verify(str == "rm -rf c:\\windows\\");
+
+	tok = lexan.nextToken(); verify(tok == LEX_STRING);
+	str = lexan.getString(); verify(str == "begin-\x30-end");
+	// DBG << "'" << str  << "'" << endl; // 'begin-0-end'
+
+	tok = lexan.nextToken(); verify(tok == LEX_STRING);
+	str = lexan.getString(); verify(str == "begin-\x20-end");
+	// DBG << "'" << str  << "'" << endl; // 'begin- -end'
+
+	tok = lexan.nextToken(); verify(tok == LEX_STRING);
+	str = lexan.getString(); verify(str == "begin-\065-end");
+	// DBG << "'" << str  << "'" << endl; // 'begin-5-end'
+
+	tok = lexan.nextToken(); verify(tok == LEX_STRING);
+	str = lexan.getString(); verify(str == "begin-\066-end");
+	// DBG << "'" << str  << "'" << endl; // 'begin-6-end'
+
+	tok = lexan.nextToken(); verify(tok == LEX_STRING);
+	str = lexan.getString(); verify(str == "begin-\111-end");
+	// DBG << "'" << str  << "'" << endl; // 'begin-I-end'
+
+	tok = lexan.nextToken(); verify(tok == LEX_STRING);
+	str = lexan.getString(); verify(str == "begin-\112-end");
+	// DBG << "'" << str  << "'" << endl; // 'begin-J-end'
+
+	tok = lexan.nextToken(); verify(tok == LEX_STRING);
+	str = lexan.getString(); verify(str == "begin-\377-end");
+	// DBG << "'" << str  << "'" << endl; // 'begin-˙-end'
+
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testLexanComments(void)
+{
+	bool result = true;
+	LEXTOKEN tok;
+
+	Lexan lexan(
+		"  /**/   /*  */   /***/   /* blem */   /***sf asf*sad/fasd*/  // :-) "
+		, false);
+
+
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testLexanSourceCode(void)
+{
+	bool result = true;
+	LEXTOKEN tok;
+	string str;
+	int i;
+
+	Lexan lexan(
+		"/* factorial function */"
+		"function factorial(number)"
+		"{"
+		"	if(number < 2)"
+		"		return 1;"
+		"	else"
+		"		return number * factorial(number - 1);"
+		"}"
+		"/* EOF */"
+		, false);
+
+	tok = lexan.nextToken(); verify(tok == LEX_FUNCTION);
+	tok = lexan.nextToken(); verify(tok == LEX_NAME);
+	str = lexan.getString(); verify(str == "factorial");
+	tok = lexan.nextToken(); verify(tok == LEX_LPA);
+	tok = lexan.nextToken(); verify(tok == LEX_NAME);
+	str = lexan.getString(); verify(str == "number");
+	tok = lexan.nextToken(); verify(tok == LEX_RPA);
+	tok = lexan.nextToken(); verify(tok == LEX_LVA);
+	tok = lexan.nextToken(); verify(tok == LEX_IF);
+	tok = lexan.nextToken(); verify(tok == LEX_LPA);
+	tok = lexan.nextToken(); verify(tok == LEX_NAME);
+	str = lexan.getString(); verify(str == "number");
+	tok = lexan.nextToken(); verify(tok == LEX_OP_LESS);
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 2);
+	tok = lexan.nextToken(); verify(tok == LEX_RPA);
+	tok = lexan.nextToken(); verify(tok == LEX_RETURN);
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 1);
+	tok = lexan.nextToken(); verify(tok == LEX_SEMICOLON);
+	tok = lexan.nextToken(); verify(tok == LEX_ELSE);
+	tok = lexan.nextToken(); verify(tok == LEX_RETURN);
+	tok = lexan.nextToken(); verify(tok == LEX_NAME);
+	str = lexan.getString(); verify(str == "number");
+	tok = lexan.nextToken(); verify(tok == LEX_OP_MULT);
+	tok = lexan.nextToken(); verify(tok == LEX_NAME);
+	str = lexan.getString(); verify(str == "factorial");
+	tok = lexan.nextToken(); verify(tok == LEX_LPA);
+	tok = lexan.nextToken(); verify(tok == LEX_NAME);
+	str = lexan.getString(); verify(str == "number");
+	tok = lexan.nextToken(); verify(tok == LEX_OP_MINUS);
+	tok = lexan.nextToken(); verify(tok == LEX_INT);
+	i = lexan.getInt(); verify(i == 1);
+	tok = lexan.nextToken(); verify(tok == LEX_RPA);
+	tok = lexan.nextToken(); verify(tok == LEX_SEMICOLON);
+	tok = lexan.nextToken(); verify(tok == LEX_RVA);
+
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+	tok = lexan.nextToken(); verify(tok == LEX_EOF);
+
+	return testResult(__FUNCTION__, result);
+}
+
+// TODO: include, define...
 
 
 /*
