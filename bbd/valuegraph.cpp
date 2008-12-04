@@ -21,6 +21,7 @@
 
 
 #include "valuegraph.hpp"
+#include "valuebool.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
 
@@ -29,7 +30,7 @@
 ////
 
 ValueGraph::ValueGraph(bool oriented)
-	: BaseObject(),
+	: Value(),
 	m_oriented(oriented),
 	m_vertices(),
 	m_edges()
@@ -52,40 +53,82 @@ ValueGraph::~ValueGraph()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-ValueVertex* ValueGraph::generateValueVertex(void)
+ValueVertex* ValueGraph::generateVertex(void)
 {
 	ValueVertex* vertex = new ValueVertex(this);
 	m_vertices.insert(vertex);
 	return vertex;
 }
 
-ValueEdge* ValueGraph::generateValueEdge(ValueVertex* begin, ValueVertex* end)
+ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end)
 {
 	ValueEdge* edge = new ValueEdge(this, begin, end);
 	m_edges.insert(edge);
 
-	begin->addValueEdge(edge, BEGIN);
-	end->addValueEdge(edge, END);
+	begin->addEdge(edge, BEGIN);
+	end->addEdge(edge, END);
 
 	return edge;
 }
 
-void ValueGraph::deleteValueVertex(ValueVertex* vertex)
+void ValueGraph::deleteVertex(ValueVertex* vertex)
 {
-	set< pair<ValueEdge*, ORIENTATION> >& edges = vertex->getValueEdges();
+	set< pair<ValueEdge*, ORIENTATION> >& edges = vertex->getEdges();
 
 	set< pair<ValueEdge*, ORIENTATION> >::iterator it;
 	for(it = edges.begin(); it != edges.end(); it++)
-		deleteValueEdge(it->first);
+		deleteEdge(it->first);
 
 	m_vertices.erase(vertex);
 	delete vertex;
 }
 
-void ValueGraph::deleteValueEdge(ValueEdge* edge)
+void ValueGraph::deleteEdge(ValueEdge* edge)
 {
-	edge->getBeginValueVertex()->deleteValueEdge(edge, BEGIN);
-	edge->getEndValueVertex()->deleteValueEdge(edge, END);
+	edge->getBeginVertex()->deleteEdge(edge, BEGIN);
+	edge->getEndVertex()->deleteEdge(edge, END);
 	m_edges.erase(edge);
 	delete edge;
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+// +
+PTR_Value ValueGraph::add(const Value& right)       const { return right.add(*this); }
+
+// -
+PTR_Value ValueGraph::sub(const Value& right)       const { return right.sub(*this); }
+
+// *
+PTR_Value ValueGraph::mult(const Value& right)      const { return right.mult(*this); }
+
+// /
+PTR_Value ValueGraph::div(const Value& right)       const { return right.div(*this); }
+
+// %
+PTR_Value ValueGraph::mod(const Value& right)       const { return right.mod(*this); }
+
+// ==
+PTR_Value ValueGraph::eq(const Value& right)        const { return right.eq(*this); }
+PTR_Value ValueGraph::eq(const ValueGraph& left)    const { return PTR_Value(new ValueBool(true)); } // TODO
+
+// !=
+PTR_Value ValueGraph::ne(const Value& right)        const { return right.ne(*this); }
+PTR_Value ValueGraph::ne(const ValueGraph& left)    const { return PTR_Value(new ValueBool(false)); } // TODO
+
+// <=
+PTR_Value ValueGraph::le(const Value& right)        const { return right.le(*this); }
+
+// >=
+PTR_Value ValueGraph::ge(const Value& right)        const { return right.ge(*this); }
+
+// <
+PTR_Value ValueGraph::lt(const Value& right)        const { return right.lt(*this); }
+
+// >
+PTR_Value ValueGraph::gt(const Value& right)        const { return right.gt(*this); }
+
+// !
+PTR_Value ValueGraph::logNOT(void)                  const { return PTR_Value(new ValueBool(m_vertices.empty())); }

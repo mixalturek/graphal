@@ -32,21 +32,37 @@ class ValueVertex;
 class ValueEdge : public Value
 {
 public:
-	Edge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end);
-	virtual ~Edge();
+	ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end);
+	virtual ~ValueEdge();
 
-	virtual string toString(void) const { return "Edge"; } // TODO:
+	virtual bool     toBool(void) const { return true; } // TODO:
+	virtual bool     isNull(void) const { return false; }
+	virtual string toString(void) const { return "ValueEdge"; } // TODO:
 
-	ValueVertex* getBeginValueVertex(void) { return m_begin; }
-	ValueVertex* getEndValueVertex(void)   { return m_end; }
+	ValueVertex* getBeginVertex(void) { return m_begin; }
+	ValueVertex* getEndVertex(void)   { return m_end; }
 
 private:
 	ValueGraph*  m_graph;
 	ValueVertex* m_begin;
 	ValueVertex* m_end;
+	// TODO: add ValueStruct member
 
 public:
-	// TODO: add ValueStruct member
+	virtual PTR_Value add(const Value&   right) const; // +
+	virtual PTR_Value sub(const Value&   right) const; // -
+	virtual PTR_Value mult(const Value&  right) const; // *
+	virtual PTR_Value div(const Value&   right) const; // /
+	virtual PTR_Value mod(const Value&   right) const; // %
+	virtual PTR_Value eq(const Value&    right) const; // ==
+	virtual PTR_Value eq(const ValueEdge& left) const;
+	virtual PTR_Value ne(const Value&    right) const; // !=
+	virtual PTR_Value ne(const ValueEdge& left) const;
+	virtual PTR_Value le(const Value&    right) const; // <=
+	virtual PTR_Value ge(const Value&    right) const; // >=
+	virtual PTR_Value lt(const Value&    right) const; // <
+	virtual PTR_Value gt(const Value&    right) const; // >
+	virtual PTR_Value logNOT(void)              const; // !
 };
 
 #endif

@@ -40,7 +40,7 @@
 
 
 ValueStruct::ValueStruct()
-	: ValueAdapter(),
+	: Value(),
 	m_notfound()
 {
 

@@ -41,7 +41,7 @@ private:
 #endif // CHECK_MEMORY_LEAKS
 
 	bool testDoubleDispatching(void);
-	bool testVariableStruct(void);
+	bool testValueStruct(void);
 	bool testGraphs(void);
 	bool testLexanTerminalSymbols(void);
 	bool testLexanInt(void);

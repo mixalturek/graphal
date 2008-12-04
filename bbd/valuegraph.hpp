@@ -36,18 +36,36 @@ public:
 	ValueGraph(bool oriented = false);
 	virtual ~ValueGraph();
 
+	virtual bool     toBool(void) const { return !m_vertices.empty(); }
+	virtual bool     isNull(void) const { return false; }
 	virtual string toString(void) const { return "ValueGraph"; } // TODO:
 
 	bool isOriented(void) const { return m_oriented; }
 
-	ValueVertex* generateValueVertex(void);
-	ValueEdge* generateValueEdge(ValueVertex* begin, ValueVertex* end);
+	ValueVertex* generateVertex(void);
+	ValueEdge* generateEdge(ValueVertex* begin, ValueVertex* end);
 
-	void deleteValueVertex(ValueVertex* vertex);
-	void deleteValueEdge(ValueEdge* edge);
+	void deleteVertex(ValueVertex* vertex);
+	void deleteEdge(ValueEdge* edge);
 
 	uint getNumVertices(void) const { return m_vertices.size(); }
-	uint getNumValueEdges(void) const { return m_edges.size(); }
+	uint getNumEdges(void)    const { return m_edges.size(); }
+
+
+	virtual PTR_Value add(const Value&     right) const; // +
+	virtual PTR_Value sub(const Value&     right) const; // -
+	virtual PTR_Value mult(const Value&    right) const; // *
+	virtual PTR_Value div(const Value&     right) const; // /
+	virtual PTR_Value mod(const Value&     right) const; // %
+	virtual PTR_Value eq(const Value&      right) const; // ==
+	virtual PTR_Value eq(const ValueGraph& left)  const;
+	virtual PTR_Value ne(const Value&      right) const; // !=
+	virtual PTR_Value ne(const ValueGraph& left)  const;
+	virtual PTR_Value le(const Value&      right) const; // <=
+	virtual PTR_Value ge(const Value&      right) const; // >=
+	virtual PTR_Value lt(const Value&      right) const; // <
+	virtual PTR_Value gt(const Value&      right) const; // >
+	virtual PTR_Value logNOT(void)                const; // !
 
 private:
 	bool m_oriented;

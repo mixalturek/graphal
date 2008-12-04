@@ -43,7 +43,9 @@ public:
 	ValueVertex(ValueGraph* graph);
 	virtual ~ValueVertex();
 
-	virtual string toString(void) const { return "Vertex"; } // TODO:
+	virtual bool     toBool(void) const { return true; } // TODO:
+	virtual bool     isNull(void) const { return false; }
+	virtual string toString(void) const { return "ValueVertex"; } // TODO:
 
 	void addEdge(ValueEdge* edge, ORIENTATION orientation);
 	void deleteEdge(ValueEdge* edge, ORIENTATION orientation);
@@ -56,9 +58,23 @@ public:
 private:
 	ValueGraph* m_graph;
 	set< pair<ValueEdge*, ORIENTATION> > m_edges;
+	// TODO: add ValueStruct member
 
 public:
-	// TODO: add ValueStruct member
+	virtual PTR_Value add(const Value&     right) const; // +
+	virtual PTR_Value sub(const Value&     right) const; // -
+	virtual PTR_Value mult(const Value&    right) const; // *
+	virtual PTR_Value div(const Value&     right) const; // /
+	virtual PTR_Value mod(const Value&     right) const; // %
+	virtual PTR_Value eq(const Value&      right) const; // ==
+	virtual PTR_Value eq(const ValueVertex& left) const;
+	virtual PTR_Value ne(const Value&      right) const; // !=
+	virtual PTR_Value ne(const ValueVertex& left) const;
+	virtual PTR_Value le(const Value&      right) const; // <=
+	virtual PTR_Value ge(const Value&      right) const; // >=
+	virtual PTR_Value lt(const Value&      right) const; // <
+	virtual PTR_Value gt(const Value&      right) const; // >
+	virtual PTR_Value logNOT(void)                const; // !
 };
 
 #endif

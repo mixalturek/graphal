@@ -27,9 +27,9 @@
 #include "valuebool.hpp"
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
-#include "graph.hpp"
-#include "vertex.hpp"
-#include "edge.hpp"
+#include "valuegraph.hpp"
+#include "valuevertex.hpp"
+#include "valueedge.hpp"
 #include "lexan.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ void Tests::run(void)
 	uint failed = 0;
 	failed += !testMemoryLeaks();
 	failed += !testDoubleDispatching();
-	failed += !testVariableStruct();
+	failed += !testValueStruct();
 	failed += !testGraphs();
 	failed += !testLexanTerminalSymbols();
 	failed += !testLexanInt();
@@ -139,7 +139,7 @@ bool Tests::testDoubleDispatching(void)
 }
 
 
-bool Tests::testVariableStruct(void)
+bool Tests::testValueStruct(void)
 {
 	bool result = true;
 
@@ -161,18 +161,18 @@ bool Tests::testGraphs(void)
 {
 	bool result = true;
 
-	Graph g;
-	Vertex* v1 = g.generateVertex();
-	Vertex* v2 = g.generateVertex();
-	Vertex* v3 = g.generateVertex();
-	Vertex* v4 = g.generateVertex();
+	ValueGraph g;
+	ValueVertex* v1 = g.generateVertex();
+	ValueVertex* v2 = g.generateVertex();
+	ValueVertex* v3 = g.generateVertex();
+	ValueVertex* v4 = g.generateVertex();
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 0);
 
-	Edge* e1 = g.generateEdge(v1, v2);
-	Edge* e2 = g.generateEdge(v2, v3);
-	Edge* e3 = g.generateEdge(v3, v4);
+	ValueEdge* e1 = g.generateEdge(v1, v2);
+	ValueEdge* e2 = g.generateEdge(v2, v3);
+	ValueEdge* e3 = g.generateEdge(v3, v4);
 
 	verify(e1->getBeginVertex() == v1);
 	verify(e1->getEndVertex() == v2);

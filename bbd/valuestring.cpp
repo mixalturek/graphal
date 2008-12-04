@@ -33,7 +33,7 @@
 ////
 
 ValueString::ValueString(const string& val)
-	: ValueAdapter(),
+	: Value(),
 	m_val(val)
 {
 

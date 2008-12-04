@@ -37,45 +37,20 @@ public:
 	virtual bool     isNull(void) const { return true; }
 	virtual string toString(void) const { return "NULL"; }
 
-	// +
-	virtual PTR_Value add(const Value&      right) const;
-
-	// -
-	virtual PTR_Value sub(const Value&      right) const;
-
-	// *
-	virtual PTR_Value mult(const Value&      right) const;
-
-	// /
-	virtual PTR_Value div(const Value&      right) const;
-
-	// %
-	virtual PTR_Value mod(const Value&      right) const;
-
-	// ==
-	virtual PTR_Value eq(const Value&      right) const;
-	virtual PTR_Value eq(const ValueNull&  left)  const;
-
-	// !=
-	virtual PTR_Value ne(const Value&      right) const;
-	virtual PTR_Value ne(const ValueNull&  left)  const;
-
-	// <=
-	virtual PTR_Value le(const Value&      right) const;
-	virtual PTR_Value le(const ValueNull&  left)  const;
-
-	// >=
-	virtual PTR_Value ge(const Value&      right) const;
-	virtual PTR_Value ge(const ValueNull&  left)  const;
-
-	// <
-	virtual PTR_Value lt(const Value&      right) const;
-
-	// >
-	virtual PTR_Value gt(const Value&      right) const;
-
-	// !
-	virtual PTR_Value logNOT(void) const;
+	virtual PTR_Value add(const Value&    right) const; // +
+	virtual PTR_Value sub(const Value&    right) const; // -
+	virtual PTR_Value mult(const Value&   right) const; // *
+	virtual PTR_Value div(const Value&    right) const; // /
+	virtual PTR_Value mod(const Value&    right) const; // %
+	virtual PTR_Value eq(const Value&     right) const; // ==
+	virtual PTR_Value eq(const ValueNull& left)  const;
+	virtual PTR_Value ne(const Value&     right) const; // !=
+	virtual PTR_Value ne(const ValueNull& left)  const;
+	virtual PTR_Value le(const Value&     right) const; // <=
+	virtual PTR_Value ge(const Value&     right) const; // >=
+	virtual PTR_Value lt(const Value&     right) const; // <
+	virtual PTR_Value gt(const Value&     right) const; // >
+	virtual PTR_Value logNOT(void)               const; // !
 };
 
 #endif /* VARIABLENULL_HPP */
