@@ -20,21 +20,21 @@
  */
 
 
-#include "vertex.hpp"
+#include "valuevertex.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Vertex::Vertex(Graph* graph)
-	: ValueStruct(),
+ValueVertex::ValueVertex(ValueGraph* graph)
+	: Value(),
 	m_graph(graph),
 	m_edges()
 {
 
 }
 
-Vertex::~Vertex()
+ValueVertex::~ValueVertex()
 {
 
 }
@@ -43,22 +43,22 @@ Vertex::~Vertex()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void Vertex::addEdge(Edge* edge, ORIENTATION orientation)
+void ValueVertex::addValueEdge(ValueEdge* edge, ORIENTATION orientation)
 {
-	m_edges.insert(pair<Edge*, ORIENTATION>(edge, orientation));
+	m_edges.insert(pair<ValueEdge*, ORIENTATION>(edge, orientation));
 }
 
-void Vertex::deleteEdge(Edge* edge, ORIENTATION orientation)
+void ValueVertex::deleteValueEdge(ValueEdge* edge, ORIENTATION orientation)
 {
-	m_edges.erase(pair<Edge*, ORIENTATION>(edge, orientation));
+	m_edges.erase(pair<ValueEdge*, ORIENTATION>(edge, orientation));
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-set<Edge *> Vertex::getNeighbors(void)
+set<ValueEdge *> ValueVertex::getNeighbors(void)
 {
 	// TODO: implement the method body
-	return set<Edge *>();
+	return set<ValueEdge *>();
 }

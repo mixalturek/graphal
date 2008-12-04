@@ -20,15 +20,15 @@
  */
 
 
-#include "edge.hpp"
-#include "vertex.hpp"
+#include "valueedge.hpp"
+#include "valuevertex.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Edge::Edge(Graph* graph, Vertex* begin, Vertex* end)
-	: ValueStruct(),
+ValueEdge::ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end)
+	: Value(),
 	m_graph(graph),
 	m_begin(begin),
 	m_end(end)
@@ -36,7 +36,7 @@ Edge::Edge(Graph* graph, Vertex* begin, Vertex* end)
 
 }
 
-Edge::~Edge()
+ValueEdge::~ValueEdge()
 {
 
 }

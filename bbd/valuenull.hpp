@@ -24,9 +24,9 @@
 #define VARIABLENULL_HPP
 
 #include "general.hpp"
-#include "valueadapter.hpp"
+#include "value.hpp"
 
-class ValueNull: public ValueAdapter
+class ValueNull: public Value
 {
 public:
 	ValueNull();
@@ -73,6 +73,9 @@ public:
 
 	// >
 	virtual PTR_Value gt(const Value&      right) const;
+
+	// !
+	virtual PTR_Value logNOT(void) const;
 };
 
 #endif /* VARIABLENULL_HPP */

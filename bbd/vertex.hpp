@@ -25,7 +25,7 @@
 
 #include <set>
 #include "general.hpp"
-#include "valuestruct.hpp"
+#include "value.hpp"
 
 class Graph;
 class Edge;
@@ -37,28 +37,28 @@ enum ORIENTATION
 };
 
 
-class Vertex : public ValueStruct
+class ValueVertex : public Value
 {
 public:
-	Vertex(Graph* graph);
-	virtual ~Vertex();
+	ValueVertex(ValueGraph* graph);
+	virtual ~ValueVertex();
 
 	virtual string toString(void) const { return "Vertex"; } // TODO:
 
-	void addEdge(Edge* edge, ORIENTATION orientation);
-	void deleteEdge(Edge* edge, ORIENTATION orientation);
+	void addEdge(ValueEdge* edge, ORIENTATION orientation);
+	void deleteEdge(ValueEdge* edge, ORIENTATION orientation);
 
-	set< pair<Edge*, ORIENTATION> >& getEdges(void) { return m_edges; }
+	set< pair<ValueEdge*, ORIENTATION> >& getEdges(void) { return m_edges; }
 
 	uint getDegree(void) const { return m_edges.size(); }
-	set<Edge *> getNeighbors(void);
+	set<ValueEdge *> getNeighbors(void);
 
 private:
-	Graph* m_graph;
-	set< pair<Edge*, ORIENTATION> > m_edges;
+	ValueGraph* m_graph;
+	set< pair<ValueEdge*, ORIENTATION> > m_edges;
 
 public:
-	// TODO: prekryt operatory z ValueStruct!!!!!
+	// TODO: add ValueStruct member
 };
 
 #endif

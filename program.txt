@@ -134,7 +134,7 @@ Umazat hranu
 // ei ... edge iterator
 
 
-g = new graph();
+g = createGraph();
 
 g.load('filename');
 g.dump('filename');

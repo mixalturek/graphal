@@ -86,3 +86,6 @@ PTR_Value ValueNull::lt(const Value& right)        const { return right.lt(*this
 
 // >
 PTR_Value ValueNull::gt(const Value& right)        const { return right.gt(*this); }
+
+// !
+PTR_Value ValueNull::logNOT(void)                  const { return PTR_Value(new ValueBool(true)); };

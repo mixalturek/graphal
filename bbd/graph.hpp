@@ -25,37 +25,34 @@
 
 #include <set>
 #include "general.hpp"
-#include "baseobject.hpp"
+#include "value.hpp"
 
-class Vertex;
-class Edge;
+class ValueVertex;
+class ValueEdge;
 
-class Graph : public BaseObject // TODO: ValueAdapter
+class ValueGraph : public Value
 {
 public:
-	Graph(bool oriented = false);
-	virtual ~Graph();
+	ValueGraph(bool oriented = false);
+	virtual ~ValueGraph();
 
-	virtual string toString(void) const { return "Graph"; } // TODO:
+	virtual string toString(void) const { return "ValueGraph"; } // TODO:
 
 	bool isOriented(void) const { return m_oriented; }
 
-	Vertex* generateVertex(void);
-	Edge* generateEdge(Vertex* begin, Vertex* end);
+	ValueVertex* generateValueVertex(void);
+	ValueEdge* generateValueEdge(ValueVertex* begin, ValueVertex* end);
 
-	void deleteVertex(Vertex* vertex);
-	void deleteEdge(Edge* edge);
+	void deleteValueVertex(ValueVertex* vertex);
+	void deleteValueEdge(ValueEdge* edge);
 
 	uint getNumVertices(void) const { return m_vertices.size(); }
-	uint getNumEdges(void) const { return m_edges.size(); }
+	uint getNumValueEdges(void) const { return m_edges.size(); }
 
 private:
 	bool m_oriented;
-	set<Vertex*> m_vertices;
-	set<Edge*> m_edges;
-
-public:
-	// TODO: prekryt operatory z ValueAdapter!!!!!
+	set<ValueVertex*> m_vertices;
+	set<ValueEdge*> m_edges;
 };
 
 #endif

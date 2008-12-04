@@ -1,15 +1,18 @@
 BaseObject
 	Graph
-	Value (interaface)
-		ValueAdapter
-			ValueNull
-			ValueString
-			ValueStruct
-				Vertex
-				Edge
+	Value (interface)
+		ValueNull
+		ValueString
+		ValueStruct
 		ValueBool
 		ValueInt
 		ValueFloat
+		ValueReference
+		ValueGraph
+		ValueVertex
+		ValueEdge
+		ValueVertexSet (TODO)
+		ValueEdgeSet (TODO)
 	Logger (singleton)
 	Lexan
 	LexanIterator (interface)

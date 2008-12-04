@@ -32,7 +32,7 @@
 // TODO: strings and numbers should be used as indices
 #define KEY_TYPE string
 
-class ValueStruct: public ValueAdapter
+class ValueStruct: public Value
 {
 public:
 	ValueStruct();

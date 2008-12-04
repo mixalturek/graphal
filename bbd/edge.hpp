@@ -26,27 +26,27 @@
 #include "general.hpp"
 #include "valuestruct.hpp"
 
-class Graph;
-class Vertex;
+class ValueGraph;
+class ValueVertex;
 
-class Edge : public ValueStruct
+class ValueEdge : public Value
 {
 public:
-	Edge(Graph* graph, Vertex* begin, Vertex* end);
+	Edge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end);
 	virtual ~Edge();
 
 	virtual string toString(void) const { return "Edge"; } // TODO:
 
-	Vertex* getBeginVertex(void) { return m_begin; }
-	Vertex* getEndVertex(void)   { return m_end; }
+	ValueVertex* getBeginValueVertex(void) { return m_begin; }
+	ValueVertex* getEndValueVertex(void)   { return m_end; }
 
 private:
-	Graph*  m_graph;
-	Vertex* m_begin;
-	Vertex* m_end;
+	ValueGraph*  m_graph;
+	ValueVertex* m_begin;
+	ValueVertex* m_end;
 
 public:
-	// TODO: prekryt operatory z ValueStruct!!!!!
+	// TODO: add ValueStruct member
 };
 
 #endif

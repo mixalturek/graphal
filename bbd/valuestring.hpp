@@ -24,9 +24,9 @@
 #define VARIABLESTRING_HPP
 
 #include "general.hpp"
-#include "valueadapter.hpp"
+#include "value.hpp"
 
-class ValueString: public ValueAdapter
+class ValueString: public Value
 {
 public:
 	ValueString(const string& val);

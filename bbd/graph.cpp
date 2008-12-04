@@ -20,15 +20,15 @@
  */
 
 
-#include "graph.hpp"
-#include "vertex.hpp"
-#include "edge.hpp"
+#include "valuegraph.hpp"
+#include "valuevertex.hpp"
+#include "valueedge.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Graph::Graph(bool oriented)
+ValueGraph::ValueGraph(bool oriented)
 	: BaseObject(),
 	m_oriented(oriented),
 	m_vertices(),
@@ -37,13 +37,13 @@ Graph::Graph(bool oriented)
 
 }
 
-Graph::~Graph()
+ValueGraph::~ValueGraph()
 {
-	set<Vertex*>::const_iterator vit;
+	set<ValueVertex*>::const_iterator vit;
 	for(vit = m_vertices.begin(); vit != m_vertices.end(); vit++)
 		delete *vit;
 
-	set<Edge*>::const_iterator eit;
+	set<ValueEdge*>::const_iterator eit;
 	for(eit = m_edges.begin(); eit != m_edges.end(); eit++)
 		delete *eit;
 }
@@ -52,38 +52,40 @@ Graph::~Graph()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Vertex* Graph::generateVertex(void)
+ValueVertex* ValueGraph::generateValueVertex(void)
 {
-	Vertex* vertex = new Vertex(this);
+	ValueVertex* vertex = new ValueVertex(this);
 	m_vertices.insert(vertex);
 	return vertex;
 }
 
-Edge* Graph::generateEdge(Vertex* begin, Vertex* end)
+ValueEdge* ValueGraph::generateValueEdge(ValueVertex* begin, ValueVertex* end)
 {
-	Edge* edge = new Edge(this, begin, end);
+	ValueEdge* edge = new ValueEdge(this, begin, end);
 	m_edges.insert(edge);
-	begin->addEdge(edge, BEGIN);
-	end->addEdge(edge, END);
+
+	begin->addValueEdge(edge, BEGIN);
+	end->addValueEdge(edge, END);
+
 	return edge;
 }
 
-void Graph::deleteVertex(Vertex* vertex)
+void ValueGraph::deleteValueVertex(ValueVertex* vertex)
 {
-	set< pair<Edge*, ORIENTATION> >& edges = vertex->getEdges();
+	set< pair<ValueEdge*, ORIENTATION> >& edges = vertex->getValueEdges();
 
-	set< pair<Edge*, ORIENTATION> >::iterator it;
+	set< pair<ValueEdge*, ORIENTATION> >::iterator it;
 	for(it = edges.begin(); it != edges.end(); it++)
-		deleteEdge(it->first);
+		deleteValueEdge(it->first);
 
 	m_vertices.erase(vertex);
 	delete vertex;
 }
 
-void Graph::deleteEdge(Edge* edge)
+void ValueGraph::deleteValueEdge(ValueEdge* edge)
 {
-	edge->getBeginVertex()->deleteEdge(edge, BEGIN);
-	edge->getEndVertex()->deleteEdge(edge, END);
+	edge->getBeginValueVertex()->deleteValueEdge(edge, BEGIN);
+	edge->getEndValueVertex()->deleteValueEdge(edge, END);
 	m_edges.erase(edge);
 	delete edge;
 }
