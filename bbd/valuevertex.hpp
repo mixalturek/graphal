@@ -26,9 +26,11 @@
 #include <set>
 #include "general.hpp"
 #include "value.hpp"
+#include "valueedgeset.hpp"
+#include "valuegraph.hpp"
 
-class Graph;
-class Edge;
+class ValueEdge;
+
 
 enum ORIENTATION
 {
@@ -36,29 +38,31 @@ enum ORIENTATION
 	END = false
 };
 
+typedef pair<ValueEdge*, ORIENTATION> EDGE_WITH_ORIENTATION;
 
 class ValueVertex : public Value
 {
 public:
+	// Don't define copy constructor or operator=, shallow copy must be used!
 	ValueVertex(ValueGraph* graph);
 	virtual ~ValueVertex();
 
 	virtual bool     toBool(void) const { return true; } // TODO:
-	virtual bool     isNull(void) const { return false; }
 	virtual string toString(void) const { return "ValueVertex"; } // TODO:
 
 	void addEdge(ValueEdge* edge, ORIENTATION orientation);
 	void deleteEdge(ValueEdge* edge, ORIENTATION orientation);
 
-	set< pair<ValueEdge*, ORIENTATION> >& getEdges(void) { return m_edges; }
+	set<EDGE_WITH_ORIENTATION>* getEdges(void) { return m_edges; }
 
-	uint getDegree(void) const { return m_edges.size(); }
-	set<ValueEdge *> getNeighbors(void);
+	uint getDegree(void) const { return m_edges->size(); }
+	ValueVertexSet getNeighbors(void);
+
+	ValueGraph* getGraph(void) { return m_graph; }
 
 private:
-	ValueGraph* m_graph;
-	set< pair<ValueEdge*, ORIENTATION> > m_edges;
-	// TODO: add ValueStruct member
+	friend void ValueGraph::invertEdgesOrientation(void);
+	void invertOrientation(void);
 
 public:
 	virtual PTR_Value add(const Value&     right) const; // +
@@ -75,6 +79,11 @@ public:
 	virtual PTR_Value lt(const Value&      right) const; // <
 	virtual PTR_Value gt(const Value&      right) const; // >
 	virtual PTR_Value logNOT(void)                const; // !
+
+private:
+	ValueGraph* m_graph;
+	set<EDGE_WITH_ORIENTATION>* m_edges;
+	// TODO: add ValueStruct member
 };
 
 #endif

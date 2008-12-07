@@ -25,13 +25,14 @@
 
 #include "general.hpp"
 #include "valuestruct.hpp"
+#include "valuegraph.hpp"
 
-class ValueGraph;
 class ValueVertex;
 
 class ValueEdge : public Value
 {
 public:
+	// Don't define copy constructor or operator=, shallow copy must be used!
 	ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end);
 	virtual ~ValueEdge();
 
@@ -42,11 +43,11 @@ public:
 	ValueVertex* getBeginVertex(void) { return m_begin; }
 	ValueVertex* getEndVertex(void)   { return m_end; }
 
+	ValueGraph* getGraph(void) { return m_graph; }
+
 private:
-	ValueGraph*  m_graph;
-	ValueVertex* m_begin;
-	ValueVertex* m_end;
-	// TODO: add ValueStruct member
+	friend void ValueGraph::invertEdgesOrientation(void);
+	void invertOrientation(void);
 
 public:
 	virtual PTR_Value add(const Value&   right) const; // +
@@ -63,6 +64,12 @@ public:
 	virtual PTR_Value lt(const Value&    right) const; // <
 	virtual PTR_Value gt(const Value&    right) const; // >
 	virtual PTR_Value logNOT(void)              const; // !
+
+private:
+	ValueGraph*  m_graph;
+	ValueVertex* m_begin;
+	ValueVertex* m_end;
+	// TODO: add ValueStruct member
 };
 
 #endif

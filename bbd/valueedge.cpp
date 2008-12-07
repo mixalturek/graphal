@@ -46,6 +46,17 @@ ValueEdge::~ValueEdge()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+void ValueEdge::invertOrientation(void)
+{
+	ValueVertex* tmp = m_begin;
+	m_begin = m_end;
+	m_end = tmp;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 PTR_Value ValueEdge::add(const Value& right)   const { return right.add(*this); } // +
 PTR_Value ValueEdge::sub(const Value& right)   const { return right.sub(*this); } // -
 PTR_Value ValueEdge::mult(const Value& right)  const { return right.mult(*this); } // *

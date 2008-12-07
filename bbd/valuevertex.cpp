@@ -22,6 +22,9 @@
 
 #include "valuevertex.hpp"
 #include "valuebool.hpp"
+#include "valuegraph.hpp"
+#include "valueedge.hpp"
+#include "valuevertexset.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -30,14 +33,14 @@
 ValueVertex::ValueVertex(ValueGraph* graph)
 	: Value(),
 	m_graph(graph),
-	m_edges()
+	m_edges(new set<EDGE_WITH_ORIENTATION>())
 {
 
 }
 
 ValueVertex::~ValueVertex()
 {
-
+	delete m_edges;
 }
 
 
@@ -46,22 +49,64 @@ ValueVertex::~ValueVertex()
 
 void ValueVertex::addEdge(ValueEdge* edge, ORIENTATION orientation)
 {
-	m_edges.insert(pair<ValueEdge*, ORIENTATION>(edge, orientation));
+	m_edges->insert(EDGE_WITH_ORIENTATION(edge, orientation));
 }
 
 void ValueVertex::deleteEdge(ValueEdge* edge, ORIENTATION orientation)
 {
-	m_edges.erase(pair<ValueEdge*, ORIENTATION>(edge, orientation));
+	m_edges->erase(EDGE_WITH_ORIENTATION(edge, orientation));
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-set<ValueEdge *> ValueVertex::getNeighbors(void)
+ValueVertexSet ValueVertex::getNeighbors(void)
 {
-	// TODO: implement the method body
-	return set<ValueEdge *>();
+	ValueVertexSet ret(m_graph);
+	set<EDGE_WITH_ORIENTATION>::iterator it;
+
+	if(m_graph->isOriented())
+	{
+		for(it = m_edges->begin(); it != m_edges->end(); it++)
+		{
+			if(it->second == BEGIN)
+				ret.addVertex(it->first->getEndVertex());
+		}
+	}
+	else
+	{
+		for(it = m_edges->begin(); it != m_edges->end(); it++)
+		{
+			if(it->second == BEGIN)
+				ret.addVertex(it->first->getEndVertex());
+			else
+				ret.addVertex(it->first->getBeginVertex());
+		}
+	}
+
+	return ret;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueVertex::invertOrientation(void)
+{
+	set<EDGE_WITH_ORIENTATION> tmp;
+	set<EDGE_WITH_ORIENTATION>::iterator it;
+
+	for(it = m_edges->begin(); it != m_edges->end(); it++)
+	{
+		if(it->second == BEGIN)
+			// The orientation can't be inverted here, it is part of the set key
+			tmp.insert(EDGE_WITH_ORIENTATION(it->first, END));
+		else
+			tmp.insert(EDGE_WITH_ORIENTATION(it->first, BEGIN));
+	}
+
+	*m_edges = tmp;
 }
 
 

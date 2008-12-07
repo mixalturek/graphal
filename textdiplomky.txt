@@ -115,3 +115,8 @@ http://links.twibright.com/doc/projektova.pdf - links projektová dokumentace
 http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
 
 
+////////////////////////////////////////////////////////////////////////////
+////
+
+static object initialization
+memory leaks

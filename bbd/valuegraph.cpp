@@ -21,6 +21,7 @@
 
 
 #include "valuegraph.hpp"
+#include "logger.hpp"
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
@@ -53,15 +54,21 @@ ValueGraph::~ValueGraph()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-ValueVertex* ValueGraph::generateVertex(void)
+ValueVertex* ValueGraph::addVertex(void)
 {
 	ValueVertex* vertex = new ValueVertex(this);
 	m_vertices.insert(vertex);
 	return vertex;
 }
 
-ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end)
+ValueEdge* ValueGraph::addEdge(ValueVertex* begin, ValueVertex* end)
 {
+	if(!(begin->getGraph() == this && end->getGraph() == this))
+	{
+		WARN << _("Vertex belongs to the different graph");
+		return NULL;
+	}
+
 	ValueEdge* edge = new ValueEdge(this, begin, end);
 	m_edges.insert(edge);
 
@@ -73,10 +80,10 @@ ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end)
 
 void ValueGraph::deleteVertex(ValueVertex* vertex)
 {
-	set< pair<ValueEdge*, ORIENTATION> >& edges = vertex->getEdges();
+	set<EDGE_WITH_ORIENTATION>* edges = vertex->getEdges();
 
-	set< pair<ValueEdge*, ORIENTATION> >::iterator it;
-	for(it = edges.begin(); it != edges.end(); it++)
+	set<EDGE_WITH_ORIENTATION>::iterator it;
+	for(it = edges->begin(); it != edges->end(); it++)
 		deleteEdge(it->first);
 
 	m_vertices.erase(vertex);
@@ -89,6 +96,21 @@ void ValueGraph::deleteEdge(ValueEdge* edge)
 	edge->getEndVertex()->deleteEdge(edge, END);
 	m_edges.erase(edge);
 	delete edge;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueGraph::invertEdgesOrientation(void)
+{
+	set<ValueVertex*>::iterator vit;
+	for(vit = m_vertices.begin(); vit != m_vertices.end(); vit++)
+		(*vit)->invertOrientation();
+
+	set<ValueEdge*>::iterator eit;
+	for(eit = m_edges.begin(); eit != m_edges.end(); eit++)
+		(*eit)->invertOrientation();
 }
 
 

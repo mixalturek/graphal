@@ -7,12 +7,12 @@ BaseObject
 		ValueBool
 		ValueInt
 		ValueFloat
-		ValueReference
+		ValueReference (TODO: for future use, no implementation)
 		ValueGraph
 		ValueVertex
 		ValueEdge
-		ValueVertexSet (TODO)
-		ValueEdgeSet (TODO)
+		ValueVertexSet
+		ValueEdgeSet
 	Logger (singleton)
 	Lexan
 	LexanIterator (interface)

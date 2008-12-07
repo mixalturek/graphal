@@ -45,7 +45,9 @@ private:
 
 	bool testDoubleDispatching(void);
 	bool testValueStruct(void);
-	bool testGraphs(void);
+	bool testGraph(void);
+	bool testGraphSet(void);
+	bool testGraphInvertEdgesOrientation(void);
 	bool testLexanTerminalSymbols(void);
 	bool testLexanInt(void);
 	bool testLexanFloat(void);

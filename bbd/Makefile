@@ -9,6 +9,7 @@ OBJECTS		= $(shell ls *.cpp | sed 's/.cpp/.o/')
 .PHONY: depend
 .PHONY: run
 .PHONY: clean
+.PHONY: todo
 .PHONY: lines
 #.PHONY: install
 
@@ -30,7 +31,9 @@ run:
 clean:
 	rm -f $(TARGET) *.o core
 
-# ;-)
+todo:
+	grep -rI TODO . | grep -v './.svn/'
+
 lines:
 	cat *.hpp *.cpp | wc -l
 
@@ -39,7 +42,7 @@ lines:
 # DO NOT DELETE
 
 baseobject.o: baseobject.hpp general.hpp logger.hpp
-init_static_objects.o: baseobject.hpp general.hpp valuestruct.hpp value.hpp
+init_static_objects.o: general.hpp baseobject.hpp valuestruct.hpp value.hpp
 init_static_objects.o: valuenull.hpp logger.hpp
 lexan.o: lexan.hpp general.hpp baseobject.hpp lexaniterator.hpp
 lexan.o: lexantokens.hpp lexaniteratorstring.hpp lexaniteratorfile.hpp
@@ -54,20 +57,26 @@ main.o: general.hpp baseobject.hpp logger.hpp tests.hpp
 tests.o: tests.hpp general.hpp baseobject.hpp logger.hpp valueint.hpp
 tests.o: value.hpp valuefloat.hpp valuebool.hpp valuestring.hpp
 tests.o: valuestruct.hpp valuenull.hpp valuegraph.hpp valuevertex.hpp
-tests.o: valueedge.hpp lexan.hpp lexaniterator.hpp lexantokens.hpp
+tests.o: valueedgeset.hpp valueedge.hpp valuevertexset.hpp lexan.hpp
+tests.o: lexaniterator.hpp lexantokens.hpp
 valuebool.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp
 valuebool.o: valueint.hpp valuefloat.hpp valuestring.hpp valuestruct.hpp
 value.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp
 value.o: valueint.hpp valuefloat.hpp valuestring.hpp valuestruct.hpp
-value.o: valuereference.hpp valuegraph.hpp valuevertex.hpp valueedge.hpp
+value.o: valuereference.hpp valuegraph.hpp valuevertex.hpp valueedgeset.hpp
+value.o: valueedge.hpp
 valueedge.o: valueedge.hpp general.hpp valuestruct.hpp value.hpp
-valueedge.o: baseobject.hpp valuenull.hpp valuebool.hpp valuevertex.hpp
+valueedge.o: baseobject.hpp valuenull.hpp valuegraph.hpp valuebool.hpp
+valueedge.o: valuevertex.hpp valueedgeset.hpp
+valueedgeset.o: valueedgeset.hpp general.hpp value.hpp baseobject.hpp
+valueedgeset.o: logger.hpp valuebool.hpp valueedge.hpp valuestruct.hpp
+valueedgeset.o: valuenull.hpp valuegraph.hpp
 valuefloat.o: value.hpp general.hpp baseobject.hpp valuenull.hpp
 valuefloat.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
 valuefloat.o: valuestruct.hpp
-valuegraph.o: valuegraph.hpp general.hpp value.hpp baseobject.hpp
-valuegraph.o: valuebool.hpp valuevertex.hpp valueedge.hpp valuestruct.hpp
-valuegraph.o: valuenull.hpp
+valuegraph.o: valuegraph.hpp general.hpp value.hpp baseobject.hpp logger.hpp
+valuegraph.o: valuebool.hpp valuevertex.hpp valueedgeset.hpp valueedge.hpp
+valuegraph.o: valuestruct.hpp valuenull.hpp
 valueint.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp
 valueint.o: valueint.hpp valuefloat.hpp valuestring.hpp valuestruct.hpp
 valuenull.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp
@@ -81,4 +90,8 @@ valuestruct.o: value.hpp general.hpp baseobject.hpp valuenull.hpp
 valuestruct.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
 valuestruct.o: valuestruct.hpp
 valuevertex.o: valuevertex.hpp general.hpp value.hpp baseobject.hpp
-valuevertex.o: valuebool.hpp
+valuevertex.o: valueedgeset.hpp valuegraph.hpp valuebool.hpp valueedge.hpp
+valuevertex.o: valuestruct.hpp valuenull.hpp valuevertexset.hpp
+valuevertexset.o: valuevertexset.hpp general.hpp value.hpp baseobject.hpp
+valuevertexset.o: valuebool.hpp valuevertex.hpp valueedgeset.hpp
+valuevertexset.o: valuegraph.hpp logger.hpp

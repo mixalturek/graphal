@@ -30,6 +30,8 @@
 #include "valuegraph.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
+#include "valuevertexset.hpp"
+#include "valueedgeset.hpp"
 #include "lexan.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -82,7 +84,9 @@ void Tests::run(void)
 	failed += !testMemoryLeaks();
 	failed += !testDoubleDispatching();
 	failed += !testValueStruct();
-	failed += !testGraphs();
+	failed += !testGraph();
+	failed += !testGraphSet();
+	failed += !testGraphInvertEdgesOrientation();
 	failed += !testLexanTerminalSymbols();
 	failed += !testLexanInt();
 	failed += !testLexanFloat();
@@ -129,6 +133,9 @@ bool Tests::testMemoryLeaks(void)
 #endif // CHECK_MEMORY_LEAKS
 
 
+/////////////////////////////////////////////////////////////////////////////
+////
+
 bool Tests::testDoubleDispatching(void)
 {
 	bool result = true;
@@ -160,22 +167,28 @@ bool Tests::testValueStruct(void)
 }
 
 
-bool Tests::testGraphs(void)
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool Tests::testGraph(void)
 {
 	bool result = true;
 
+	// v1 ---- v2 ---- v3 ---- v4
+	//     e1      e2      e3
 	ValueGraph g;
-	ValueVertex* v1 = g.generateVertex();
-	ValueVertex* v2 = g.generateVertex();
-	ValueVertex* v3 = g.generateVertex();
-	ValueVertex* v4 = g.generateVertex();
+
+	ValueVertex* v1 = g.addVertex();
+	ValueVertex* v2 = g.addVertex();
+	ValueVertex* v3 = g.addVertex();
+	ValueVertex* v4 = g.addVertex();
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 0);
 
-	ValueEdge* e1 = g.generateEdge(v1, v2);
-	ValueEdge* e2 = g.generateEdge(v2, v3);
-	ValueEdge* e3 = g.generateEdge(v3, v4);
+	ValueEdge* e1 = g.addEdge(v1, v2);
+	ValueEdge* e2 = g.addEdge(v2, v3);
+	ValueEdge* e3 = g.addEdge(v3, v4);
 
 	verify(e1->getBeginVertex() == v1);
 	verify(e1->getEndVertex() == v2);
@@ -214,6 +227,144 @@ bool Tests::testGraphs(void)
 	return testResult(__FUNCTION__, result);
 }
 
+
+
+bool Tests::testGraphSet(void)
+{
+	bool result = true;
+
+	// v1 ---- v2 ---- v3 ---- v4
+	//     e1      e2      e3
+	ValueGraph g(false);
+
+	ValueVertex* v1 = g.addVertex();
+	ValueVertex* v2 = g.addVertex();
+	ValueVertex* v3 = g.addVertex();
+	ValueVertex* v4 = g.addVertex();
+	ValueEdge* e1 = g.addEdge(v1, v2);
+	ValueEdge* e2 = g.addEdge(v2, v3);
+	ValueEdge* e3 = g.addEdge(v3, v4);
+
+
+	ValueVertexSet vvs(&g);
+	vvs = v1->getNeighbors();
+	verify(vvs.getNumVertices() == 1);
+	verify(vvs.contains(v2));
+	verify(!vvs.contains(v3));
+	verify(!vvs.contains(v4));
+
+	vvs = v2->getNeighbors();
+	verify(vvs.getNumVertices() == 2);
+	verify(vvs.contains(v1));
+	verify(vvs.contains(v3));
+	verify(!vvs.contains(v4));
+
+
+	// v1 ----> v2 ----> v3 ----> v4
+	//     e1       e2       e3
+	g.setOrientation(true);
+
+	vvs = v1->getNeighbors();
+	verify(vvs.getNumVertices() == 1);
+	verify(vvs.contains(v2));
+	verify(!vvs.contains(v3));
+	verify(!vvs.contains(v4));
+
+	vvs = v2->getNeighbors();
+	verify(vvs.getNumVertices() == 1);
+	verify(!vvs.contains(v1));
+	verify(vvs.contains(v3));
+	verify(!vvs.contains(v4));
+
+	g.setOrientation(false);
+
+
+	ValueEdgeSet ves(&g);
+	ves.addEdge(e1);
+	ves.addEdge(e2);
+	verify(ves.getNumEdges() == 2);
+	verify(ves.contains(e1));
+	verify(ves.contains(e2));
+
+	ves.deleteEdge(e1);
+	verify(ves.getNumEdges() == 1);
+	verify(!ves.contains(e1));
+	verify(ves.contains(e2));
+
+	ves.deleteEdge(e2);
+	verify(ves.getNumEdges() == 0);
+	verify(!ves.contains(e1));
+	verify(!ves.contains(e2));
+
+	ves.addEdge(e3);
+	verify(ves.getNumEdges() == 1);
+	ves.deleteEdge(e3);
+	verify(ves.getNumEdges() == 0);
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testGraphInvertEdgesOrientation(void)
+{
+	bool result = true;
+
+	// v1 ----> v2 ----> v3 ----> v4
+	//     e1       e2       e3
+	ValueGraph g(true);
+
+	ValueVertex* v1 = g.addVertex();
+	ValueVertex* v2 = g.addVertex();
+	ValueVertex* v3 = g.addVertex();
+	ValueVertex* v4 = g.addVertex();
+	ValueEdge* e1 = g.addEdge(v1, v2);
+	ValueEdge* e2 = g.addEdge(v2, v3);
+	ValueEdge* e3 = g.addEdge(v3, v4);
+
+	// v1 <---- v2 <---- v3 <---- v4
+	//      e1       e2       e3
+	g.invertEdgesOrientation();
+
+	ValueVertexSet vvs(&g);
+
+	vvs = v1->getNeighbors();
+	verify(vvs.getNumVertices() == 0);
+	verify(!vvs.contains(v2));
+	verify(!vvs.contains(v3));
+	verify(!vvs.contains(v4));
+
+	vvs = v2->getNeighbors();
+	verify(vvs.getNumVertices() == 1);
+	verify(vvs.contains(v1));
+	verify(!vvs.contains(v3));
+	verify(!vvs.contains(v4));
+
+	vvs = v3->getNeighbors();
+	verify(vvs.getNumVertices() == 1);
+	verify(!vvs.contains(v1));
+	verify(vvs.contains(v2));
+	verify(!vvs.contains(v4));
+
+	vvs = v4->getNeighbors();
+	verify(vvs.getNumVertices() == 1);
+	verify(!vvs.contains(v1));
+	verify(!vvs.contains(v2));
+	verify(vvs.contains(v3));
+
+	verify(e1->getBeginVertex() == v2);
+	verify(e1->getEndVertex() == v1);
+
+	verify(e2->getBeginVertex() == v3);
+	verify(e2->getEndVertex() == v2);
+
+	verify(e3->getBeginVertex() == v4);
+	verify(e3->getEndVertex() == v3);
+
+	return testResult(__FUNCTION__, result);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+////
 
 bool Tests::testLexanTerminalSymbols(void)
 {
