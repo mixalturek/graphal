@@ -31,16 +31,6 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-uint BaseObject::m_max_id = 0;
-
-#ifdef CHECK_MEMORY_LEAKS
-set<BaseObject*> BaseObject::m_allocated_objects = set<BaseObject*>();
-#endif // CHECK_MEMORY_LEAKS
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
 BaseObject::BaseObject()
 	: m_id(m_max_id++)
 {
@@ -60,13 +50,19 @@ BaseObject::~BaseObject()
 /////////////////////////////////////////////////////////////////////////////
 ////
 #ifdef CHECK_MEMORY_LEAKS
-void BaseObject::printMemoryLeaks(void)
+void BaseObject::printMemoryLeaks(uint number_of_static_objects)
 {
+	uint num_of_leaks = m_allocated_objects.size() - number_of_static_objects;
+	INFO << "Number of memory leaks: " << num_of_leaks << endl;
+
+	if(num_of_leaks == 0)
+		return;
+
+	// Display all allocated objects, also including static objects
+	// (ie. ValueStruct::m_notfound)
 	set<BaseObject*>::const_iterator it;
 	for(it = m_allocated_objects.begin(); it != m_allocated_objects.end(); it++)
-		ERROR << "id = " << (*it)->getID() << ", type = " << typeid(**it).name()
+		ERROR << "\tid = " << (*it)->getID() << ", type = " << typeid(**it).name()
 			<< ", tostring = " << (*it)->toString() << ", mem = " << *it << endl;
-
-	INFO << "Number of memory leaks: " << m_allocated_objects.size() << endl;
 }
 #endif // CHECK_MEMORY_LEAKS

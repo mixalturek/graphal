@@ -105,6 +105,9 @@ bool Tests::testMemoryLeaks(void)
 {
 	bool result = true;
 
+	// Number of allocated objects before the call of this function
+	uint numobjects = BaseObject::getNumberOfLeaks();
+
 	Value* i = new ValueInt(5);
 	Value* j = new ValueBool(true);
 	Value* k = new ValueString("bagr");
@@ -112,14 +115,14 @@ bool Tests::testMemoryLeaks(void)
 	delete i;
 	i = NULL;
 
-	verify(BaseObject::getNumberOfLeaks() == 2);
+	verify(BaseObject::getNumberOfLeaks() == 2 + numobjects);
 
 	delete j;
 	delete k;
 	j = NULL;
 	k = NULL;
 
-	verify(BaseObject::getNumberOfLeaks() == 0);
+	verify(BaseObject::getNumberOfLeaks() == 0 + numobjects);
 
 	return testResult(__FUNCTION__, result);
 }
@@ -144,14 +147,14 @@ bool Tests::testValueStruct(void)
 	bool result = true;
 
 	ValueStruct vs;
-	vs.setValue("testi", new ValueInt(42));
-	vs.setValue("testb", new ValueBool(true));
-	vs.setValue("tests", new ValueString("bagr"));
+	vs.setItem("testi", new ValueInt(42));
+	vs.setItem("testb", new ValueBool(true));
+	vs.setItem("tests", new ValueString("bagr"));
 
-	verify(vs.getValue("testi")->toString() == "42");
-	verify(vs.getValue("testb")->toString() == "true");
-	verify(vs.getValue("tests")->toString() == "bagr");
-	verify(vs.getValue("heh")->toString() == "NULL");
+	verify(vs.getItem("testi")->toString() == "42");
+	verify(vs.getItem("testb")->toString() == "true");
+	verify(vs.getItem("tests")->toString() == "bagr");
+	verify(vs.getItem("heh")->toString() == "NULL");
 
 	return testResult(__FUNCTION__, result);
 }

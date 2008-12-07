@@ -1,5 +1,5 @@
 /*
- *      main.cpp
+ *      init_static_objects.cpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -19,46 +19,41 @@
  *      MA 02110-1301, USA.
  */
 
-#include <typeinfo>
-#include <stdexcept>
+
+/****************************************************************************
+ * ALL STATIC OBJECTS IN THE APPLICATION                                    *
+ * HAVE TO BE INITIALIZED IN THIS FILE                                      *
+ * WITH A PROPER ORDER!!!                                                   *
+ ****************************************************************************/
+
+
 #include "general.hpp"
 #include "baseobject.hpp"
+#include "valuestruct.hpp"
 #include "logger.hpp"
-#include "tests.hpp"
 
 
-int main(int argc, char** argv)
-{
-	try
-	{
-		uint number_of_static_objects = BaseObject::getNumberOfLeaks();
+/////////////////////////////////////////////////////////////////////////////
+//// BaseObject
 
-		Tests* tests = new Tests();
-		tests->run();
-		delete tests;
-		tests = NULL;
+uint BaseObject::m_max_id = 0;
 
 #ifdef CHECK_MEMORY_LEAKS
-		BaseObject::printMemoryLeaks(number_of_static_objects);
+set<BaseObject*> BaseObject::m_allocated_objects = set<BaseObject*>();
 #endif // CHECK_MEMORY_LEAKS
 
-		INFO << _("Number of created objects: ") << BaseObject::getMaxID() << endl;
-	}
-	catch(runtime_error& ex)
-	{
-		ERROR << ex.what() << endl;
-		return 1;
-	}
-	catch(exception& ex)
-	{
-		ERROR << ex.what() << endl;
-		return 1;
-	}
-	catch(...)
-	{
-		ERROR << _("Unknown exception catched!") << endl;
-		return 1;
-	}
 
-	return 0;
-}
+/////////////////////////////////////////////////////////////////////////////
+//// Logger
+
+Logger Logger::instance;
+
+
+/////////////////////////////////////////////////////////////////////////////
+//// ValueStruct
+
+ValueNull ValueStruct::m_notfound;
+
+
+/////////////////////////////////////////////////////////////////////////////
+////

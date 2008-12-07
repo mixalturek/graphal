@@ -68,40 +68,17 @@ set<ValueEdge *> ValueVertex::getNeighbors(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-// +
-PTR_Value ValueVertex::add(const Value& right)       const { return right.add(*this); }
-
-// -
-PTR_Value ValueVertex::sub(const Value& right)       const { return right.sub(*this); }
-
-// *
-PTR_Value ValueVertex::mult(const Value& right)      const { return right.mult(*this); }
-
-// /
-PTR_Value ValueVertex::div(const Value& right)       const { return right.div(*this); }
-
-// %
-PTR_Value ValueVertex::mod(const Value& right)       const { return right.mod(*this); }
-
-// ==
-PTR_Value ValueVertex::eq(const Value& right)        const { return right.eq(*this); }
-PTR_Value ValueVertex::eq(const ValueVertex& left)   const { return PTR_Value(new ValueBool(true)); } // TODO
-
-// !=
-PTR_Value ValueVertex::ne(const Value& right)        const { return right.ne(*this); }
-PTR_Value ValueVertex::ne(const ValueVertex& left)   const { return PTR_Value(new ValueBool(false)); } // TODO
-
-// <=
-PTR_Value ValueVertex::le(const Value& right)        const { return right.le(*this); }
-
-// >=
-PTR_Value ValueVertex::ge(const Value& right)        const { return right.ge(*this); }
-
-// <
-PTR_Value ValueVertex::lt(const Value& right)        const { return right.lt(*this); }
-
-// >
-PTR_Value ValueVertex::gt(const Value& right)        const { return right.gt(*this); }
-
-// !
-PTR_Value ValueVertex::logNOT(void)                  const { return PTR_Value(new ValueBool(false)); } // TODO
+PTR_Value ValueVertex::add(const Value& right)     const { return right.add(*this); } // +
+PTR_Value ValueVertex::sub(const Value& right)     const { return right.sub(*this); } // -
+PTR_Value ValueVertex::mult(const Value& right)    const { return right.mult(*this); } // *
+PTR_Value ValueVertex::div(const Value& right)     const { return right.div(*this); } // /
+PTR_Value ValueVertex::mod(const Value& right)     const { return right.mod(*this); } // %
+PTR_Value ValueVertex::eq(const Value& right)      const { return right.eq(*this); } // ==
+PTR_Value ValueVertex::eq(const ValueVertex& left) const { return PTR_Value(new ValueBool(true)); } // TODO
+PTR_Value ValueVertex::ne(const Value& right)      const { return right.ne(*this); } // !=
+PTR_Value ValueVertex::ne(const ValueVertex& left) const { return PTR_Value(new ValueBool(false)); } // TODO
+PTR_Value ValueVertex::le(const Value& right)      const { return right.le(*this); } // <=
+PTR_Value ValueVertex::ge(const Value& right)      const { return right.ge(*this); } // >=
+PTR_Value ValueVertex::lt(const Value& right)      const { return right.lt(*this); } // <
+PTR_Value ValueVertex::gt(const Value& right)      const { return right.gt(*this); } // >
+PTR_Value ValueVertex::logNOT(void)                const { return PTR_Value(new ValueBool(false)); } // ! // TODO

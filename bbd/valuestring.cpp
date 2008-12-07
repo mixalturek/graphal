@@ -48,44 +48,21 @@ ValueString::~ValueString()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-// +
-PTR_Value ValueString::add(const Value& right)       const { return right.add(*this); }
-
-// -
-PTR_Value ValueString::sub(const Value& right)       const { return right.sub(*this); }
-
-// *
-PTR_Value ValueString::mult(const Value& right)      const { return right.mult(*this); }
-
-// /
-PTR_Value ValueString::div(const Value& right)       const { return right.div(*this); }
-
-// %
-PTR_Value ValueString::mod(const Value& right)       const { return right.mod(*this); }
-
-// ==
-PTR_Value ValueString::eq(const Value& right)        const { return right.eq(*this); }
-PTR_Value ValueString::eq(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
-
-// !=
-PTR_Value ValueString::ne(const Value& right)        const { return right.ne(*this); }
-PTR_Value ValueString::ne(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
-
-// <=
-PTR_Value ValueString::le(const Value& right)        const { return right.le(*this); }
-PTR_Value ValueString::le(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
-
-// >=
-PTR_Value ValueString::ge(const Value& right)        const { return right.ge(*this); }
-PTR_Value ValueString::ge(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
-
-// <
-PTR_Value ValueString::lt(const Value& right)        const { return right.lt(*this); }
-PTR_Value ValueString::lt(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
-
-// >
-PTR_Value ValueString::gt(const Value& right)        const { return right.gt(*this); }
-PTR_Value ValueString::gt(const ValueString& left)   const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
-
-// !
-PTR_Value ValueString::logNOT(void)                  const { return PTR_Value(new ValueBool(m_val.empty())); }
+PTR_Value ValueString::add(const Value& right)     const { return right.add(*this); } // +
+PTR_Value ValueString::sub(const Value& right)     const { return right.sub(*this); } // -
+PTR_Value ValueString::mult(const Value& right)    const { return right.mult(*this); } // *
+PTR_Value ValueString::div(const Value& right)     const { return right.div(*this); } // /
+PTR_Value ValueString::mod(const Value& right)     const { return right.mod(*this); } // %
+PTR_Value ValueString::eq(const Value& right)      const { return right.eq(*this); } // ==
+PTR_Value ValueString::eq(const ValueString& left) const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
+PTR_Value ValueString::ne(const Value& right)      const { return right.ne(*this); } // !=
+PTR_Value ValueString::ne(const ValueString& left) const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
+PTR_Value ValueString::le(const Value& right)      const { return right.le(*this); } // <=
+PTR_Value ValueString::le(const ValueString& left) const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
+PTR_Value ValueString::ge(const Value& right)      const { return right.ge(*this); } // >=
+PTR_Value ValueString::ge(const ValueString& left) const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
+PTR_Value ValueString::lt(const Value& right)      const { return right.lt(*this); } // <
+PTR_Value ValueString::lt(const ValueString& left) const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
+PTR_Value ValueString::gt(const Value& right)      const { return right.gt(*this); } // >
+PTR_Value ValueString::gt(const ValueString& left) const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
+PTR_Value ValueString::logNOT(void)                const { return PTR_Value(new ValueBool(m_val.empty())); } // !

@@ -19,8 +19,3 @@ BaseObject
 		LexanIteratorFile
 		LexanIteratorString
 	Tests
-
-TODO:
-ValueNull -> singleton
-ValueBool -> singleton "with two instances" (true, false)
-Remove ValueNull from each instance of ValueStruct (make static or singleton)

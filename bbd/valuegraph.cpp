@@ -95,40 +95,17 @@ void ValueGraph::deleteEdge(ValueEdge* edge)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-// +
-PTR_Value ValueGraph::add(const Value& right)       const { return right.add(*this); }
-
-// -
-PTR_Value ValueGraph::sub(const Value& right)       const { return right.sub(*this); }
-
-// *
-PTR_Value ValueGraph::mult(const Value& right)      const { return right.mult(*this); }
-
-// /
-PTR_Value ValueGraph::div(const Value& right)       const { return right.div(*this); }
-
-// %
-PTR_Value ValueGraph::mod(const Value& right)       const { return right.mod(*this); }
-
-// ==
-PTR_Value ValueGraph::eq(const Value& right)        const { return right.eq(*this); }
-PTR_Value ValueGraph::eq(const ValueGraph& left)    const { return PTR_Value(new ValueBool(true)); } // TODO
-
-// !=
-PTR_Value ValueGraph::ne(const Value& right)        const { return right.ne(*this); }
-PTR_Value ValueGraph::ne(const ValueGraph& left)    const { return PTR_Value(new ValueBool(false)); } // TODO
-
-// <=
-PTR_Value ValueGraph::le(const Value& right)        const { return right.le(*this); }
-
-// >=
-PTR_Value ValueGraph::ge(const Value& right)        const { return right.ge(*this); }
-
-// <
-PTR_Value ValueGraph::lt(const Value& right)        const { return right.lt(*this); }
-
-// >
-PTR_Value ValueGraph::gt(const Value& right)        const { return right.gt(*this); }
-
-// !
-PTR_Value ValueGraph::logNOT(void)                  const { return PTR_Value(new ValueBool(m_vertices.empty())); }
+PTR_Value ValueGraph::add(const Value& right)    const { return right.add(*this); } // +
+PTR_Value ValueGraph::sub(const Value& right)    const { return right.sub(*this); } // -
+PTR_Value ValueGraph::mult(const Value& right)   const { return right.mult(*this); } // *
+PTR_Value ValueGraph::div(const Value& right)    const { return right.div(*this); } // /
+PTR_Value ValueGraph::mod(const Value& right)    const { return right.mod(*this); } // %
+PTR_Value ValueGraph::eq(const Value& right)     const { return right.eq(*this); } // ==
+PTR_Value ValueGraph::eq(const ValueGraph& left) const { return PTR_Value(new ValueBool(true)); } // TODO
+PTR_Value ValueGraph::ne(const Value& right)     const { return right.ne(*this); } // !=
+PTR_Value ValueGraph::ne(const ValueGraph& left) const { return PTR_Value(new ValueBool(false)); } // TODO
+PTR_Value ValueGraph::le(const Value& right)     const { return right.le(*this); } // <=
+PTR_Value ValueGraph::ge(const Value& right)     const { return right.ge(*this); } // >=
+PTR_Value ValueGraph::lt(const Value& right)     const { return right.lt(*this); } // <
+PTR_Value ValueGraph::gt(const Value& right)     const { return right.gt(*this); } // >
+PTR_Value ValueGraph::logNOT(void)               const { return PTR_Value(new ValueBool(m_vertices.empty())); } // !

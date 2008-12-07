@@ -39,56 +39,33 @@ public:
 	virtual ~ValueStruct();
 
 public:
-	void   setValue(const string& name, Value* value);
-	Value* getValue(const string& name);
-	bool   isValueSet(const string& name);
+	void   setItem(const string& name, Value* value);
+	Value* getItem(const string& name);
+	bool   isItemSet(const string& name);
 
 public:
 	virtual bool     toBool(void) const { return !m_val.empty(); }
 	virtual bool     isNull(void) const { return false; }
 	virtual string   toString(void) const;
 
-	// +
-	virtual PTR_Value add(const Value&      right) const;
-
-	// -
-	virtual PTR_Value sub(const Value&      right) const;
-
-	// *
-	virtual PTR_Value mult(const Value&      right) const;
-
-	// /
-	virtual PTR_Value div(const Value&      right) const;
-
-	// %
-	virtual PTR_Value mod(const Value&      right) const;
-
-	// ==
-	virtual PTR_Value eq(const Value&      right) const;
-	virtual PTR_Value eq(const ValueStruct& left) const;
-
-	// !=
-	virtual PTR_Value ne(const Value&      right) const;
-	virtual PTR_Value ne(const ValueStruct& left) const;
-
-	// <=
-	virtual PTR_Value le(const Value&      right) const;
-
-	// >=
-	virtual PTR_Value ge(const Value&      right) const;
-
-	// <
-	virtual PTR_Value lt(const Value&      right) const;
-
-	// >
-	virtual PTR_Value gt(const Value&      right) const;
-
-	// !
-	virtual PTR_Value logNOT(void) const;
+	virtual PTR_Value add(const Value&      right) const; // +
+	virtual PTR_Value sub(const Value&      right) const; // -
+	virtual PTR_Value mult(const Value&     right) const; // *
+	virtual PTR_Value div(const Value&      right) const; // /
+	virtual PTR_Value mod(const Value&      right) const; // %
+	virtual PTR_Value eq(const Value&       right) const; // ==
+	virtual PTR_Value eq(const ValueStruct&  left) const;
+	virtual PTR_Value ne(const Value&       right) const; // !=
+	virtual PTR_Value ne(const ValueStruct&  left) const;
+	virtual PTR_Value le(const Value&       right) const; // <=
+	virtual PTR_Value ge(const Value&       right) const; // >=
+	virtual PTR_Value lt(const Value&       right) const; // <
+	virtual PTR_Value gt(const Value&       right) const; // >
+	virtual PTR_Value logNOT(void)                 const; // !
 
 private:
 	map<KEY_TYPE, Value*> m_val;
-	ValueNull m_notfound; // used in getProperty() to return NULL like variable
+	static ValueNull m_notfound; // Used in getProperty() to return NULL like variable
 };
 
 #endif /* VARIABLESTRUCT_HPP */

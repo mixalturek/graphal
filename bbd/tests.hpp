@@ -24,12 +24,15 @@
 #define TESTS_HPP
 
 #include "general.hpp"
+#include "baseobject.hpp"
 
-class Tests
+class Tests : public BaseObject
 {
 public:
 	Tests();
 	virtual ~Tests();
+
+	virtual string toString(void) const { return "Tests"; }
 
 	void run(void);
 

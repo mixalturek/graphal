@@ -49,7 +49,7 @@ private:
 
 public:
 	static uint getNumberOfLeaks(void) { return m_allocated_objects.size(); }
-	static void printMemoryLeaks(void);
+	static void printMemoryLeaks(uint number_of_static_objects);
 #endif // CHECK_MEMORY_LEAKS
 };
 

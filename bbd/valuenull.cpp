@@ -50,40 +50,17 @@ ValueNull::~ValueNull()
 
 // TODO: "Warning: Operation argument is NULL variable"
 
-// +
-PTR_Value ValueNull::add(const Value& right)       const { return right.add(*this); }
-
-// -
-PTR_Value ValueNull::sub(const Value& right)       const { return right.sub(*this); }
-
-// *
-PTR_Value ValueNull::mult(const Value& right)      const { return right.mult(*this); }
-
-// /
-PTR_Value ValueNull::div(const Value& right)       const { return right.div(*this); }
-
-// %
-PTR_Value ValueNull::mod(const Value& right)       const { return right.mod(*this); }
-
-// ==
-PTR_Value ValueNull::eq(const Value& right)        const { return right.eq(*this); }
-PTR_Value ValueNull::eq(const ValueNull& left)     const { return PTR_Value(new ValueBool(true)); }
-
-// !=
-PTR_Value ValueNull::ne(const Value& right)        const { return right.ne(*this); }
-PTR_Value ValueNull::ne(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
-
-// <=
-PTR_Value ValueNull::le(const Value& right)        const { return right.le(*this); }
-
-// >=
-PTR_Value ValueNull::ge(const Value& right)        const { return right.ge(*this); }
-
-// <
-PTR_Value ValueNull::lt(const Value& right)        const { return right.lt(*this); }
-
-// >
-PTR_Value ValueNull::gt(const Value& right)        const { return right.gt(*this); }
-
-// !
-PTR_Value ValueNull::logNOT(void)                  const { return PTR_Value(new ValueBool(true)); }
+PTR_Value ValueNull::add(const Value& right)   const { return right.add(*this); } // +
+PTR_Value ValueNull::sub(const Value& right)   const { return right.sub(*this); } // -
+PTR_Value ValueNull::mult(const Value& right)  const { return right.mult(*this); } // *
+PTR_Value ValueNull::div(const Value& right)   const { return right.div(*this); } // /
+PTR_Value ValueNull::mod(const Value& right)   const { return right.mod(*this); } // %
+PTR_Value ValueNull::eq(const Value& right)    const { return right.eq(*this); } // ==
+PTR_Value ValueNull::eq(const ValueNull& left) const { return PTR_Value(new ValueBool(true)); }
+PTR_Value ValueNull::ne(const Value& right)    const { return right.ne(*this); } // !=
+PTR_Value ValueNull::ne(const ValueNull& left) const { return PTR_Value(new ValueBool(false)); }
+PTR_Value ValueNull::le(const Value& right)    const { return right.le(*this); } // <=
+PTR_Value ValueNull::ge(const Value& right)    const { return right.ge(*this); } // >=
+PTR_Value ValueNull::lt(const Value& right)    const { return right.lt(*this); } // <
+PTR_Value ValueNull::gt(const Value& right)    const { return right.gt(*this); } // >
+PTR_Value ValueNull::logNOT(void)              const { return PTR_Value(new ValueBool(true)); } // !

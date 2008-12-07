@@ -25,6 +25,7 @@
 ////
 
 Logger::Logger(void)
+	: BaseObject()
 {
 
 }

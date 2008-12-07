@@ -23,19 +23,21 @@
 #define LOGGER_HPP
 
 #include "general.hpp"
+#include "baseobject.hpp"
 
 #define ERROR Logger::getInstance().error()
 #define WARN Logger::getInstance().warn()
 #define INFO Logger::getInstance().info()
 #define DBG Logger::getInstance().debug()
 
-class Logger
+// Singleton
+class Logger : public BaseObject
 {
 public:
-	// Return the singleton object
+	virtual string toString(void) const { return "Logger"; }
+
 	static inline Logger& getInstance(void)
 	{
-		static Logger instance;
 		return instance;
 	}
 
@@ -59,6 +61,8 @@ public:
 		return cerr << _("[d] ");
 	}
 
+private:
+	static Logger instance;
 
 private:
 	Logger(void);
