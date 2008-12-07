@@ -36,125 +36,79 @@ public:
 public:
 	float            getVal(void) const { return m_val; }
 	virtual bool     toBool(void) const { return m_val; }
-	virtual bool     isNull(void) const { return false; }
 	virtual string toString(void) const { ostringstream os; os << m_val; return os.str(); }
 
 	// +
 	virtual PTR_Value add(const Value&      right) const;
-	virtual PTR_Value add(const ValueNull&   left) const;
 	virtual PTR_Value add(const ValueBool&   left) const;
 	virtual PTR_Value add(const ValueInt&    left) const;
 	virtual PTR_Value add(const ValueFloat&  left) const;
-	virtual PTR_Value add(const ValueString& left) const;
-	virtual PTR_Value add(const ValueStruct& left) const;
 
 	// -
 	virtual PTR_Value sub(const Value&      right) const;
-	virtual PTR_Value sub(const ValueNull&   left) const;
 	virtual PTR_Value sub(const ValueBool&   left) const;
 	virtual PTR_Value sub(const ValueInt&    left) const;
 	virtual PTR_Value sub(const ValueFloat&  left) const;
-	virtual PTR_Value sub(const ValueString& left) const;
-	virtual PTR_Value sub(const ValueStruct& left) const;
 
 	// *
 	virtual PTR_Value mult(const Value&      right) const;
-	virtual PTR_Value mult(const ValueNull&   left) const;
 	virtual PTR_Value mult(const ValueBool&   left) const;
 	virtual PTR_Value mult(const ValueInt&    left) const;
 	virtual PTR_Value mult(const ValueFloat&  left) const;
-	virtual PTR_Value mult(const ValueString& left) const;
-	virtual PTR_Value mult(const ValueStruct& left) const;
 
 	// /
 	virtual PTR_Value div(const Value&      right) const;
-	virtual PTR_Value div(const ValueNull&   left) const;
 	virtual PTR_Value div(const ValueBool&   left) const;
 	virtual PTR_Value div(const ValueInt&    left) const;
 	virtual PTR_Value div(const ValueFloat&  left) const;
-	virtual PTR_Value div(const ValueString& left) const;
-	virtual PTR_Value div(const ValueStruct& left) const;
 
 	// %
 	virtual PTR_Value mod(const Value&      right) const;
-	virtual PTR_Value mod(const ValueNull&   left) const;
 	virtual PTR_Value mod(const ValueBool&   left) const;
 	virtual PTR_Value mod(const ValueInt&    left) const;
 	virtual PTR_Value mod(const ValueFloat&  left) const;
-	virtual PTR_Value mod(const ValueString& left) const;
-	virtual PTR_Value mod(const ValueStruct& left) const;
 
 	// ==
 	virtual PTR_Value eq(const Value&      right) const;
-	virtual PTR_Value eq(const ValueNull&   left) const;
 	virtual PTR_Value eq(const ValueBool&   left) const;
 	virtual PTR_Value eq(const ValueInt&    left) const;
 	virtual PTR_Value eq(const ValueFloat&  left) const;
-	virtual PTR_Value eq(const ValueString& left) const;
-	virtual PTR_Value eq(const ValueStruct& left) const;
 
 	// !=
 	virtual PTR_Value ne(const Value&      right) const;
-	virtual PTR_Value ne(const ValueNull&   left) const;
 	virtual PTR_Value ne(const ValueBool&   left) const;
 	virtual PTR_Value ne(const ValueInt&    left) const;
 	virtual PTR_Value ne(const ValueFloat&  left) const;
-	virtual PTR_Value ne(const ValueString& left) const;
-	virtual PTR_Value ne(const ValueStruct& left) const;
 
 	// <=
 	virtual PTR_Value le(const Value&      right) const;
-	virtual PTR_Value le(const ValueNull&   left) const;
 	virtual PTR_Value le(const ValueBool&   left) const;
 	virtual PTR_Value le(const ValueInt&    left) const;
 	virtual PTR_Value le(const ValueFloat&  left) const;
-	virtual PTR_Value le(const ValueString& left) const;
-	virtual PTR_Value le(const ValueStruct& left) const;
 
 	// >=
 	virtual PTR_Value ge(const Value&      right) const;
-	virtual PTR_Value ge(const ValueNull&   left) const;
 	virtual PTR_Value ge(const ValueBool&   left) const;
 	virtual PTR_Value ge(const ValueInt&    left) const;
 	virtual PTR_Value ge(const ValueFloat&  left) const;
-	virtual PTR_Value ge(const ValueString& left) const;
-	virtual PTR_Value ge(const ValueStruct& left) const;
 
 	// <
 	virtual PTR_Value lt(const Value&      right) const;
-	virtual PTR_Value lt(const ValueNull&   left) const;
 	virtual PTR_Value lt(const ValueBool&   left) const;
 	virtual PTR_Value lt(const ValueInt&    left) const;
 	virtual PTR_Value lt(const ValueFloat&  left) const;
-	virtual PTR_Value lt(const ValueString& left) const;
-	virtual PTR_Value lt(const ValueStruct& left) const;
 
 	// >
 	virtual PTR_Value gt(const Value&      right) const;
-	virtual PTR_Value gt(const ValueNull&   left) const;
 	virtual PTR_Value gt(const ValueBool&   left) const;
 	virtual PTR_Value gt(const ValueInt&    left) const;
 	virtual PTR_Value gt(const ValueFloat&  left) const;
-	virtual PTR_Value gt(const ValueString& left) const;
-	virtual PTR_Value gt(const ValueStruct& left) const;
 
 	// !
 	virtual PTR_Value logNOT(void) const;
 
 	// - (unary)
 	virtual PTR_Value subUn(void) const;
-
-	// ++ (prefix)
-	virtual PTR_Value incPre(void);
-
-	// -- (prefix)
-	virtual PTR_Value decPre(void);
-
-	// ++ (postfix)
-	virtual PTR_Value incPost(void);
-
-	// -- (postfix)
-	virtual PTR_Value decPost(void);
 
 private:
 	float m_val;

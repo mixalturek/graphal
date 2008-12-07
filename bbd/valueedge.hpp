@@ -26,6 +26,7 @@
 #include "general.hpp"
 #include "valuestruct.hpp"
 #include "valuegraph.hpp"
+#include "valuestruct.hpp"
 
 class ValueVertex;
 
@@ -36,14 +37,17 @@ public:
 	ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end);
 	virtual ~ValueEdge();
 
-	virtual bool     toBool(void) const { return true; } // TODO:
-	virtual bool     isNull(void) const { return false; }
+	virtual bool     toBool(void) const { return true; }
 	virtual string toString(void) const { return "ValueEdge"; } // TODO:
 
 	ValueVertex* getBeginVertex(void) { return m_begin; }
 	ValueVertex* getEndVertex(void)   { return m_end; }
 
 	ValueGraph* getGraph(void) { return m_graph; }
+
+	void   setItem(const string& name, Value* value) { m_properties->setItem(name, value); }
+	Value* getItem(const string& name) { return m_properties->getItem(name); }
+	bool   isItemSet(const string& name) { return m_properties->isItemSet(name); }
 
 private:
 	friend void ValueGraph::invertEdgesOrientation(void);
@@ -69,7 +73,7 @@ private:
 	ValueGraph*  m_graph;
 	ValueVertex* m_begin;
 	ValueVertex* m_end;
-	// TODO: add ValueStruct member
+	ValueStruct* m_properties;
 };
 
 #endif

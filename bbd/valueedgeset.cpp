@@ -70,9 +70,9 @@ PTR_Value ValueEdgeSet::mult(const Value& right)     const { return right.mult(*
 PTR_Value ValueEdgeSet::div(const Value& right)      const { return right.div(*this); } // /
 PTR_Value ValueEdgeSet::mod(const Value& right)      const { return right.mod(*this); } // %
 PTR_Value ValueEdgeSet::eq(const Value& right)       const { return right.eq(*this); } // ==
-PTR_Value ValueEdgeSet::eq(const ValueEdgeSet& left) const { return PTR_Value(new ValueBool(true)); } // TODO
+PTR_Value ValueEdgeSet::eq(const ValueEdgeSet& left) const { return PTR_Value(new ValueBool(left.m_edges == m_edges)); }
 PTR_Value ValueEdgeSet::ne(const Value& right)       const { return right.ne(*this); } // !=
-PTR_Value ValueEdgeSet::ne(const ValueEdgeSet& left) const { return PTR_Value(new ValueBool(false)); } // TODO
+PTR_Value ValueEdgeSet::ne(const ValueEdgeSet& left) const { return PTR_Value(new ValueBool(left.m_edges == m_edges)); }
 PTR_Value ValueEdgeSet::le(const Value& right)       const { return right.le(*this); } // <=
 PTR_Value ValueEdgeSet::ge(const Value& right)       const { return right.ge(*this); } // >=
 PTR_Value ValueEdgeSet::lt(const Value& right)       const { return right.lt(*this); } // <

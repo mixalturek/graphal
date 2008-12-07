@@ -34,7 +34,6 @@ private: // TODO: The class is created for future use, no implementation done
 
 public:
 	virtual bool     toBool(void) const { return false; }
-	virtual bool     isNull(void) const { return true; }
 	virtual string toString(void) const { return "NULL"; }
 
 	virtual PTR_Value add(const Value&    right) const; // +

@@ -35,50 +35,26 @@ public:
 public:
 	string           getVal(void) const { return m_val; }
 	virtual bool     toBool(void) const { return !m_val.empty(); }
-	virtual bool     isNull(void) const { return false; }
 	virtual string toString(void) const { return m_val; }
 
-	// +
-	virtual PTR_Value add(const Value&      right) const;
-
-	// -
-	virtual PTR_Value sub(const Value&      right) const;
-
-	// *
-	virtual PTR_Value mult(const Value&      right) const;
-
-	// /
-	virtual PTR_Value div(const Value&      right) const;
-
-	// %
-	virtual PTR_Value mod(const Value&      right) const;
-
-	// ==
-	virtual PTR_Value eq(const Value&      right) const;
+	virtual PTR_Value add(const Value&     right) const; // +
+	virtual PTR_Value sub(const Value&     right) const; // -
+	virtual PTR_Value mult(const Value&    right) const; // *
+	virtual PTR_Value div(const Value&     right) const; // /
+	virtual PTR_Value mod(const Value&     right) const; // %
+	virtual PTR_Value eq(const Value&      right) const; // ==
 	virtual PTR_Value eq(const ValueString& left) const;
-
-	// !=
-	virtual PTR_Value ne(const Value&      right) const;
+	virtual PTR_Value ne(const Value&      right) const; // !=
 	virtual PTR_Value ne(const ValueString& left) const;
-
-	// <=
-	virtual PTR_Value le(const Value&      right) const;
+	virtual PTR_Value le(const Value&      right) const; // <=
 	virtual PTR_Value le(const ValueString& left) const;
-
-	// >=
-	virtual PTR_Value ge(const Value&      right) const;
+	virtual PTR_Value ge(const Value&      right) const; // >=
 	virtual PTR_Value ge(const ValueString& left) const;
-
-	// <
-	virtual PTR_Value lt(const Value&      right) const;
+	virtual PTR_Value lt(const Value&      right) const; // <
 	virtual PTR_Value lt(const ValueString& left) const;
-
-	// >
-	virtual PTR_Value gt(const Value&      right) const;
+	virtual PTR_Value gt(const Value&      right) const; // >
 	virtual PTR_Value gt(const ValueString& left) const;
-
-	// !
-	virtual PTR_Value logNOT(void) const;
+	virtual PTR_Value logNOT(void)                const; // !
 
 private:
 	string m_val;

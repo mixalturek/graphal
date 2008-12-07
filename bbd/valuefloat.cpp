@@ -51,117 +51,75 @@ ValueFloat::~ValueFloat()
 
 // +
 PTR_Value ValueFloat::add(const Value& right)       const { return right.add(*this); }
-PTR_Value ValueFloat::add(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
 PTR_Value ValueFloat::add(const ValueBool& left)    const { return PTR_Value(new ValueFloat(left.getVal() + m_val)); }
 PTR_Value ValueFloat::add(const ValueInt& left)     const { return PTR_Value(new ValueFloat(left.getVal() + m_val)); }
 PTR_Value ValueFloat::add(const ValueFloat& left)   const { return PTR_Value(new ValueFloat(left.getVal() + m_val)); }
-PTR_Value ValueFloat::add(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::add(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
 
 // -
 PTR_Value ValueFloat::sub(const Value& right)       const { return right.sub(*this); }
-PTR_Value ValueFloat::sub(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
 PTR_Value ValueFloat::sub(const ValueBool& left)    const { return PTR_Value(new ValueFloat(left.getVal() - m_val)); }
 PTR_Value ValueFloat::sub(const ValueInt& left)     const { return PTR_Value(new ValueFloat(left.getVal() - m_val)); }
 PTR_Value ValueFloat::sub(const ValueFloat& left)   const { return PTR_Value(new ValueFloat(left.getVal() - m_val)); }
-PTR_Value ValueFloat::sub(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::sub(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
 
 // *
 PTR_Value ValueFloat::mult(const Value& right)      const { return right.mult(*this); }
-PTR_Value ValueFloat::mult(const ValueNull& left)   const { return PTR_Value(new ValueNull()); }
 PTR_Value ValueFloat::mult(const ValueBool& left)   const { return PTR_Value(new ValueFloat(left.getVal() * m_val)); }
 PTR_Value ValueFloat::mult(const ValueInt& left)    const { return PTR_Value(new ValueFloat(left.getVal() * m_val)); }
 PTR_Value ValueFloat::mult(const ValueFloat& left)  const { return PTR_Value(new ValueFloat(left.getVal() * m_val)); }
-PTR_Value ValueFloat::mult(const ValueString& left) const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::mult(const ValueStruct& left) const { return PTR_Value(new ValueNull()); }
 
 // /
 PTR_Value ValueFloat::div(const Value& right)       const { return right.div(*this); }
-PTR_Value ValueFloat::div(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
 PTR_Value ValueFloat::div(const ValueBool& left)    const { return PTR_Value(new ValueFloat(left.getVal() / m_val)); }
 PTR_Value ValueFloat::div(const ValueInt& left)     const { return PTR_Value(new ValueFloat(left.getVal() / m_val)); }
 PTR_Value ValueFloat::div(const ValueFloat& left)   const { return PTR_Value(new ValueFloat(left.getVal() / m_val)); }
-PTR_Value ValueFloat::div(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::div(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
 
 // %
 PTR_Value ValueFloat::mod(const Value& right)       const { return right.mod(*this); }
-PTR_Value ValueFloat::mod(const ValueNull& left)    const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::mod(const ValueBool& left)    const { return PTR_Value(new ValueNull()); } // TODO: error: invalid operands of types 'bool' and 'const float' to binary 'operator%'
-PTR_Value ValueFloat::mod(const ValueInt& left)     const { return PTR_Value(new ValueNull()); } // TODO: error: invalid operands of types 'int' and 'const float' to binary 'operator%'
-PTR_Value ValueFloat::mod(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); } // TODO: error: invalid operands of types 'double' and 'int' to binary 'operator%'
-PTR_Value ValueFloat::mod(const ValueString& left)  const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::mod(const ValueStruct& left)  const { return PTR_Value(new ValueNull()); }
+// TODO: error: invalid operands of types 'bool' and 'const float' to binary 'operator%'
+PTR_Value ValueFloat::mod(const ValueBool& left)    const { return PTR_Value(new ValueNull()); }
+// TODO: error: invalid operands of types 'int' and 'const float' to binary 'operator%'
+PTR_Value ValueFloat::mod(const ValueInt& left)     const { return PTR_Value(new ValueNull()); }
+// TODO: error: invalid operands of types 'double' and 'int' to binary 'operator%'
+PTR_Value ValueFloat::mod(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
 
 // ==
 PTR_Value ValueFloat::eq(const Value& right)        const { return right.eq(*this); }
-PTR_Value ValueFloat::eq(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueFloat::eq(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
 PTR_Value ValueFloat::eq(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
 PTR_Value ValueFloat::eq(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
-PTR_Value ValueFloat::eq(const ValueString& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::eq(const ValueStruct& left)   const { return PTR_Value(new ValueNull()); }
 
 // !=
 PTR_Value ValueFloat::ne(const Value& right)        const { return right.ne(*this); }
-PTR_Value ValueFloat::ne(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueFloat::ne(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
 PTR_Value ValueFloat::ne(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
 PTR_Value ValueFloat::ne(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
-PTR_Value ValueFloat::ne(const ValueString& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::ne(const ValueStruct& left)   const { return PTR_Value(new ValueNull()); }
 
 // <=
 PTR_Value ValueFloat::le(const Value& right)        const { return right.le(*this); }
-PTR_Value ValueFloat::le(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueFloat::le(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
 PTR_Value ValueFloat::le(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
 PTR_Value ValueFloat::le(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
-PTR_Value ValueFloat::le(const ValueString& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::le(const ValueStruct& left)   const { return PTR_Value(new ValueNull()); }
 
 // >=
 PTR_Value ValueFloat::ge(const Value& right)        const { return right.ge(*this); }
-PTR_Value ValueFloat::ge(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueFloat::ge(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
 PTR_Value ValueFloat::ge(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
 PTR_Value ValueFloat::ge(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
-PTR_Value ValueFloat::ge(const ValueString& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::ge(const ValueStruct& left)   const { return PTR_Value(new ValueNull()); }
 
 // <
 PTR_Value ValueFloat::lt(const Value& right)        const { return right.lt(*this); }
-PTR_Value ValueFloat::lt(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueFloat::lt(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
 PTR_Value ValueFloat::lt(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
 PTR_Value ValueFloat::lt(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
-PTR_Value ValueFloat::lt(const ValueString& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::lt(const ValueStruct& left)   const { return PTR_Value(new ValueNull()); }
 
 // >
 PTR_Value ValueFloat::gt(const Value& right)        const { return right.gt(*this); }
-PTR_Value ValueFloat::gt(const ValueNull& left)     const { return PTR_Value(new ValueBool(false)); }
 PTR_Value ValueFloat::gt(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
 PTR_Value ValueFloat::gt(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
 PTR_Value ValueFloat::gt(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
-PTR_Value ValueFloat::gt(const ValueString& left)   const { return PTR_Value(new ValueNull()); }
-PTR_Value ValueFloat::gt(const ValueStruct& left)   const { return PTR_Value(new ValueNull()); }
 
 // !
 PTR_Value ValueFloat::logNOT(void)  const { return PTR_Value(new ValueBool(!m_val)); }
 
 // - (unary)
 PTR_Value ValueFloat::subUn(void)   const { return PTR_Value(new ValueFloat(-m_val)); }
-
-// ++ (prefix)
-PTR_Value ValueFloat::incPre(void)  { return PTR_Value(new ValueNull()); } // TODO: error: invalid lvalue in increment
-
-// -- (prefix)
-PTR_Value ValueFloat::decPre(void)  { return PTR_Value(new ValueNull()); } // TODO: error: invalid lvalue in decrement
-
-// ++ (postfix)
-PTR_Value ValueFloat::incPost(void) { return PTR_Value(new ValueNull()); } // TODO: error: invalid lvalue in increment
-
-// -- (postfix)
-PTR_Value ValueFloat::decPost(void) { return PTR_Value(new ValueNull()); } // TODO: error: invalid lvalue in decrement

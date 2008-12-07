@@ -53,7 +53,7 @@ public:
 
 public:
 	virtual bool toBool(void)     const = 0;
-	virtual bool isNull(void)     const { return false; }// TODO: remove from subclasses except ValueNULL
+	virtual bool isNull(void)     const { return false; }
 
 	// +
 	virtual PTR_Value add(const Value&         right) const = 0;
@@ -225,18 +225,6 @@ public:
 
 	// - (unary)
 	virtual PTR_Value subUn(void) const;
-
-	// ++ (prefix)
-	virtual PTR_Value incPre(void);
-
-	// -- (prefix)
-	virtual PTR_Value decPre(void);
-
-	// ++ (postfix)
-	virtual PTR_Value incPost(void);
-
-	// -- (postfix)
-	virtual PTR_Value decPost(void);
 
 	// &&, ||
 	PTR_Value logAND(const Value& right) const;

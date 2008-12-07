@@ -36,7 +36,6 @@ public:
 	virtual ~ValueEdgeSet();
 
 	virtual bool     toBool(void) const { return !m_edges.empty(); }
-	virtual bool     isNull(void) const { return false; }
 	virtual string toString(void) const { return "ValueEdgeSet"; } // TODO:
 
 	void addEdge(ValueEdge* edge);

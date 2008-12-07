@@ -70,9 +70,9 @@ PTR_Value ValueVertexSet::mult(const Value& right)       const { return right.mu
 PTR_Value ValueVertexSet::div(const Value& right)        const { return right.div(*this); } // /
 PTR_Value ValueVertexSet::mod(const Value& right)        const { return right.mod(*this); } // %
 PTR_Value ValueVertexSet::eq(const Value& right)         const { return right.eq(*this); } // ==
-PTR_Value ValueVertexSet::eq(const ValueVertexSet& left) const { return PTR_Value(new ValueBool(true)); } // TODO
+PTR_Value ValueVertexSet::eq(const ValueVertexSet& left) const { return PTR_Value(new ValueBool(left.m_vertices == m_vertices)); }
 PTR_Value ValueVertexSet::ne(const Value& right)         const { return right.ne(*this); } // !=
-PTR_Value ValueVertexSet::ne(const ValueVertexSet& left) const { return PTR_Value(new ValueBool(false)); } // TODO
+PTR_Value ValueVertexSet::ne(const ValueVertexSet& left) const { return PTR_Value(new ValueBool(left.m_vertices != m_vertices)); }
 PTR_Value ValueVertexSet::le(const Value& right)         const { return right.le(*this); } // <=
 PTR_Value ValueVertexSet::ge(const Value& right)         const { return right.ge(*this); } // >=
 PTR_Value ValueVertexSet::lt(const Value& right)         const { return right.lt(*this); } // <

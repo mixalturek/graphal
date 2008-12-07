@@ -221,15 +221,3 @@ PTR_Value Value::gt(const ValueEdgeSet& left)     const { return PTR_Value(new V
 
 // - (unary)
 PTR_Value Value::subUn(void)   const { return PTR_Value(new ValueNull()); }
-
-// ++ (prefix)
-PTR_Value Value::incPre(void)  { return PTR_Value(new ValueNull()); }
-
-// -- (prefix)
-PTR_Value Value::decPre(void)  { return PTR_Value(new ValueNull()); }
-
-// ++ (postfix)
-PTR_Value Value::incPost(void) { return PTR_Value(new ValueNull()); }
-
-// -- (postfix)
-PTR_Value Value::decPost(void) { return PTR_Value(new ValueNull()); }

@@ -75,8 +75,8 @@ valuefloat.o: value.hpp general.hpp baseobject.hpp valuenull.hpp
 valuefloat.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
 valuefloat.o: valuestruct.hpp
 valuegraph.o: valuegraph.hpp general.hpp value.hpp baseobject.hpp logger.hpp
-valuegraph.o: valuebool.hpp valuevertex.hpp valueedgeset.hpp valueedge.hpp
-valuegraph.o: valuestruct.hpp valuenull.hpp
+valuegraph.o: valuebool.hpp valuevertex.hpp valueedgeset.hpp valuestruct.hpp
+valuegraph.o: valuenull.hpp valueedge.hpp
 valueint.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp
 valueint.o: valueint.hpp valuefloat.hpp valuestring.hpp valuestruct.hpp
 valuenull.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp
@@ -90,8 +90,8 @@ valuestruct.o: value.hpp general.hpp baseobject.hpp valuenull.hpp
 valuestruct.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
 valuestruct.o: valuestruct.hpp
 valuevertex.o: valuevertex.hpp general.hpp value.hpp baseobject.hpp
-valuevertex.o: valueedgeset.hpp valuegraph.hpp valuebool.hpp valueedge.hpp
-valuevertex.o: valuestruct.hpp valuenull.hpp valuevertexset.hpp
+valuevertex.o: valueedgeset.hpp valuegraph.hpp valuestruct.hpp valuenull.hpp
+valuevertex.o: valuebool.hpp valueedge.hpp valuevertexset.hpp
 valuevertexset.o: valuevertexset.hpp general.hpp value.hpp baseobject.hpp
 valuevertexset.o: valuebool.hpp valuevertex.hpp valueedgeset.hpp
-valuevertexset.o: valuegraph.hpp logger.hpp
+valuevertexset.o: valuegraph.hpp valuestruct.hpp valuenull.hpp logger.hpp

@@ -102,9 +102,9 @@ PTR_Value ValueStruct::mult(const Value& right)    const { return right.mult(*th
 PTR_Value ValueStruct::div(const Value& right)     const { return right.div(*this); } // /
 PTR_Value ValueStruct::mod(const Value& right)     const { return right.mod(*this); } // %
 PTR_Value ValueStruct::eq(const Value& right)      const { return right.eq(*this); } // ==
-PTR_Value ValueStruct::eq(const ValueStruct& left) const { return PTR_Value(new ValueBool(false)); } // TODO: compare inner data
+PTR_Value ValueStruct::eq(const ValueStruct& left) const { return PTR_Value(new ValueBool(left.m_val == m_val)); }
 PTR_Value ValueStruct::ne(const Value& right)      const { return right.ne(*this); } // !=
-PTR_Value ValueStruct::ne(const ValueStruct& left) const { return PTR_Value(new ValueBool(false)); } // TODO: compare inner data
+PTR_Value ValueStruct::ne(const ValueStruct& left) const { return PTR_Value(new ValueBool(left.m_val != m_val)); }
 PTR_Value ValueStruct::le(const Value& right)      const { return right.le(*this); } // <=
 PTR_Value ValueStruct::ge(const Value& right)      const { return right.ge(*this); } // >=
 PTR_Value ValueStruct::lt(const Value& right)      const { return right.lt(*this); } // <

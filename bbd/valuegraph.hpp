@@ -37,7 +37,6 @@ public:
 	virtual ~ValueGraph();
 
 	virtual bool     toBool(void) const { return !m_vertices.empty(); }
-	virtual bool     isNull(void) const { return false; }
 	virtual string toString(void) const { return "ValueGraph"; } // TODO:
 
 	bool isOriented(void) const { return m_oriented; }

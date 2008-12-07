@@ -45,7 +45,6 @@ public:
 
 public:
 	virtual bool     toBool(void) const { return !m_val.empty(); }
-	virtual bool     isNull(void) const { return false; }
 	virtual string   toString(void) const;
 
 	virtual PTR_Value add(const Value&      right) const; // +
