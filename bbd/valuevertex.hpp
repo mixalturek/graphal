@@ -51,9 +51,6 @@ public:
 	virtual bool     toBool(void) const { return true; }
 	virtual string toString(void) const { return "ValueVertex"; } // TODO:
 
-	void addEdge(ValueEdge* edge, ORIENTATION orientation);
-	void deleteEdge(ValueEdge* edge, ORIENTATION orientation);
-
 	set<EDGE_WITH_ORIENTATION>* getEdges(void) { return m_edges; }
 
 	uint getDegree(void) const { return m_edges->size(); }
@@ -68,6 +65,12 @@ public:
 private:
 	friend void ValueGraph::invertEdgesOrientation(void);
 	void invertOrientation(void);
+
+	friend ValueEdge* ValueGraph::addEdge(ValueVertex* begin, ValueVertex* end);
+	void addEdge(ValueEdge* edge, ORIENTATION orientation);
+
+	friend void ValueGraph::deleteEdge(ValueEdge* edge);
+	void deleteEdge(ValueEdge* edge, ORIENTATION orientation);
 
 public:
 	virtual PTR_Value add(const Value&     right) const; // +
