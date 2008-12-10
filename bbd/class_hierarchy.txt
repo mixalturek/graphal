@@ -1,18 +1,31 @@
 BaseObject
-	Graph
-	Value (interface)
-		ValueNull
-		ValueString
-		ValueStruct
-		ValueBool
-		ValueInt
-		ValueFloat
-		ValueReference (TODO: for future use, no implementation)
-		ValueGraph
-		ValueVertex
-		ValueEdge
-		ValueVertexSet
-		ValueEdgeSet
+	Context (TODO)
+	Node (interface)
+		NodeUnary (TODO)
+			+ subclasses (TODO)
+		NodeBinary (TODO)
+			+ subclasses (TODO)
+		NodeJump (TODO)
+		NodeIfElse (TODO)
+		NodeLoop (TODO)
+		NodeBlock (TODO)
+		NodeEmptyCommand (TODO)
+		NodeFuncCall (TODO)
+		NodeFunction (TODO)
+		Value (interface)
+			ValueNull
+			ValueString
+			ValueStruct
+			ValueBool
+			ValueInt
+			ValueFloat
+			ValueReference (TODO: for future use, no implementation)
+			ValueGraph
+			ValueVertex
+			ValueEdge
+			ValueVertexSet
+			ValueEdgeSet
+			ValueVariable (TODO)
 	Logger (singleton)
 	Lexan
 	LexanIterator (interface)

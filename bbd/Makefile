@@ -42,6 +42,7 @@ lines:
 # DO NOT DELETE
 
 baseobject.o: baseobject.hpp general.hpp logger.hpp
+context.o: context.hpp general.hpp baseobject.hpp
 init_static_objects.o: general.hpp baseobject.hpp valuestruct.hpp value.hpp
 init_static_objects.o: valuenull.hpp logger.hpp
 lexan.o: lexan.hpp general.hpp baseobject.hpp lexaniterator.hpp
@@ -54,6 +55,7 @@ lexaniteratorstring.o: lexaniteratorstring.hpp general.hpp lexaniterator.hpp
 lexaniteratorstring.o: baseobject.hpp
 logger.o: logger.hpp general.hpp baseobject.hpp
 main.o: general.hpp baseobject.hpp logger.hpp tests.hpp
+node.o: node.hpp general.hpp baseobject.hpp context.hpp
 tests.o: tests.hpp general.hpp baseobject.hpp logger.hpp valueint.hpp
 tests.o: value.hpp valuefloat.hpp valuebool.hpp valuestring.hpp
 tests.o: valuestruct.hpp valuenull.hpp valuegraph.hpp valuevertex.hpp
