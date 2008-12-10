@@ -27,6 +27,8 @@ enum LEXTOKEN
 	LEX_EOF = 0,        // End of file
 	LEX_ERROR,          // Error
 
+	LEX_INCLUDE,        // include
+	LEX_DEFINE,         // define
 	LEX_FUNCTION,       // function
 	LEX_RETURN,         // return
 	LEX_IF,             // if

@@ -60,6 +60,10 @@ Lexan::~Lexan(void)
 LEXTOKEN Lexan::checkKeyword(void)
 {
 	// Check keywords
+	if(m_string == "include")
+		return LEX_INCLUDE;
+	if(m_string == "define")
+		return LEX_DEFINE;
 	if(m_string == "function")
 		return LEX_FUNCTION;
 	if(m_string == "return")
@@ -84,7 +88,7 @@ LEXTOKEN Lexan::checkKeyword(void)
 		return LEX_TRUE;
 	if(m_string == "false")
 		return LEX_FALSE;
-
+/*
 	// Check include and define
 	if(m_string == "include")
 	{
@@ -96,7 +100,7 @@ LEXTOKEN Lexan::checkKeyword(void)
 		parseDefine();
 		return nextToken();
 	}
-
+*/
 	// Try to expand a macro
 	if(expandMacro())
 		return nextToken();
@@ -960,7 +964,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 /////////////////////////////////////////////////////////////////////////////
 ////
-
+/*
 void Lexan::parseInclude(void)
 {
 	// include("filename");
@@ -1068,7 +1072,7 @@ void Lexan::parseDefine(void)
 			<< _(" Redefining macro: ") << name << endl;
 	}
 }
-
+*/
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -1080,6 +1084,8 @@ string Lexan::getTokenName(LEXTOKEN token)
 		"LEX_EOF",            // End of file
 		"LEX_ERROR",          // Error
 
+		"LEX_INCLUDE",        // include
+		"LEX_DEFINE",         // define
 		"LEX_FUNCTION",       // function
 		"LEX_RETURN",         // return
 		"LEX_IF",             // if

@@ -14,7 +14,7 @@ handle break/continue in the parser to be only inside of a loop
 //////////////////////////////////////////////////////////////////////////////
 //// Terminal symbols
 
-function return if else while for foreach break continue { } ( ) [ ] , ; . ! = += -= *= /= %= || && < > <= >= == != + - * / % ++ -- null true false int_const float_const string_const name
+include define function return if else while for foreach break continue { } ( ) [ ] , ; . ! = += -= *= /= %= || && < > <= >= == != + - * / % ++ -- null true false int_const float_const string_const name
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -32,6 +32,8 @@ S
 //////////////////////////////////////////////////////////////////////////////
 //// Rules
 
+S -> include ( string_const ) S ;
+S -> define ( string_const , string_const ) S ;
 S -> function name ( PARAMS ) { BLOCK } S
 S ->
 

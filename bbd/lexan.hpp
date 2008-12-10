@@ -50,8 +50,8 @@ public:
 private:
 	LEXTOKEN checkKeyword(void);
 	bool expandMacro(void);
-	void parseInclude(void);
-	void parseDefine(void);
+//	void parseInclude(void);
+//	void parseDefine(void);
 	inline void unget(void) { m_source.top()->unget(); }
 
 private:
