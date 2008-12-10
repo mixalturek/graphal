@@ -33,6 +33,7 @@
 #include "valuevertexset.hpp"
 #include "valueedgeset.hpp"
 #include "lexan.hpp"
+#include "nodeunaryminus.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -93,6 +94,7 @@ void Tests::run(void)
 	failed += !testLexanString();
 	failed += !testLexanComments();
 	failed += !testLexanSourceCode();
+	failed += !testNodeUnaryMinus();
 
 	// Template
 	// failed += !test();
@@ -678,6 +680,18 @@ bool Tests::testLexanSourceCode(void)
 }
 
 // TODO: include, define...
+
+
+bool Tests::testNodeUnaryMinus(void)
+{
+	bool result = true;
+
+	// TODO: virtual string toString(void) const = 0;
+	// TODO: private constructor
+	// NodeUnaryMinus minus;
+
+	return testResult(__FUNCTION__, result);
+}
 
 
 /*

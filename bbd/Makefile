@@ -57,11 +57,14 @@ logger.o: logger.hpp general.hpp baseobject.hpp
 main.o: general.hpp baseobject.hpp logger.hpp tests.hpp
 node.o: node.hpp general.hpp baseobject.hpp context.hpp
 nodeunary.o: nodeunary.hpp general.hpp node.hpp baseobject.hpp context.hpp
+nodeunaryminus.o: nodeunaryminus.hpp general.hpp nodeunary.hpp node.hpp
+nodeunaryminus.o: baseobject.hpp context.hpp value.hpp
 tests.o: tests.hpp general.hpp baseobject.hpp logger.hpp valueint.hpp
 tests.o: value.hpp valuefloat.hpp valuebool.hpp valuestring.hpp
 tests.o: valuestruct.hpp valuenull.hpp valuegraph.hpp valuevertex.hpp
 tests.o: valueedgeset.hpp valueedge.hpp valuevertexset.hpp lexan.hpp
-tests.o: lexaniterator.hpp lexantokens.hpp
+tests.o: lexaniterator.hpp lexantokens.hpp nodeunaryminus.hpp nodeunary.hpp
+tests.o: node.hpp context.hpp
 valuebool.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp
 valuebool.o: valueint.hpp valuefloat.hpp valuestring.hpp valuestruct.hpp
 value.o: value.hpp general.hpp baseobject.hpp valuenull.hpp valuebool.hpp

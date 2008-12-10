@@ -1,5 +1,5 @@
 /*
- *      node.hpp
+ *      nodeunaryminus.cpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -20,31 +20,53 @@
  */
 
 
-#ifndef NODE_HPP
-#define NODE_HPP
-
-#include <memory>
-#include "general.hpp"
-#include "baseobject.hpp"
+#include "nodeunaryminus.hpp"
 #include "context.hpp"
+#include "value.hpp"
 
-class Value;
-typedef auto_ptr<Value> PTR_Value;
 
-class Node : public BaseObject
+/////////////////////////////////////////////////////////////////////////////
+////
+
+NodeUnaryMinus::NodeUnaryMinus(Node* next)
+	: NodeUnary(next)
 {
-public:
-	Node(void);
-	virtual ~Node(void);
 
-	virtual PTR_Value execute(const Context& context) = 0;
+}
 
-	virtual void dump(ostream& os, uint indent) const = 0;
-	static void dumpIndent(ostream& os, uint indent);
+NodeUnaryMinus::~NodeUnaryMinus(void)
+{
 
-private:
-	Node(const Node& object);
-	Node& operator=(const Node& object);
-};
+}
 
-#endif /* NODE_HPP */
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+
+PTR_Value NodeUnaryMinus::execute(const Context& context)
+{
+	return m_next->execute(context)->subUn();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void NodeUnaryMinus::dump(ostream& os, uint indent) const
+{
+	dumpIndent(os, indent);
+	os << "<NodeUnaryMinus>" << endl;
+
+	m_next->dump(os, indent+1);
+
+	dumpIndent(os, indent);
+	os << "</NodeUnaryMinus>" << endl;
+}
+
+ostream& operator<<(ostream& os, const NodeUnaryMinus& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+

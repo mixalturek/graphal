@@ -42,7 +42,7 @@ Node::~Node(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void Node::indent(ostream& os, uint indent)
+void Node::dumpIndent(ostream& os, uint indent)
 {
 	for(uint i = 0; i < indent; i++)
 		os << "    ";

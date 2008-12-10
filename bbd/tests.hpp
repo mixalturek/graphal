@@ -54,6 +54,7 @@ private:
 	bool testLexanString(void);
 	bool testLexanComments(void);
 	bool testLexanSourceCode(void);
+	bool testNodeUnaryMinus(void);
 
 	// Template
 	// bool test(void);

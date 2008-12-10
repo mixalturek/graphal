@@ -26,7 +26,7 @@
 #include "general.hpp"
 #include "node.hpp"
 
-class NodeUnary: public Node
+class NodeUnary : public Node
 {
 public:
 	NodeUnary(Node* next);
@@ -37,7 +37,7 @@ private:
 	NodeUnary(const NodeUnary& object);
 	NodeUnary& operator=(const NodeUnary& object);
 
-private:
+protected:
 	Node* m_next;
 };
 
