@@ -48,9 +48,3 @@ void Node::indent(ostream& os, uint indent)
 		os << "    ";
 }
 
-
-ostream& operator<<(ostream& os, const Node& node)
-{
-	node.dump(os, 0);
-	return os;
-}

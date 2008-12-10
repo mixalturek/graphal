@@ -56,6 +56,7 @@ lexaniteratorstring.o: baseobject.hpp
 logger.o: logger.hpp general.hpp baseobject.hpp
 main.o: general.hpp baseobject.hpp logger.hpp tests.hpp
 node.o: node.hpp general.hpp baseobject.hpp context.hpp
+nodeunary.o: nodeunary.hpp general.hpp node.hpp baseobject.hpp context.hpp
 tests.o: tests.hpp general.hpp baseobject.hpp logger.hpp valueint.hpp
 tests.o: value.hpp valuefloat.hpp valuebool.hpp valuestring.hpp
 tests.o: valuestruct.hpp valuenull.hpp valuegraph.hpp valuevertex.hpp

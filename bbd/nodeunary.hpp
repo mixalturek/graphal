@@ -1,5 +1,5 @@
 /*
- *      node.hpp
+ *      nodeunary.hpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -20,31 +20,25 @@
  */
 
 
-#ifndef NODE_HPP
-#define NODE_HPP
+#ifndef NODEUNARY_HPP
+#define NODEUNARY_HPP
 
-#include <memory>
 #include "general.hpp"
-#include "baseobject.hpp"
-#include "context.hpp"
+#include "node.hpp"
 
-class Value;
-typedef auto_ptr<Value> PTR_Value;
-
-class Node: public BaseObject
+class NodeUnary: public Node
 {
 public:
-	Node(void);
-	virtual ~Node(void);
-
-	virtual PTR_Value execute(const Context& context) = 0;
-	virtual void dump(ostream& os, uint indent) const = 0;
-
-	static void indent(ostream& os, uint indent);
+	NodeUnary(Node* next);
+	virtual ~NodeUnary(void);
 
 private:
-	Node(const Node& object);
-	Node& operator=(const Node& object);
+	NodeUnary(void);
+	NodeUnary(const NodeUnary& object);
+	NodeUnary& operator=(const NodeUnary& object);
+
+private:
+	Node* m_next;
 };
 
-#endif /* NODE_HPP */
+#endif /* NODEUNARY_HPP */
