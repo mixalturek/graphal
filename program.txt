@@ -1,4 +1,4 @@
-/*
+/* 
 Uvažovat paralelní hrany???!!!
 	trojrozměrné pole hran u matice sousednosti
 	jak označovat hrany? [počátek][konec] už není jednoznačné
