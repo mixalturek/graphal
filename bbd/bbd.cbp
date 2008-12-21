@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="bbd" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="debug">
+				<Option output="bin/debug/bbd" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="release">
+				<Option output="bin/release/bbd" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wmain" />
+			<Add option="-pedantic" />
+			<Add option="-W" />
+			<Add option="-ansi" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="baseobject.cpp" />
+		<Unit filename="baseobject.hpp" />
+		<Unit filename="context.cpp" />
+		<Unit filename="context.hpp" />
+		<Unit filename="general.hpp" />
+		<Unit filename="init_static_objects.cpp" />
+		<Unit filename="lexan.cpp" />
+		<Unit filename="lexan.hpp" />
+		<Unit filename="lexaniterator.cpp" />
+		<Unit filename="lexaniterator.hpp" />
+		<Unit filename="lexaniteratorfile.cpp" />
+		<Unit filename="lexaniteratorfile.hpp" />
+		<Unit filename="lexaniteratorstring.cpp" />
+		<Unit filename="lexaniteratorstring.hpp" />
+		<Unit filename="lexantokens.hpp" />
+		<Unit filename="logger.cpp" />
+		<Unit filename="logger.hpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="node.cpp" />
+		<Unit filename="node.hpp" />
+		<Unit filename="nodeunary.cpp" />
+		<Unit filename="nodeunary.hpp" />
+		<Unit filename="nodeunaryminus.cpp" />
+		<Unit filename="nodeunaryminus.hpp" />
+		<Unit filename="tests.cpp" />
+		<Unit filename="tests.hpp" />
+		<Unit filename="value.cpp" />
+		<Unit filename="value.hpp" />
+		<Unit filename="valuebool.cpp" />
+		<Unit filename="valuebool.hpp" />
+		<Unit filename="valueedge.cpp" />
+		<Unit filename="valueedge.hpp" />
+		<Unit filename="valueedgeset.cpp" />
+		<Unit filename="valueedgeset.hpp" />
+		<Unit filename="valuefloat.cpp" />
+		<Unit filename="valuefloat.hpp" />
+		<Unit filename="valuegraph.cpp" />
+		<Unit filename="valuegraph.hpp" />
+		<Unit filename="valueint.cpp" />
+		<Unit filename="valueint.hpp" />
+		<Unit filename="valuenull.cpp" />
+		<Unit filename="valuenull.hpp" />
+		<Unit filename="valuereference.cpp" />
+		<Unit filename="valuereference.hpp" />
+		<Unit filename="valuestring.cpp" />
+		<Unit filename="valuestring.hpp" />
+		<Unit filename="valuestruct.cpp" />
+		<Unit filename="valuestruct.hpp" />
+		<Unit filename="valuevertex.cpp" />
+		<Unit filename="valuevertex.hpp" />
+		<Unit filename="valuevertexset.cpp" />
+		<Unit filename="valuevertexset.hpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<lib_finder disable_auto="1" />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
+			</wxsmith>
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
