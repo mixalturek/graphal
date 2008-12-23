@@ -47,6 +47,9 @@ public:
 	virtual bool     toBool(void) const { return !m_val.empty(); }
 	virtual string   toString(void) const;
 
+	virtual PTR_Value execute(const Context& context);
+	virtual void dump(ostream& os, uint indent) const;
+
 	virtual PTR_Value add(const Value&      right) const; // +
 	virtual PTR_Value sub(const Value&      right) const; // -
 	virtual PTR_Value mult(const Value&     right) const; // *
@@ -66,5 +69,7 @@ private:
 	map<KEY_TYPE, Value*> m_val;
 	static ValueNull m_notfound; // Used in getProperty() to return NULL like variable
 };
+
+ostream& operator<<(ostream& os, const ValueStruct& node);
 
 #endif /* VARIABLESTRUCT_HPP */

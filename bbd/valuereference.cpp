@@ -43,6 +43,27 @@ ValueReference::~ValueReference()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueReference::execute(const Context& context)
+{
+	return PTR_Value(new ValueReference());
+}
+
+void ValueReference::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueReference />" << endl;
+}
+
+ostream& operator<<(ostream& os, const ValueReference& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 PTR_Value ValueReference::add(const Value& right)        const { return right.add(*this); } // +
 PTR_Value ValueReference::sub(const Value& right)        const { return right.sub(*this); } // -
 PTR_Value ValueReference::mult(const Value& right)       const { return right.mult(*this); } // *

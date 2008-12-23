@@ -37,6 +37,9 @@ public:
 	virtual bool     toBool(void) const { return !m_val.empty(); }
 	virtual string toString(void) const { return m_val; }
 
+	virtual PTR_Value execute(const Context& context);
+	virtual void dump(ostream& os, uint indent) const;
+
 	virtual PTR_Value add(const Value&     right) const; // +
 	virtual PTR_Value sub(const Value&     right) const; // -
 	virtual PTR_Value mult(const Value&    right) const; // *
@@ -59,5 +62,7 @@ public:
 private:
 	string m_val;
 };
+
+ostream& operator<<(ostream& os, const ValueString& node);
 
 #endif /* VARIABLESTRING_HPP */

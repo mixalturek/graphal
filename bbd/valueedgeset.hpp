@@ -35,6 +35,9 @@ public:
 	ValueEdgeSet(ValueGraph* graph);
 	virtual ~ValueEdgeSet();
 
+	virtual PTR_Value execute(const Context& context);
+	virtual void dump(ostream& os, uint indent) const;
+
 	virtual bool     toBool(void) const { return !m_edges.empty(); }
 	virtual string toString(void) const { return "ValueEdgeSet"; } // TODO:
 
@@ -65,5 +68,7 @@ public:
 	virtual PTR_Value gt(const Value&       right) const; // >
 	virtual PTR_Value logNOT(void)                 const; // !
 };
+
+ostream& operator<<(ostream& os, const ValueEdgeSet& node);
 
 #endif /* VALUEEDGESET_HPP */

@@ -39,6 +39,9 @@ public:
 	virtual bool     toBool(void) const { return !m_vertices.empty(); }
 	virtual string toString(void) const { return "ValueVertexSet"; } // TODO:
 
+	virtual PTR_Value execute(const Context& context);
+	virtual void dump(ostream& os, uint indent) const;
+
 	void addVertex(ValueVertex* vertex);
 	void deleteVertex(ValueVertex* vertex);
 	uint getNumVertices(void) const { return m_vertices.size(); }
@@ -66,5 +69,7 @@ public:
 	virtual PTR_Value gt(const Value&         right) const; // >
 	virtual PTR_Value logNOT(void)                   const; // !
 };
+
+ostream& operator<<(ostream& os, const ValueVertexSet& node);
 
 #endif /* VALUEVERTEXSET_HPP */

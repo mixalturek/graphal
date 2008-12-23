@@ -37,6 +37,9 @@ public:
 	virtual bool     isNull(void) const { return true; }
 	virtual string toString(void) const { return "NULL"; }
 
+	virtual PTR_Value execute(const Context& context);
+	virtual void dump(ostream& os, uint indent) const;
+
 	virtual PTR_Value add(const Value&    right) const; // +
 	virtual PTR_Value sub(const Value&    right) const; // -
 	virtual PTR_Value mult(const Value&   right) const; // *
@@ -52,5 +55,7 @@ public:
 	virtual PTR_Value gt(const Value&     right) const; // >
 	virtual PTR_Value logNOT(void)               const; // !
 };
+
+ostream& operator<<(ostream& os, const ValueNull& node);
 
 #endif /* VARIABLENULL_HPP */

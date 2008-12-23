@@ -1,5 +1,5 @@
 /*
- *      nodeunaryminus.hpp
+ *      nodeunarynot.hpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -26,30 +26,30 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef NODEUNARYMINUS_HPP
-#define NODEUNARYMINUS_HPP
+#ifndef NODEUNARYNOT_HPP
+#define NODEUNARYNOT_HPP
 
 #include "general.hpp"
 #include "nodeunary.hpp"
 
-class NodeUnaryMinus : public NodeUnary
+class NodeUnaryNot : public NodeUnary
 {
 public:
-	NodeUnaryMinus(Node* next);
-	virtual ~NodeUnaryMinus(void);
+	NodeUnaryNot(Node* next);
+	virtual ~NodeUnaryNot(void);
 
-	virtual string toString(void) const { return "NodeUnaryMinus"; }
+	virtual string toString(void) const { return "NodeUnaryNot"; }
 
 	virtual PTR_Value execute(const Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:
-	NodeUnaryMinus(void);
-	NodeUnaryMinus(const NodeUnaryMinus& object);
-	NodeUnaryMinus& operator=(const NodeUnaryMinus& object);
+	NodeUnaryNot(void);
+	NodeUnaryNot(const NodeUnaryNot& object);
+	NodeUnaryNot& operator=(const NodeUnaryNot& object);
 };
 
-ostream& operator<<(ostream& os, const NodeUnaryMinus& node);
+ostream& operator<<(ostream& os, const NodeUnaryNot& node);
 
-#endif /* NODEUNARYMINUS_HPP */
+#endif /* NODEUNARYNOT_HPP */
 

@@ -59,6 +59,8 @@
 		<Unit filename="nodeunary.hpp" />
 		<Unit filename="nodeunaryminus.cpp" />
 		<Unit filename="nodeunaryminus.hpp" />
+		<Unit filename="nodeunarynot.cpp" />
+		<Unit filename="nodeunarynot.hpp" />
 		<Unit filename="tests.cpp" />
 		<Unit filename="tests.hpp" />
 		<Unit filename="value.cpp" />

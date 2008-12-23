@@ -33,7 +33,10 @@
 #include "valuevertexset.hpp"
 #include "valueedgeset.hpp"
 #include "lexan.hpp"
+#include "context.hpp"
 #include "nodeunaryminus.hpp"
+#include "nodeunarynot.hpp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -94,7 +97,7 @@ void Tests::run(void)
 	failed += !testLexanString();
 	failed += !testLexanComments();
 	failed += !testLexanSourceCode();
-	failed += !testNodeUnaryMinus();
+	failed += !testNodeUnary();
 
 	// Template
 	// failed += !test();
@@ -682,13 +685,21 @@ bool Tests::testLexanSourceCode(void)
 // TODO: include, define...
 
 
-bool Tests::testNodeUnaryMinus(void)
+bool Tests::testNodeUnary(void)
 {
 	bool result = true;
 
-	// TODO: virtual string toString(void) const = 0;
-	// TODO: private constructor
-	// NodeUnaryMinus minus;
+	Context con;
+	string str;
+
+	NodeUnaryMinus uminus(new ValueInt(10));
+	str = uminus.execute(con)->toString();
+	verify(str == "-10");
+
+	NodeUnaryNot unot(new ValueBool(true));
+	str = unot.execute(con)->toString();
+	verify(str == "false");
+
 
 	return testResult(__FUNCTION__, result);
 }

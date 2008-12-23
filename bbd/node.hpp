@@ -42,9 +42,11 @@ public:
 	virtual void dump(ostream& os, uint indent) const = 0;
 	static void dumpIndent(ostream& os, uint indent);
 
+/* TODO: resolve
 private:
 	Node(const Node& object);
 	Node& operator=(const Node& object);
+*/
 };
 
 #endif /* NODE_HPP */

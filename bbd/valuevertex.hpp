@@ -49,7 +49,10 @@ public:
 	virtual ~ValueVertex();
 
 	virtual bool     toBool(void) const { return true; }
-	virtual string toString(void) const { return "ValueVertex"; } // TODO:
+	virtual string toString(void) const { return "ValueVertex"; }
+
+	virtual PTR_Value execute(const Context& context);
+	virtual void dump(ostream& os, uint indent) const;
 
 	set<EDGE_WITH_ORIENTATION>* getEdges(void) { return m_edges; }
 
@@ -93,5 +96,7 @@ private:
 	set<EDGE_WITH_ORIENTATION>* m_edges;
 	ValueStruct* m_properties;
 };
+
+ostream& operator<<(ostream& os, const ValueVertex& node);
 
 #endif

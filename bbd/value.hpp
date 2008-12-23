@@ -25,7 +25,7 @@
 
 #include <memory>
 #include "general.hpp"
-#include "baseobject.hpp"
+#include "node.hpp"
 
 class Value;
 class ValueNull;
@@ -45,7 +45,7 @@ class ValueEdgeSet;
 typedef auto_ptr<Value> PTR_Value;
 
 
-class Value : public BaseObject
+class Value : public Node
 {
 public:
 	Value();

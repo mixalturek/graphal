@@ -36,6 +36,9 @@ public:
 	ValueGraph(bool oriented = false);
 	virtual ~ValueGraph();
 
+	virtual PTR_Value execute(const Context& context);
+	virtual void dump(ostream& os, uint indent) const;
+
 	virtual bool     toBool(void) const { return !m_vertices.empty(); }
 	virtual string toString(void) const { return "ValueGraph"; } // TODO:
 
@@ -73,5 +76,7 @@ private:
 	set<ValueVertex*> m_vertices;
 	set<ValueEdge*> m_edges;
 };
+
+ostream& operator<<(ostream& os, const ValueGraph& node);
 
 #endif

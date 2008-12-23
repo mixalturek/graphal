@@ -1,5 +1,5 @@
 /*
- *      nodeunaryminus.hpp
+ *      nodeunarynot.cpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -26,30 +26,53 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef NODEUNARYMINUS_HPP
-#define NODEUNARYMINUS_HPP
+#include "nodeunarynot.hpp"
+#include "context.hpp"
+#include "value.hpp"
 
-#include "general.hpp"
-#include "nodeunary.hpp"
 
-class NodeUnaryMinus : public NodeUnary
+/////////////////////////////////////////////////////////////////////////////
+////
+
+NodeUnaryNot::NodeUnaryNot(Node* next)
+	: NodeUnary(next)
 {
-public:
-	NodeUnaryMinus(Node* next);
-	virtual ~NodeUnaryMinus(void);
 
-	virtual string toString(void) const { return "NodeUnaryMinus"; }
+}
 
-	virtual PTR_Value execute(const Context& context);
-	virtual void dump(ostream& os, uint indent) const;
+NodeUnaryNot::~NodeUnaryNot(void)
+{
 
-private:
-	NodeUnaryMinus(void);
-	NodeUnaryMinus(const NodeUnaryMinus& object);
-	NodeUnaryMinus& operator=(const NodeUnaryMinus& object);
-};
+}
 
-ostream& operator<<(ostream& os, const NodeUnaryMinus& node);
 
-#endif /* NODEUNARYMINUS_HPP */
+/////////////////////////////////////////////////////////////////////////////
+////
+
+
+PTR_Value NodeUnaryNot::execute(const Context& context)
+{
+	return m_next->execute(context)->logNOT();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void NodeUnaryNot::dump(ostream& os, uint indent) const
+{
+	dumpIndent(os, indent);
+	os << "<NodeUnaryNot>" << endl;
+
+	m_next->dump(os, indent+1);
+
+	dumpIndent(os, indent);
+	os << "</NodeUnaryNot>" << endl;
+}
+
+ostream& operator<<(ostream& os, const NodeUnaryNot& node)
+{
+	node.dump(os, 0);
+	return os;
+}
 

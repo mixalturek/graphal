@@ -40,6 +40,9 @@ public:
 	virtual bool     toBool(void) const { return true; }
 	virtual string toString(void) const { return "ValueEdge"; } // TODO:
 
+	virtual PTR_Value execute(const Context& context);
+	virtual void dump(ostream& os, uint indent) const;
+
 	ValueVertex* getBeginVertex(void) { return m_begin; }
 	ValueVertex* getEndVertex(void)   { return m_end; }
 
@@ -75,5 +78,7 @@ private:
 	ValueVertex* m_end;
 	ValueStruct* m_properties;
 };
+
+ostream& operator<<(ostream& os, const ValueEdge& node);
 
 #endif

@@ -49,6 +49,27 @@ ValueInt::~ValueInt()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueInt::execute(const Context& context)
+{
+	return PTR_Value(new ValueInt(m_val));
+}
+
+void ValueInt::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueInt value=\"" << toString() << "\" />" << endl;
+}
+
+ostream& operator<<(ostream& os, const ValueInt& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 // +
 PTR_Value ValueInt::add(const Value& right)       const { return right.add(*this); }
 PTR_Value ValueInt::add(const ValueBool& left)    const { return PTR_Value(new ValueInt(left.getVal() + m_val)); }

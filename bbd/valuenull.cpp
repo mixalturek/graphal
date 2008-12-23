@@ -48,6 +48,27 @@ ValueNull::~ValueNull()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueNull::execute(const Context& context)
+{
+	return PTR_Value(new ValueNull());
+}
+
+void ValueNull::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueNull />" << endl;
+}
+
+ostream& operator<<(ostream& os, const ValueNull& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 // TODO: "Warning: Operation argument is NULL variable"
 
 PTR_Value ValueNull::add(const Value& right)   const { return right.add(*this); } // +

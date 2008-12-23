@@ -48,6 +48,27 @@ ValueString::~ValueString()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueString::execute(const Context& context)
+{
+	return PTR_Value(new ValueString(m_val));
+}
+
+void ValueString::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueString value=\"" << toString() << "\" />" << endl;
+}
+
+ostream& operator<<(ostream& os, const ValueString& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 PTR_Value ValueString::add(const Value& right)     const { return right.add(*this); } // +
 PTR_Value ValueString::sub(const Value& right)     const { return right.sub(*this); } // -
 PTR_Value ValueString::mult(const Value& right)    const { return right.mult(*this); } // *

@@ -64,6 +64,27 @@ void ValueVertexSet::deleteVertex(ValueVertex* vertex)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueVertexSet::execute(const Context& context)
+{
+	return PTR_Value(new ValueVertexSet(*this));
+}
+
+void ValueVertexSet::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueVertexSet />" << endl;// TODO:
+}
+
+ostream& operator<<(ostream& os, const ValueVertexSet& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 PTR_Value ValueVertexSet::add(const Value& right)        const { return right.add(*this); } // +
 PTR_Value ValueVertexSet::sub(const Value& right)        const { return right.sub(*this); } // -
 PTR_Value ValueVertexSet::mult(const Value& right)       const { return right.mult(*this); } // *

@@ -64,6 +64,27 @@ void ValueEdgeSet::deleteEdge(ValueEdge* edge)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueEdgeSet::execute(const Context& context)
+{
+	return PTR_Value(new ValueEdgeSet(*this));
+}
+
+void ValueEdgeSet::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueEdgeSet />" << endl;// TODO:
+}
+
+ostream& operator<<(ostream& os, const ValueEdgeSet& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 PTR_Value ValueEdgeSet::add(const Value& right)      const { return right.add(*this); } // +
 PTR_Value ValueEdgeSet::sub(const Value& right)      const { return right.sub(*this); } // -
 PTR_Value ValueEdgeSet::mult(const Value& right)     const { return right.mult(*this); } // *

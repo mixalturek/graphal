@@ -34,7 +34,8 @@
 
 
 ValueStruct::ValueStruct()
-	: Value()
+	: Value(),
+	m_val()
 {
 
 }
@@ -90,6 +91,27 @@ Value* ValueStruct::getItem(const string& name)
 bool ValueStruct::isItemSet(const string& name)
 {
 	return m_val.count(name);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+PTR_Value ValueStruct::execute(const Context& context)
+{
+	return PTR_Value(new ValueStruct(*this));// TODO: deep copy!
+}
+
+void ValueStruct::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueStruct value=\"" << toString() << "\" />" << endl;// TODO: dump all
+}
+
+ostream& operator<<(ostream& os, const ValueStruct& node)
+{
+	node.dump(os, 0);
+	return os;
 }
 
 

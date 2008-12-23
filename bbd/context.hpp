@@ -32,6 +32,8 @@ public:
 	Context();
 	virtual ~Context();
 
+	virtual string toString(void) const { return "Context"; }
+
 private:
 	/* add your private declarations */
 };

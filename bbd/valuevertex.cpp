@@ -115,6 +115,27 @@ void ValueVertex::invertOrientation(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueVertex::execute(const Context& context)
+{
+	return PTR_Value(new ValueVertex(*this));// TODO: deep copy!
+}
+
+void ValueVertex::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueVertex />" << endl;// TODO:
+}
+
+ostream& operator<<(ostream& os, const ValueVertex& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 PTR_Value ValueVertex::add(const Value& right)     const { return right.add(*this); } // +
 PTR_Value ValueVertex::sub(const Value& right)     const { return right.sub(*this); } // -
 PTR_Value ValueVertex::mult(const Value& right)    const { return right.mult(*this); } // *

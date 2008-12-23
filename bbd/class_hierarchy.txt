@@ -2,6 +2,8 @@ BaseObject
 	Context (TODO)
 	Node (interface)
 		NodeUnary (interface)
+			NodeUnaryMinus
+			NodeUnaryNot
 			+ subclasses (TODO)
 		NodeBinary (interface, TODO)
 			+ subclasses (TODO)

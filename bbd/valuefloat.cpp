@@ -49,6 +49,27 @@ ValueFloat::~ValueFloat()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueFloat::execute(const Context& context)
+{
+	return PTR_Value(new ValueFloat(m_val));
+}
+
+void ValueFloat::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueFloat value=\"" << toString() << "\" />" << endl;
+}
+
+ostream& operator<<(ostream& os, const ValueFloat& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 // +
 PTR_Value ValueFloat::add(const Value& right)       const { return right.add(*this); }
 PTR_Value ValueFloat::add(const ValueBool& left)    const { return PTR_Value(new ValueFloat(left.getVal() + m_val)); }

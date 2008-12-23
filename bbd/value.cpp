@@ -38,6 +38,7 @@
 ////
 
 Value::Value()
+	: Node()
 {
 //	cout << "contructor" << endl;
 }

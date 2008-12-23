@@ -58,6 +58,27 @@ void ValueEdge::invertOrientation(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueEdge::execute(const Context& context)
+{
+	return PTR_Value(new ValueEdge(*this));
+}
+
+void ValueEdge::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueEdge />" << endl;// TODO:
+}
+
+ostream& operator<<(ostream& os, const ValueEdge& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 PTR_Value ValueEdge::add(const Value& right)   const { return right.add(*this); } // +
 PTR_Value ValueEdge::sub(const Value& right)   const { return right.sub(*this); } // -
 PTR_Value ValueEdge::mult(const Value& right)  const { return right.mult(*this); } // *

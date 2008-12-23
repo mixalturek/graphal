@@ -117,6 +117,27 @@ void ValueGraph::invertEdgesOrientation(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueGraph::execute(const Context& context)
+{
+	return PTR_Value(new ValueGraph(*this));// TODO: deep copy???
+}
+
+void ValueGraph::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueGraph />" << endl;// TODO:
+}
+
+ostream& operator<<(ostream& os, const ValueGraph& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 PTR_Value ValueGraph::add(const Value& right)    const { return right.add(*this); } // +
 PTR_Value ValueGraph::sub(const Value& right)    const { return right.sub(*this); } // -
 PTR_Value ValueGraph::mult(const Value& right)   const { return right.mult(*this); } // *

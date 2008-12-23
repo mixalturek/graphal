@@ -49,6 +49,27 @@ ValueBool::~ValueBool()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+PTR_Value ValueBool::execute(const Context& context)
+{
+	return PTR_Value(new ValueBool(m_val));
+}
+
+void ValueBool::dump(ostream& os, uint indent) const
+{
+	this->dumpIndent(os, indent);
+	os << "<ValueBool value=\"" << toString() << "\" />" << endl;
+}
+
+ostream& operator<<(ostream& os, const ValueBool& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 // +
 PTR_Value ValueBool::add(const Value& right)       const { return right.add(*this); }
 PTR_Value ValueBool::add(const ValueBool& left)    const { return PTR_Value(new ValueBool(left.getVal() + m_val)); }
