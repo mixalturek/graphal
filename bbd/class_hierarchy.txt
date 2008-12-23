@@ -2,10 +2,14 @@ BaseObject
 	Context (TODO)
 	Node (interface)
 		NodeUnary (interface)
-			NodeUnaryMinus
+			NodeUnarySub
 			NodeUnaryNot
-			+ subclasses (TODO)
+			NodeUnaryIncPref (TODO)
+			NodeUnaryIncPost (TODO)
+			NodeUnaryDecPref (TODO)
+			NodeUnaryDecPost (TODO)
 		NodeBinary (interface, TODO)
+			NodeBinaryAdd
 			+ subclasses (TODO)
 		NodeJump (TODO)
 		NodeIfElse (TODO)

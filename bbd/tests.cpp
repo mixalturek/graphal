@@ -34,8 +34,9 @@
 #include "valueedgeset.hpp"
 #include "lexan.hpp"
 #include "context.hpp"
-#include "nodeunaryminus.hpp"
+#include "nodeunarysub.hpp"
 #include "nodeunarynot.hpp"
+#include "nodebinaryadd.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -98,6 +99,7 @@ void Tests::run(void)
 	failed += !testLexanComments();
 	failed += !testLexanSourceCode();
 	failed += !testNodeUnary();
+	failed += !testNodeBinary();
 
 	// Template
 	// failed += !test();
@@ -692,7 +694,7 @@ bool Tests::testNodeUnary(void)
 	Context con;
 	string str;
 
-	NodeUnaryMinus uminus(new ValueInt(10));
+	NodeUnarySub uminus(new ValueInt(10));
 	str = uminus.execute(con)->toString();
 	verify(str == "-10");
 
@@ -700,6 +702,29 @@ bool Tests::testNodeUnary(void)
 	str = unot.execute(con)->toString();
 	verify(str == "false");
 
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testNodeBinary(void)
+{
+	bool result = true;
+
+	Context con;
+	string str;
+
+	NodeBinaryAdd add(new ValueInt(10), new ValueInt(5));
+	str = add.execute(con)->toString();
+	verify(str == "15");
+
+	NodeBinaryAdd add2(new ValueInt(10), new ValueFloat(5.1f));
+	str = add2.execute(con)->toString();
+	verify(str == "15.1");
+
+	NodeBinaryAdd addsub(new ValueInt(10), new NodeUnarySub(new ValueFloat(5.1f)));
+	str = addsub.execute(con)->toString();
+	verify(str == "4.9");
 
 	return testResult(__FUNCTION__, result);
 }
