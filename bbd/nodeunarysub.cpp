@@ -1,5 +1,5 @@
 /*
- *      nodeunaryminus.cpp
+ *      nodeunarysub.cpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -26,7 +26,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "nodeunaryminus.hpp"
+#include "nodeunarysub.hpp"
 #include "context.hpp"
 #include "value.hpp"
 
@@ -34,13 +34,13 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-NodeUnaryMinus::NodeUnaryMinus(Node* next)
+NodeUnarySub::NodeUnarySub(Node* next)
 	: NodeUnary(next)
 {
 
 }
 
-NodeUnaryMinus::~NodeUnaryMinus(void)
+NodeUnarySub::~NodeUnarySub(void)
 {
 
 }
@@ -50,7 +50,7 @@ NodeUnaryMinus::~NodeUnaryMinus(void)
 ////
 
 
-PTR_Value NodeUnaryMinus::execute(const Context& context)
+PTR_Value NodeUnarySub::execute(const Context& context)
 {
 	return m_next->execute(context)->subUn();
 }
@@ -59,18 +59,18 @@ PTR_Value NodeUnaryMinus::execute(const Context& context)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void NodeUnaryMinus::dump(ostream& os, uint indent) const
+void NodeUnarySub::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<NodeUnaryMinus>" << endl;
+	os << "<NodeUnarySub>" << endl;
 
 	m_next->dump(os, indent+1);
 
 	dumpIndent(os, indent);
-	os << "</NodeUnaryMinus>" << endl;
+	os << "</NodeUnarySub>" << endl;
 }
 
-ostream& operator<<(ostream& os, const NodeUnaryMinus& node)
+ostream& operator<<(ostream& os, const NodeUnarySub& node)
 {
 	node.dump(os, 0);
 	return os;
