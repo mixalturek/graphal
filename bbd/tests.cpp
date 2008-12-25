@@ -40,6 +40,7 @@
 #include "nodeblock.hpp"
 #include "nodecondition.hpp"
 #include "nodevariable.hpp"
+#include "stringtable.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -105,6 +106,7 @@ void Tests::run(void)
 	failed += !testNodeBinary();
 	failed += !testNodeBlock();
 	failed += !testNodeVariable();
+	failed += !testStringTable();
 
 	// Template
 	// failed += !test();
@@ -771,6 +773,37 @@ bool Tests::testNodeVariable(void)
 	NodeBinaryAdd add(new ValueInt(10), new NodeVariable(0));
 	str = add.execute(con)->toString();
 	verify(str == "13.14");
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool Tests::testStringTable(void)
+{
+	bool result = true;
+
+	StringTable table;
+	identifier id;
+	verify(table.getNumStrings() == 0);
+
+	id = table.getID("bagr");
+	verify(table.getNumStrings() == 1);
+	verify(table.getString(id) == "bagr");
+
+	id = table.getID("test");
+	verify(table.getNumStrings() == 2);
+	verify(table.getString(id) == "test");
+
+	id = table.getID("bagr");
+	verify(table.getNumStrings() == 2);
+	verify(table.getString(id) == "bagr");
+
+	id = table.getID("test");
+	verify(table.getNumStrings() == 2);
+	verify(table.getString(id) == "test");
 
 	return testResult(__FUNCTION__, result);
 }

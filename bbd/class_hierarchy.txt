@@ -49,6 +49,7 @@ BaseObject
 			ValueEdge
 			ValueVertexSet
 			ValueEdgeSet
+	StringTable
 	Logger (singleton)
 	Lexan
 	LexanIterator (interface)

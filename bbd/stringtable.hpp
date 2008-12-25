@@ -1,5 +1,5 @@
 /*
- *      tests.hpp
+ *      stringtable.hpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -20,49 +20,32 @@
  */
 
 
-#ifndef TESTS_HPP
-#define TESTS_HPP
+#ifndef STRINGTABLE_HPP
+#define STRINGTABLE_HPP
 
+#include <vector>
 #include "general.hpp"
 #include "baseobject.hpp"
 
-class Tests : public BaseObject
+
+class StringTable : public BaseObject
 {
 public:
-	Tests();
-	virtual ~Tests();
+	StringTable(uint expectedsize = 100);
+	virtual ~StringTable();
 
-	virtual string toString(void) const { return "Tests"; }
+	virtual string toString(void) const { return "StringTable"; }
+	virtual void dump(ostream& os, uint indent) const;
 
-	void run(void);
+	identifier getID(const string& str);
+	string& getString(identifier id);
+
+	uint getNumStrings(void) const { return m_data.size(); }
 
 private:
-	bool testResult(const string& testName, bool result);
-
-#ifdef CHECK_MEMORY_LEAKS
-	bool testMemoryLeaks(void);
-#endif // CHECK_MEMORY_LEAKS
-
-	bool testDoubleDispatching(void);
-	bool testValueStruct(void);
-	bool testGraph(void);
-	bool testGraphSet(void);
-	bool testGraphInvertEdgesOrientation(void);
-	bool testLexanTerminalSymbols(void);
-	bool testLexanInt(void);
-	bool testLexanFloat(void);
-	bool testLexanString(void);
-	bool testLexanComments(void);
-	bool testLexanSourceCode(void);
-	bool testNodeUnary(void);
-	bool testNodeBinary(void);
-	bool testNodeBlock(void);
-	bool testNodeVariable(void);
-	bool testStringTable(void);
-
-	// Template
-	// bool test(void);
-
+	vector<string> m_data;
 };
 
-#endif /* TESTS_HPP */
+ostream& operator<<(ostream& os, const StringTable& node);
+
+#endif // STRINGTABLE_HPP
