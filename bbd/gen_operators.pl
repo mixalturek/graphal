@@ -169,11 +169,16 @@ END_OF_CPP
 
 sub generateBinaryOperatorClass
 {
-	my ($classname, $operation) = @_;
+	my ($classname, $operation, $include) = @_;
 
 	my $hpp_filename = lc($classname).'.hpp';
 	my $cpp_filename = lc($classname).'.cpp';
 	my $hpp_define = uc($classname).'_HPP';
+
+	if(!defined $include)
+	{
+		$include = '';
+	}
 
 	my $hpp_code = <<END_OF_HPP;
 /*
@@ -262,7 +267,7 @@ END_OF_HPP
  *                           Don't update directly                          *
  *                                                                          *
  ****************************************************************************/
-
+$include
 #include "$hpp_filename"
 #include "context.hpp"
 #include "value.hpp"
@@ -351,5 +356,14 @@ generateBinaryOperatorClass('NodeBinaryLt', 'return m_left->execute(context)->lt
 generateBinaryOperatorClass('NodeBinaryGt', 'return m_left->execute(context)->gt(*(m_right->execute(context)));');
 generateBinaryOperatorClass('NodeBinaryAnd', 'return m_left->execute(context)->logAND(*(m_right->execute(context)));');
 generateBinaryOperatorClass('NodeBinaryOr', 'return m_left->execute(context)->logOR(*(m_right->execute(context)));');
+
+my $code = <<END_OF_CODE
+NodeVariable* var = dynamic_cast<NodeVariable*>(m_left);
+	assert(var != NULL);
+	return var->setValue(context, m_right->execute(context).release());
+END_OF_CODE
+;
+
+generateBinaryOperatorClass('NodeBinaryAss', $code, "\n#include <cassert>\n#include \"nodevariable.hpp\"");
 
 0;
