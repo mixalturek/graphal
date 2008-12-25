@@ -1,5 +1,5 @@
 /*
- *      general.hpp
+ *      nodeblock.cpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -20,46 +20,60 @@
  */
 
 
-#ifndef __GENERAL_HPP__
-#define __GENERAL_HPP__
-
-/////////////////////////////////////////////////////////////////////////////
-//// Compiler switches
-
-#define DEBUG
-#define CHECK_MEMORY_LEAKS
+#include "nodeblock.hpp"
+#include "valuenull.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
-//// Macros
+////
 
-// gettext
-#define _(str) (str)
+NodeBlock::NodeBlock()
+	: Node(),
+	m_commands()
+{
 
-// throw alias
-#ifdef DEBUG
-#define THROW(obj)                                         \
-{                                                          \
-	cout << "[exception] " << __FILE__ << ":" << __LINE__  \
-		<< " function " << __FUNCTION__ << "()" << endl;   \
-	throw (obj);                                           \
 }
-#else
-#define THROW(obj) { throw (obj); }
-#endif
+
+NodeBlock::~NodeBlock()
+{
+	list<Node*>::iterator it;
+
+	for(it = m_commands.begin(); it != m_commands.end(); it++)
+	{
+		delete (*it);
+		*it = NULL;
+	}
+
+	m_commands.clear();
+}
 
 
 /////////////////////////////////////////////////////////////////////////////
-//// Includes
+////
 
-#include <iostream>
-using namespace std;
+PTR_Value NodeBlock::execute(const Context& context)
+{
+	// TODO: set position in the code to the context
 
+	list<Node*>::iterator it;
 
-/////////////////////////////////////////////////////////////////////////////
-//// Data types
+	for(it = m_commands.begin(); it != m_commands.end(); it++)
+		(*it)->execute(context);
 
-typedef unsigned int uint;
-typedef unsigned int identifier;// Variable and function name ID
+	return PTR_Value(new ValueNull());
+}
 
-#endif
+void NodeBlock::dump(ostream& os, uint indent) const
+{
+	list<Node*>::const_iterator it;
+
+	for(it = m_commands.begin(); it != m_commands.end(); it++)
+		(*it)->dump(os, indent);
+}
+
+ostream& operator<<(ostream& os, const NodeBlock& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+

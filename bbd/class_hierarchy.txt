@@ -29,9 +29,9 @@ BaseObject
 			NodeBinaryAssDiv (TODO)
 			NodeBinaryAssMod (TODO)
 		NodeJump (TODO)
-		NodeIfElse (TODO)
-		NodeLoop (TODO)
-		NodeBlock (TODO)
+		NodeCondition
+		NodeLoop
+		NodeBlock
 		NodeEmptyCommand (TODO)
 		NodeFuncCall (TODO)
 		NodeFunction (TODO)

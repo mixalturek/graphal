@@ -93,7 +93,7 @@ public:
 
 private:
 	ValueGraph* m_graph;
-	set<EDGE_WITH_ORIENTATION>* m_edges;
+	set<EDGE_WITH_ORIENTATION>* m_edges;// TODO: remove orientation
 	ValueStruct* m_properties;
 };
 

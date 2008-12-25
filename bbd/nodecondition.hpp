@@ -1,5 +1,5 @@
 /*
- *      tests.hpp
+ *      nodecondition.hpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -20,47 +20,32 @@
  */
 
 
-#ifndef TESTS_HPP
-#define TESTS_HPP
+#ifndef NODECONDITION_HPP
+#define NODECONDITION_HPP
 
 #include "general.hpp"
-#include "baseobject.hpp"
+#include "node.hpp"
 
-class Tests : public BaseObject
+
+class NodeCondition : public Node
 {
 public:
-	Tests();
-	virtual ~Tests();
+	NodeCondition(Node* condition, Node* if_section, Node* else_section);
+	virtual ~NodeCondition(void);
 
-	virtual string toString(void) const { return "Tests"; }
+	virtual string toString(void) const { return "NodeCondition"; }
 
-	void run(void);
+	virtual PTR_Value execute(const Context& context);
+	virtual void dump(ostream& os, uint indent) const;
 
 private:
-	bool testResult(const string& testName, bool result);
+	NodeCondition(const NodeCondition& object);
+	NodeCondition& operator=(const NodeCondition& object);
 
-#ifdef CHECK_MEMORY_LEAKS
-	bool testMemoryLeaks(void);
-#endif // CHECK_MEMORY_LEAKS
-
-	bool testDoubleDispatching(void);
-	bool testValueStruct(void);
-	bool testGraph(void);
-	bool testGraphSet(void);
-	bool testGraphInvertEdgesOrientation(void);
-	bool testLexanTerminalSymbols(void);
-	bool testLexanInt(void);
-	bool testLexanFloat(void);
-	bool testLexanString(void);
-	bool testLexanComments(void);
-	bool testLexanSourceCode(void);
-	bool testNodeUnary(void);
-	bool testNodeBinary(void);
-	bool testNodeBlock(void);
-
-	// Template
-	// bool test(void);
-
+private:
+	Node* m_condition;
+	Node* m_if_section;
+	Node* m_else_section;// Can be NULL
 };
 
-#endif /* TESTS_HPP */
+#endif // NODECONDITION_HPP

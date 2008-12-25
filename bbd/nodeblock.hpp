@@ -1,5 +1,5 @@
 /*
- *      tests.hpp
+ *      nodeblock.hpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -20,47 +20,38 @@
  */
 
 
-#ifndef TESTS_HPP
-#define TESTS_HPP
+#ifndef NODEBLOCK_HPP
+#define NODEBLOCK_HPP
 
+#include <list>
+#include <cassert>
 #include "general.hpp"
-#include "baseobject.hpp"
+#include "node.hpp"
 
-class Tests : public BaseObject
+
+class NodeBlock : public Node
 {
 public:
-	Tests();
-	virtual ~Tests();
+	NodeBlock(void);
+	virtual ~NodeBlock(void);
 
-	virtual string toString(void) const { return "Tests"; }
+	virtual string toString(void) const { return "NodeBlock"; }
 
-	void run(void);
+	virtual PTR_Value execute(const Context& context);
+	virtual void dump(ostream& os, uint indent) const;
+
+	void pushCommandToFront(Node* node) { assert(node != NULL); m_commands.push_front(node); }
+	void pushCommandToBack(Node* node) { assert(node != NULL); m_commands.push_back(node); }
+	int getNumberOfCommands(void) const { return m_commands.size(); }
 
 private:
-	bool testResult(const string& testName, bool result);
+	NodeBlock(const NodeBlock& object);
+	NodeBlock& operator=(const NodeBlock& object);
 
-#ifdef CHECK_MEMORY_LEAKS
-	bool testMemoryLeaks(void);
-#endif // CHECK_MEMORY_LEAKS
-
-	bool testDoubleDispatching(void);
-	bool testValueStruct(void);
-	bool testGraph(void);
-	bool testGraphSet(void);
-	bool testGraphInvertEdgesOrientation(void);
-	bool testLexanTerminalSymbols(void);
-	bool testLexanInt(void);
-	bool testLexanFloat(void);
-	bool testLexanString(void);
-	bool testLexanComments(void);
-	bool testLexanSourceCode(void);
-	bool testNodeUnary(void);
-	bool testNodeBinary(void);
-	bool testNodeBlock(void);
-
-	// Template
-	// bool test(void);
-
+private:
+	list<Node*> m_commands;
 };
 
-#endif /* TESTS_HPP */
+ostream& operator<<(ostream& os, const NodeBlock& node);
+
+#endif // NODEBLOCK_HPP

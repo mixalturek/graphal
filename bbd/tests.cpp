@@ -37,6 +37,8 @@
 #include "nodeunarysub.hpp"
 #include "nodeunarynot.hpp"
 #include "nodebinaryadd.hpp"
+#include "nodeblock.hpp"
+#include "nodecondition.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -100,6 +102,7 @@ void Tests::run(void)
 	failed += !testLexanSourceCode();
 	failed += !testNodeUnary();
 	failed += !testNodeBinary();
+	failed += !testNodeBlock();
 
 	// Template
 	// failed += !test();
@@ -687,6 +690,9 @@ bool Tests::testLexanSourceCode(void)
 // TODO: include, define...
 
 
+/////////////////////////////////////////////////////////////////////////////
+////
+
 bool Tests::testNodeUnary(void)
 {
 	bool result = true;
@@ -725,6 +731,25 @@ bool Tests::testNodeBinary(void)
 	NodeBinaryAdd addsub(new ValueInt(10), new NodeUnarySub(new ValueFloat(5.1f)));
 	str = addsub.execute(con)->toString();
 	verify(str == "4.9");
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testNodeBlock(void)
+{
+	bool result = true;
+
+	Context con;
+	string str;
+	NodeBlock* bl = new NodeBlock();// delete in cond destructor
+
+	verify(bl->getNumberOfCommands() == 0);
+	bl->pushCommandToBack(new NodeBinaryAdd(new ValueInt(10), new ValueInt(5)));
+	bl->pushCommandToBack(new NodeBinaryAdd(new ValueInt(10), new ValueInt(5)));
+	verify(bl->getNumberOfCommands() == 2);
+
+	NodeCondition cond(new ValueBool(true), bl, NULL);
 
 	return testResult(__FUNCTION__, result);
 }
