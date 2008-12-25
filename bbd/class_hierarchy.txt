@@ -35,6 +35,7 @@ BaseObject
 		NodeEmptyCommand (TODO)
 		NodeFuncCall (TODO)
 		NodeFunction (TODO)
+		NodeVariable
 		Value (interface)
 			ValueNull
 			ValueString
@@ -48,7 +49,6 @@ BaseObject
 			ValueEdge
 			ValueVertexSet
 			ValueEdgeSet
-			ValueVariable (TODO)
 	Logger (singleton)
 	Lexan
 	LexanIterator (interface)

@@ -39,6 +39,7 @@
 #include "nodebinaryadd.hpp"
 #include "nodeblock.hpp"
 #include "nodecondition.hpp"
+#include "nodevariable.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -103,6 +104,7 @@ void Tests::run(void)
 	failed += !testNodeUnary();
 	failed += !testNodeBinary();
 	failed += !testNodeBlock();
+	failed += !testNodeVariable();
 
 	// Template
 	// failed += !test();
@@ -755,8 +757,31 @@ bool Tests::testNodeBlock(void)
 }
 
 
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool Tests::testNodeVariable(void)
+{
+	bool result = true;
+
+	Context con;
+	string str;
+
+	// TODO: NodeVariable::execute() returns ValueFloat(3.14) now
+	NodeBinaryAdd add(new ValueInt(10), new NodeVariable(0));
+	str = add.execute(con)->toString();
+	verify(str == "13.14");
+
+	return testResult(__FUNCTION__, result);
+}
+
+
 /*
 // Template
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 bool Tests::test(void)
 {
 	bool result = true;

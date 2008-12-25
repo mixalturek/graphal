@@ -83,6 +83,12 @@
 		<Unit filename="nodebinaryor.hpp" />
 		<Unit filename="nodebinarysub.cpp" />
 		<Unit filename="nodebinarysub.hpp" />
+		<Unit filename="nodeblock.cpp" />
+		<Unit filename="nodeblock.hpp" />
+		<Unit filename="nodecondition.cpp" />
+		<Unit filename="nodecondition.hpp" />
+		<Unit filename="nodeloop.cpp" />
+		<Unit filename="nodeloop.hpp" />
 		<Unit filename="nodeunary.cpp" />
 		<Unit filename="nodeunary.hpp" />
 		<Unit filename="nodeunarynot.cpp" />
@@ -113,6 +119,8 @@
 		<Unit filename="valuestring.hpp" />
 		<Unit filename="valuestruct.cpp" />
 		<Unit filename="valuestruct.hpp" />
+		<Unit filename="nodevariable.cpp" />
+		<Unit filename="nodevariable.hpp" />
 		<Unit filename="valuevertex.cpp" />
 		<Unit filename="valuevertex.hpp" />
 		<Unit filename="valuevertexset.cpp" />

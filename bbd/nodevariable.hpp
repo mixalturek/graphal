@@ -1,5 +1,5 @@
 /*
- *      tests.hpp
+ *      nodevariable.hpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -20,48 +20,29 @@
  */
 
 
-#ifndef TESTS_HPP
-#define TESTS_HPP
+#ifndef VALUEVARIABLE_HPP
+#define VALUEVARIABLE_HPP
 
+#include <sstream>
 #include "general.hpp"
-#include "baseobject.hpp"
+#include "node.hpp"
 
-class Tests : public BaseObject
+
+class NodeVariable : public Node
 {
 public:
-	Tests();
-	virtual ~Tests();
+	NodeVariable(identifier name);
+	virtual ~NodeVariable(void);
 
-	virtual string toString(void) const { return "Tests"; }
+	virtual string toString(void) const { ostringstream os; os << "NodeVariable(" << m_name << ")"; return os.str(); }
 
-	void run(void);
+	virtual PTR_Value execute(Context& context);
+	virtual void dump(ostream& os, uint indent) const;
 
 private:
-	bool testResult(const string& testName, bool result);
-
-#ifdef CHECK_MEMORY_LEAKS
-	bool testMemoryLeaks(void);
-#endif // CHECK_MEMORY_LEAKS
-
-	bool testDoubleDispatching(void);
-	bool testValueStruct(void);
-	bool testGraph(void);
-	bool testGraphSet(void);
-	bool testGraphInvertEdgesOrientation(void);
-	bool testLexanTerminalSymbols(void);
-	bool testLexanInt(void);
-	bool testLexanFloat(void);
-	bool testLexanString(void);
-	bool testLexanComments(void);
-	bool testLexanSourceCode(void);
-	bool testNodeUnary(void);
-	bool testNodeBinary(void);
-	bool testNodeBlock(void);
-	bool testNodeVariable(void);
-
-	// Template
-	// bool test(void);
-
+	identifier m_name;
 };
 
-#endif /* TESTS_HPP */
+ostream& operator<<(ostream& os, const NodeVariable& node);
+
+#endif // VALUEVARIABLE_HPP
