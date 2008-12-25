@@ -95,6 +95,10 @@
 		<Unit filename="nodeunarynot.hpp" />
 		<Unit filename="nodeunarysub.cpp" />
 		<Unit filename="nodeunarysub.hpp" />
+		<Unit filename="nodevariable.cpp" />
+		<Unit filename="nodevariable.hpp" />
+		<Unit filename="stringtable.cpp" />
+		<Unit filename="stringtable.hpp" />
 		<Unit filename="tests.cpp" />
 		<Unit filename="tests.hpp" />
 		<Unit filename="value.cpp" />
@@ -119,8 +123,6 @@
 		<Unit filename="valuestring.hpp" />
 		<Unit filename="valuestruct.cpp" />
 		<Unit filename="valuestruct.hpp" />
-		<Unit filename="nodevariable.cpp" />
-		<Unit filename="nodevariable.hpp" />
 		<Unit filename="valuevertex.cpp" />
 		<Unit filename="valuevertex.hpp" />
 		<Unit filename="valuevertexset.cpp" />
