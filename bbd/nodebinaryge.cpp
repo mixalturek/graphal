@@ -50,7 +50,7 @@ NodeBinaryGe::~NodeBinaryGe(void)
 ////
 
 
-PTR_Value NodeBinaryGe::execute(const Context& context)
+PTR_Value NodeBinaryGe::execute(Context& context)
 {
 	return m_left->execute(context)->ge(*(m_right->execute(context)));
 }

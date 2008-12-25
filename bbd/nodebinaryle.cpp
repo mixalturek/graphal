@@ -50,7 +50,7 @@ NodeBinaryLe::~NodeBinaryLe(void)
 ////
 
 
-PTR_Value NodeBinaryLe::execute(const Context& context)
+PTR_Value NodeBinaryLe::execute(Context& context)
 {
 	return m_left->execute(context)->le(*(m_right->execute(context)));
 }

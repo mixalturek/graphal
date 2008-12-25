@@ -47,7 +47,7 @@ public:
 	virtual bool     toBool(void) const { return !m_val.empty(); }
 	virtual string   toString(void) const;
 
-	virtual PTR_Value execute(const Context& context);
+	virtual PTR_Value execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 	virtual PTR_Value add(const Value&      right) const; // +

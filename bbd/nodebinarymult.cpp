@@ -50,7 +50,7 @@ NodeBinaryMult::~NodeBinaryMult(void)
 ////
 
 
-PTR_Value NodeBinaryMult::execute(const Context& context)
+PTR_Value NodeBinaryMult::execute(Context& context)
 {
 	return m_left->execute(context)->mult(*(m_right->execute(context)));
 }

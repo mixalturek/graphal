@@ -49,7 +49,7 @@ ValueInt::~ValueInt()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueInt::execute(const Context& context)
+PTR_Value ValueInt::execute(Context& context)
 {
 	return PTR_Value(new ValueInt(m_val));
 }

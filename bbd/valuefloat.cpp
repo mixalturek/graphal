@@ -49,7 +49,7 @@ ValueFloat::~ValueFloat()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueFloat::execute(const Context& context)
+PTR_Value ValueFloat::execute(Context& context)
 {
 	return PTR_Value(new ValueFloat(m_val));
 }

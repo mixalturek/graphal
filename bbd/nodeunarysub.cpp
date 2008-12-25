@@ -50,7 +50,7 @@ NodeUnarySub::~NodeUnarySub(void)
 ////
 
 
-PTR_Value NodeUnarySub::execute(const Context& context)
+PTR_Value NodeUnarySub::execute(Context& context)
 {
 	return m_next->execute(context)->subUn();
 }

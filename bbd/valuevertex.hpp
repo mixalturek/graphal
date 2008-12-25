@@ -51,7 +51,7 @@ public:
 	virtual bool     toBool(void) const { return true; }
 	virtual string toString(void) const { return "ValueVertex"; }
 
-	virtual PTR_Value execute(const Context& context);
+	virtual PTR_Value execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 	set<EDGE_WITH_ORIENTATION>* getEdges(void) { return m_edges; }

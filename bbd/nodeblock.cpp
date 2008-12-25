@@ -51,7 +51,7 @@ NodeBlock::~NodeBlock()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value NodeBlock::execute(const Context& context)
+PTR_Value NodeBlock::execute(Context& context)
 {
 	// TODO: set position in the code to the context
 

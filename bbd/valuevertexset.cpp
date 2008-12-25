@@ -64,7 +64,7 @@ void ValueVertexSet::deleteVertex(ValueVertex* vertex)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueVertexSet::execute(const Context& context)
+PTR_Value ValueVertexSet::execute(Context& context)
 {
 	return PTR_Value(new ValueVertexSet(*this));
 }

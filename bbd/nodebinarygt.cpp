@@ -50,7 +50,7 @@ NodeBinaryGt::~NodeBinaryGt(void)
 ////
 
 
-PTR_Value NodeBinaryGt::execute(const Context& context)
+PTR_Value NodeBinaryGt::execute(Context& context)
 {
 	return m_left->execute(context)->gt(*(m_right->execute(context)));
 }

@@ -115,7 +115,7 @@ void ValueVertex::invertOrientation(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueVertex::execute(const Context& context)
+PTR_Value ValueVertex::execute(Context& context)
 {
 	return PTR_Value(new ValueVertex(*this));// TODO: deep copy!
 }

@@ -43,7 +43,7 @@ ValueReference::~ValueReference()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueReference::execute(const Context& context)
+PTR_Value ValueReference::execute(Context& context)
 {
 	return PTR_Value(new ValueReference());
 }

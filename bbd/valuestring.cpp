@@ -48,7 +48,7 @@ ValueString::~ValueString()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueString::execute(const Context& context)
+PTR_Value ValueString::execute(Context& context)
 {
 	return PTR_Value(new ValueString(m_val));
 }

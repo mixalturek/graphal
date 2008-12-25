@@ -36,7 +36,7 @@ public:
 	ValueGraph(bool oriented = false);
 	virtual ~ValueGraph();
 
-	virtual PTR_Value execute(const Context& context);
+	virtual PTR_Value execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 	virtual bool     toBool(void) const { return !m_vertices.empty(); }

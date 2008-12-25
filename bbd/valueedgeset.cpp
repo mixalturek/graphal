@@ -64,7 +64,7 @@ void ValueEdgeSet::deleteEdge(ValueEdge* edge)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueEdgeSet::execute(const Context& context)
+PTR_Value ValueEdgeSet::execute(Context& context)
 {
 	return PTR_Value(new ValueEdgeSet(*this));
 }

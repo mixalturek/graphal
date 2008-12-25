@@ -51,7 +51,7 @@ public:
 
 	virtual string toString(void) const { return "$classname"; }
 
-	virtual PTR_Value execute(const Context& context);
+	virtual PTR_Value execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:
@@ -120,7 +120,7 @@ $classname\::~$classname(void)
 ////
 
 
-PTR_Value $classname\::execute(const Context& context)
+PTR_Value $classname\::execute(Context& context)
 {
 	$operation
 }
@@ -218,7 +218,7 @@ public:
 
 	virtual string toString(void) const { return "$classname"; }
 
-	virtual PTR_Value execute(const Context& context);
+	virtual PTR_Value execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:
@@ -287,7 +287,7 @@ $classname\::~$classname(void)
 ////
 
 
-PTR_Value $classname\::execute(const Context& context)
+PTR_Value $classname\::execute(Context& context)
 {
 	$operation
 }

@@ -59,7 +59,7 @@ NodeCondition::~NodeCondition()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value NodeCondition::execute(const Context& context)
+PTR_Value NodeCondition::execute(Context& context)
 {
 	// TODO: set position in the code to the context
 

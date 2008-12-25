@@ -65,7 +65,7 @@ NodeLoop::~NodeLoop()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value NodeLoop::execute(const Context& context)
+PTR_Value NodeLoop::execute(Context& context)
 {
 	// TODO: set position in the code to the context
 	// TODO: catch jump exceptions

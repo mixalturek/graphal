@@ -50,7 +50,7 @@ NodeBinaryOr::~NodeBinaryOr(void)
 ////
 
 
-PTR_Value NodeBinaryOr::execute(const Context& context)
+PTR_Value NodeBinaryOr::execute(Context& context)
 {
 	return m_left->execute(context)->logOR(*(m_right->execute(context)));
 }

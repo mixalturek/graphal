@@ -58,7 +58,7 @@ void ValueEdge::invertOrientation(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueEdge::execute(const Context& context)
+PTR_Value ValueEdge::execute(Context& context)
 {
 	return PTR_Value(new ValueEdge(*this));
 }

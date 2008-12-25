@@ -37,7 +37,7 @@ public:
 	Node(void);
 	virtual ~Node(void);
 
-	virtual PTR_Value execute(const Context& context) = 0;
+	virtual PTR_Value execute(Context& context) = 0;
 
 	virtual void dump(ostream& os, uint indent) const = 0;
 	static void dumpIndent(ostream& os, uint indent);

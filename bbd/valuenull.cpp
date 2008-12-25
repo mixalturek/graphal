@@ -48,7 +48,7 @@ ValueNull::~ValueNull()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueNull::execute(const Context& context)
+PTR_Value ValueNull::execute(Context& context)
 {
 	return PTR_Value(new ValueNull());
 }

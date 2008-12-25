@@ -50,7 +50,7 @@ NodeBinarySub::~NodeBinarySub(void)
 ////
 
 
-PTR_Value NodeBinarySub::execute(const Context& context)
+PTR_Value NodeBinarySub::execute(Context& context)
 {
 	return m_left->execute(context)->sub(*(m_right->execute(context)));
 }

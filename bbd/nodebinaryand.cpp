@@ -50,7 +50,7 @@ NodeBinaryAnd::~NodeBinaryAnd(void)
 ////
 
 
-PTR_Value NodeBinaryAnd::execute(const Context& context)
+PTR_Value NodeBinaryAnd::execute(Context& context)
 {
 	return m_left->execute(context)->logAND(*(m_right->execute(context)));
 }
