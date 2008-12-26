@@ -1,5 +1,5 @@
 /*
- *      nodecondition.hpp
+ *      nodeemptycommand.cpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -20,32 +20,40 @@
  */
 
 
-#ifndef NODECONDITION_HPP
-#define NODECONDITION_HPP
-
-#include "general.hpp"
-#include "node.hpp"
+#include "nodeemptycommand.hpp"
+#include "valuenull.hpp"
 
 
-class NodeCondition : public Node
+/////////////////////////////////////////////////////////////////////////////
+////
+
+NodeEmptyCommand::NodeEmptyCommand()
 {
-public:
-	NodeCondition(Node* condition, Node* if_section, Node* else_section);
-	virtual ~NodeCondition(void);
 
-	virtual string toString(void) const { return "NodeCondition"; }
+}
 
-	virtual RetVal execute(Context& context);
-	virtual void dump(ostream& os, uint indent) const;
+NodeEmptyCommand::~NodeEmptyCommand()
+{
 
-private:
-	NodeCondition(const NodeCondition& object);
-	NodeCondition& operator=(const NodeCondition& object);
+}
 
-private:
-	Node* m_condition;
-	Node* m_if_section;
-	Node* m_else_section;
-};
 
-#endif // NODECONDITION_HPP
+/////////////////////////////////////////////////////////////////////////////
+////
+
+RetVal NodeEmptyCommand::execute(Context& context)
+{
+	return new ValueNull();
+}
+
+void NodeEmptyCommand::dump(ostream& os, uint indent) const
+{
+	dumpIndent(os, indent);
+	os << "<NodeEmptyCommand />" << endl;
+}
+
+ostream& operator<<(ostream& os, const NodeEmptyCommand& node)
+{
+	node.dump(os, 0);
+	return os;
+}

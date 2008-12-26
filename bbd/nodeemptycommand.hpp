@@ -1,5 +1,5 @@
 /*
- *      nodecondition.hpp
+ *      nodeemptycommand.hpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -20,32 +20,25 @@
  */
 
 
-#ifndef NODECONDITION_HPP
-#define NODECONDITION_HPP
+#ifndef NODEEMPTYCOMMAND_HPP
+#define NODEEMPTYCOMMAND_HPP
 
 #include "general.hpp"
 #include "node.hpp"
 
 
-class NodeCondition : public Node
+class NodeEmptyCommand : public Node
 {
 public:
-	NodeCondition(Node* condition, Node* if_section, Node* else_section);
-	virtual ~NodeCondition(void);
+	NodeEmptyCommand();
+	virtual ~NodeEmptyCommand();
 
-	virtual string toString(void) const { return "NodeCondition"; }
+	virtual string toString(void) const { return "EmptyCommand"; }
 
 	virtual RetVal execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
-
-private:
-	NodeCondition(const NodeCondition& object);
-	NodeCondition& operator=(const NodeCondition& object);
-
-private:
-	Node* m_condition;
-	Node* m_if_section;
-	Node* m_else_section;
 };
 
-#endif // NODECONDITION_HPP
+ostream& operator<<(ostream& os, const NodeEmptyCommand& node);
+
+#endif // NODEEMPTYCOMMAND_HPP

@@ -43,6 +43,7 @@
 #include "nodevariable.hpp"
 #include "stringtable.hpp"
 #include "countptr.hpp"
+#include "nodeemptycommand.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -754,6 +755,8 @@ bool Tests::testNodeBlock(void)
 	bl->pushCommandToBack(new NodeBinaryAdd(new ValueInt(10), new ValueInt(5)));
 	bl->pushCommandToBack(new NodeBinaryAdd(new ValueInt(10), new ValueInt(5)));
 	verify(bl->getNumberOfCommands() == 2);
+	bl->pushCommandToBack(new NodeEmptyCommand());
+	verify(bl->getNumberOfCommands() == 3);
 
 	NodeCondition cond(new ValueBool(true), bl, NULL);
 

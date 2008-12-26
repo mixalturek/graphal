@@ -1,7 +1,7 @@
 CountPtr<TYPE>
 RetVal
 BaseObject
-	Context (TODO)
+	Context
 	Node (interface)
 		NodeUnary (interface)
 			NodeUnarySub
@@ -26,7 +26,7 @@ BaseObject
 		NodeCondition
 		NodeLoop
 		NodeBlock
-		NodeEmptyCommand (TODO)
+		NodeEmptyCommand
 		NodeFuncCall (TODO)
 		NodeFunction (TODO)
 		NodeVariable

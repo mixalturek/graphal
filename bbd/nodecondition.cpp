@@ -24,6 +24,7 @@
 #include "nodecondition.hpp"
 #include "value.hpp"
 #include "valuenull.hpp"
+#include "nodeemptycommand.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -33,11 +34,10 @@ NodeCondition::NodeCondition(Node* condition, Node* if_section, Node* else_secti
 	: Node(),
 	m_condition(condition),
 	m_if_section(if_section),
-	m_else_section(else_section)
+	m_else_section((else_section != NULL) ? else_section : new NodeEmptyCommand())
 {
 	assert(condition != NULL);
 	assert(if_section != NULL);
-	// else can be NULL
 }
 
 NodeCondition::~NodeCondition()
@@ -48,11 +48,8 @@ NodeCondition::~NodeCondition()
 	delete m_if_section;
 	m_if_section = NULL;
 
-	if(m_else_section != NULL)
-	{
-		delete m_else_section;
-		m_else_section = NULL;
-	}
+	delete m_else_section;
+	m_else_section = NULL;
 }
 
 
@@ -86,14 +83,11 @@ void NodeCondition::dump(ostream& os, uint indent) const
 	dumpIndent(os, indent);
 	os << "</If>" << endl;
 
-	if(m_else_section != NULL)
-	{
-		dumpIndent(os, indent);
-		os << "<Else>" << endl;
-		m_else_section->dump(os, indent + 1);
-		dumpIndent(os, indent);
-		os << "</Else>" << endl;
-	}
+	dumpIndent(os, indent);
+	os << "<Else>" << endl;
+	m_else_section->dump(os, indent + 1);
+	dumpIndent(os, indent);
+	os << "</Else>" << endl;
 }
 
 ostream& operator<<(ostream& os, const NodeCondition& node)

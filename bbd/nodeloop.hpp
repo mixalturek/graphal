@@ -43,9 +43,9 @@ private:
 	NodeLoop& operator=(const NodeLoop& object);
 
 private:
-	Node* m_init;		// Can be NULL
-	Node* m_condition;	// If NULL, then ValueBool(true) is created
-	Node* m_inc;		// Can be NULL
+	Node* m_init;
+	Node* m_condition;
+	Node* m_inc;
 	Node* m_body;
 };
 

@@ -20,11 +20,11 @@
  */
 
 
-#include <cassert>
 #include "nodeloop.hpp"
 #include "value.hpp"
 #include "valuenull.hpp"
 #include "valuebool.hpp"
+#include "nodeemptycommand.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -32,30 +32,24 @@
 
 NodeLoop::NodeLoop(Node* init, Node* condition, Node* inc, Node* body)
 	: Node(),
-	m_init(init),
+	m_init((init != NULL) ? init : new NodeEmptyCommand()),
 	m_condition((condition != NULL) ? condition : new ValueBool(true)),
-	m_inc(inc),
-	m_body(body)
+	m_inc((inc != NULL) ? inc : new NodeEmptyCommand()),
+	m_body((body != NULL) ? body : new NodeEmptyCommand())
 {
-	assert(body != NULL);
+
 }
 
 NodeLoop::~NodeLoop()
 {
-	if(m_init != NULL)
-	{
-		delete m_init;
-		m_init = NULL;
-	}
+	delete m_init;
+	m_init = NULL;
 
 	delete m_condition;
 	m_condition = NULL;
 
-	if(m_inc != NULL)
-	{
-		delete m_inc;
-		m_inc = NULL;
-	}
+	delete m_inc;
+	m_inc = NULL;
 
 	delete m_body;
 	m_body = NULL;
@@ -70,8 +64,7 @@ RetVal NodeLoop::execute(Context& context)
 	// TODO: set position in the code to the context
 	// TODO: catch jump exceptions
 
-	if(m_init != NULL)
-		m_init->execute(context);
+	m_init->execute(context);
 
 //	try
 //	{
@@ -86,8 +79,7 @@ RetVal NodeLoop::execute(Context& context)
 				// Need only the exception jump
 			}
 */
-			if(m_inc != NULL)
-				m_inc->execute(context);
+			m_inc->execute(context);
 		}
 /*	}
 	catch(CBreakException& ex)
@@ -105,8 +97,7 @@ void NodeLoop::dump(ostream& os, uint indent) const
 
 	dumpIndent(os, indent + 1);
 	os << "<Init>" << endl;
-	if(m_init != NULL)
-		m_init->dump(os, indent + 2);
+	m_init->dump(os, indent + 2);
 	dumpIndent(os, indent + 1);
 	os << "</Init>" << endl;
 
@@ -118,8 +109,7 @@ void NodeLoop::dump(ostream& os, uint indent) const
 
 	dumpIndent(os, indent + 1);
 	os << "<Inc>" << endl;
-	if(m_inc != NULL)
-		m_inc->dump(os, indent + 2);
+	m_inc->dump(os, indent + 2);
 	dumpIndent(os, indent + 1);
 	os << "</Inc>" << endl;
 
