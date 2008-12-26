@@ -23,8 +23,11 @@
 #ifndef CONTEXT_HPP
 #define CONTEXT_HPP
 
+#include <deque>
+#include <map>
 #include "general.hpp"
 #include "baseobject.hpp"
+#include "retval.hpp"
 
 class Context: public BaseObject
 {
@@ -33,9 +36,22 @@ public:
 	virtual ~Context();
 
 	virtual string toString(void) const { return "Context"; }
+	void dump(ostream& os, uint indent) const;
+
+	RetVal getLocalVariable(identifier name);
+	RetVal setLocalVariable(identifier name, Value* val);
+
+	void pushLocal(void);
+	void popLocal(void);
 
 private:
-	/* add your private declarations */
+	Context(const Context& object);
+	Context& operator=(const Context& object);
+
+private:
+	deque< map<identifier, Value*> > m_local_variables;
 };
+
+ostream& operator<<(ostream& os, const Context& node);
 
 #endif /* CONTEXT_HPP */

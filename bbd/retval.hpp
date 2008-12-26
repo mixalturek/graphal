@@ -1,5 +1,5 @@
 /*
- *      nodevariable.hpp
+ *      retval.hpp
  *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
@@ -19,34 +19,30 @@
  *      MA 02110-1301, USA.
  */
 
+#ifndef RETVAL_HPP
+#define RETVAL_HPP
 
-#ifndef VALUEVARIABLE_HPP
-#define VALUEVARIABLE_HPP
-
-#include <sstream>
 #include "general.hpp"
-#include "node.hpp"
 
+class Value;
 
-class NodeVariable : public Node
+class RetVal
 {
 public:
-	NodeVariable(identifier name);
-	virtual ~NodeVariable(void);
+	RetVal(Value* val, bool autodel = true);
+	~RetVal(void);
 
-	virtual string toString(void) const { ostringstream os; os << "NodeVariable(" << m_name << ")"; return os.str(); }
+	Value& operator*() const { return *m_val; }
+	Value* operator->() const { return m_val; }
 
-	virtual RetVal execute(Context& context);
-	virtual void dump(ostream& os, uint indent) const;
-
-	identifier getName(void) const { return m_name; }
-	RetVal setValue(Context& context, Value* val);
-	RetVal getValue(Context& context);
+	Value* release(void) { m_autodel = false; return m_val; }
 
 private:
-	identifier m_name;
+	RetVal(void);
+
+private:
+	Value* m_val;
+	bool   m_autodel;
 };
 
-ostream& operator<<(ostream& os, const NodeVariable& node);
-
-#endif // VALUEVARIABLE_HPP
+#endif // RETVAL_HPP

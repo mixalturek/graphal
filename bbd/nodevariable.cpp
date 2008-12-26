@@ -47,9 +47,12 @@ NodeVariable::~NodeVariable()
 
 RetVal NodeVariable::setValue(Context& context, Value* val)
 {
-	// TODO: add implementation
+	return context.setLocalVariable(m_name, val);
+}
 
-	return execute(context);
+RetVal NodeVariable::getValue(Context& context)
+{
+	return context.getLocalVariable(m_name);
 }
 
 
@@ -58,8 +61,7 @@ RetVal NodeVariable::setValue(Context& context, Value* val)
 
 RetVal NodeVariable::execute(Context& context)
 {
-	// TODO: add implementation
-	return RetVal(new ValueFloat(3.14f));
+	return getValue(context);
 }
 
 void NodeVariable::dump(ostream& os, uint indent) const

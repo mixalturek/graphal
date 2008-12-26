@@ -20,24 +20,94 @@
  */
 
 
+#include <cassert>
 #include "context.hpp"
+#include "valuenull.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
 Context::Context()
-	: BaseObject()
+	: BaseObject(),
+	m_local_variables()
 {
-
+	pushLocal();
 }
 
 
 Context::~Context()
 {
+	while(!m_local_variables.empty())
+		popLocal();
+}
 
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Context::pushLocal(void)
+{
+	m_local_variables.push_back(map<identifier, Value*>());
+}
+
+void Context::popLocal(void)
+{
+	map<identifier, Value*>& frame = m_local_variables.back();
+
+	map<identifier, Value*>::iterator it;
+	for(it = frame.begin(); it != frame.end(); it++)
+	{
+		delete it->second;
+		it->second = NULL;
+	}
+
+	m_local_variables.pop_back();
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
+
+RetVal Context::getLocalVariable(identifier name)
+{
+	assert(!m_local_variables.empty());
+
+	map<identifier, Value*>::iterator it = m_local_variables.back().find(name);
+
+	if(it != m_local_variables.back().end())
+		return RetVal((*it).second, false);
+	else
+		return RetVal(new ValueNull());
+}
+
+
+RetVal Context::setLocalVariable(identifier name, Value* val)
+{
+	assert(!m_local_variables.empty());
+	assert(val != NULL);
+
+	map<identifier, Value*>::iterator it = m_local_variables.back().find(name);
+	if(it != m_local_variables.back().end())
+	{
+		delete it->second;
+		it->second = NULL;
+		m_local_variables.back().erase(it);
+	}
+
+	return RetVal(m_local_variables.back()[name] = val, false);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Context::dump(ostream& os, uint indent) const
+{
+
+}
+
+ostream& operator<<(ostream& os, const Context& node)
+{
+	node.dump(os, 0);
+	return os;
+}

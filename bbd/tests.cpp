@@ -37,6 +37,7 @@
 #include "nodeunarysub.hpp"
 #include "nodeunarynot.hpp"
 #include "nodebinaryadd.hpp"
+#include "nodebinarysub.hpp"
 #include "nodeblock.hpp"
 #include "nodecondition.hpp"
 #include "nodevariable.hpp"
@@ -770,10 +771,26 @@ bool Tests::testNodeVariable(void)
 	Context con;
 	string str;
 
-	// TODO: NodeVariable::execute() returns ValueFloat(3.14) now
-	NodeBinaryAdd add(new ValueInt(10), new NodeVariable(0));
+	NodeVariable* var0 = new NodeVariable(0);
+	NodeVariable* var1 = new NodeVariable(1);
+
+	var0->setValue(con, new ValueFloat(3.14f));
+	var1->setValue(con, new ValueInt(15));
+
+	NodeBinaryAdd add(new ValueInt(10), var0);
 	str = add.execute(con)->toString();
 	verify(str == "13.14");
+
+	NodeBinarySub sub(new ValueInt(20), var1);
+	str = sub.execute(con)->toString();
+	verify(str == "5");
+
+	var1->setValue(con, new ValueFloat(3.5f));
+	str = sub.execute(con)->toString();
+	verify(str == "16.5");
+
+	verify(con.getLocalVariable(2)->toString() == "NULL");
+	verify(con.getLocalVariable(57)->toString() == "NULL");
 
 	return testResult(__FUNCTION__, result);
 }

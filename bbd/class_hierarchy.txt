@@ -6,6 +6,7 @@ BaseObject
 		NodeUnary (interface)
 			NodeUnarySub
 			NodeUnaryNot
+			NodeUnaryMemberAccess (TODO)
 		NodeBinary (interface)
 			NodeBinaryAdd
 			NodeBinarySub
@@ -36,7 +37,7 @@ BaseObject
 			ValueBool
 			ValueInt
 			ValueFloat
-			ValueReference (TODO: for future use, no implementation)
+			ValueReference (for future use, no implementation)
 			ValueGraph
 			ValueVertex
 			ValueEdge
