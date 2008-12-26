@@ -120,3 +120,12 @@ http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
 
 static object initialization
 memory leaks
+
+
+////////////////////////////////////////////////////////////////////////////
+////
+
+smart pointers
+http://www.davethehat.com/articles/smartp.htm
+http://ootips.org/yonat/4dev/smart-pointers.html
+http://www.josuttis.com/libbook/cont/countptr.hpp.html

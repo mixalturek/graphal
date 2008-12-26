@@ -1,33 +1,25 @@
+CountPtr<TYPE>
 BaseObject
 	Context (TODO)
 	Node (interface)
 		NodeUnary (interface)
-			NodeUnarySub (gen_operators.pl)
-			NodeUnaryNot (gen_operators.pl)
-			NodeUnaryIncPref (TODO)
-			NodeUnaryIncPost (TODO)
-			NodeUnaryDecPref (TODO)
-			NodeUnaryDecPost (TODO)
+			NodeUnarySub
+			NodeUnaryNot
 		NodeBinary (interface)
-			NodeBinaryAdd (gen_operators.pl)
-			NodeBinarySub (gen_operators.pl)
-			NodeBinaryMult (gen_operators.pl)
-			NodeBinaryDiv (gen_operators.pl)
-			NodeBinaryMod (gen_operators.pl)
-			NodeBinaryEq (gen_operators.pl)
-			NodeBinaryNe (gen_operators.pl)
-			NodeBinaryLe (gen_operators.pl)
-			NodeBinaryGe (gen_operators.pl)
-			NodeBinaryLt (gen_operators.pl)
-			NodeBinaryGt (gen_operators.pl)
-			NodeBinaryAnd (gen_operators.pl)
-			NodeBinaryOr (gen_operators.pl)
-			NodeBinaryAss (TODO)
-			NodeBinaryAssAdd (TODO)
-			NodeBinaryAssSub (TODO)
-			NodeBinaryAssMult (TODO)
-			NodeBinaryAssDiv (TODO)
-			NodeBinaryAssMod (TODO)
+			NodeBinaryAdd
+			NodeBinarySub
+			NodeBinaryMult
+			NodeBinaryDiv
+			NodeBinaryMod
+			NodeBinaryEq
+			NodeBinaryNe
+			NodeBinaryLe
+			NodeBinaryGe
+			NodeBinaryLt
+			NodeBinaryGt
+			NodeBinaryAnd
+			NodeBinaryOr
+			NodeBinaryAss
 		NodeJump (TODO)
 		NodeCondition
 		NodeLoop

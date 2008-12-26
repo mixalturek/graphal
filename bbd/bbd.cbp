@@ -39,6 +39,7 @@
 		<Unit filename="baseobject.hpp" />
 		<Unit filename="context.cpp" />
 		<Unit filename="context.hpp" />
+		<Unit filename="countptr.hpp" />
 		<Unit filename="general.hpp" />
 		<Unit filename="init_static_objects.cpp" />
 		<Unit filename="lexan.cpp" />

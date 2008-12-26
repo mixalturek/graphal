@@ -41,6 +41,7 @@
 #include "nodecondition.hpp"
 #include "nodevariable.hpp"
 #include "stringtable.hpp"
+#include "countptr.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -107,6 +108,7 @@ void Tests::run(void)
 	failed += !testNodeBlock();
 	failed += !testNodeVariable();
 	failed += !testStringTable();
+	failed += !testCountPtr();
 
 	// Template
 	// failed += !test();
@@ -804,6 +806,75 @@ bool Tests::testStringTable(void)
 	id = table.getID("test");
 	verify(table.getNumStrings() == 2);
 	verify(table.getString(id) == "test");
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool Tests::testCountPtr(void)
+{
+	bool result = true;
+
+	CountPtr<Value> obj(new ValueInt(5));
+	verify(obj.getNumRefs() == 1);
+	verify(obj->toString() == "5");
+
+	CountPtr<Value> obj2(obj);
+	verify(obj.getNumRefs() == 2);
+	verify(obj->toString() == "5");
+	verify(obj2.getNumRefs() == 2);
+	verify(obj2->toString() == "5");
+
+	CountPtr<Value> obj3 = obj;
+	verify(obj.getNumRefs() == 3);
+	verify(obj->toString() == "5");
+	verify(obj2.getNumRefs() == 3);
+	verify(obj2->toString() == "5");
+	verify(obj3.getNumRefs() == 3);
+	verify(obj3->toString() == "5");
+
+	CountPtr<Value> obj4(new ValueFloat(3.14f));
+	verify(obj->toString() == "5");
+	verify(obj2->toString() == "5");
+	verify(obj3->toString() == "5");
+	verify(obj4->toString() == "3.14");
+
+	obj = obj4;
+	verify(obj.getNumRefs() == 2);
+	verify(obj->toString() == "3.14");
+	verify(obj2.getNumRefs() == 2);
+	verify(obj2->toString() == "5");
+	verify(obj3.getNumRefs() == 2);
+	verify(obj3->toString() == "5");
+	verify(obj4.getNumRefs() == 2);
+	verify(obj4->toString() == "3.14");
+
+	CountPtr<Value> obj5 = obj4;
+	verify(obj.getNumRefs() == 3);
+	verify(obj->toString() == "3.14");
+	verify(obj2.getNumRefs() == 2);
+	verify(obj2->toString() == "5");
+	verify(obj3.getNumRefs() == 2);
+	verify(obj3->toString() == "5");
+	verify(obj4.getNumRefs() == 3);
+	verify(obj4->toString() == "3.14");
+	verify(obj5.getNumRefs() == 3);
+	verify(obj5->toString() == "3.14");
+
+	obj2 = CountPtr<Value>(new ValueString("bagr"));
+	verify(obj.getNumRefs() == 3);
+	verify(obj->toString() == "3.14");
+	verify(obj2.getNumRefs() == 1);
+	verify(obj2->toString() == "bagr");
+	verify(obj3.getNumRefs() == 1);
+	verify(obj3->toString() == "5");
+	verify(obj4.getNumRefs() == 3);
+	verify(obj4->toString() == "3.14");
+	verify(obj5.getNumRefs() == 3);
+	verify(obj5->toString() == "3.14");
 
 	return testResult(__FUNCTION__, result);
 }
