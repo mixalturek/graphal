@@ -48,11 +48,6 @@ ValueString::~ValueString()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueString::execute(Context& context)
-{
-	return PTR_Value(new ValueString(m_val));
-}
-
 void ValueString::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

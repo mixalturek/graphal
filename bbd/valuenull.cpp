@@ -48,11 +48,6 @@ ValueNull::~ValueNull()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueNull::execute(Context& context)
-{
-	return PTR_Value(new ValueNull());
-}
-
 void ValueNull::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

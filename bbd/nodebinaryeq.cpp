@@ -49,10 +49,9 @@ NodeBinaryEq::~NodeBinaryEq(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value NodeBinaryEq::execute(Context& context)
+RetVal NodeBinaryEq::execute(Context& context)
 {
-	return m_left->execute(context)->eq(*(m_right->execute(context)));
+	return m_left->execute(context)->eq(*(m_right->execute(context))).release();
 }
 
 

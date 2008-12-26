@@ -115,11 +115,6 @@ void ValueVertex::invertOrientation(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueVertex::execute(Context& context)
-{
-	return PTR_Value(new ValueVertex(*this));// TODO: deep copy!
-}
-
 void ValueVertex::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

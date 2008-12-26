@@ -49,10 +49,9 @@ NodeBinaryGt::~NodeBinaryGt(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value NodeBinaryGt::execute(Context& context)
+RetVal NodeBinaryGt::execute(Context& context)
 {
-	return m_left->execute(context)->gt(*(m_right->execute(context)));
+	return m_left->execute(context)->gt(*(m_right->execute(context))).release();
 }
 
 

@@ -49,10 +49,9 @@ NodeBinaryAnd::~NodeBinaryAnd(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value NodeBinaryAnd::execute(Context& context)
+RetVal NodeBinaryAnd::execute(Context& context)
 {
-	return m_left->execute(context)->logAND(*(m_right->execute(context)));
+	return m_left->execute(context)->logAND(*(m_right->execute(context))).release();
 }
 
 

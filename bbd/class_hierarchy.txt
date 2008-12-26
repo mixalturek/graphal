@@ -1,4 +1,5 @@
 CountPtr<TYPE>
+RetVal
 BaseObject
 	Context (TODO)
 	Node (interface)

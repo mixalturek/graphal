@@ -50,9 +50,9 @@ NodeUnaryNot::~NodeUnaryNot(void)
 ////
 
 
-PTR_Value NodeUnaryNot::execute(Context& context)
+RetVal NodeUnaryNot::execute(Context& context)
 {
-	return m_next->execute(context)->logNOT();
+	return m_next->execute(context)->logNOT().release();
 }
 
 

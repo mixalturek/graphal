@@ -59,7 +59,7 @@ NodeCondition::~NodeCondition()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value NodeCondition::execute(Context& context)
+RetVal NodeCondition::execute(Context& context)
 {
 	// TODO: set position in the code to the context
 
@@ -68,7 +68,7 @@ PTR_Value NodeCondition::execute(Context& context)
 	else if(m_else_section != NULL)
 		m_else_section->execute(context);
 
-	return PTR_Value(new ValueNull());
+	return RetVal(new ValueNull());
 }
 
 void NodeCondition::dump(ostream& os, uint indent) const

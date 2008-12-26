@@ -64,11 +64,6 @@ void ValueVertexSet::deleteVertex(ValueVertex* vertex)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueVertexSet::execute(Context& context)
-{
-	return PTR_Value(new ValueVertexSet(*this));
-}
-
 void ValueVertexSet::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

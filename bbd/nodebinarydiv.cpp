@@ -49,10 +49,9 @@ NodeBinaryDiv::~NodeBinaryDiv(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value NodeBinaryDiv::execute(Context& context)
+RetVal NodeBinaryDiv::execute(Context& context)
 {
-	return m_left->execute(context)->div(*(m_right->execute(context)));
+	return m_left->execute(context)->div(*(m_right->execute(context))).release();
 }
 
 

@@ -49,11 +49,6 @@ ValueBool::~ValueBool()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueBool::execute(Context& context)
-{
-	return PTR_Value(new ValueBool(m_val));
-}
-
 void ValueBool::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

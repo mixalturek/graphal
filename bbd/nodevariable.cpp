@@ -45,7 +45,7 @@ NodeVariable::~NodeVariable()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value NodeVariable::setValue(Context& context, Value* val)
+RetVal NodeVariable::setValue(Context& context, Value* val)
 {
 	// TODO: add implementation
 
@@ -56,10 +56,10 @@ PTR_Value NodeVariable::setValue(Context& context, Value* val)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value NodeVariable::execute(Context& context)
+RetVal NodeVariable::execute(Context& context)
 {
 	// TODO: add implementation
-	return PTR_Value(new ValueFloat(3.14f));
+	return RetVal(new ValueFloat(3.14f));
 }
 
 void NodeVariable::dump(ostream& os, uint indent) const

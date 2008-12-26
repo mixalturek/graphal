@@ -49,10 +49,9 @@ NodeBinarySub::~NodeBinarySub(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value NodeBinarySub::execute(Context& context)
+RetVal NodeBinarySub::execute(Context& context)
 {
-	return m_left->execute(context)->sub(*(m_right->execute(context)));
+	return m_left->execute(context)->sub(*(m_right->execute(context))).release();
 }
 
 

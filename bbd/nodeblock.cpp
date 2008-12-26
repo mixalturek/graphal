@@ -51,7 +51,7 @@ NodeBlock::~NodeBlock()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value NodeBlock::execute(Context& context)
+RetVal NodeBlock::execute(Context& context)
 {
 	// TODO: set position in the code to the context
 
@@ -60,7 +60,7 @@ PTR_Value NodeBlock::execute(Context& context)
 	for(it = m_commands.begin(); it != m_commands.end(); it++)
 		(*it)->execute(context);
 
-	return PTR_Value(new ValueNull());
+	return RetVal(new ValueNull());
 }
 
 void NodeBlock::dump(ostream& os, uint indent) const

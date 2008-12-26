@@ -43,11 +43,6 @@ ValueReference::~ValueReference()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueReference::execute(Context& context)
-{
-	return PTR_Value(new ValueReference());
-}
-
 void ValueReference::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

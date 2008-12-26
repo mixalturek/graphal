@@ -49,10 +49,9 @@ NodeBinaryMod::~NodeBinaryMod(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value NodeBinaryMod::execute(Context& context)
+RetVal NodeBinaryMod::execute(Context& context)
 {
-	return m_left->execute(context)->mod(*(m_right->execute(context)));
+	return m_left->execute(context)->mod(*(m_right->execute(context))).release();
 }
 
 

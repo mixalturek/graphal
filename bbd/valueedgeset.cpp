@@ -64,11 +64,6 @@ void ValueEdgeSet::deleteEdge(ValueEdge* edge)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueEdgeSet::execute(Context& context)
-{
-	return PTR_Value(new ValueEdgeSet(*this));
-}
-
 void ValueEdgeSet::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

@@ -97,11 +97,6 @@ bool ValueStruct::isItemSet(const string& name)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueStruct::execute(Context& context)
-{
-	return PTR_Value(new ValueStruct(*this));// TODO: deep copy!
-}
-
 void ValueStruct::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

@@ -40,7 +40,7 @@ public:
 
 	virtual string toString(void) const { return "NodeUnarySub"; }
 
-	virtual PTR_Value execute(Context& context);
+	virtual RetVal execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:

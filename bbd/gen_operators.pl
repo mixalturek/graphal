@@ -51,7 +51,7 @@ public:
 
 	virtual string toString(void) const { return "$classname"; }
 
-	virtual PTR_Value execute(Context& context);
+	virtual RetVal execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:
@@ -120,7 +120,7 @@ $classname\::~$classname(void)
 ////
 
 
-PTR_Value $classname\::execute(Context& context)
+RetVal $classname\::execute(Context& context)
 {
 	$operation
 }
@@ -223,7 +223,7 @@ public:
 
 	virtual string toString(void) const { return "$classname"; }
 
-	virtual PTR_Value execute(Context& context);
+	virtual RetVal execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:
@@ -291,8 +291,7 @@ $classname\::~$classname(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value $classname\::execute(Context& context)
+RetVal $classname\::execute(Context& context)
 {
 	$operation
 }
@@ -340,27 +339,27 @@ END_OF_CPP
 }
 
 
-generateUnaryOperatorClass('NodeUnarySub', 'return m_next->execute(context)->subUn();');
-generateUnaryOperatorClass('NodeUnaryNot', 'return m_next->execute(context)->logNOT();');
+generateUnaryOperatorClass('NodeUnarySub', 'return m_next->execute(context)->subUn().release();');
+generateUnaryOperatorClass('NodeUnaryNot', 'return m_next->execute(context)->logNOT().release();');
 
-generateBinaryOperatorClass('NodeBinaryAdd', 'return m_left->execute(context)->add(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinarySub', 'return m_left->execute(context)->sub(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryMult', 'return m_left->execute(context)->mult(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryDiv', 'return m_left->execute(context)->div(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryMod', 'return m_left->execute(context)->mod(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryEq', 'return m_left->execute(context)->eq(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryNe', 'return m_left->execute(context)->ne(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryLe', 'return m_left->execute(context)->le(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryGe', 'return m_left->execute(context)->ge(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryLt', 'return m_left->execute(context)->lt(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryGt', 'return m_left->execute(context)->gt(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryAnd', 'return m_left->execute(context)->logAND(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryOr', 'return m_left->execute(context)->logOR(*(m_right->execute(context)));');
+generateBinaryOperatorClass('NodeBinaryAdd', 'return m_left->execute(context)->add(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinarySub', 'return m_left->execute(context)->sub(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryMult', 'return m_left->execute(context)->mult(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryDiv', 'return m_left->execute(context)->div(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryMod', 'return m_left->execute(context)->mod(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryEq', 'return m_left->execute(context)->eq(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryNe', 'return m_left->execute(context)->ne(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryLe', 'return m_left->execute(context)->le(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryGe', 'return m_left->execute(context)->ge(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryLt', 'return m_left->execute(context)->lt(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryGt', 'return m_left->execute(context)->gt(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryAnd', 'return m_left->execute(context)->logAND(*(m_right->execute(context))).release();');
+generateBinaryOperatorClass('NodeBinaryOr', 'return m_left->execute(context)->logOR(*(m_right->execute(context))).release();');
 
 my $code = <<END_OF_CODE
 NodeVariable* var = dynamic_cast<NodeVariable*>(m_left);
 	assert(var != NULL);// TODO: is it safe?
-	return var->setValue(context, &(*m_right->execute(context)));
+	return var->setValue(context, m_right->execute(context).release());
 END_OF_CODE
 ;
 

@@ -39,7 +39,6 @@ public:
 	virtual bool     toBool(void) const { return !m_vertices.empty(); }
 	virtual string toString(void) const { return "ValueVertexSet"; } // TODO:
 
-	virtual PTR_Value execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 	void addVertex(ValueVertex* vertex);

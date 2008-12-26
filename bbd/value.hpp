@@ -23,7 +23,7 @@
 #ifndef VARIABLE_HPP
 #define VARIABLE_HPP
 
-#include "countptr.hpp"
+#include <memory>
 #include "general.hpp"
 #include "node.hpp"
 
@@ -42,7 +42,7 @@ class ValueVertexSet;
 class ValueEdgeSet;
 
 
-typedef CountPtr<Value> PTR_Value;
+typedef auto_ptr<Value> PTR_Value;
 
 
 class Value : public Node
@@ -54,6 +54,8 @@ public:
 public:
 	virtual bool toBool(void)     const = 0;
 	virtual bool isNull(void)     const { return false; }
+
+	virtual RetVal execute(Context& context) { return RetVal(this, false); }
 
 	// +
 	virtual PTR_Value add(const Value&         right) const = 0;

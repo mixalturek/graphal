@@ -65,7 +65,7 @@ NodeLoop::~NodeLoop()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value NodeLoop::execute(Context& context)
+RetVal NodeLoop::execute(Context& context)
 {
 	// TODO: set position in the code to the context
 	// TODO: catch jump exceptions
@@ -95,7 +95,7 @@ PTR_Value NodeLoop::execute(Context& context)
 		// Only the jump needed
 	}
 */
-	return PTR_Value(new ValueNull());
+	return RetVal(new ValueNull());
 }
 
 void NodeLoop::dump(ostream& os, uint indent) const

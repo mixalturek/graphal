@@ -49,10 +49,9 @@ NodeBinaryAdd::~NodeBinaryAdd(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value NodeBinaryAdd::execute(Context& context)
+RetVal NodeBinaryAdd::execute(Context& context)
 {
-	return m_left->execute(context)->add(*(m_right->execute(context)));
+	return m_left->execute(context)->add(*(m_right->execute(context))).release();
 }
 
 

@@ -49,10 +49,9 @@ NodeBinaryGe::~NodeBinaryGe(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value NodeBinaryGe::execute(Context& context)
+RetVal NodeBinaryGe::execute(Context& context)
 {
-	return m_left->execute(context)->ge(*(m_right->execute(context)));
+	return m_left->execute(context)->ge(*(m_right->execute(context))).release();
 }
 
 

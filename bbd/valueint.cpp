@@ -49,11 +49,6 @@ ValueInt::~ValueInt()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueInt::execute(Context& context)
-{
-	return PTR_Value(new ValueInt(m_val));
-}
-
 void ValueInt::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

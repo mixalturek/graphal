@@ -23,13 +23,10 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include "countptr.hpp"
+#include "retval.hpp"
 #include "general.hpp"
 #include "baseobject.hpp"
 #include "context.hpp"
-
-class Value;
-typedef CountPtr<Value> PTR_Value;
 
 class Node : public BaseObject
 {
@@ -37,12 +34,12 @@ public:
 	Node(void);
 	virtual ~Node(void);
 
-	virtual PTR_Value execute(Context& context) = 0;
+	virtual RetVal execute(Context& context) = 0;
 
 	virtual void dump(ostream& os, uint indent) const = 0;
 	static void dumpIndent(ostream& os, uint indent);
 
-/* TODO: resolve
+/*
 private:
 	Node(const Node& object);
 	Node& operator=(const Node& object);

@@ -49,11 +49,6 @@ ValueFloat::~ValueFloat()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueFloat::execute(Context& context)
-{
-	return PTR_Value(new ValueFloat(m_val));
-}
-
 void ValueFloat::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

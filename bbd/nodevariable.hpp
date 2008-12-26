@@ -36,11 +36,11 @@ public:
 
 	virtual string toString(void) const { ostringstream os; os << "NodeVariable(" << m_name << ")"; return os.str(); }
 
-	virtual PTR_Value execute(Context& context);
+	virtual RetVal execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 	identifier getName(void) const { return m_name; }
-	PTR_Value setValue(Context& context, Value* val);
+	RetVal setValue(Context& context, Value* val);
 
 private:
 	identifier m_name;

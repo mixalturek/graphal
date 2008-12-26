@@ -117,11 +117,6 @@ void ValueGraph::invertEdgesOrientation(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueGraph::execute(Context& context)
-{
-	return PTR_Value(new ValueGraph(*this));// TODO: deep copy???
-}
-
 void ValueGraph::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);

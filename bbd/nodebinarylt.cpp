@@ -49,10 +49,9 @@ NodeBinaryLt::~NodeBinaryLt(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value NodeBinaryLt::execute(Context& context)
+RetVal NodeBinaryLt::execute(Context& context)
 {
-	return m_left->execute(context)->lt(*(m_right->execute(context)));
+	return m_left->execute(context)->lt(*(m_right->execute(context))).release();
 }
 
 

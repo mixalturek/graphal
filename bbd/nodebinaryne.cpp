@@ -49,10 +49,9 @@ NodeBinaryNe::~NodeBinaryNe(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-PTR_Value NodeBinaryNe::execute(Context& context)
+RetVal NodeBinaryNe::execute(Context& context)
 {
-	return m_left->execute(context)->ne(*(m_right->execute(context)));
+	return m_left->execute(context)->ne(*(m_right->execute(context))).release();
 }
 
 

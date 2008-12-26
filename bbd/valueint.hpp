@@ -38,7 +38,6 @@ public:
 	virtual bool     toBool(void) const { return m_val; }
 	virtual string toString(void) const { ostringstream os; os << m_val; return os.str(); }
 
-	virtual PTR_Value execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 	// +

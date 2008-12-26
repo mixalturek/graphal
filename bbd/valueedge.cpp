@@ -58,11 +58,6 @@ void ValueEdge::invertOrientation(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueEdge::execute(Context& context)
-{
-	return PTR_Value(new ValueEdge(*this));
-}
-
 void ValueEdge::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);
