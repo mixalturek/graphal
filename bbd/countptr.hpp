@@ -98,7 +98,9 @@ private:
 		if(--*m_num == 0)
 		{
 			delete m_num;
+			m_num = NULL;
 			delete m_ptr;
+			m_ptr = NULL;
 		}
 	}
 

@@ -359,8 +359,8 @@ generateBinaryOperatorClass('NodeBinaryOr', 'return m_left->execute(context)->lo
 
 my $code = <<END_OF_CODE
 NodeVariable* var = dynamic_cast<NodeVariable*>(m_left);
-	assert(var != NULL);
-	return var->setValue(context, m_right->execute(context).release());
+	assert(var != NULL);// TODO: is it safe?
+	return var->setValue(context, &(*m_right->execute(context)));
 END_OF_CODE
 ;
 

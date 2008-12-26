@@ -23,7 +23,7 @@
 #ifndef VARIABLE_HPP
 #define VARIABLE_HPP
 
-#include <memory>
+#include "countptr.hpp"
 #include "general.hpp"
 #include "node.hpp"
 
@@ -42,7 +42,7 @@ class ValueVertexSet;
 class ValueEdgeSet;
 
 
-typedef auto_ptr<Value> PTR_Value;
+typedef CountPtr<Value> PTR_Value;
 
 
 class Value : public Node

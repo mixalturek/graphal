@@ -714,7 +714,6 @@ bool Tests::testNodeUnary(void)
 	str = unot.execute(con)->toString();
 	verify(str == "false");
 
-
 	return testResult(__FUNCTION__, result);
 }
 

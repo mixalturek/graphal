@@ -23,13 +23,13 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include <memory>
+#include "countptr.hpp"
 #include "general.hpp"
 #include "baseobject.hpp"
 #include "context.hpp"
 
 class Value;
-typedef auto_ptr<Value> PTR_Value;
+typedef CountPtr<Value> PTR_Value;
 
 class Node : public BaseObject
 {

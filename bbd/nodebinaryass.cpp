@@ -55,8 +55,8 @@ NodeBinaryAss::~NodeBinaryAss(void)
 PTR_Value NodeBinaryAss::execute(Context& context)
 {
 	NodeVariable* var = dynamic_cast<NodeVariable*>(m_left);
-	assert(var != NULL);
-	return var->setValue(context, m_right->execute(context).release());
+	assert(var != NULL);// TODO: is it safe?
+	return var->setValue(context, &(*m_right->execute(context)));
 
 }
 
