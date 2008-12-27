@@ -27,7 +27,7 @@
 #include <cassert>
 #include "general.hpp"
 #include "node.hpp"
-
+#include "nodefunctioncall.hpp"
 
 class NodeBlock : public Node
 {
@@ -42,13 +42,14 @@ public:
 
 	void pushCommandToFront(Node* node) { assert(node != NULL); m_commands.push_front(node); }
 	void pushCommandToBack(Node* node) { assert(node != NULL); m_commands.push_back(node); }
-	int getNumberOfCommands(void) const { return m_commands.size(); }
+	uint getNumberOfCommands(void) const { return m_commands.size(); }
 
 private:
 	NodeBlock(const NodeBlock& object);
 	NodeBlock& operator=(const NodeBlock& object);
 
 private:
+	friend RetVal NodeFunctionCall::execute(Context& context);
 	list<Node*> m_commands;
 };
 

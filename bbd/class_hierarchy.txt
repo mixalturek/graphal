@@ -27,7 +27,7 @@ BaseObject
 		NodeLoop
 		NodeBlock
 		NodeEmptyCommand
-		NodeFuncCall (TODO)
+		NodeFunctionCall
 		NodeFunction
 		NodeVariable
 		Value (interface)

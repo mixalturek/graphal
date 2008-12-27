@@ -122,10 +122,7 @@ NodeFunction* Context::getFunction(identifier name)
 	if(it != m_functions.end())
 		return it->second;
 	else
-	{
-		// TODO: message function was not defined
 		return NULL;
-	}
 }
 
 void Context::addFunction(identifier name, NodeFunction* function)

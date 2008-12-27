@@ -39,6 +39,8 @@ public:
 	virtual RetVal execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
+	const list<identifier>& getParameterNames(void) const { return m_parameters; }
+
 private:
 	list<identifier> m_parameters;
 	Node* m_block;
