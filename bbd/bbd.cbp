@@ -92,6 +92,8 @@
 		<Unit filename="nodecondition.hpp" />
 		<Unit filename="nodeemptycommand.cpp" />
 		<Unit filename="nodeemptycommand.hpp" />
+		<Unit filename="nodefunction.cpp" />
+		<Unit filename="nodefunction.hpp" />
 		<Unit filename="nodeloop.cpp" />
 		<Unit filename="nodeloop.hpp" />
 		<Unit filename="nodeunary.cpp" />

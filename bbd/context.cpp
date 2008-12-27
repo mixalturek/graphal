@@ -23,6 +23,7 @@
 #include <cassert>
 #include "context.hpp"
 #include "valuenull.hpp"
+#include "nodefunction.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -30,7 +31,8 @@
 
 Context::Context()
 	: BaseObject(),
-	m_local_variables()
+	m_local_variables(),
+	m_functions()
 {
 	pushLocal();
 }
@@ -40,6 +42,15 @@ Context::~Context()
 {
 	while(!m_local_variables.empty())
 		popLocal();
+
+	map<identifier, NodeFunction*>::iterator it;
+	for(it = m_functions.begin(); it != m_functions.end(); it++)
+	{
+		delete it->second;
+		it->second = NULL;
+	}
+
+	m_functions.clear();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -75,9 +86,12 @@ RetVal Context::getLocalVariable(identifier name)
 	map<identifier, Value*>::iterator it = m_local_variables.back().find(name);
 
 	if(it != m_local_variables.back().end())
-		return RetVal((*it).second, false);
+		return RetVal(it->second, false);
 	else
+	{
+		// TODO: message using uninitialized variable
 		return RetVal(new ValueNull());
+	}
 }
 
 
@@ -101,9 +115,39 @@ RetVal Context::setLocalVariable(identifier name, Value* val)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+NodeFunction* Context::getFunction(identifier name)
+{
+	map<identifier, NodeFunction*>::iterator it = m_functions.find(name);
+
+	if(it != m_functions.end())
+		return it->second;
+	else
+	{
+		// TODO: message function was not defined
+		return NULL;
+	}
+}
+
+void Context::addFunction(identifier name, NodeFunction* function)
+{
+	assert(function != NULL);
+
+	pair< map<identifier, NodeFunction*>::iterator, bool> ret
+		= m_functions.insert(pair<identifier, NodeFunction*>(name, function));
+
+	if(!ret.second)
+	{
+		// TODO: message function already defined
+	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void Context::dump(ostream& os, uint indent) const
 {
-
+	// TODO: add implementation
 }
 
 ostream& operator<<(ostream& os, const Context& node)

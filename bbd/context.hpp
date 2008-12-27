@@ -29,6 +29,8 @@
 #include "baseobject.hpp"
 #include "retval.hpp"
 
+class NodeFunction;
+
 class Context: public BaseObject
 {
 public:
@@ -44,11 +46,15 @@ public:
 	void pushLocal(void);
 	void popLocal(void);
 
+	NodeFunction* getFunction(identifier name);
+	void addFunction(identifier name, NodeFunction* function);
+
 private:
 	Context(const Context& object);
 	Context& operator=(const Context& object);
 
 private:
+	map<identifier, NodeFunction*> m_functions;
 	deque< map<identifier, Value*> > m_local_variables;
 };
 

@@ -28,7 +28,7 @@ BaseObject
 		NodeBlock
 		NodeEmptyCommand
 		NodeFuncCall (TODO)
-		NodeFunction (TODO)
+		NodeFunction
 		NodeVariable
 		Value (interface)
 			ValueNull

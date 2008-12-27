@@ -44,6 +44,7 @@
 #include "stringtable.hpp"
 #include "countptr.hpp"
 #include "nodeemptycommand.hpp"
+#include "nodefunction.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -759,6 +760,7 @@ bool Tests::testNodeBlock(void)
 	verify(bl->getNumberOfCommands() == 3);
 
 	NodeCondition cond(new ValueBool(true), bl, NULL);
+	NodeFunction func(list<identifier>(), NULL);
 
 	return testResult(__FUNCTION__, result);
 }
