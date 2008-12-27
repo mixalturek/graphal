@@ -60,6 +60,7 @@ private:
 	bool testNodeVariable(void);
 	bool testStringTable(void);
 	bool testCountPtr(void);
+	bool testNodeFunction(void);
 
 	// Template
 	// bool test(void);

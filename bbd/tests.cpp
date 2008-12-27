@@ -45,6 +45,8 @@
 #include "countptr.hpp"
 #include "nodeemptycommand.hpp"
 #include "nodefunction.hpp"
+#include "nodefunctioncall.hpp"
+#include "nodebinaryass.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -112,6 +114,7 @@ void Tests::run(void)
 	failed += !testNodeVariable();
 	failed += !testStringTable();
 	failed += !testCountPtr();
+	failed += !testNodeFunction();
 
 	// Template
 	// failed += !test();
@@ -760,7 +763,6 @@ bool Tests::testNodeBlock(void)
 	verify(bl->getNumberOfCommands() == 3);
 
 	NodeCondition cond(new ValueBool(true), bl, NULL);
-	NodeFunction func(list<identifier>(), NULL);
 
 	return testResult(__FUNCTION__, result);
 }
@@ -897,6 +899,27 @@ bool Tests::testCountPtr(void)
 	verify(obj5.getNumRefs() == 3);
 	verify(obj5->toString() == "3.14");
 
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool Tests::testNodeFunction(void)
+{
+	bool result = true;
+
+/*	Context context;
+
+	NodeFunction* func = new NodeFunction(list<identifier>(),
+		new NodeBinaryAss(new NodeVariable(0), new ValueInt(10)));
+
+	context.addFunction(0, func);
+
+	NodeFunctionCall fcall(0, NULL);
+	fcall.execute(context);
+*/
 	return testResult(__FUNCTION__, result);
 }
 
