@@ -49,6 +49,9 @@
 #include "nodebinaryass.hpp"
 #include "nodevalue.hpp"
 #include "nodebinarylt.hpp"
+#include "nodeunaryreturn.hpp"
+#include "nodebinarymult.hpp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -800,6 +803,11 @@ bool Tests::testNodeVariable(void)
 	verify(con.getLocalVariable(2)->toString() == "NULL");
 	verify(con.getLocalVariable(57)->toString() == "NULL");
 
+	// TODO:
+	// a = b = c = 15;
+	// a.member = 15;
+	// a[9] = 15;
+
 	return testResult(__FUNCTION__, result);
 }
 
@@ -915,7 +923,10 @@ bool Tests::testNodeFunction(void)
 	const uint local_id = 1;
 	const uint factorial_id = 2;
 	const uint number_id = 3;
+	const uint freturn_id = 4;
+	const uint freturn_local_id = 5;
 
+	string str;
 	Context context;
 
 	/*
@@ -936,7 +947,56 @@ bool Tests::testNodeFunction(void)
 
 	NodeFunctionCall func_call(func_id, NULL);
 	func_call.execute(context);
-	// TODO: add "return local;" and verify value
+
+
+
+	/*
+	function freturn()
+	{
+		return 5;
+	}
+	*/
+	NodeFunction* freturn =
+		new NodeFunction(list<identifier>(),
+			new NodeUnaryReturn(
+				new NodeValue(new ValueInt(5))
+			)
+		);
+
+	context.addFunction(freturn_id, freturn);
+
+	NodeFunctionCall freturn_call(freturn_id, NULL);
+	str = freturn_call.execute(context)->toString();
+	verify(str == "5");
+
+
+	/*
+	function func()
+	{
+		local = 10;
+		return local;
+	}
+	*/
+	NodeBlock* body = new NodeBlock();
+
+	body->pushCommandToBack(
+		new NodeBinaryAss(
+			new NodeVariable(local_id),
+			new NodeValue(new ValueInt(10))
+		)
+	);
+	body->pushCommandToBack(
+		new NodeUnaryReturn(
+			new NodeVariable(local_id)
+		)
+	);
+
+	NodeFunction* freturn_local = new NodeFunction(list<identifier>(), body);
+	context.addFunction(freturn_local_id, freturn_local);
+
+	NodeFunctionCall freturn_local_call(freturn_local_id, NULL);
+	str = freturn_local_call.execute(context)->toString();
+	verify(str == "10");
 
 
 	/*
@@ -950,7 +1010,7 @@ bool Tests::testNodeFunction(void)
 	*/
 
 	// TODO: Implement NodeJumpReturn
-/*	list<identifier> param_names;
+	list<identifier> param_names;
 	param_names.push_back(number_id);
 
 	NodeBlock* params = new NodeBlock();
@@ -968,10 +1028,10 @@ bool Tests::testNodeFunction(void)
 					new NodeVariable(number_id),
 					new NodeValue(new ValueInt(2))
 				),
-				new NodeJumpReturn(
+				new NodeUnaryReturn(
 					new NodeValue(new ValueInt(1))
 				),
-				new NodeJumpReturn(
+				new NodeUnaryReturn(
 					new NodeBinaryMult(
 						new NodeVariable(number_id),
 						new NodeFunctionCall(
@@ -991,9 +1051,10 @@ bool Tests::testNodeFunction(void)
 	);
 
 	NodeFunctionCall factorial_call(factorial_id, init_param);
-	factorial_call.execute(context);
-	// TODO: verify
-*/
+	str = factorial_call.execute(context)->toString();
+	cout << str << endl;
+	verify(str == "24");// TODO:
+
 	return testResult(__FUNCTION__, result);
 }
 

@@ -102,6 +102,8 @@
 		<Unit filename="nodeunary.hpp" />
 		<Unit filename="nodeunarynot.cpp" />
 		<Unit filename="nodeunarynot.hpp" />
+		<Unit filename="nodeunaryreturn.cpp" />
+		<Unit filename="nodeunaryreturn.hpp" />
 		<Unit filename="nodeunarysub.cpp" />
 		<Unit filename="nodeunarysub.hpp" />
 		<Unit filename="nodevalue.cpp" />

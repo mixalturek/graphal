@@ -329,6 +329,7 @@ END_OF_CPP
 
 generateUnaryOperatorClass('NodeUnarySub', 'return m_next->execute(context)->subUn();');
 generateUnaryOperatorClass('NodeUnaryNot', 'return m_next->execute(context)->logNOT();');
+generateUnaryOperatorClass('NodeUnaryReturn', 'throw m_next->execute(context);');
 
 generateBinaryOperatorClass('NodeBinaryAdd', 'return m_left->execute(context)->add(*(m_right->execute(context)));');
 generateBinaryOperatorClass('NodeBinarySub', 'return m_left->execute(context)->sub(*(m_right->execute(context)));');

@@ -5,6 +5,7 @@ BaseObject
 		NodeUnary (interface)
 			NodeUnarySub
 			NodeUnaryNot
+			NodeUnaryReturn
 			NodeUnaryMemberAccess (TODO)
 		NodeBinary (interface)
 			NodeBinaryAdd
@@ -21,7 +22,6 @@ BaseObject
 			NodeBinaryAnd
 			NodeBinaryOr
 			NodeBinaryAss
-		NodeJumpReturn (TODO)
 		NodeJumpBreak (TODO)
 		NodeJumpContinue (TODO)
 		NodeCondition
