@@ -34,9 +34,7 @@ public:
 	NodeFunctionCall(identifier name, NodeBlock* parameters);
 	virtual ~NodeFunctionCall();
 
-	virtual string toString(void) const { return "NodeFunctionCall"; }
-
-	virtual RetVal execute(Context& context);
+	virtual CountPtr<Value> execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:

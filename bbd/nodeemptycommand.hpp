@@ -33,9 +33,7 @@ public:
 	NodeEmptyCommand();
 	virtual ~NodeEmptyCommand();
 
-	virtual string toString(void) const { return "EmptyCommand"; }
-
-	virtual RetVal execute(Context& context);
+	virtual CountPtr<Value> execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 };
 

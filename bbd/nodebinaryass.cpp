@@ -51,17 +51,13 @@ NodeBinaryAss::~NodeBinaryAss(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryAss::execute(Context& context)
+CountPtr<Value> NodeBinaryAss::execute(Context& context)
 {
 	NodeVariable* var = dynamic_cast<NodeVariable*>(m_left);
 	assert(var != NULL);// TODO: is it safe?
-	return var->setValue(context, m_right->execute(context).release());
+	return var->setValue(context, m_right->execute(context));
 
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryAss::dump(ostream& os, uint indent) const
 {

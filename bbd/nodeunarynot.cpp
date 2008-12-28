@@ -50,14 +50,10 @@ NodeUnaryNot::~NodeUnaryNot(void)
 ////
 
 
-RetVal NodeUnaryNot::execute(Context& context)
+CountPtr<Value> NodeUnaryNot::execute(Context& context)
 {
-	return m_next->execute(context)->logNOT().release();
+	return m_next->execute(context)->logNOT();
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeUnaryNot::dump(ostream& os, uint indent) const
 {

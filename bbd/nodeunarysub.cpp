@@ -50,14 +50,10 @@ NodeUnarySub::~NodeUnarySub(void)
 ////
 
 
-RetVal NodeUnarySub::execute(Context& context)
+CountPtr<Value> NodeUnarySub::execute(Context& context)
 {
-	return m_next->execute(context)->subUn().release();
+	return m_next->execute(context)->subUn();
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeUnarySub::dump(ostream& os, uint indent) const
 {

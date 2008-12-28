@@ -1,5 +1,4 @@
 CountPtr<TYPE>
-RetVal
 BaseObject
 	Context
 	Node (interface)
@@ -22,7 +21,9 @@ BaseObject
 			NodeBinaryAnd
 			NodeBinaryOr
 			NodeBinaryAss
-		NodeJump (TODO)
+		NodeJumpReturn (TODO)
+		NodeJumpBreak (TODO)
+		NodeJumpContinue (TODO)
 		NodeCondition
 		NodeLoop
 		NodeBlock
@@ -30,19 +31,19 @@ BaseObject
 		NodeFunctionCall
 		NodeFunction
 		NodeVariable
-		Value (interface)
-			ValueNull
-			ValueString
-			ValueStruct
-			ValueBool
-			ValueInt
-			ValueFloat
-			ValueReference (for future use, no implementation)
-			ValueGraph
-			ValueVertex
-			ValueEdge
-			ValueVertexSet
-			ValueEdgeSet
+	Value (interface)
+		ValueNull
+		ValueString
+		ValueStruct
+		ValueBool
+		ValueInt
+		ValueFloat
+		ValueReference (for future use, no implementation)
+		ValueGraph
+		ValueVertex
+		ValueEdge
+		ValueVertexSet
+		ValueEdgeSet
 	StringTable
 	Logger (singleton)
 	Lexan

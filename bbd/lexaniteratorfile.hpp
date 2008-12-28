@@ -32,8 +32,6 @@ public:
 	LexanIteratorFile(const string& filename);
 	virtual ~LexanIteratorFile(void);
 
-	virtual string toString(void) const { return "LexanIteratorFile: " + m_filename; }
-
 	virtual char get(void);
 	virtual void unget(void);
 

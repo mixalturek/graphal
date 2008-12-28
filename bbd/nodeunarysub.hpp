@@ -38,9 +38,7 @@ public:
 	NodeUnarySub(Node* next);
 	virtual ~NodeUnarySub(void);
 
-	virtual string toString(void) const { return "NodeUnarySub"; }
-
-	virtual RetVal execute(Context& context);
+	virtual CountPtr<Value> execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:

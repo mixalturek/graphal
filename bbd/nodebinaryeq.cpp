@@ -49,14 +49,10 @@ NodeBinaryEq::~NodeBinaryEq(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryEq::execute(Context& context)
+CountPtr<Value> NodeBinaryEq::execute(Context& context)
 {
-	return m_left->execute(context)->eq(*(m_right->execute(context))).release();
+	return m_left->execute(context)->eq(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryEq::dump(ostream& os, uint indent) const
 {

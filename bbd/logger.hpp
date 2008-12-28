@@ -34,8 +34,6 @@
 class Logger : public BaseObject
 {
 public:
-	virtual string toString(void) const { return "Logger"; }
-
 	static inline Logger& getInstance(void)
 	{
 		return instance;

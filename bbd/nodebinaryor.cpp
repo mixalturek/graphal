@@ -49,14 +49,10 @@ NodeBinaryOr::~NodeBinaryOr(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryOr::execute(Context& context)
+CountPtr<Value> NodeBinaryOr::execute(Context& context)
 {
-	return m_left->execute(context)->logOR(*(m_right->execute(context))).release();
+	return m_left->execute(context)->logOR(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryOr::dump(ostream& os, uint indent) const
 {

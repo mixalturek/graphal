@@ -48,21 +48,21 @@ NodeFunctionCall::~NodeFunctionCall()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeFunctionCall::execute(Context& context)
+CountPtr<Value> NodeFunctionCall::execute(Context& context)
 {
 	NodeFunction* function = context.getFunction(m_name);
 
 	if(function == NULL)
 	{
 		// TODO: function was not found
-		return RetVal(new ValueNull());
+		return CountPtr<Value>(new ValueNull());
 	}
 
 	const list<identifier>& names = function->getParameterNames();
 
 	if(names.size() == m_parameters->getNumberOfCommands())
 	{
-		list<RetVal> values;
+		list< CountPtr<Value> > values;
 
 		// Evaluate parameters in the old function context
 		list<Node*>::iterator itc;
@@ -71,13 +71,13 @@ RetVal NodeFunctionCall::execute(Context& context)
 
 		context.pushLocal();
 			list<identifier>::const_iterator itn;
-			list<RetVal>::iterator itv;
+			list< CountPtr<Value> >::iterator itv;
 
 			// Set parameters in the new function context
 			for(itn = names.begin(), itv = values.begin(); itn != names.end(); itn++, itv++)
-				context.setLocalVariable(*itn, (*itv).release());// TODO: release() is not ok
+				context.setLocalVariable(*itn, *itv);
 
-			RetVal ret = function->execute(context);
+			CountPtr<Value> ret = function->execute(context);
 		context.popLocal();
 
 		return ret;
@@ -85,12 +85,12 @@ RetVal NodeFunctionCall::execute(Context& context)
 	else
 	{
 		// TODO: _("Wrong number of parameters has been passed to the function ") + m_name + _("()"),
-		return RetVal(new ValueNull());
+		return CountPtr<Value>(new ValueNull());
 	}
 
 	// Should never be called
 	assert(false);
-	return RetVal(new ValueNull());
+	return CountPtr<Value>(new ValueNull());
 }
 
 void NodeFunctionCall::dump(ostream& os, uint indent) const

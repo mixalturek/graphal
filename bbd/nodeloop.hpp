@@ -33,9 +33,7 @@ public:
 	NodeLoop(Node* init, Node* condition, Node* inc, Node* body);
 	virtual ~NodeLoop();
 
-	virtual string toString(void) const { return "NodeLoop"; }
-
-	virtual RetVal execute(Context& context);
+	virtual CountPtr<Value> execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:

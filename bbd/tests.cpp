@@ -47,7 +47,8 @@
 #include "nodefunction.hpp"
 #include "nodefunctioncall.hpp"
 #include "nodebinaryass.hpp"
-
+#include "nodevalue.hpp"
+#include "nodebinarylt.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -712,11 +713,11 @@ bool Tests::testNodeUnary(void)
 	Context con;
 	string str;
 
-	NodeUnarySub uminus(new ValueInt(10));
+	NodeUnarySub uminus(new NodeValue(new ValueInt(10)));
 	str = uminus.execute(con)->toString();
 	verify(str == "-10");
 
-	NodeUnaryNot unot(new ValueBool(true));
+	NodeUnaryNot unot(new NodeValue(new ValueBool(true)));
 	str = unot.execute(con)->toString();
 	verify(str == "false");
 
@@ -731,15 +732,15 @@ bool Tests::testNodeBinary(void)
 	Context con;
 	string str;
 
-	NodeBinaryAdd add(new ValueInt(10), new ValueInt(5));
+	NodeBinaryAdd add(new NodeValue(new ValueInt(10)), new NodeValue(new ValueInt(5)));
 	str = add.execute(con)->toString();
 	verify(str == "15");
 
-	NodeBinaryAdd add2(new ValueInt(10), new ValueFloat(5.1f));
+	NodeBinaryAdd add2(new NodeValue(new ValueInt(10)), new NodeValue(new ValueFloat(5.1f)));
 	str = add2.execute(con)->toString();
 	verify(str == "15.1");
 
-	NodeBinaryAdd addsub(new ValueInt(10), new NodeUnarySub(new ValueFloat(5.1f)));
+	NodeBinaryAdd addsub(new NodeValue(new ValueInt(10)), new NodeUnarySub(new NodeValue(new ValueFloat(5.1f))));
 	str = addsub.execute(con)->toString();
 	verify(str == "4.9");
 
@@ -756,13 +757,13 @@ bool Tests::testNodeBlock(void)
 	NodeBlock* bl = new NodeBlock();// delete in cond destructor
 
 	verify(bl->getNumberOfCommands() == 0);
-	bl->pushCommandToBack(new NodeBinaryAdd(new ValueInt(10), new ValueInt(5)));
-	bl->pushCommandToBack(new NodeBinaryAdd(new ValueInt(10), new ValueInt(5)));
+	bl->pushCommandToBack(new NodeBinaryAdd(new NodeValue(new ValueInt(10)), new NodeValue(new ValueInt(5))));
+	bl->pushCommandToBack(new NodeBinaryAdd(new NodeValue(new ValueInt(10)), new NodeValue(new ValueInt(5))));
 	verify(bl->getNumberOfCommands() == 2);
 	bl->pushCommandToBack(new NodeEmptyCommand());
 	verify(bl->getNumberOfCommands() == 3);
 
-	NodeCondition cond(new ValueBool(true), bl, NULL);
+	NodeCondition cond(new NodeValue(new ValueBool(true)), bl, NULL);
 
 	return testResult(__FUNCTION__, result);
 }
@@ -781,18 +782,18 @@ bool Tests::testNodeVariable(void)
 	NodeVariable* var0 = new NodeVariable(0);
 	NodeVariable* var1 = new NodeVariable(1);
 
-	var0->setValue(con, new ValueFloat(3.14f));
-	var1->setValue(con, new ValueInt(15));
+	var0->setValue(con, CountPtr<Value>(new ValueFloat(3.14f)));
+	var1->setValue(con, CountPtr<Value>(new ValueInt(15)));
 
-	NodeBinaryAdd add(new ValueInt(10), var0);
+	NodeBinaryAdd add(new NodeValue(new ValueInt(10)), var0);
 	str = add.execute(con)->toString();
 	verify(str == "13.14");
 
-	NodeBinarySub sub(new ValueInt(20), var1);
+	NodeBinarySub sub(new NodeValue(new ValueInt(20)), var1);
 	str = sub.execute(con)->toString();
 	verify(str == "5");
 
-	var1->setValue(con, new ValueFloat(3.5f));
+	var1->setValue(con, CountPtr<Value>(new ValueFloat(3.5f)));
 	str = sub.execute(con)->toString();
 	verify(str == "16.5");
 
@@ -910,15 +911,88 @@ bool Tests::testNodeFunction(void)
 {
 	bool result = true;
 
-/*	Context context;
+	const uint func_id = 0;
+	const uint local_id = 1;
+	const uint factorial_id = 2;
+	const uint number_id = 3;
 
-	NodeFunction* func = new NodeFunction(list<identifier>(),
-		new NodeBinaryAss(new NodeVariable(0), new ValueInt(10)));
+	Context context;
 
-	context.addFunction(0, func);
+	/*
+	function func()
+	{
+		local = 10;
+	}
+	*/
+	NodeFunction* func =
+		new NodeFunction(list<identifier>(),
+			new NodeBinaryAss(
+				new NodeVariable(local_id),
+				new NodeValue(new ValueInt(10))
+			)
+		);
 
-	NodeFunctionCall fcall(0, NULL);
-	fcall.execute(context);
+	context.addFunction(func_id, func);
+
+	NodeFunctionCall func_call(func_id, NULL);
+	func_call.execute(context);
+	// TODO: add "return local;" and verify value
+
+
+	/*
+	function factorial(number)
+	{
+		if(number < 2)
+			return 1;
+		else
+			return number * factorial(number - 1);
+	}
+	*/
+
+	// TODO: Implement NodeJumpReturn
+/*	list<identifier> param_names;
+	param_names.push_back(number_id);
+
+	NodeBlock* params = new NodeBlock();
+	params->pushCommandToBack(
+		new NodeBinarySub(
+			new NodeVariable(number_id),
+			new NodeValue(new ValueInt(1))
+		)
+	);
+
+	NodeFunction* factorial =
+		new NodeFunction(param_names,
+			new NodeCondition(
+				new NodeBinaryLt(
+					new NodeVariable(number_id),
+					new NodeValue(new ValueInt(2))
+				),
+				new NodeJumpReturn(
+					new NodeValue(new ValueInt(1))
+				),
+				new NodeJumpReturn(
+					new NodeBinaryMult(
+						new NodeVariable(number_id),
+						new NodeFunctionCall(
+							factorial_id,
+							params
+						)
+					)
+				)
+			)
+		);
+
+	context.addFunction(factorial_id, func);
+
+	NodeBlock* init_param = new NodeBlock();
+	params->pushCommandToBack(
+		new NodeValue(new ValueInt(4))
+	);
+
+	NodeFunctionCall factorial_call(factorial_id, init_param);
+	factorial_call.execute(context);
+	// TODO: verify
 */
 	return testResult(__FUNCTION__, result);
 }

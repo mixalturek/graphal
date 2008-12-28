@@ -41,9 +41,9 @@ NodeEmptyCommand::~NodeEmptyCommand()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeEmptyCommand::execute(Context& context)
+CountPtr<Value> NodeEmptyCommand::execute(Context& context)
 {
-	return new ValueNull();
+	return CountPtr<Value>(new ValueNull());
 }
 
 void NodeEmptyCommand::dump(ostream& os, uint indent) const

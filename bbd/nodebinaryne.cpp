@@ -49,14 +49,10 @@ NodeBinaryNe::~NodeBinaryNe(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryNe::execute(Context& context)
+CountPtr<Value> NodeBinaryNe::execute(Context& context)
 {
-	return m_left->execute(context)->ne(*(m_right->execute(context))).release();
+	return m_left->execute(context)->ne(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryNe::dump(ostream& os, uint indent) const
 {

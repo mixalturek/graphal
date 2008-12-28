@@ -49,14 +49,10 @@ NodeBinarySub::~NodeBinarySub(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinarySub::execute(Context& context)
+CountPtr<Value> NodeBinarySub::execute(Context& context)
 {
-	return m_left->execute(context)->sub(*(m_right->execute(context))).release();
+	return m_left->execute(context)->sub(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinarySub::dump(ostream& os, uint indent) const
 {

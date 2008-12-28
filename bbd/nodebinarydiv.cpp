@@ -49,14 +49,10 @@ NodeBinaryDiv::~NodeBinaryDiv(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryDiv::execute(Context& context)
+CountPtr<Value> NodeBinaryDiv::execute(Context& context)
 {
-	return m_left->execute(context)->div(*(m_right->execute(context))).release();
+	return m_left->execute(context)->div(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryDiv::dump(ostream& os, uint indent) const
 {

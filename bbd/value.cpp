@@ -38,15 +38,15 @@
 ////
 
 Value::Value()
-	: Node()
+	: BaseObject()
 {
-//	cout << "contructor" << endl;
+
 }
 
 
 Value::~Value()
 {
-//	cout << "destructor" << endl;
+
 }
 
 

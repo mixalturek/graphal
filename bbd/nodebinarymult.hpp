@@ -38,9 +38,7 @@ public:
 	NodeBinaryMult(Node* left, Node* right);
 	virtual ~NodeBinaryMult(void);
 
-	virtual string toString(void) const { return "NodeBinaryMult"; }
-
-	virtual RetVal execute(Context& context);
+	virtual CountPtr<Value> execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:

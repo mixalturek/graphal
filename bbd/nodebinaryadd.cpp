@@ -49,14 +49,10 @@ NodeBinaryAdd::~NodeBinaryAdd(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryAdd::execute(Context& context)
+CountPtr<Value> NodeBinaryAdd::execute(Context& context)
 {
-	return m_left->execute(context)->add(*(m_right->execute(context))).release();
+	return m_left->execute(context)->add(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryAdd::dump(ostream& os, uint indent) const
 {

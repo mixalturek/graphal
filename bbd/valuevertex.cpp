@@ -25,6 +25,7 @@
 #include "valuegraph.hpp"
 #include "valueedge.hpp"
 #include "valuevertexset.hpp"
+#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -117,7 +118,7 @@ void ValueVertex::invertOrientation(void)
 
 void ValueVertex::dump(ostream& os, uint indent) const
 {
-	this->dumpIndent(os, indent);
+	Node::dumpIndent(os, indent);
 	os << "<ValueVertex />" << endl;// TODO:
 }
 

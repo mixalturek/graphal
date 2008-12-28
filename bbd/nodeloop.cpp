@@ -25,6 +25,7 @@
 #include "valuenull.hpp"
 #include "valuebool.hpp"
 #include "nodeemptycommand.hpp"
+#include "nodevalue.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -33,7 +34,7 @@
 NodeLoop::NodeLoop(Node* init, Node* condition, Node* inc, Node* body)
 	: Node(),
 	m_init((init != NULL) ? init : new NodeEmptyCommand()),
-	m_condition((condition != NULL) ? condition : new ValueBool(true)),
+	m_condition((condition != NULL) ? condition : new NodeValue(new ValueBool(true))),
 	m_inc((inc != NULL) ? inc : new NodeEmptyCommand()),
 	m_body((body != NULL) ? body : new NodeEmptyCommand())
 {
@@ -59,7 +60,7 @@ NodeLoop::~NodeLoop()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeLoop::execute(Context& context)
+CountPtr<Value> NodeLoop::execute(Context& context)
 {
 	// TODO: set position in the code to the context
 	// TODO: catch jump exceptions
@@ -87,7 +88,7 @@ RetVal NodeLoop::execute(Context& context)
 		// Only the jump needed
 	}
 */
-	return RetVal(new ValueNull());
+	return CountPtr<Value>(new ValueNull());
 }
 
 void NodeLoop::dump(ostream& os, uint indent) const

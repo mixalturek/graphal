@@ -49,14 +49,10 @@ NodeBinaryLt::~NodeBinaryLt(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryLt::execute(Context& context)
+CountPtr<Value> NodeBinaryLt::execute(Context& context)
 {
-	return m_left->execute(context)->lt(*(m_right->execute(context))).release();
+	return m_left->execute(context)->lt(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryLt::dump(ostream& os, uint indent) const
 {

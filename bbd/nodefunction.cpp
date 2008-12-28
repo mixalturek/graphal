@@ -46,7 +46,7 @@ NodeFunction::~NodeFunction(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeFunction::execute(Context& context)
+CountPtr<Value> NodeFunction::execute(Context& context)
 {
 	// TODO: catch "return" exception
 	// TODO: built in functions
@@ -60,7 +60,7 @@ RetVal NodeFunction::execute(Context& context)
 		return ex.GetValue();
 	}
 */
-	return RetVal(new ValueNull());;
+	return CountPtr<Value>(new ValueNull());;
 }
 
 void NodeFunction::dump(ostream& os, uint indent) const

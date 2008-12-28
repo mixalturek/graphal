@@ -49,14 +49,10 @@ NodeBinaryMult::~NodeBinaryMult(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryMult::execute(Context& context)
+CountPtr<Value> NodeBinaryMult::execute(Context& context)
 {
-	return m_left->execute(context)->mult(*(m_right->execute(context))).release();
+	return m_left->execute(context)->mult(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryMult::dump(ostream& os, uint indent) const
 {

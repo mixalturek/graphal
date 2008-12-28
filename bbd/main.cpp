@@ -41,8 +41,6 @@ int main(int argc, char** argv)
 #ifdef CHECK_MEMORY_LEAKS
 		BaseObject::printMemoryLeaks(number_of_static_objects);
 #endif // CHECK_MEMORY_LEAKS
-
-		INFO << _("Number of created objects: ") << BaseObject::getMaxID() << endl;
 	}
 	catch(runtime_error& ex)
 	{

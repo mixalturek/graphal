@@ -56,7 +56,7 @@ NodeCondition::~NodeCondition()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeCondition::execute(Context& context)
+CountPtr<Value> NodeCondition::execute(Context& context)
 {
 	// TODO: set position in the code to the context
 
@@ -65,7 +65,7 @@ RetVal NodeCondition::execute(Context& context)
 	else if(m_else_section != NULL)
 		m_else_section->execute(context);
 
-	return RetVal(new ValueNull());
+	return CountPtr<Value>(new ValueNull());
 }
 
 void NodeCondition::dump(ostream& os, uint indent) const

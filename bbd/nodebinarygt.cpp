@@ -49,14 +49,10 @@ NodeBinaryGt::~NodeBinaryGt(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryGt::execute(Context& context)
+CountPtr<Value> NodeBinaryGt::execute(Context& context)
 {
-	return m_left->execute(context)->gt(*(m_right->execute(context))).release();
+	return m_left->execute(context)->gt(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryGt::dump(ostream& os, uint indent) const
 {

@@ -49,14 +49,10 @@ NodeBinaryAnd::~NodeBinaryAnd(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryAnd::execute(Context& context)
+CountPtr<Value> NodeBinaryAnd::execute(Context& context)
 {
-	return m_left->execute(context)->logAND(*(m_right->execute(context))).release();
+	return m_left->execute(context)->logAND(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryAnd::dump(ostream& os, uint indent) const
 {

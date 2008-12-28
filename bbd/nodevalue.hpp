@@ -1,6 +1,4 @@
 /*
- *      retval.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -19,30 +17,27 @@
  *      MA 02110-1301, USA.
  */
 
-#ifndef RETVAL_HPP
-#define RETVAL_HPP
+
+#ifndef NODEVALUE_HPP
+#define NODEVALUE_HPP
 
 #include "general.hpp"
+#include "node.hpp"
 
-class Value;
 
-class RetVal
+class NodeValue : public Node
 {
 public:
-	RetVal(Value* val, bool autodel = true);
-	~RetVal(void);
+	NodeValue(Value* value);
+	virtual ~NodeValue();
 
-	Value& operator*() const { return *m_val; }
-	Value* operator->() const { return m_val; }
-
-	Value* release(void) { m_autodel = false; return m_val; }
+	virtual CountPtr<Value> execute(Context& context);
+	virtual void dump(ostream& os, uint indent) const;
 
 private:
-	RetVal(void);
-
-private:
-	Value* m_val;
-	bool   m_autodel;
+	CountPtr<Value> m_value;
 };
 
-#endif // RETVAL_HPP
+ostream& operator<<(ostream& os, const NodeValue& node);
+
+#endif // NODEVALUE_HPP

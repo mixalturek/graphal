@@ -32,8 +32,6 @@ public:
 	Tests();
 	virtual ~Tests();
 
-	virtual string toString(void) const { return "Tests"; }
-
 	void run(void);
 
 private:

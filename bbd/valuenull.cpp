@@ -27,6 +27,7 @@
 #include "valuefloat.hpp"
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
+#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -50,7 +51,7 @@ ValueNull::~ValueNull()
 
 void ValueNull::dump(ostream& os, uint indent) const
 {
-	this->dumpIndent(os, indent);
+	Node::dumpIndent(os, indent);
 	os << "<ValueNull />" << endl;
 }
 

@@ -34,14 +34,12 @@ public:
 	NodeVariable(identifier name);
 	virtual ~NodeVariable(void);
 
-	virtual string toString(void) const { ostringstream os; os << "NodeVariable(" << m_name << ")"; return os.str(); }
-
-	virtual RetVal execute(Context& context);
+	virtual CountPtr<Value> execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 	identifier getName(void) const { return m_name; }
-	RetVal setValue(Context& context, Value* val);
-	RetVal getValue(Context& context);
+	CountPtr<Value> setValue(Context& context, CountPtr<Value> val);
+	CountPtr<Value> getValue(Context& context);
 
 private:
 	identifier m_name;

@@ -23,9 +23,9 @@
 #ifndef VARIABLE_HPP
 #define VARIABLE_HPP
 
-#include <memory>
 #include "general.hpp"
-#include "node.hpp"
+#include "baseobject.hpp"
+#include "countptr.hpp"
 
 class Value;
 class ValueNull;
@@ -42,10 +42,10 @@ class ValueVertexSet;
 class ValueEdgeSet;
 
 
-typedef auto_ptr<Value> PTR_Value;
+typedef CountPtr<Value> PTR_Value;
 
 
-class Value : public Node
+class Value : public BaseObject
 {
 public:
 	Value();
@@ -54,8 +54,7 @@ public:
 public:
 	virtual bool toBool(void)     const = 0;
 	virtual bool isNull(void)     const { return false; }
-
-	virtual RetVal execute(Context& context) { return RetVal(this, false); }
+	virtual string toString(void) const = 0;
 
 	// +
 	virtual PTR_Value add(const Value&         right) const = 0;

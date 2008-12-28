@@ -51,7 +51,7 @@ NodeBlock::~NodeBlock()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBlock::execute(Context& context)
+CountPtr<Value> NodeBlock::execute(Context& context)
 {
 	// TODO: set position in the code to the context
 
@@ -60,7 +60,7 @@ RetVal NodeBlock::execute(Context& context)
 	for(it = m_commands.begin(); it != m_commands.end(); it++)
 		(*it)->execute(context);
 
-	return RetVal(new ValueNull());
+	return CountPtr<Value>(new ValueNull());
 }
 
 void NodeBlock::dump(ostream& os, uint indent) const

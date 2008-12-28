@@ -31,8 +31,6 @@ public:
 	LexanIteratorString(const string& name, const string& value);
 	virtual ~LexanIteratorString(void);
 
-	virtual string toString(void) const { return "LexanIteratorString: " + m_name; }
-
 	virtual char get(void);
 	virtual void unget(void);
 

@@ -25,6 +25,7 @@
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
+#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -119,7 +120,7 @@ void ValueGraph::invertEdgesOrientation(void)
 
 void ValueGraph::dump(ostream& os, uint indent) const
 {
-	this->dumpIndent(os, indent);
+	Node::dumpIndent(os, indent);
 	os << "<ValueGraph />" << endl;// TODO:
 }
 

@@ -58,20 +58,11 @@ Context::~Context()
 
 void Context::pushLocal(void)
 {
-	m_local_variables.push_back(map<identifier, Value*>());
+	m_local_variables.push_back(map<identifier, CountPtr<Value> >());
 }
 
 void Context::popLocal(void)
 {
-	map<identifier, Value*>& frame = m_local_variables.back();
-
-	map<identifier, Value*>::iterator it;
-	for(it = frame.begin(); it != frame.end(); it++)
-	{
-		delete it->second;
-		it->second = NULL;
-	}
-
 	m_local_variables.pop_back();
 }
 
@@ -79,36 +70,32 @@ void Context::popLocal(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal Context::getLocalVariable(identifier name)
+CountPtr<Value> Context::getLocalVariable(identifier name)
 {
 	assert(!m_local_variables.empty());
 
-	map<identifier, Value*>::iterator it = m_local_variables.back().find(name);
+	map<identifier, CountPtr<Value> >::iterator it = m_local_variables.back().find(name);
 
 	if(it != m_local_variables.back().end())
-		return RetVal(it->second, false);
+		return it->second;
 	else
 	{
 		// TODO: message using uninitialized variable
-		return RetVal(new ValueNull());
+		return CountPtr<Value>(new ValueNull());
 	}
 }
 
 
-RetVal Context::setLocalVariable(identifier name, Value* val)
+CountPtr<Value> Context::setLocalVariable(identifier name, CountPtr<Value> val)
 {
 	assert(!m_local_variables.empty());
-	assert(val != NULL);
 
-	map<identifier, Value*>::iterator it = m_local_variables.back().find(name);
+	map<identifier, CountPtr<Value> >::iterator it = m_local_variables.back().find(name);
 	if(it != m_local_variables.back().end())
-	{
-		delete it->second;
-		it->second = NULL;
 		m_local_variables.back().erase(it);
-	}
 
-	return RetVal(m_local_variables.back()[name] = val, false);
+	m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, val));
+	return val;
 }
 
 

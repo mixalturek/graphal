@@ -33,9 +33,7 @@ public:
 	NodeCondition(Node* condition, Node* if_section, Node* else_section);
 	virtual ~NodeCondition(void);
 
-	virtual string toString(void) const { return "NodeCondition"; }
-
-	virtual RetVal execute(Context& context);
+	virtual CountPtr<Value> execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:

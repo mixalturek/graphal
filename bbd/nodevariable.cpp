@@ -45,12 +45,12 @@ NodeVariable::~NodeVariable()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeVariable::setValue(Context& context, Value* val)
+CountPtr<Value> NodeVariable::setValue(Context& context, CountPtr<Value> val)
 {
 	return context.setLocalVariable(m_name, val);
 }
 
-RetVal NodeVariable::getValue(Context& context)
+CountPtr<Value> NodeVariable::getValue(Context& context)
 {
 	return context.getLocalVariable(m_name);
 }
@@ -59,7 +59,7 @@ RetVal NodeVariable::getValue(Context& context)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeVariable::execute(Context& context)
+CountPtr<Value> NodeVariable::execute(Context& context)
 {
 	return getValue(context);
 }

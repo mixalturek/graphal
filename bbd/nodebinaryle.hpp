@@ -38,9 +38,7 @@ public:
 	NodeBinaryLe(Node* left, Node* right);
 	virtual ~NodeBinaryLe(void);
 
-	virtual string toString(void) const { return "NodeBinaryLe"; }
-
-	virtual RetVal execute(Context& context);
+	virtual CountPtr<Value> execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:

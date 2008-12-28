@@ -1,6 +1,4 @@
 /*
- *      retval.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -20,27 +18,42 @@
  */
 
 
-#include <cassert>
-#include "retval.hpp"
+#include "nodevalue.hpp"
 #include "value.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal::RetVal(Value* val, bool autodel)
-	: m_val(val),
-	m_autodel(autodel)
+NodeValue::NodeValue(Value* value)
+	: Node(),
+	m_value(value)
 {
-	assert(val != NULL);
+
 }
 
-RetVal::~RetVal(void)
+NodeValue::~NodeValue()
 {
-	if(m_autodel)
-		delete m_val;
+
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
+
+CountPtr<Value> NodeValue::execute(Context& context)
+{
+	return m_value;
+}
+
+void NodeValue::dump(ostream& os, uint indent) const
+{
+	dumpIndent(os, indent);
+	os << "<NodeValue value=\"" << m_value->toString() << "\" />" << endl;
+}
+
+ostream& operator<<(ostream& os, const NodeValue& node)
+{
+	node.dump(os, 0);
+	return os;
+}

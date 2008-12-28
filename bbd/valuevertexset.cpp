@@ -24,6 +24,7 @@
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
 #include "logger.hpp"
+#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -66,7 +67,7 @@ void ValueVertexSet::deleteVertex(ValueVertex* vertex)
 
 void ValueVertexSet::dump(ostream& os, uint indent) const
 {
-	this->dumpIndent(os, indent);
+	Node::dumpIndent(os, indent);
 	os << "<ValueVertexSet />" << endl;// TODO:
 }
 

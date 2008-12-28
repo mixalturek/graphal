@@ -23,6 +23,7 @@
 #include "valueedge.hpp"
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
+#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -60,7 +61,7 @@ void ValueEdge::invertOrientation(void)
 
 void ValueEdge::dump(ostream& os, uint indent) const
 {
-	this->dumpIndent(os, indent);
+	Node::dumpIndent(os, indent);
 	os << "<ValueEdge />" << endl;// TODO:
 }
 

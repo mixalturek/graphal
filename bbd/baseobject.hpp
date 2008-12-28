@@ -35,16 +35,8 @@ public:
 	BaseObject();
 	virtual ~BaseObject();
 
-	virtual string toString(void) const = 0;
-
-	uint getID(void) const { return m_id; }
-	static uint getMaxID(void) { return m_max_id; }
-
-private:
-	static uint m_max_id;
-	uint m_id;
-
 #ifdef CHECK_MEMORY_LEAKS
+private:
 	static set<BaseObject*> m_allocated_objects;
 
 public:

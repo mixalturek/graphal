@@ -34,7 +34,6 @@ public:
 	StringTable(uint expectedsize = 100);
 	virtual ~StringTable();
 
-	virtual string toString(void) const { return "StringTable"; }
 	virtual void dump(ostream& os, uint indent) const;
 
 	identifier getID(const string& str);

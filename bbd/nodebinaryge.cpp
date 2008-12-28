@@ -49,14 +49,10 @@ NodeBinaryGe::~NodeBinaryGe(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryGe::execute(Context& context)
+CountPtr<Value> NodeBinaryGe::execute(Context& context)
 {
-	return m_left->execute(context)->ge(*(m_right->execute(context))).release();
+	return m_left->execute(context)->ge(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryGe::dump(ostream& os, uint indent) const
 {

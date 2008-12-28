@@ -27,7 +27,9 @@
 #include <map>
 #include "general.hpp"
 #include "baseobject.hpp"
-#include "retval.hpp"
+#include "countptr.hpp"
+#include "value.hpp"
+
 
 class NodeFunction;
 
@@ -37,11 +39,10 @@ public:
 	Context();
 	virtual ~Context();
 
-	virtual string toString(void) const { return "Context"; }
 	void dump(ostream& os, uint indent) const;
 
-	RetVal getLocalVariable(identifier name);
-	RetVal setLocalVariable(identifier name, Value* val);
+	CountPtr<Value> getLocalVariable(identifier name);
+	CountPtr<Value> setLocalVariable(identifier name, CountPtr<Value> val);
 
 	void pushLocal(void);
 	void popLocal(void);
@@ -55,7 +56,7 @@ private:
 
 private:
 	map<identifier, NodeFunction*> m_functions;
-	deque< map<identifier, Value*> > m_local_variables;
+	deque< map<identifier, CountPtr<Value> > > m_local_variables;
 };
 
 ostream& operator<<(ostream& os, const Context& node);

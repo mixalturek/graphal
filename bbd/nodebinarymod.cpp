@@ -49,14 +49,10 @@ NodeBinaryMod::~NodeBinaryMod(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-RetVal NodeBinaryMod::execute(Context& context)
+CountPtr<Value> NodeBinaryMod::execute(Context& context)
 {
-	return m_left->execute(context)->mod(*(m_right->execute(context))).release();
+	return m_left->execute(context)->mod(*(m_right->execute(context)));
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
 
 void NodeBinaryMod::dump(ostream& os, uint indent) const
 {

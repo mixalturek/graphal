@@ -35,8 +35,6 @@ public:
 	Lexan(const string& source, bool filename = true);
 	~Lexan(void);
 
-	virtual string toString(void) const { return "Lexan"; };
-
 	LEXTOKEN nextToken(void);
 	static string getTokenName(LEXTOKEN token);
 

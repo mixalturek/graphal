@@ -22,6 +22,7 @@
 
 #include "valuereference.hpp"
 #include "valuebool.hpp"
+#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -45,7 +46,7 @@ ValueReference::~ValueReference()
 
 void ValueReference::dump(ostream& os, uint indent) const
 {
-	this->dumpIndent(os, indent);
+	Node::dumpIndent(os, indent);
 	os << "<ValueReference />" << endl;
 }
 

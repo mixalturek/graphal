@@ -36,8 +36,6 @@
 /////////////////////////////////////////////////////////////////////////////
 //// BaseObject
 
-uint BaseObject::m_max_id = 0;
-
 #ifdef CHECK_MEMORY_LEAKS
 set<BaseObject*> BaseObject::m_allocated_objects = set<BaseObject*>();
 #endif // CHECK_MEMORY_LEAKS
