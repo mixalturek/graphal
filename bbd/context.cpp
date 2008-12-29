@@ -31,8 +31,8 @@
 
 Context::Context()
 	: BaseObject(),
-	m_local_variables(),
-	m_functions()
+	m_functions(),
+	m_local_variables()
 {
 	pushLocal();
 }
