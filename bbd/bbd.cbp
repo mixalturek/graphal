@@ -37,9 +37,11 @@
 		</Compiler>
 		<Unit filename="baseobject.cpp" />
 		<Unit filename="baseobject.hpp" />
+		<Unit filename="class_hierarchy.txt" />
 		<Unit filename="context.cpp" />
 		<Unit filename="context.hpp" />
 		<Unit filename="countptr.hpp" />
+		<Unit filename="gen_operators.pl" />
 		<Unit filename="general.hpp" />
 		<Unit filename="init_static_objects.cpp" />
 		<Unit filename="lexan.cpp" />
