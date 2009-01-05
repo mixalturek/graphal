@@ -129,7 +129,7 @@ void Context::addFunction(identifier name, NodeFunction* function)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void Context::dump(ostream& os, uint indent) const
+void Context::dump(ostream& /* os */, uint /* indent */) const
 {
 	// TODO: add implementation
 }

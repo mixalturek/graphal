@@ -41,7 +41,7 @@ NodeEmptyCommand::~NodeEmptyCommand()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> NodeEmptyCommand::execute(Context& context)
+CountPtr<Value> NodeEmptyCommand::execute(Context& /* context */)
 {
 	return CountPtr<Value>(new ValueNull());
 }

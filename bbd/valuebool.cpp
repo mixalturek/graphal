@@ -95,7 +95,7 @@ PTR_Value ValueBool::mod(const Value& right)       const { return right.mod(*thi
 PTR_Value ValueBool::mod(const ValueBool& left)    const { return PTR_Value(new ValueBool(left.getVal() % m_val)); }
 PTR_Value ValueBool::mod(const ValueInt& left)     const { return PTR_Value(new ValueInt(left.getVal() % m_val)); }
 // TODO: error: invalid operands of types 'double' and 'int' to binary 'operator%'
-PTR_Value ValueBool::mod(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueBool::mod(const ValueFloat& /* left */)   const { return PTR_Value(new ValueNull()); }
 
 // ==
 PTR_Value ValueBool::eq(const Value& right)        const { return right.eq(*this); }

@@ -93,11 +93,11 @@ PTR_Value ValueFloat::div(const ValueFloat& left)   const { return PTR_Value(new
 // %
 PTR_Value ValueFloat::mod(const Value& right)       const { return right.mod(*this); }
 // TODO: error: invalid operands of types 'bool' and 'const float' to binary 'operator%'
-PTR_Value ValueFloat::mod(const ValueBool& left)    const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueFloat::mod(const ValueBool& /* left */)    const { return PTR_Value(new ValueNull()); }
 // TODO: error: invalid operands of types 'int' and 'const float' to binary 'operator%'
-PTR_Value ValueFloat::mod(const ValueInt& left)     const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueFloat::mod(const ValueInt& /* left */)     const { return PTR_Value(new ValueNull()); }
 // TODO: error: invalid operands of types 'double' and 'int' to binary 'operator%'
-PTR_Value ValueFloat::mod(const ValueFloat& left)   const { return PTR_Value(new ValueNull()); }
+PTR_Value ValueFloat::mod(const ValueFloat& /* left */)   const { return PTR_Value(new ValueNull()); }
 
 // ==
 PTR_Value ValueFloat::eq(const Value& right)        const { return right.eq(*this); }

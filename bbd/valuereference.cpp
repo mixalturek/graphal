@@ -66,9 +66,9 @@ PTR_Value ValueReference::mult(const Value& right)       const { return right.mu
 PTR_Value ValueReference::div(const Value& right)        const { return right.div(*this); } // /
 PTR_Value ValueReference::mod(const Value& right)        const { return right.mod(*this); } // %
 PTR_Value ValueReference::eq(const Value& right)         const { return right.eq(*this); } // ==
-PTR_Value ValueReference::eq(const ValueReference& left) const { return PTR_Value(new ValueBool(true)); } // TODO
+PTR_Value ValueReference::eq(const ValueReference& /* left */) const { return PTR_Value(new ValueBool(true)); } // TODO
 PTR_Value ValueReference::ne(const Value& right)         const { return right.ne(*this); } // !=
-PTR_Value ValueReference::ne(const ValueReference& left) const { return PTR_Value(new ValueBool(false)); } // TODO
+PTR_Value ValueReference::ne(const ValueReference& /* left */) const { return PTR_Value(new ValueBool(false)); } // TODO
 PTR_Value ValueReference::le(const Value& right)         const { return right.le(*this); } // <=
 PTR_Value ValueReference::ge(const Value& right)         const { return right.ge(*this); } // >=
 PTR_Value ValueReference::lt(const Value& right)         const { return right.lt(*this); } // <
