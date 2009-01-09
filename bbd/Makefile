@@ -70,9 +70,24 @@ nodebinaryadd.o: stringtable.hpp
 nodebinaryand.o: nodebinaryand.hpp general.hpp nodebinary.hpp node.hpp
 nodebinaryand.o: baseobject.hpp context.hpp countptr.hpp value.hpp
 nodebinaryand.o: stringtable.hpp
+nodebinaryassadd.o: nodevariable.hpp general.hpp node.hpp baseobject.hpp
+nodebinaryassadd.o: context.hpp countptr.hpp value.hpp stringtable.hpp
+nodebinaryassadd.o: nodebinaryassadd.hpp nodebinary.hpp
 nodebinaryass.o: nodevariable.hpp general.hpp node.hpp baseobject.hpp
 nodebinaryass.o: context.hpp countptr.hpp value.hpp stringtable.hpp
 nodebinaryass.o: nodebinaryass.hpp nodebinary.hpp
+nodebinaryassdiv.o: nodevariable.hpp general.hpp node.hpp baseobject.hpp
+nodebinaryassdiv.o: context.hpp countptr.hpp value.hpp stringtable.hpp
+nodebinaryassdiv.o: nodebinaryassdiv.hpp nodebinary.hpp
+nodebinaryassmod.o: nodevariable.hpp general.hpp node.hpp baseobject.hpp
+nodebinaryassmod.o: context.hpp countptr.hpp value.hpp stringtable.hpp
+nodebinaryassmod.o: nodebinaryassmod.hpp nodebinary.hpp
+nodebinaryassmult.o: nodevariable.hpp general.hpp node.hpp baseobject.hpp
+nodebinaryassmult.o: context.hpp countptr.hpp value.hpp stringtable.hpp
+nodebinaryassmult.o: nodebinaryassmult.hpp nodebinary.hpp
+nodebinaryasssub.o: nodevariable.hpp general.hpp node.hpp baseobject.hpp
+nodebinaryasssub.o: context.hpp countptr.hpp value.hpp stringtable.hpp
+nodebinaryasssub.o: nodebinaryasssub.hpp nodebinary.hpp
 nodebinary.o: nodebinary.hpp general.hpp node.hpp baseobject.hpp context.hpp
 nodebinary.o: countptr.hpp value.hpp stringtable.hpp
 nodebinarydiv.o: nodebinarydiv.hpp general.hpp nodebinary.hpp node.hpp
@@ -147,10 +162,12 @@ nodevariable.o: valuefloat.hpp
 parser.o: general.hpp lexan.hpp baseobject.hpp lexaniterator.hpp
 parser.o: lexantokens.hpp node.hpp context.hpp countptr.hpp value.hpp
 parser.o: stringtable.hpp parser.hpp nodebinaryadd.hpp nodebinary.hpp
-parser.o: nodebinaryand.hpp nodebinaryass.hpp nodebinarydiv.hpp
-parser.o: nodebinaryeq.hpp nodebinaryge.hpp nodebinarygt.hpp nodebinaryle.hpp
-parser.o: nodebinarylt.hpp nodebinarymod.hpp nodebinarymult.hpp
-parser.o: nodebinaryne.hpp nodebinaryor.hpp nodebinarysub.hpp nodeblock.hpp
+parser.o: nodebinaryand.hpp nodebinaryass.hpp nodebinaryassadd.hpp
+parser.o: nodebinaryasssub.hpp nodebinaryassmult.hpp nodebinaryassdiv.hpp
+parser.o: nodebinaryassmod.hpp nodebinarydiv.hpp nodebinaryeq.hpp
+parser.o: nodebinaryge.hpp nodebinarygt.hpp nodebinaryle.hpp nodebinarylt.hpp
+parser.o: nodebinarymod.hpp nodebinarymult.hpp nodebinaryne.hpp
+parser.o: nodebinaryor.hpp nodebinarysub.hpp nodeblock.hpp
 parser.o: nodefunctioncall.hpp nodecondition.hpp nodeemptycommand.hpp
 parser.o: nodefunction.hpp nodeloop.hpp nodeunarynot.hpp nodeunary.hpp
 parser.o: nodeunaryreturn.hpp nodeunarysub.hpp nodevalue.hpp nodevariable.hpp

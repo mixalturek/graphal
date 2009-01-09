@@ -326,6 +326,18 @@ END_OF_CPP
 	close FILE_CPP;
 }
 
+sub generateAssignOperatorClass
+{
+	my ($classname, $operation) = @_;
+
+	my $code = <<END_OF_CODE;
+NodeVariable* var = dynamic_cast<NodeVariable*>(m_left);
+	assert(var != NULL);// TODO: is it safe?
+	$operation
+END_OF_CODE
+
+	generateBinaryOperatorClass($classname, $code, "\n#include <cassert>\n#include \"nodevariable.hpp\"");
+}
 
 generateUnaryOperatorClass('NodeUnarySub', 'return m_next->execute(context)->subUn();');
 generateUnaryOperatorClass('NodeUnaryNot', 'return m_next->execute(context)->logNOT();');
@@ -345,13 +357,11 @@ generateBinaryOperatorClass('NodeBinaryGt', 'return m_left->execute(context)->gt
 generateBinaryOperatorClass('NodeBinaryAnd', 'return m_left->execute(context)->logAND(*(m_right->execute(context)));');
 generateBinaryOperatorClass('NodeBinaryOr', 'return m_left->execute(context)->logOR(*(m_right->execute(context)));');
 
-my $code = <<END_OF_CODE
-NodeVariable* var = dynamic_cast<NodeVariable*>(m_left);
-	assert(var != NULL);// TODO: is it safe?
-	return var->setValue(context, m_right->execute(context));
-END_OF_CODE
-;
-
-generateBinaryOperatorClass('NodeBinaryAss', $code, "\n#include <cassert>\n#include \"nodevariable.hpp\"");
+generateAssignOperatorClass('NodeBinaryAss', 'return var->setValue(context, m_right->execute(context));');
+generateAssignOperatorClass('NodeBinaryAssAdd', 'return var->setValue(context, m_left->execute(context)->add(*(m_right->execute(context))));');
+generateAssignOperatorClass('NodeBinaryAssSub', 'return var->setValue(context, m_left->execute(context)->sub(*(m_right->execute(context))));');
+generateAssignOperatorClass('NodeBinaryAssMult', 'return var->setValue(context, m_left->execute(context)->mult(*(m_right->execute(context))));');
+generateAssignOperatorClass('NodeBinaryAssDiv', 'return var->setValue(context, m_left->execute(context)->div(*(m_right->execute(context))));');
+generateAssignOperatorClass('NodeBinaryAssMod', 'return var->setValue(context, m_left->execute(context)->mod(*(m_right->execute(context))));');
 
 0;

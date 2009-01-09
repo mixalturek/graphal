@@ -66,6 +66,16 @@
 		<Unit filename="nodebinaryand.hpp" />
 		<Unit filename="nodebinaryass.cpp" />
 		<Unit filename="nodebinaryass.hpp" />
+		<Unit filename="nodebinaryassadd.cpp" />
+		<Unit filename="nodebinaryassadd.hpp" />
+		<Unit filename="nodebinaryassdiv.cpp" />
+		<Unit filename="nodebinaryassdiv.hpp" />
+		<Unit filename="nodebinaryassmod.cpp" />
+		<Unit filename="nodebinaryassmod.hpp" />
+		<Unit filename="nodebinaryassmult.cpp" />
+		<Unit filename="nodebinaryassmult.hpp" />
+		<Unit filename="nodebinaryasssub.cpp" />
+		<Unit filename="nodebinaryasssub.hpp" />
 		<Unit filename="nodebinarydiv.cpp" />
 		<Unit filename="nodebinarydiv.hpp" />
 		<Unit filename="nodebinaryeq.cpp" />

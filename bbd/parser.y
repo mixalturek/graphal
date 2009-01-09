@@ -28,6 +28,11 @@
 #include "nodebinaryadd.hpp"
 #include "nodebinaryand.hpp"
 #include "nodebinaryass.hpp"
+#include "nodebinaryassadd.hpp"
+#include "nodebinaryasssub.hpp"
+#include "nodebinaryassmult.hpp"
+#include "nodebinaryassdiv.hpp"
+#include "nodebinaryassmod.hpp"
 #include "nodebinarydiv.hpp"
 #include "nodebinaryeq.hpp"
 #include "nodebinaryge.hpp"
@@ -190,11 +195,11 @@ conditional_expression
 assignment_expression
 	: conditional_expression { $$ = $1; }
 	| unary_expression '=' assignment_expression { $$ = new NodeBinaryAss($1, $3); }
-	| unary_expression MUL_ASSIGN assignment_expression { } /* TODO */
-	| unary_expression DIV_ASSIGN assignment_expression { } /* TODO */
-	| unary_expression MOD_ASSIGN assignment_expression { } /* TODO */
-	| unary_expression ADD_ASSIGN assignment_expression { } /* TODO */
-	| unary_expression SUB_ASSIGN assignment_expression { } /* TODO */
+	| unary_expression MUL_ASSIGN assignment_expression { $$ = new NodeBinaryAssMult($1, $3); }
+	| unary_expression DIV_ASSIGN assignment_expression { $$ = new NodeBinaryAssDiv($1, $3); }
+	| unary_expression MOD_ASSIGN assignment_expression { $$ = new NodeBinaryAssMod($1, $3); }
+	| unary_expression ADD_ASSIGN assignment_expression { $$ = new NodeBinaryAssAdd($1, $3); }
+	| unary_expression SUB_ASSIGN assignment_expression { $$ = new NodeBinaryAssSub($1, $3); }
 	;
 
 expression
