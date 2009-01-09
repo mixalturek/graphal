@@ -28,11 +28,12 @@
 #include "baseobject.hpp"
 #include "lexaniterator.hpp"
 #include "lexantokens.hpp"
+#include "stringtable.hpp"
 
 class Lexan : BaseObject
 {
 public:
-	Lexan(const string& source, bool filename = true);
+	Lexan(const string& source, StringTable* stringtable, bool filename);
 	~Lexan(void);
 
 	LEXTOKEN nextToken(void);
@@ -40,7 +41,8 @@ public:
 
 	int getInt(void) const { return m_int; }
 	float getFloat(void) const { return m_float; }
-	const string& getString(void) const { return m_string; }
+	string& getString(void) { return m_string; }
+	identifier getIdentifier(void) { return m_identifier; }
 
 	inline const string getSource(void) const { return m_source.top()->getSource(); }
 	inline uint getPos(void) const { return m_source.top()->getPos(); }
@@ -48,8 +50,8 @@ public:
 private:
 	LEXTOKEN checkKeyword(void);
 	bool expandMacro(void);
-//	void parseInclude(void);
-//	void parseDefine(void);
+	void parseInclude(void);
+	void parseDefine(void);
 	inline void unget(void) { m_source.top()->unget(); }
 
 private:
@@ -59,6 +61,9 @@ private:
 	int m_int;
 	float m_float;
 	string m_string;
+	identifier m_identifier;
+
+	StringTable* m_stringtable;
 };
 
 #endif

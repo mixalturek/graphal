@@ -25,13 +25,21 @@
 #include "baseobject.hpp"
 #include "logger.hpp"
 #include "tests.hpp"
+#include "context.hpp"
 
+int parseCode(const string& str, Context& context);
 
-int main(int /* argc */, char** /* argv */)
+int main(int argc, char** argv)
 {
 	try
 	{
 		uint number_of_static_objects = BaseObject::getNumberOfLeaks();
+
+		if(argc > 1)
+		{
+			Context context;
+			parseCode(argv[1], context);
+		}
 
 		Tests* tests = new Tests();
 		tests->run();

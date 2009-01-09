@@ -22,6 +22,37 @@
 #ifndef LEXANTOKENS_HPP
 #define LEXANTOKENS_HPP
 
+#include "node.hpp"
+#include "parser.hpp"
+
+#define LEX_EOF 0
+#define LEX_OP_PLUS '+'
+#define LEX_OP_MINUS '-'
+
+#define LEX_OP_MULT '*'
+#define LEX_OP_DIV '/'
+#define LEX_OP_MOD '%'
+
+#define LEX_LVA '{'
+#define LEX_RVA '}'
+#define LEX_LPA '('
+#define LEX_RPA ')'
+#define LEX_LSA '['
+#define LEX_RSA ']'
+#define LEX_COMMA ','
+#define LEX_SEMICOLON ';'
+#define LEX_DOT '.'
+
+#define LEX_OP_NOT '!'
+#define LEX_OP_LESS '<'
+#define LEX_OP_GREATER '>'
+
+#define LEX_OP_ASSIGN '='
+
+
+typedef int LEXTOKEN;
+
+/*
 enum LEXTOKEN
 {
 	LEX_EOF = 0,        // End of file
@@ -53,32 +84,32 @@ enum LEXTOKEN
 	LEX_DOT,            // .
 
 	LEX_OP_ASSIGN,      // =
-	LEX_OP_EQUAL,       // ==
-	LEX_OP_NOT_EQ,      // !=
+	EQ_OP,       // ==
+	NE_OP,      // !=
 	LEX_OP_LESS,        // <
-	LEX_OP_LESS_EQ,     // <=
+	LE_OP,     // <=
 	LEX_OP_GREATER,     // >
-	LEX_OP_GREATER_EQ,  // >=
+	GE_OP,  // >=
 	LEX_OP_PLUS,        // +
-	LEX_OP_PLUS_AS,     // +=
-	LEX_OP_PLUS_PLUS,   // ++
+	ADD_ASSIGN,     // +=
+	INC_OP,   // ++
 	LEX_OP_MINUS,       // -
-	LEX_OP_MINUS_AS,    // -=
-	LEX_OP_MINUS_MINUS, // --
+	SUB_ASSIGN,    // -=
+	DEC_OP, // --
 	LEX_OP_MULT,        // *
-	LEX_OP_MULT_AS,	    // *=
+	MUL_ASSIGN,     // *=
 	LEX_OP_DIV,         // /
-	LEX_OP_DIV_AS,      // /=
+	DIV_ASSIGN,      // /=
 	LEX_OP_MOD,         // %
-	LEX_OP_MOD_AS,      // %=
+	MOD_ASSIGN,      // %=
 	LEX_OP_NOT,         // !
-	LEX_OP_AND,         // &&
-	LEX_OP_OR,          // ||
+	AND_OP,         // &&
+	OR_OP,          // ||
 
 	LEX_INT,            // 58 + int
 	LEX_FLOAT,          // 0.58 + float
 	LEX_STRING,         // "str"/'str' + string
 	LEX_NAME            // identifier + string
 };
-
+*/
 #endif

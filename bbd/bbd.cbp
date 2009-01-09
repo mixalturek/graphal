@@ -112,6 +112,9 @@
 		<Unit filename="nodevalue.hpp" />
 		<Unit filename="nodevariable.cpp" />
 		<Unit filename="nodevariable.hpp" />
+		<Unit filename="parser.cpp" />
+		<Unit filename="parser.hpp" />
+		<Unit filename="parser.y" />
 		<Unit filename="stringtable.cpp" />
 		<Unit filename="stringtable.hpp" />
 		<Unit filename="tests.cpp" />

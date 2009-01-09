@@ -61,6 +61,6 @@ void BaseObject::printMemoryLeaks(uint number_of_static_objects)
 	// (ie. ValueStruct::m_notfound)
 	set<BaseObject*>::const_iterator it;
 	for(it = m_allocated_objects.begin(); it != m_allocated_objects.end(); it++)
-		ERROR << ", type = " << typeid(**it).name() << ", mem = " << *it << endl;
+		ERROR << *it << ", " << typeid(**it).name() << endl;
 }
 #endif // CHECK_MEMORY_LEAKS

@@ -32,8 +32,8 @@ S
 //////////////////////////////////////////////////////////////////////////////
 //// Rules
 
-S -> include ( string_const ) S ;
-S -> define ( string_const , string_const ) S ;
+# S -> include ( string_const ) S ;
+# S -> define ( string_const , string_const ) S ;
 S -> function name ( PARAMS ) { BLOCK } S
 S ->
 

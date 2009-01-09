@@ -29,6 +29,7 @@
 #include "baseobject.hpp"
 #include "countptr.hpp"
 #include "value.hpp"
+#include "stringtable.hpp"
 
 
 class NodeFunction;
@@ -50,6 +51,8 @@ public:
 	NodeFunction* getFunction(identifier name);
 	void addFunction(identifier name, NodeFunction* function);
 
+	StringTable& getStringTable(void) { return m_stringtable; }
+
 private:
 	Context(const Context& object);
 	Context& operator=(const Context& object);
@@ -57,6 +60,7 @@ private:
 private:
 	map<identifier, NodeFunction*> m_functions;
 	deque< map<identifier, CountPtr<Value> > > m_local_variables;
+	StringTable m_stringtable;
 };
 
 ostream& operator<<(ostream& os, const Context& node);

@@ -396,10 +396,11 @@ bool Tests::testLexanTerminalSymbols(void)
 {
 	bool result = true;
 
+	StringTable stringtable;
 	Lexan lexan(
 		"function return if else while for foreach break continue { } ( ) [ ] "
 		", ; . ! = += -= *= /= %= || && < > <= >= == != + - * / % ++ -- "
-		"null true false", false);
+		"null true false", &stringtable, false);
 
 	LEXTOKEN tok;
 
@@ -423,26 +424,26 @@ bool Tests::testLexanTerminalSymbols(void)
 	tok = lexan.nextToken(); verify(tok == LEX_DOT);
 	tok = lexan.nextToken(); verify(tok == LEX_OP_NOT);
 	tok = lexan.nextToken(); verify(tok == LEX_OP_ASSIGN);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_PLUS_AS);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_MINUS_AS);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_MULT_AS);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_DIV_AS);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_MOD_AS);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_OR);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_AND);
+	tok = lexan.nextToken(); verify(tok == ADD_ASSIGN);
+	tok = lexan.nextToken(); verify(tok == SUB_ASSIGN);
+	tok = lexan.nextToken(); verify(tok == MUL_ASSIGN);
+	tok = lexan.nextToken(); verify(tok == DIV_ASSIGN);
+	tok = lexan.nextToken(); verify(tok == MOD_ASSIGN);
+	tok = lexan.nextToken(); verify(tok == OR_OP);
+	tok = lexan.nextToken(); verify(tok == AND_OP);
 	tok = lexan.nextToken(); verify(tok == LEX_OP_LESS);
 	tok = lexan.nextToken(); verify(tok == LEX_OP_GREATER);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_LESS_EQ);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_GREATER_EQ);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_EQUAL);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_NOT_EQ);
+	tok = lexan.nextToken(); verify(tok == LE_OP);
+	tok = lexan.nextToken(); verify(tok == GE_OP);
+	tok = lexan.nextToken(); verify(tok == EQ_OP);
+	tok = lexan.nextToken(); verify(tok == NE_OP);
 	tok = lexan.nextToken(); verify(tok == LEX_OP_PLUS);
 	tok = lexan.nextToken(); verify(tok == LEX_OP_MINUS);
 	tok = lexan.nextToken(); verify(tok == LEX_OP_MULT);
 	tok = lexan.nextToken(); verify(tok == LEX_OP_DIV);
 	tok = lexan.nextToken(); verify(tok == LEX_OP_MOD);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_PLUS_PLUS);
-	tok = lexan.nextToken(); verify(tok == LEX_OP_MINUS_MINUS);
+	tok = lexan.nextToken(); verify(tok == INC_OP);
+	tok = lexan.nextToken(); verify(tok == DEC_OP);
 	tok = lexan.nextToken(); verify(tok == LEX_NULL);
 	tok = lexan.nextToken(); verify(tok == LEX_TRUE);
 	tok = lexan.nextToken(); verify(tok == LEX_FALSE);
@@ -461,8 +462,10 @@ bool Tests::testLexanInt(void)
 	LEXTOKEN tok;
 	int i;
 
+	StringTable stringtable;
 	Lexan lexan(
-		"2 26 999999999 2147483647 -2147483647 0 05 006 0362457 0x20 0x20e9 0xff 0x36a5d 25,356", false);
+		"2 26 999999999 2147483647 -2147483647 0 05 006 0362457 0x20 0x20e9 0xff 0x36a5d 25,356",
+		&stringtable, false);
 
 	tok = lexan.nextToken(); verify(tok == LEX_INT);
 	i = lexan.getInt(); verify(i == 2);
@@ -527,8 +530,10 @@ bool Tests::testLexanFloat(void)
 	LEXTOKEN tok;
 	float f;
 
+	StringTable stringtable;
 	Lexan lexan(
-		". .= .1 .12 .12e6 0.12e6 0.0 .0 0. 25.3688 12e-1 12e+1 25e7", false);
+		". .= .1 .12 .12e6 0.12e6 0.0 .0 0. 25.3688 12e-1 12e+1 25e7",
+		&stringtable, false);
 
 	tok = lexan.nextToken(); verify(tok == LEX_DOT);
 	tok = lexan.nextToken(); verify(tok == LEX_DOT);
@@ -574,11 +579,12 @@ bool Tests::testLexanString(void)
 	LEXTOKEN tok;
 	string str;
 
+	StringTable stringtable;
 	Lexan lexan(
 		"  \"privet, mir\"  \"rm -rf c:\\\\windows\\\\\"  \"begin-\\x30-end\"  \"begin-\\x20-end\"  "
 		"  \"begin-\\065-end\"  \"begin-\\066-end\"  \"begin-\\111-end\" "
 		"  \"begin-\\112-end\"  \"begin-\\377-end\"  "
-		, false);
+		, &stringtable, false);
 
 	tok = lexan.nextToken(); verify(tok == LEX_STRING);
 	str = lexan.getString(); verify(str == "privet, mir");
@@ -627,9 +633,10 @@ bool Tests::testLexanComments(void)
 	bool result = true;
 	LEXTOKEN tok;
 
+	StringTable stringtable;
 	Lexan lexan(
-		"  /**/   /*  */   /***/   /* blem */   /***sf asf*sad/fasd*/  // :-) "
-		, false);
+		"  /**/   /*  */   /***/   /* blem */   /***sf asf*sad/fasd*/  // :-) ",
+		&stringtable, false);
 
 
 	tok = lexan.nextToken(); verify(tok == LEX_EOF);
@@ -647,6 +654,7 @@ bool Tests::testLexanSourceCode(void)
 	string str;
 	int i;
 
+	StringTable stringtable;
 	Lexan lexan(
 		"/* factorial function */"
 		"function factorial(number)"
@@ -656,8 +664,8 @@ bool Tests::testLexanSourceCode(void)
 		"	else"
 		"		return number * factorial(number - 1);"
 		"}"
-		"/* EOF */"
-		, false);
+		"/* EOF */",
+		&stringtable, false);
 
 	tok = lexan.nextToken(); verify(tok == LEX_FUNCTION);
 	tok = lexan.nextToken(); verify(tok == LEX_NAME);

@@ -86,7 +86,7 @@ PTR_Value ValueInt::mult(const ValueFloat& left)  const { return PTR_Value(new V
 
 // /
 PTR_Value ValueInt::div(const Value& right)       const { return right.div(*this); }
-PTR_Value ValueInt::div(const ValueBool& left)    const { return PTR_Value(new ValueInt(left.getVal() / m_val)); }
+PTR_Value ValueInt::div(const ValueBool& left)    const { return PTR_Value(new ValueInt(left.getVal() / m_val)); }// TODO: division by zero!
 PTR_Value ValueInt::div(const ValueInt& left)     const { return PTR_Value(new ValueInt(left.getVal() / m_val)); }
 PTR_Value ValueInt::div(const ValueFloat& left)   const { return PTR_Value(new ValueFloat(left.getVal() / m_val)); }
 

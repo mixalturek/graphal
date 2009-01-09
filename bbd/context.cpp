@@ -32,7 +32,8 @@
 Context::Context()
 	: BaseObject(),
 	m_functions(),
-	m_local_variables()
+	m_local_variables(),
+	m_stringtable()
 {
 	pushLocal();
 }
@@ -129,9 +130,15 @@ void Context::addFunction(identifier name, NodeFunction* function)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void Context::dump(ostream& /* os */, uint /* indent */) const
+void Context::dump(ostream& os, uint indent) const
 {
-	// TODO: add implementation
+	Node::dumpIndent(os, indent);
+	os << "<Context>" << endl;
+
+	m_stringtable.dump(os, indent+1);
+
+	Node::dumpIndent(os, indent);
+	os << "</Context>" << endl;
 }
 
 ostream& operator<<(ostream& os, const Context& node)

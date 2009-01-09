@@ -30,13 +30,15 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Lexan::Lexan(const string& source, bool filename)
+Lexan::Lexan(const string& source, StringTable* stringtable, bool filename)
 	: BaseObject(),
 	m_source(),
 	m_defines(),
 	m_int(0),
 	m_float(0.0f),
-	m_string("")
+	m_string(""),
+	m_identifier(0),
+	m_stringtable(stringtable)
 {
 	if(filename)
 		m_source.push(new LexanIteratorFile(source));
@@ -60,10 +62,6 @@ Lexan::~Lexan(void)
 LEXTOKEN Lexan::checkKeyword(void)
 {
 	// Check keywords
-	if(m_string == "include")
-		return LEX_INCLUDE;
-	if(m_string == "define")
-		return LEX_DEFINE;
 	if(m_string == "function")
 		return LEX_FUNCTION;
 	if(m_string == "return")
@@ -88,7 +86,7 @@ LEXTOKEN Lexan::checkKeyword(void)
 		return LEX_TRUE;
 	if(m_string == "false")
 		return LEX_FALSE;
-/*
+
 	// Check include and define
 	if(m_string == "include")
 	{
@@ -100,12 +98,13 @@ LEXTOKEN Lexan::checkKeyword(void)
 		parseDefine();
 		return nextToken();
 	}
-*/
+
 	// Try to expand a macro
 	if(expandMacro())
 		return nextToken();
 
 	// The string is variable or function name
+	m_identifier = m_stringtable->getID(m_string);
 	return LEX_NAME;
 }
 
@@ -844,53 +843,53 @@ LEXTOKEN Lexan::nextToken(void)
 
 		case ST_OP_ASSIGN:		// =
 			if(c == '=')
-				return LEX_OP_EQUAL;
+				return EQ_OP;
 
 			unget();
 			return LEX_OP_ASSIGN;
 
 		case ST_OP_LESS:		// <
 			if(c == '=')
-				return LEX_OP_LESS_EQ;
+				return LE_OP;
 
 			unget();
 			return LEX_OP_LESS;
 
 		case ST_OP_NOT:
 			if(c == '=')
-				return LEX_OP_NOT_EQ;
+				return NE_OP;
 
 			unget();
 			return LEX_OP_NOT;
 
 		case ST_OP_GREATER:		// >
 			if(c == '=')
-				return LEX_OP_GREATER_EQ;
+				return GE_OP;
 
 			unget();
 			return LEX_OP_GREATER;
 
 		case ST_OP_PLUS:		// +
 			if(c == '=')
-				return LEX_OP_PLUS_AS;
+				return ADD_ASSIGN;
 			if(c == '+')
-				return LEX_OP_PLUS_PLUS;
+				return INC_OP;
 
 			unget();
 			return LEX_OP_PLUS;
 
 		case ST_OP_MINUS:		// -
 			if(c == '=')
-				return LEX_OP_MINUS_AS;
+				return SUB_ASSIGN;
 			if(c == '-')
-				return LEX_OP_MINUS_MINUS;
+				return DEC_OP;
 
 			unget();
 			return LEX_OP_MINUS;
 
 		case ST_OP_MULT:		// *
 			if(c == '=')
-				return LEX_OP_MULT_AS;
+				return MUL_ASSIGN;
 
 			unget();
 			return LEX_OP_MULT;
@@ -898,7 +897,7 @@ LEXTOKEN Lexan::nextToken(void)
 		case ST_OP_DIV:			// /
 			if(c == '=')
 			{
-				return LEX_OP_DIV_AS;
+				return DIV_ASSIGN;
 			}
 			if(c == '/')
 			{
@@ -916,7 +915,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 		case ST_OP_MOD:
 			if(c == '=')
-				return LEX_OP_MOD_AS;
+				return MOD_ASSIGN;
 
 			unget();
 			return LEX_OP_MOD;
@@ -935,7 +934,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 		case ST_OP_AND:
 			if(c == '&')
-				return LEX_OP_AND;
+				return AND_OP;
 
 			unget();
 			ERROR << getSource() << _(":") << getPos()
@@ -945,7 +944,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 		case ST_OP_OR:
 			if(c == '|')
-				return LEX_OP_OR;
+				return OR_OP;
 
 			unget();
 			ERROR << getSource() << _(":") << getPos()
@@ -964,7 +963,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 /////////////////////////////////////////////////////////////////////////////
 ////
-/*
+
 void Lexan::parseInclude(void)
 {
 	// include("filename");
@@ -1072,7 +1071,7 @@ void Lexan::parseDefine(void)
 			<< _(" Redefining macro: ") << name << endl;
 	}
 }
-*/
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -1084,8 +1083,6 @@ string Lexan::getTokenName(LEXTOKEN token)
 		"LEX_EOF",            // End of file
 		"LEX_ERROR",          // Error
 
-		"LEX_INCLUDE",        // include
-		"LEX_DEFINE",         // define
 		"LEX_FUNCTION",       // function
 		"LEX_RETURN",         // return
 		"LEX_IF",             // if
@@ -1110,27 +1107,27 @@ string Lexan::getTokenName(LEXTOKEN token)
 		"LEX_DOT",            // .
 
 		"LEX_OP_ASSIGN",      // =
-		"LEX_OP_EQUAL",       // ==
-		"LEX_OP_NOT_EQ",      // !=
+		"EQ_OP",              // ==
+		"NE_OP",              // !=
 		"LEX_OP_LESS",        // <
-		"LEX_OP_LESS_EQ",     // <=
+		"LE_OP",              // <=
 		"LEX_OP_GREATER",     // >
-		"LEX_OP_GREATER_EQ",  // >=
+		"GE_OP",              // >=
 		"LEX_OP_PLUS",        // +
-		"LEX_OP_PLUS_AS",     // +=
-		"LEX_OP_PLUS_PLUS",   // ++
+		"ADD_ASSIGN",         // +=
+		"INC_OP",             // ++
 		"LEX_OP_MINUS",       // -
-		"LEX_OP_MINUS_AS",    // -=
-		"LEX_OP_MINUS_MINUS", // --
+		"SUB_ASSIGN",         // -=
+		"DEC_OP",             // --
 		"LEX_OP_MULT",        // *
-		"LEX_OP_MULT_AS",     // *=
+		"MUL_ASSIGN",         // *=
 		"LEX_OP_DIV",         // /
-		"LEX_OP_DIV_AS",      // /=
+		"DIV_ASSIGN",         // /=
 		"LEX_OP_MOD",         // %
-		"LEX_OP_MOD_AS",      // %=
+		"MOD_ASSIGN",         // %=
 		"LEX_OP_NOT",         // !
-		"LEX_OP_AND",         // &&
-		"LEX_OP_OR",          // ||
+		"AND_OP",             // &&
+		"OR_OP",              // ||
 
 		"LEX_INT",            // 58 + int
 		"LEX_FLOAT",          // 0.58 + float
