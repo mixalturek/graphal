@@ -26,7 +26,6 @@
 #include "general.hpp"
 #include "valuestruct.hpp"
 #include "valuegraph.hpp"
-#include "valuestruct.hpp"
 
 class ValueVertex;
 

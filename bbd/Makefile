@@ -11,25 +11,26 @@ OBJECTS		= $(shell ls *.cpp | sed 's/.cpp/.o/')
 .PHONY: clean
 .PHONY: todo
 .PHONY: lines
+.PHONY: prepare
+.PHONY: gencode
 #.PHONY: install
 
-all:$(TARGET)
+all: $(TARGET)
 
 %.o: %.cpp
 	$(CC) -c $< $(CFLAGS)
 
-$(TARGET): parser.o $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	$(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS)
 
-parser.o: parser.cpp
-	g++ -c parser.cpp
+prepare: gencode depend
 
-parser.cpp parser.hpp: parser.y
+gencode: parser.y gen_operators.pl
 	bison -d -o parser.cpp parser.y
+	perl gen_operators.pl
 
-# Mozna bude nadavat kvuliva STL hlavickam, ale je to OK
 depend:
-	makedepend $(shell ls *.cpp)
+	makedepend -Y -m $(shell ls *.cpp) 2>&1 | grep -v '\(cassert\|algorithm\|set\|stream\|fstream\|iostream\|map\|deque\|vector\|stack\|list\|typeinfo\|stdexcept\|cmath\)'
 
 run:
 	./$(TARGET)
