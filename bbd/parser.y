@@ -53,6 +53,10 @@
 #include "nodeunarynot.hpp"
 #include "nodeunaryreturn.hpp"
 #include "nodeunarysub.hpp"
+#include "nodeunaryincpre.hpp"
+#include "nodeunaryincpost.hpp"
+#include "nodeunarydecpre.hpp"
+#include "nodeunarydecpost.hpp"
 #include "nodevalue.hpp"
 #include "nodevariable.hpp"
 
@@ -132,8 +136,8 @@ postfix_expression
 	| postfix_expression '(' ')' { $$ = $1; } /* TODO */
 	| postfix_expression '(' argument_expression_list ')' { $$ = $1; } /* TODO */
 	| postfix_expression '.' LEX_NAME { $$ = $1; } /* TODO */
-	| postfix_expression INC_OP { $$ = $1; } /* TODO */
-	| postfix_expression DEC_OP { $$ = $1; } /* TODO */
+	| postfix_expression INC_OP { $$ = new NodeUnaryIncPost($1); }
+	| postfix_expression DEC_OP { $$ = new NodeUnaryDecPost($1); }
 	;
 
 argument_expression_list
@@ -143,8 +147,8 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression { $$ = $1; }
-	| INC_OP unary_expression { $$ = $2; } /* TODO */
-	| DEC_OP unary_expression { $$ = $2; } /* TODO */
+	| INC_OP unary_expression { $$ = new NodeUnaryIncPre($2); }
+	| DEC_OP unary_expression { $$ = new NodeUnaryDecPre($2); }
 	| '+' unary_expression { $$ = $2; }
 	| '-' unary_expression { $$ = new NodeUnarySub($2); }
 	| '!' unary_expression { $$ = new NodeUnaryNot($2); }

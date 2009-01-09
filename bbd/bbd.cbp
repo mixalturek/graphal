@@ -112,6 +112,14 @@
 		<Unit filename="nodeloop.hpp" />
 		<Unit filename="nodeunary.cpp" />
 		<Unit filename="nodeunary.hpp" />
+		<Unit filename="nodeunarydecpost.cpp" />
+		<Unit filename="nodeunarydecpost.hpp" />
+		<Unit filename="nodeunarydecpre.cpp" />
+		<Unit filename="nodeunarydecpre.hpp" />
+		<Unit filename="nodeunaryincpost.cpp" />
+		<Unit filename="nodeunaryincpost.hpp" />
+		<Unit filename="nodeunaryincpre.cpp" />
+		<Unit filename="nodeunaryincpre.hpp" />
 		<Unit filename="nodeunarynot.cpp" />
 		<Unit filename="nodeunarynot.hpp" />
 		<Unit filename="nodeunaryreturn.cpp" />

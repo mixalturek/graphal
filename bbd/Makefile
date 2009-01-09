@@ -4,18 +4,23 @@ CFLAGS		= -std=c++98 -pedantic -Wall
 LDFLAGS		=
 OBJECTS		= $(shell ls *.cpp | sed 's/.cpp/.o/')
 
-
+.PHONY: build
+.PHONY: rebuild
 .PHONY: all
 .PHONY: depend
 .PHONY: run
 .PHONY: clean
 .PHONY: todo
 .PHONY: lines
-.PHONY: prepare
-.PHONY: gencode
+.PHONY: bison
+.PHYNY: operators
 #.PHONY: install
 
-all: $(TARGET)
+build: $(TARGET)
+
+rebuild: clean all
+
+all: bison operators depend $(TARGET)
 
 %.o: %.cpp
 	$(CC) -c $< $(CFLAGS)
@@ -23,10 +28,10 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS)
 
-prepare: gencode depend
-
-gencode: parser.y gen_operators.pl
+bison:
 	bison -d -o parser.cpp parser.y
+
+operators: gen_operators.pl
 	perl gen_operators.pl
 
 depend:
@@ -146,6 +151,18 @@ nodeloop.o: countptr.hpp value.hpp stringtable.hpp valuenull.hpp
 nodeloop.o: valuebool.hpp nodeemptycommand.hpp nodevalue.hpp
 nodeunary.o: nodeunary.hpp general.hpp node.hpp baseobject.hpp context.hpp
 nodeunary.o: countptr.hpp value.hpp stringtable.hpp
+nodeunarydecpost.o: nodevariable.hpp general.hpp node.hpp baseobject.hpp
+nodeunarydecpost.o: context.hpp countptr.hpp value.hpp stringtable.hpp
+nodeunarydecpost.o: valueint.hpp nodeunarydecpost.hpp nodeunary.hpp
+nodeunarydecpre.o: nodevariable.hpp general.hpp node.hpp baseobject.hpp
+nodeunarydecpre.o: context.hpp countptr.hpp value.hpp stringtable.hpp
+nodeunarydecpre.o: valueint.hpp nodeunarydecpre.hpp nodeunary.hpp
+nodeunaryincpost.o: nodevariable.hpp general.hpp node.hpp baseobject.hpp
+nodeunaryincpost.o: context.hpp countptr.hpp value.hpp stringtable.hpp
+nodeunaryincpost.o: valueint.hpp nodeunaryincpost.hpp nodeunary.hpp
+nodeunaryincpre.o: nodevariable.hpp general.hpp node.hpp baseobject.hpp
+nodeunaryincpre.o: context.hpp countptr.hpp value.hpp stringtable.hpp
+nodeunaryincpre.o: valueint.hpp nodeunaryincpre.hpp nodeunary.hpp
 nodeunarynot.o: nodeunarynot.hpp general.hpp nodeunary.hpp node.hpp
 nodeunarynot.o: baseobject.hpp context.hpp countptr.hpp value.hpp
 nodeunarynot.o: stringtable.hpp
@@ -171,11 +188,12 @@ parser.o: nodebinarymod.hpp nodebinarymult.hpp nodebinaryne.hpp
 parser.o: nodebinaryor.hpp nodebinarysub.hpp nodeblock.hpp
 parser.o: nodefunctioncall.hpp nodecondition.hpp nodeemptycommand.hpp
 parser.o: nodefunction.hpp nodeloop.hpp nodeunarynot.hpp nodeunary.hpp
-parser.o: nodeunaryreturn.hpp nodeunarysub.hpp nodevalue.hpp nodevariable.hpp
-parser.o: valuebool.hpp valueedge.hpp valuestruct.hpp valuenull.hpp
-parser.o: valuegraph.hpp valueedgeset.hpp valuefloat.hpp valueint.hpp
-parser.o: valuereference.hpp valuestring.hpp valuevertex.hpp
-parser.o: valuevertexset.hpp
+parser.o: nodeunaryreturn.hpp nodeunarysub.hpp nodeunaryincpre.hpp
+parser.o: nodeunaryincpost.hpp nodeunarydecpre.hpp nodeunarydecpost.hpp
+parser.o: nodevalue.hpp nodevariable.hpp valuebool.hpp valueedge.hpp
+parser.o: valuestruct.hpp valuenull.hpp valuegraph.hpp valueedgeset.hpp
+parser.o: valuefloat.hpp valueint.hpp valuereference.hpp valuestring.hpp
+parser.o: valuevertex.hpp valuevertexset.hpp
 stringtable.o: stringtable.hpp general.hpp baseobject.hpp node.hpp
 stringtable.o: context.hpp countptr.hpp value.hpp
 tests.o: tests.hpp general.hpp baseobject.hpp logger.hpp valueint.hpp

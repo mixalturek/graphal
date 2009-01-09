@@ -2,7 +2,8 @@
 
 sub generateUnaryOperatorClass
 {
-	my ($classname, $operation) = @_;
+	my ($classname, $operation, $include) = @_;
+	$include = '' if(!defined $include);
 
 	my $hpp_filename = lc($classname).'.hpp';
 	my $cpp_filename = lc($classname).'.cpp';
@@ -93,7 +94,7 @@ END_OF_HPP
  *                           Don't update directly                          *
  *                                                                          *
  ****************************************************************************/
-
+$include
 #include "$hpp_filename"
 #include "context.hpp"
 #include "value.hpp"
@@ -164,15 +165,11 @@ END_OF_CPP
 sub generateBinaryOperatorClass
 {
 	my ($classname, $operation, $include) = @_;
+	$include = '' if(!defined $include);
 
 	my $hpp_filename = lc($classname).'.hpp';
 	my $cpp_filename = lc($classname).'.cpp';
 	my $hpp_define = uc($classname).'_HPP';
-
-	if(!defined $include)
-	{
-		$include = '';
-	}
 
 	my $hpp_code = <<END_OF_HPP;
 /*
@@ -332,16 +329,34 @@ sub generateAssignOperatorClass
 
 	my $code = <<END_OF_CODE;
 NodeVariable* var = dynamic_cast<NodeVariable*>(m_left);
-	assert(var != NULL);// TODO: is it safe?
+	assert(var != NULL);// TODO: Use if-then instead of assert!
 	$operation
 END_OF_CODE
 
 	generateBinaryOperatorClass($classname, $code, "\n#include <cassert>\n#include \"nodevariable.hpp\"");
 }
 
+sub generateIncrementOperatorClass
+{
+	my ($classname, $operation) = @_;
+
+	my $code = <<END_OF_CODE;
+NodeVariable* var = dynamic_cast<NodeVariable*>(m_next);
+	assert(var != NULL);// TODO: Use if-then instead of assert!
+	$operation
+END_OF_CODE
+
+	generateUnaryOperatorClass($classname, $code, "\n#include <cassert>\n#include \"nodevariable.hpp\"\n#include \"valueint.hpp\"");
+}
+
 generateUnaryOperatorClass('NodeUnarySub', 'return m_next->execute(context)->subUn();');
 generateUnaryOperatorClass('NodeUnaryNot', 'return m_next->execute(context)->logNOT();');
 generateUnaryOperatorClass('NodeUnaryReturn', 'throw m_next->execute(context);');
+
+generateIncrementOperatorClass('NodeUnaryIncPre', 'return var->setValue(context, m_next->execute(context)->add(ValueInt(1)));');
+generateIncrementOperatorClass('NodeUnaryIncPost', "CountPtr<Value> tmp = m_next->execute(context);\n\tvar->setValue(context, tmp->add(ValueInt(1)));\n\treturn tmp;");
+generateIncrementOperatorClass('NodeUnaryDecPre', 'return var->setValue(context, m_next->execute(context)->sub(ValueInt(1)));');
+generateIncrementOperatorClass('NodeUnaryDecPost', "CountPtr<Value> tmp = m_next->execute(context);\n\tvar->setValue(context, tmp->sub(ValueInt(1)));\n\treturn tmp;");
 
 generateBinaryOperatorClass('NodeBinaryAdd', 'return m_left->execute(context)->add(*(m_right->execute(context)));');
 generateBinaryOperatorClass('NodeBinarySub', 'return m_left->execute(context)->sub(*(m_right->execute(context)));');
