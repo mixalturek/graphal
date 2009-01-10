@@ -230,6 +230,10 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_LSA;
 			if(c == ']')
 				return LEX_RSA;
+			if(c == '?')
+				return LEX_QUESTIONMARK;
+			if(c == ':')
+				return LEX_COLON;
 
 			if(c == '=')
 			{

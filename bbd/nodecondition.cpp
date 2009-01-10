@@ -61,11 +61,11 @@ CountPtr<Value> NodeCondition::execute(Context& context)
 	// TODO: set position in the code to the context
 
 	if(m_condition->execute(context)->toBool())
-		m_if_section->execute(context);
+		return m_if_section->execute(context);
 	else if(m_else_section != NULL)
-		m_else_section->execute(context);
-
-	return CountPtr<Value>(new ValueNull());
+		return m_else_section->execute(context);
+	else
+		return CountPtr<Value>(new ValueNull());
 }
 
 void NodeCondition::dump(ostream& os, uint indent) const
@@ -73,21 +73,26 @@ void NodeCondition::dump(ostream& os, uint indent) const
 	dumpIndent(os, indent);
 	os << "<If>" << endl;
 
-	dumpIndent(os, indent + 1);
-	os << "<Condition>" << endl;
-	m_condition->dump(os, indent + 2);
-	dumpIndent(os, indent + 1);
-	os << "</Condition>" << endl;
+		dumpIndent(os, indent + 1);
+		os << "<Condition>" << endl;
+			m_condition->dump(os, indent + 2);
+		dumpIndent(os, indent + 1);
+		os << "</Condition>" << endl;
 
-	m_if_section->dump(os, indent + 1);
+		dumpIndent(os, indent+1);
+		os << "<IfSection>" << endl;
+			m_if_section->dump(os, indent + 2);
+		dumpIndent(os, indent+1);
+		os << "</IfSection>" << endl;
+
+		dumpIndent(os, indent+1);
+		os << "<ElseSection>" << endl;
+			m_else_section->dump(os, indent + 2);
+		dumpIndent(os, indent+1);
+		os << "</ElseSection>" << endl;
+
 	dumpIndent(os, indent);
 	os << "</If>" << endl;
-
-	dumpIndent(os, indent);
-	os << "<Else>" << endl;
-	m_else_section->dump(os, indent + 1);
-	dumpIndent(os, indent);
-	os << "</Else>" << endl;
 }
 
 ostream& operator<<(ostream& os, const NodeCondition& node)

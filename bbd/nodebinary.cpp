@@ -1,6 +1,4 @@
 /*
- *      nodebinary.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify

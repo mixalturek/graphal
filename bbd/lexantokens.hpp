@@ -50,6 +50,9 @@
 
 #define LEX_OP_ASSIGN '='
 
+#define LEX_QUESTIONMARK '?'
+#define LEX_COLON ':'
+
 
 typedef int LEXTOKEN;
 

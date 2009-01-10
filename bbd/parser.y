@@ -260,7 +260,7 @@ logical_or_expression
 
 conditional_expression
 	: logical_or_expression { $$ = $1; }
-	| logical_or_expression '?' expression ':' conditional_expression { $$ = $3; } /* TODO */
+	| logical_or_expression '?' expression ':' conditional_expression { $$ = new NodeCondition($1, $3, $5); }
 	;
 
 assignment_expression

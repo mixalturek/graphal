@@ -400,7 +400,7 @@ bool Tests::testLexanTerminalSymbols(void)
 	Lexan lexan(
 		"function return if else while for foreach break continue { } ( ) [ ] "
 		", ; . ! = += -= *= /= %= || && < > <= >= == != + - * / % ++ -- "
-		"null true false", &stringtable, false);
+		"null true false ? :", &stringtable, false);
 
 	LEXTOKEN tok;
 
@@ -447,6 +447,8 @@ bool Tests::testLexanTerminalSymbols(void)
 	tok = lexan.nextToken(); verify(tok == LEX_NULL);
 	tok = lexan.nextToken(); verify(tok == LEX_TRUE);
 	tok = lexan.nextToken(); verify(tok == LEX_FALSE);
+	tok = lexan.nextToken(); verify(tok == LEX_QUESTIONMARK);
+	tok = lexan.nextToken(); verify(tok == LEX_COLON);
 
 	tok = lexan.nextToken(); verify(tok == LEX_EOF);
 	tok = lexan.nextToken(); verify(tok == LEX_EOF);
