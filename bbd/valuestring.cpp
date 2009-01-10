@@ -66,6 +66,7 @@ ostream& operator<<(ostream& os, const ValueString& node)
 ////
 
 PTR_Value ValueString::add(const Value& right)     const { return right.add(*this); } // +
+PTR_Value ValueString::add(const ValueString& left) const { return PTR_Value(new ValueString(left.getVal() + m_val)); }
 PTR_Value ValueString::sub(const Value& right)     const { return right.sub(*this); } // -
 PTR_Value ValueString::mult(const Value& right)    const { return right.mult(*this); } // *
 PTR_Value ValueString::div(const Value& right)     const { return right.div(*this); } // /
@@ -82,4 +83,6 @@ PTR_Value ValueString::lt(const Value& right)      const { return right.lt(*this
 PTR_Value ValueString::lt(const ValueString& left) const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
 PTR_Value ValueString::gt(const Value& right)      const { return right.gt(*this); } // >
 PTR_Value ValueString::gt(const ValueString& left) const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
+PTR_Value ValueString::member(const Value& right)  const { return right.member(*this); } // .
+PTR_Value ValueString::index(const Value& right)   const { return right.index(*this); } // []
 PTR_Value ValueString::logNOT(void)                const { return PTR_Value(new ValueBool(m_val.empty())); } // !

@@ -108,12 +108,18 @@ nodebinaryge.o: stringtable.hpp
 nodebinarygt.o: nodebinarygt.hpp general.hpp nodebinary.hpp node.hpp
 nodebinarygt.o: baseobject.hpp context.hpp countptr.hpp value.hpp
 nodebinarygt.o: stringtable.hpp
+nodebinaryindex.o: nodebinaryindex.hpp general.hpp nodebinary.hpp node.hpp
+nodebinaryindex.o: baseobject.hpp context.hpp countptr.hpp value.hpp
+nodebinaryindex.o: stringtable.hpp
 nodebinaryle.o: nodebinaryle.hpp general.hpp nodebinary.hpp node.hpp
 nodebinaryle.o: baseobject.hpp context.hpp countptr.hpp value.hpp
 nodebinaryle.o: stringtable.hpp
 nodebinarylt.o: nodebinarylt.hpp general.hpp nodebinary.hpp node.hpp
 nodebinarylt.o: baseobject.hpp context.hpp countptr.hpp value.hpp
 nodebinarylt.o: stringtable.hpp
+nodebinarymember.o: nodebinarymember.hpp general.hpp nodebinary.hpp node.hpp
+nodebinarymember.o: baseobject.hpp context.hpp countptr.hpp value.hpp
+nodebinarymember.o: stringtable.hpp
 nodebinarymod.o: nodebinarymod.hpp general.hpp nodebinary.hpp node.hpp
 nodebinarymod.o: baseobject.hpp context.hpp countptr.hpp value.hpp
 nodebinarymod.o: stringtable.hpp
@@ -185,15 +191,16 @@ parser.o: nodebinaryasssub.hpp nodebinaryassmult.hpp nodebinaryassdiv.hpp
 parser.o: nodebinaryassmod.hpp nodebinarydiv.hpp nodebinaryeq.hpp
 parser.o: nodebinaryge.hpp nodebinarygt.hpp nodebinaryle.hpp nodebinarylt.hpp
 parser.o: nodebinarymod.hpp nodebinarymult.hpp nodebinaryne.hpp
-parser.o: nodebinaryor.hpp nodebinarysub.hpp nodeblock.hpp
-parser.o: nodefunctioncall.hpp nodecondition.hpp nodeemptycommand.hpp
-parser.o: nodefunction.hpp nodeloop.hpp nodeunarynot.hpp nodeunary.hpp
-parser.o: nodeunaryreturn.hpp nodeunarysub.hpp nodeunaryincpre.hpp
-parser.o: nodeunaryincpost.hpp nodeunarydecpre.hpp nodeunarydecpost.hpp
-parser.o: nodevalue.hpp nodevariable.hpp valuebool.hpp valueedge.hpp
-parser.o: valuestruct.hpp valuenull.hpp valuegraph.hpp valueedgeset.hpp
-parser.o: valuefloat.hpp valueint.hpp valuereference.hpp valuestring.hpp
-parser.o: valuevertex.hpp valuevertexset.hpp
+parser.o: nodebinaryor.hpp nodebinarysub.hpp nodebinaryindex.hpp
+parser.o: nodebinarymember.hpp nodeblock.hpp nodefunctioncall.hpp
+parser.o: nodecondition.hpp nodeemptycommand.hpp nodefunction.hpp
+parser.o: nodeloop.hpp nodeunarynot.hpp nodeunary.hpp nodeunaryreturn.hpp
+parser.o: nodeunarysub.hpp nodeunaryincpre.hpp nodeunaryincpost.hpp
+parser.o: nodeunarydecpre.hpp nodeunarydecpost.hpp nodevalue.hpp
+parser.o: nodevariable.hpp valuebool.hpp valueedge.hpp valuestruct.hpp
+parser.o: valuenull.hpp valuegraph.hpp valueedgeset.hpp valuefloat.hpp
+parser.o: valueint.hpp valuereference.hpp valuestring.hpp valuevertex.hpp
+parser.o: valuevertexset.hpp
 stringtable.o: stringtable.hpp general.hpp baseobject.hpp node.hpp
 stringtable.o: context.hpp countptr.hpp value.hpp
 tests.o: tests.hpp general.hpp baseobject.hpp logger.hpp valueint.hpp
@@ -209,7 +216,7 @@ tests.o: nodebinaryass.hpp nodevalue.hpp nodebinarylt.hpp nodeunaryreturn.hpp
 tests.o: nodebinarymult.hpp
 valuebool.o: value.hpp general.hpp baseobject.hpp countptr.hpp valuenull.hpp
 valuebool.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
-valuebool.o: valuestruct.hpp node.hpp context.hpp stringtable.hpp
+valuebool.o: valuestruct.hpp node.hpp context.hpp stringtable.hpp logger.hpp
 value.o: value.hpp general.hpp baseobject.hpp countptr.hpp valuenull.hpp
 value.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
 value.o: valuestruct.hpp valuereference.hpp valuegraph.hpp valuevertex.hpp
@@ -224,14 +231,14 @@ valueedgeset.o: valuestruct.hpp valuenull.hpp valuegraph.hpp node.hpp
 valueedgeset.o: context.hpp stringtable.hpp
 valuefloat.o: value.hpp general.hpp baseobject.hpp countptr.hpp valuenull.hpp
 valuefloat.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
-valuefloat.o: valuestruct.hpp node.hpp context.hpp stringtable.hpp
+valuefloat.o: valuestruct.hpp node.hpp context.hpp stringtable.hpp logger.hpp
 valuegraph.o: valuegraph.hpp general.hpp value.hpp baseobject.hpp
 valuegraph.o: countptr.hpp logger.hpp valuebool.hpp valuevertex.hpp
 valuegraph.o: valueedgeset.hpp valuestruct.hpp valuenull.hpp valueedge.hpp
 valuegraph.o: node.hpp context.hpp stringtable.hpp
 valueint.o: value.hpp general.hpp baseobject.hpp countptr.hpp valuenull.hpp
 valueint.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
-valueint.o: valuestruct.hpp node.hpp context.hpp stringtable.hpp
+valueint.o: valuestruct.hpp node.hpp context.hpp stringtable.hpp logger.hpp
 valuenull.o: value.hpp general.hpp baseobject.hpp countptr.hpp valuenull.hpp
 valuenull.o: valuebool.hpp valueint.hpp valuefloat.hpp valuestring.hpp
 valuenull.o: valuestruct.hpp node.hpp context.hpp stringtable.hpp

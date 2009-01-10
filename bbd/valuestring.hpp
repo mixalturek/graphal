@@ -40,6 +40,7 @@ public:
 	virtual void dump(ostream& os, uint indent) const;
 
 	virtual PTR_Value add(const Value&     right) const; // +
+	virtual PTR_Value add(const ValueString& left) const;
 	virtual PTR_Value sub(const Value&     right) const; // -
 	virtual PTR_Value mult(const Value&    right) const; // *
 	virtual PTR_Value div(const Value&     right) const; // /
@@ -56,6 +57,8 @@ public:
 	virtual PTR_Value lt(const ValueString& left) const;
 	virtual PTR_Value gt(const Value&      right) const; // >
 	virtual PTR_Value gt(const ValueString& left) const;
+	virtual PTR_Value member(const Value&  right) const; // .
+	virtual PTR_Value index(const Value&   right) const; // []
 	virtual PTR_Value logNOT(void)                const; // !
 
 private:

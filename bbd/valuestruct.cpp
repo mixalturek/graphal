@@ -127,4 +127,6 @@ PTR_Value ValueStruct::le(const Value& right)      const { return right.le(*this
 PTR_Value ValueStruct::ge(const Value& right)      const { return right.ge(*this); } // >=
 PTR_Value ValueStruct::lt(const Value& right)      const { return right.lt(*this); } // <
 PTR_Value ValueStruct::gt(const Value& right)      const { return right.gt(*this); } // >
+PTR_Value ValueStruct::member(const Value& right)  const { return right.member(*this); } // .
+PTR_Value ValueStruct::index(const Value& right)   const { return right.index(*this); } // []
 PTR_Value ValueStruct::logNOT(void)                const { return PTR_Value(new ValueBool(m_val.empty())); } // !

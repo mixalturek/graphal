@@ -44,6 +44,8 @@
 #include "nodebinaryne.hpp"
 #include "nodebinaryor.hpp"
 #include "nodebinarysub.hpp"
+#include "nodebinaryindex.hpp"
+#include "nodebinarymember.hpp"
 #include "nodeblock.hpp"
 #include "nodecondition.hpp"
 #include "nodeemptycommand.hpp"
@@ -113,11 +115,15 @@ void yyerror(char const *msg);
 
 %error-verbose
 
-%start expression
+%start start
 
 %%
-/* http://www.cplusplus.com/doc/tutorial/operators.html */
-/* http://www-numi.fnal.gov/offline_software/srt_public_context/WebDocs/Companion/cxx_crib/precedence.html */
+/*
+http://www.cplusplus.com/doc/tutorial/operators.html
+http://www-numi.fnal.gov/offline_software/srt_public_context/WebDocs/Companion/cxx_crib/precedence.html
+http://www.quut.com/c/ANSI-C-grammar-l-1998.html
+http://www.quut.com/c/ANSI-C-grammar-y.html
+*/
 
 primary_expression
 	: LEX_NULL { $$ = new NodeValue(new ValueNull()); }
@@ -132,10 +138,10 @@ primary_expression
 
 postfix_expression
 	: primary_expression { $$ = $1; }
-	| postfix_expression '[' expression ']' { $$ = $1; } /* TODO */
+	| postfix_expression '[' expression ']' { $$ = new NodeBinaryIndex($1, $3); }
 	| postfix_expression '(' ')' { $$ = $1; } /* TODO */
 	| postfix_expression '(' argument_expression_list ')' { $$ = $1; } /* TODO */
-	| postfix_expression '.' LEX_NAME { $$ = $1; } /* TODO */
+	| postfix_expression '.' LEX_NAME { $$ = new NodeBinaryMember($1, new NodeVariable($3)); }
 	| postfix_expression INC_OP { $$ = new NodeUnaryIncPost($1); }
 	| postfix_expression DEC_OP { $$ = new NodeUnaryDecPost($1); }
 	;
@@ -146,7 +152,7 @@ argument_expression_list
 	;
 
 unary_expression
-	: postfix_expression { $$ = $1; }
+	: postfix_expression { cout << "unary_expression" << endl; $$ = $1; }
 	| INC_OP unary_expression { $$ = new NodeUnaryIncPre($2); }
 	| DEC_OP unary_expression { $$ = new NodeUnaryDecPre($2); }
 	| '+' unary_expression { $$ = $2; }
@@ -207,9 +213,11 @@ assignment_expression
 	;
 
 expression
-	: assignment_expression { $1->dump(cout, 0); delete $1; }
+	: assignment_expression { $$ = $1; }
 	;
 
+start
+	: expression { $1->dump(cout, 0); delete $1; }
 %%
 
 // Ja su ale prasatko :-)

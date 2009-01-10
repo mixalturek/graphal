@@ -6,7 +6,10 @@ BaseObject
 			NodeUnarySub
 			NodeUnaryNot
 			NodeUnaryReturn
-			NodeUnaryMemberAccess (TODO)
+			NodeUnaryIncPre
+			NodeUnaryIncPost
+			NodeUnaryDecPre
+			NodeUnaryDecPost
 		NodeBinary (interface)
 			NodeBinaryAdd
 			NodeBinarySub
@@ -22,6 +25,13 @@ BaseObject
 			NodeBinaryAnd
 			NodeBinaryOr
 			NodeBinaryAss
+			NodeBinaryAssAdd
+			NodeBinaryAssSub
+			NodeBinaryAssMult
+			NodeBinaryAssDiv
+			NodeBinaryAssMod
+			NodeBinaryMember
+			NodeBinaryIndex
 		NodeJumpBreak (TODO)
 		NodeJumpContinue (TODO)
 		NodeCondition

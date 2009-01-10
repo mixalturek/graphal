@@ -94,4 +94,6 @@ PTR_Value ValueEdgeSet::le(const Value& right)       const { return right.le(*th
 PTR_Value ValueEdgeSet::ge(const Value& right)       const { return right.ge(*this); } // >=
 PTR_Value ValueEdgeSet::lt(const Value& right)       const { return right.lt(*this); } // <
 PTR_Value ValueEdgeSet::gt(const Value& right)       const { return right.gt(*this); } // >
+PTR_Value ValueEdgeSet::member(const Value& right)   const { return right.member(*this); } // .
+PTR_Value ValueEdgeSet::index(const Value& right)    const { return right.index(*this); } // []
 PTR_Value ValueEdgeSet::logNOT(void)                 const { return PTR_Value(new ValueBool(m_edges.empty())); } // !

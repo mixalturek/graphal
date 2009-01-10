@@ -371,6 +371,8 @@ generateBinaryOperatorClass('NodeBinaryLt', 'return m_left->execute(context)->lt
 generateBinaryOperatorClass('NodeBinaryGt', 'return m_left->execute(context)->gt(*(m_right->execute(context)));');
 generateBinaryOperatorClass('NodeBinaryAnd', 'return m_left->execute(context)->logAND(*(m_right->execute(context)));');
 generateBinaryOperatorClass('NodeBinaryOr', 'return m_left->execute(context)->logOR(*(m_right->execute(context)));');
+generateBinaryOperatorClass('NodeBinaryMember', 'return m_left->execute(context)->member(*(m_right->execute(context)));');
+generateBinaryOperatorClass('NodeBinaryIndex', 'return m_left->execute(context)->index(*(m_right->execute(context)));');
 
 generateAssignOperatorClass('NodeBinaryAss', 'return var->setValue(context, m_right->execute(context));');
 generateAssignOperatorClass('NodeBinaryAssAdd', 'return var->setValue(context, m_left->execute(context)->add(*(m_right->execute(context))));');

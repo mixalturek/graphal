@@ -80,4 +80,6 @@ PTR_Value ValueNull::le(const Value& right)    const { return right.le(*this); }
 PTR_Value ValueNull::ge(const Value& right)    const { return right.ge(*this); } // >=
 PTR_Value ValueNull::lt(const Value& right)    const { return right.lt(*this); } // <
 PTR_Value ValueNull::gt(const Value& right)    const { return right.gt(*this); } // >
+PTR_Value ValueNull::member(const Value& right) const { return right.member(*this); } // .
+PTR_Value ValueNull::index(const Value& right) const { return right.index(*this); } // []
 PTR_Value ValueNull::logNOT(void)              const { return PTR_Value(new ValueBool(true)); } // !

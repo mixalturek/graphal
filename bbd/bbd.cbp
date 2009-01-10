@@ -84,10 +84,14 @@
 		<Unit filename="nodebinaryge.hpp" />
 		<Unit filename="nodebinarygt.cpp" />
 		<Unit filename="nodebinarygt.hpp" />
+		<Unit filename="nodebinaryindex.cpp" />
+		<Unit filename="nodebinaryindex.hpp" />
 		<Unit filename="nodebinaryle.cpp" />
 		<Unit filename="nodebinaryle.hpp" />
 		<Unit filename="nodebinarylt.cpp" />
 		<Unit filename="nodebinarylt.hpp" />
+		<Unit filename="nodebinarymember.cpp" />
+		<Unit filename="nodebinarymember.hpp" />
 		<Unit filename="nodebinarymod.cpp" />
 		<Unit filename="nodebinarymod.hpp" />
 		<Unit filename="nodebinarymult.cpp" />

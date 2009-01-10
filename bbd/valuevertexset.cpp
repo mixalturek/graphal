@@ -94,5 +94,7 @@ PTR_Value ValueVertexSet::le(const Value& right)         const { return right.le
 PTR_Value ValueVertexSet::ge(const Value& right)         const { return right.ge(*this); } // >=
 PTR_Value ValueVertexSet::lt(const Value& right)         const { return right.lt(*this); } // <
 PTR_Value ValueVertexSet::gt(const Value& right)         const { return right.gt(*this); } // >
+PTR_Value ValueVertexSet::member(const Value& right)     const { return right.member(*this); } // .
+PTR_Value ValueVertexSet::index(const Value& right)      const { return right.index(*this); } // []
 PTR_Value ValueVertexSet::logNOT(void)                   const { return PTR_Value(new ValueBool(m_vertices.empty())); } // !
 

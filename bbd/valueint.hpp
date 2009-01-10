@@ -112,6 +112,13 @@ public:
 	// - (unary)
 	virtual PTR_Value subUn(void) const;
 
+	// .
+	virtual PTR_Value member(const Value& right) const;
+
+	// []
+	virtual PTR_Value index(const Value&  right) const;
+	virtual PTR_Value index(const ValueString& left) const;
+
 private:
 	int m_val;
 };

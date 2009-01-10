@@ -73,4 +73,6 @@ PTR_Value ValueReference::le(const Value& right)         const { return right.le
 PTR_Value ValueReference::ge(const Value& right)         const { return right.ge(*this); } // >=
 PTR_Value ValueReference::lt(const Value& right)         const { return right.lt(*this); } // <
 PTR_Value ValueReference::gt(const Value& right)         const { return right.gt(*this); } // >
+PTR_Value ValueReference::member(const Value& right)     const { return right.member(*this); } // .
+PTR_Value ValueReference::index(const Value& right)      const { return right.index(*this); } // []
 PTR_Value ValueReference::logNOT(void)                   const { return PTR_Value(new ValueBool(true)); } // ! // TODO

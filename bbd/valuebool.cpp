@@ -28,6 +28,7 @@
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
 #include "node.hpp"
+#include "logger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -138,3 +139,17 @@ PTR_Value ValueBool::logNOT(void)  const { return PTR_Value(new ValueBool(!m_val
 
 // - (unary)
 PTR_Value ValueBool::subUn(void)   const { return PTR_Value(new ValueBool(-m_val)); }
+
+PTR_Value ValueBool::member(const Value& right)    const { return right.member(*this); } // .
+PTR_Value ValueBool::index(const Value& right)     const { return right.index(*this); } // []
+
+PTR_Value ValueBool::index(const ValueString& left) const
+{
+	if(m_val < left.getVal().length())
+		return PTR_Value(new ValueString(char2string(left.getVal()[m_val])));
+	else
+	{
+		WARN << _("Index out of range") << endl;
+		return PTR_Value(new ValueNull());
+	}
+}

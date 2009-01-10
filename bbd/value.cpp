@@ -63,6 +63,7 @@ PTR_Value Value::logOR(const Value& right) const
 	return PTR_Value(new ValueBool(this->toBool() || right.toBool()));
 }
 
+
 /////////////////////////////////////////////////////////////////////////////
 ////
 
@@ -219,6 +220,34 @@ PTR_Value Value::gt(const ValueVertex& /* left */)      const { return PTR_Value
 PTR_Value Value::gt(const ValueEdge& /* left */)        const { return PTR_Value(new ValueBool(false)); }
 PTR_Value Value::gt(const ValueVertexSet& /* left */)   const { return PTR_Value(new ValueBool(false)); }
 PTR_Value Value::gt(const ValueEdgeSet& /* left */)     const { return PTR_Value(new ValueBool(false)); }
+
+// . (member access)
+PTR_Value Value::member(const ValueNull& /* left */)      const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueBool& /* left */)      const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueInt& /* left */)       const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueFloat& /* left */)     const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueString& /* left */)    const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueStruct& /* left */)    const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueReference& /* left */) const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueGraph& /* left */)     const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueVertex& /* left */)    const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueEdge& /* left */)      const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueVertexSet& /* left */) const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::member(const ValueEdgeSet& /* left */)   const { return PTR_Value(new ValueNull()); }
+
+// [] index
+PTR_Value Value::index(const ValueNull& /* left */)      const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueBool& /* left */)      const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueInt& /* left */)       const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueFloat& /* left */)     const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueString& /* left */)    const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueStruct& /* left */)    const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueReference& /* left */) const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueGraph& /* left */)     const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueVertex& /* left */)    const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueEdge& /* left */)      const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueVertexSet& /* left */) const { return PTR_Value(new ValueNull()); }
+PTR_Value Value::index(const ValueEdgeSet& /* left */)   const { return PTR_Value(new ValueNull()); }
 
 // - (unary)
 PTR_Value Value::subUn(void)   const { return PTR_Value(new ValueNull()); }

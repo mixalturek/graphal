@@ -147,4 +147,6 @@ PTR_Value ValueGraph::le(const Value& right)     const { return right.le(*this);
 PTR_Value ValueGraph::ge(const Value& right)     const { return right.ge(*this); } // >=
 PTR_Value ValueGraph::lt(const Value& right)     const { return right.lt(*this); } // <
 PTR_Value ValueGraph::gt(const Value& right)     const { return right.gt(*this); } // >
+PTR_Value ValueGraph::member(const Value& right) const { return right.member(*this); } // .
+PTR_Value ValueGraph::index(const Value& right)  const { return right.index(*this); } // []
 PTR_Value ValueGraph::logNOT(void)               const { return PTR_Value(new ValueBool(m_vertices.empty())); } // !
