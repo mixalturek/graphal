@@ -34,6 +34,13 @@ NodeBlock::NodeBlock()
 
 }
 
+NodeBlock::NodeBlock(Node* node)
+	: Node(),
+	m_commands()
+{
+	pushCommandToFront(node);
+}
+
 NodeBlock::~NodeBlock()
 {
 	list<Node*>::iterator it;

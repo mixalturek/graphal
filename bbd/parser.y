@@ -85,6 +85,7 @@ void yyerror(char const *msg);
 	float   float_val;
 	string* string_val;
 	Node*   node;
+	NodeBlock* nodeblock;
 }
 
 %token LEX_ERROR
@@ -111,7 +112,9 @@ void yyerror(char const *msg);
 %token <float_val>  LEX_FLOAT
 %token <string_val> LEX_STRING
 
-%type <node> primary_expression postfix_expression argument_expression_list unary_expression multiplicative_expression additive_expression relational_expression equality_expression logical_and_expression logical_or_expression conditional_expression assignment_expression expression
+%type <node> primary_expression postfix_expression unary_expression multiplicative_expression additive_expression relational_expression equality_expression logical_and_expression logical_or_expression conditional_expression assignment_expression expression
+
+%type <nodeblock> argument_expression_list
 
 %error-verbose
 
@@ -130,7 +133,7 @@ primary_expression
 	| LEX_TRUE { $$ = new NodeValue(new ValueBool(true)); }
 	| LEX_FALSE { $$ = new NodeValue(new ValueBool(false)); }
 	| LEX_INT { $$ = new NodeValue(new ValueInt($1)); }
-	| LEX_NAME { $$ = new NodeVariable($1); } /* TODO: funkce! */
+	| LEX_NAME { $$ = new NodeVariable($1); }
 	| LEX_FLOAT { $$ = new NodeValue(new ValueFloat($1)); }
 	| LEX_STRING { $$ = new NodeValue(new ValueString(*$1)); }
 	| '(' expression ')' { $$ = $2; }
@@ -139,20 +142,78 @@ primary_expression
 postfix_expression
 	: primary_expression { $$ = $1; }
 	| postfix_expression '[' expression ']' { $$ = new NodeBinaryIndex($1, $3); }
-	| postfix_expression '(' ')' { $$ = $1; } /* TODO */
-	| postfix_expression '(' argument_expression_list ')' { $$ = $1; } /* TODO */
+	| postfix_expression '(' ')'
+	{
+		// To je hnus velebnosti...
+		NodeVariable* var = dynamic_cast<NodeVariable*>($1);
+		if(var == NULL)
+		{
+			NodeBinaryMember* mem = dynamic_cast<NodeBinaryMember*>($1);
+			if(mem == NULL)
+			{
+				delete $1;
+				yyerror(_("Call operator expects identifier on the left"));
+				YYABORT;
+			}
+			else // variable.f() -> f(variable)
+			{
+				var = dynamic_cast<NodeVariable*>(mem->getRight());
+				assert(var != NULL);// LEX_NAME is always on the right
+
+				$$ = new NodeFunctionCall(var->getName(), new NodeBlock(mem->getLeft()));
+				mem->detachLeft();
+				delete mem;
+			}
+		}
+		else // f()
+		{
+			$$ = new NodeFunctionCall(var->getName(), NULL);
+			delete $1;
+		}
+	}
+	| postfix_expression '(' argument_expression_list ')'
+	{
+		// Vidis to, panenko Maria podsrpenska, vidis to?
+		NodeVariable* var = dynamic_cast<NodeVariable*>($1);
+		if(var == NULL)
+		{
+			NodeBinaryMember* mem = dynamic_cast<NodeBinaryMember*>($1);
+			if(mem == NULL)
+			{
+				delete $1;
+				delete $3;
+				yyerror(_("Call operator expects identifier on the left"));
+				YYABORT;
+			}
+			else // variable.f(parameters) -> f(variable, parameters)
+			{
+				var = dynamic_cast<NodeVariable*>(mem->getRight());
+				assert(var != NULL);// LEX_NAME is always on the right
+
+				$3->pushCommandToFront(mem->getLeft());
+				$$ = new NodeFunctionCall(var->getName(), $3);
+				mem->detachLeft();
+				delete mem;
+			}
+		}
+		else // f(parameters)
+		{
+			$$ = new NodeFunctionCall(var->getName(), $3);
+			delete $1;
+		}
+	}
 	| postfix_expression '.' LEX_NAME { $$ = new NodeBinaryMember($1, new NodeVariable($3)); }
 	| postfix_expression INC_OP { $$ = new NodeUnaryIncPost($1); }
 	| postfix_expression DEC_OP { $$ = new NodeUnaryDecPost($1); }
 	;
 
 argument_expression_list
-	: assignment_expression { $$ = $1; } /* TODO */
-	| argument_expression_list ',' assignment_expression { $$ = $1; } /* TODO */
+	: assignment_expression { $$ = new NodeBlock($1); }
+	| argument_expression_list ',' assignment_expression { $1->pushCommandToBack($3); $$ = $1; }
 	;
 
 unary_expression
-	: postfix_expression { cout << "unary_expression" << endl; $$ = $1; }
+	: postfix_expression { $$ = $1; }
 	| INC_OP unary_expression { $$ = new NodeUnaryIncPre($2); }
 	| DEC_OP unary_expression { $$ = new NodeUnaryDecPre($2); }
 	| '+' unary_expression { $$ = $2; }
@@ -163,8 +224,8 @@ unary_expression
 multiplicative_expression
 	: unary_expression { $$ = $1; }
 	| multiplicative_expression '*' unary_expression { $$ = new NodeBinaryMult($1, $3); }
-	| multiplicative_expression '/' unary_expression { $$ = new NodeBinaryDiv($1, $3); } /* TODO: division by zero */
-	| multiplicative_expression '%' unary_expression { $$ = new NodeBinaryMod($1, $3); } /* TODO: division by zero */
+	| multiplicative_expression '/' unary_expression { $$ = new NodeBinaryDiv($1, $3); }
+	| multiplicative_expression '%' unary_expression { $$ = new NodeBinaryMod($1, $3); }
 	;
 
 additive_expression
@@ -218,6 +279,7 @@ expression
 
 start
 	: expression { $1->dump(cout, 0); delete $1; }
+	;
 %%
 
 // Ja su ale prasatko :-)
@@ -250,7 +312,7 @@ int yylex(void)
 	return tok;
 }
 
-void yyerror (char const *msg)
+void yyerror(char const *msg)
 {
 	fprintf(stderr, "%s\n", msg);
 }

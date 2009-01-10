@@ -23,6 +23,7 @@
 #define LEXANTOKENS_HPP
 
 #include "node.hpp"
+#include "nodeblock.hpp"
 #include "parser.hpp"
 
 #define LEX_EOF 0

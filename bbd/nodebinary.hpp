@@ -32,6 +32,12 @@ public:
 	NodeBinary(Node* left, Node* right);
 	virtual ~NodeBinary(void);
 
+	Node* getLeft(void) { return m_left; }
+	Node* getRight(void) { return m_right; }
+
+	// Call this function only if you really know what you do!!!
+	void detachLeft(void) { m_left = NULL; }
+
 private:
 	NodeBinary(void);
 	NodeBinary(const NodeBinary& object);

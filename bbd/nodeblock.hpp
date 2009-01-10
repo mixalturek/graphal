@@ -33,6 +33,7 @@ class NodeBlock : public Node
 {
 public:
 	NodeBlock(void);
+	NodeBlock(Node* node);
 	virtual ~NodeBlock(void);
 
 	virtual CountPtr<Value> execute(Context& context);

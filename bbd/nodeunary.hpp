@@ -32,6 +32,8 @@ public:
 	NodeUnary(Node* next);
 	virtual ~NodeUnary(void);
 
+	Node* getNext(void) { return m_next; }
+
 private:
 	NodeUnary(void);
 	NodeUnary(const NodeUnary& object);
