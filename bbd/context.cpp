@@ -135,6 +135,15 @@ void Context::dump(ostream& os, uint indent) const
 	Node::dumpIndent(os, indent);
 	os << "<Context>" << endl;
 
+
+	map<identifier, NodeFunction*>::const_iterator it;
+	for(it = m_functions.begin(); it != m_functions.end(); it++)
+	{
+			Node::dumpIndent(os, indent+1);
+		os << "<FunctionName name=\"" << it->first << "\" />" << endl;
+		it->second->dump(os, indent+1);
+	}
+
 	m_stringtable.dump(os, indent+1);
 
 	Node::dumpIndent(os, indent);

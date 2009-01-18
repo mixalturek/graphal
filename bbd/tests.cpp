@@ -946,7 +946,7 @@ bool Tests::testNodeFunction(void)
 	}
 	*/
 	NodeFunction* func =
-		new NodeFunction(list<identifier>(),
+		new NodeFunction(new list<identifier>(),
 			new NodeBinaryAss(
 				new NodeVariable(local_id),
 				new NodeValue(new ValueInt(10))
@@ -967,7 +967,7 @@ bool Tests::testNodeFunction(void)
 	}
 	*/
 	NodeFunction* freturn =
-		new NodeFunction(list<identifier>(),
+		new NodeFunction(new list<identifier>(),
 			new NodeUnaryReturn(
 				new NodeValue(new ValueInt(5))
 			)
@@ -1001,7 +1001,7 @@ bool Tests::testNodeFunction(void)
 		)
 	);
 
-	NodeFunction* freturn_local = new NodeFunction(list<identifier>(), body);
+	NodeFunction* freturn_local = new NodeFunction(new list<identifier>(), body);
 	context.addFunction(freturn_local_id, freturn_local);
 
 	NodeFunctionCall freturn_local_call(freturn_local_id, NULL);
@@ -1020,8 +1020,8 @@ bool Tests::testNodeFunction(void)
 	*/
 /*
 	// TODO: Implement NodeJumpReturn
-	list<identifier> param_names;
-	param_names.push_back(number_id);
+	list<identifier>* param_names = new list<identifier>();
+	param_names->push_back(number_id);
 
 	NodeBlock* params = new NodeBlock();
 	params->pushCommandToBack(

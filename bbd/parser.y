@@ -77,6 +77,10 @@
 #include "valuevertex.hpp"
 #include "valuevertexset.hpp"
 
+// Ja su ale prasatko :-)
+static Lexan* g_lexan = NULL;
+static Context* g_context = NULL;
+
 int yylex(void);
 void yyerror(char const *msg);
 %}
@@ -88,6 +92,7 @@ void yyerror(char const *msg);
 	string* string_val;
 	Node*   node;
 	NodeBlock* nodeblock;
+	list<identifier>* list_ids;
 }
 
 %token LEX_ERROR
@@ -119,8 +124,8 @@ void yyerror(char const *msg);
 %type <node> relational_expression equality_expression logical_and_expression
 %type <node> logical_or_expression conditional_expression assignment_expression
 %type <node> statement expression_statement compound_statement
-
 %type <nodeblock> argument_expression_list block_item_list
+%type <list_ids> parameter_list
 
 %error-verbose
 
@@ -313,14 +318,21 @@ block_item_list
 	| block_item_list statement { $1->pushCommandToBack($2); $$ = $1; }
 	;
 
+function_definition
+	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { g_context->addFunction($2, new NodeFunction($4, $6)); }
+	| LEX_FUNCTION LEX_NAME '(' ')'  compound_statement { g_context->addFunction($2, new NodeFunction(new list<identifier>(), $5)); }
+	;
+
+parameter_list
+	: LEX_NAME { $$ = new list<identifier>(); $$->push_back($1); }
+	| parameter_list ',' LEX_NAME { $1->push_back($3); $$ = $1; }
+	;
+
 start
-	: statement { $1->dump(cout, 0); delete $1; }
+	: /* empty */
+	| start function_definition
 	;
 %%
-
-// Ja su ale prasatko :-)
-static Lexan* g_lexan = NULL;
-static Context* g_context = NULL;
 
 int yylex(void)
 {

@@ -28,9 +28,9 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-NodeFunction::NodeFunction(const list<identifier>& parameters, Node* block)
+NodeFunction::NodeFunction(list<identifier>* parameters, Node* block)
 	: Node(),
-	m_parameters(parameters),
+	m_parameters((parameters != NULL) ? parameters : new list<identifier>()),
 	m_block((block != NULL) ? block : new NodeEmptyCommand() )
 {
 
@@ -38,6 +38,9 @@ NodeFunction::NodeFunction(const list<identifier>& parameters, Node* block)
 
 NodeFunction::~NodeFunction(void)
 {
+	delete m_parameters;
+	m_parameters = NULL;
+
 	delete m_block;
 	m_block = NULL;
 }
@@ -69,10 +72,10 @@ void NodeFunction::dump(ostream& os, uint indent) const
 
 	list<identifier>::const_iterator it;
 
-	for(it = m_parameters.begin(); it != m_parameters.end(); it++)
+	for(it = m_parameters->begin(); it != m_parameters->end(); it++)
 	{
 		dumpIndent(os, indent + 1);
-		os << "<Parameter>" << *it << "</Parameter>" << endl;
+		os << "<Parameter name=\"" << *it << "\" />" << endl;
 	}
 
 	m_block->dump(os, indent + 1);

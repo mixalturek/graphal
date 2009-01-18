@@ -31,16 +31,16 @@
 class NodeFunction : public Node
 {
 public:
-	NodeFunction(const list<identifier>& parameters, Node* block);
+	NodeFunction(list<identifier>* parameters, Node* block);
 	virtual ~NodeFunction(void);
 
 	virtual CountPtr<Value> execute(Context& context);
 	virtual void dump(ostream& os, uint indent) const;
 
-	const list<identifier>& getParameterNames(void) const { return m_parameters; }
+	const list<identifier>& getParameterNames(void) const { return *m_parameters; }
 
 private:
-	list<identifier> m_parameters;
+	list<identifier>* m_parameters;
 	Node* m_block;
 };
 
