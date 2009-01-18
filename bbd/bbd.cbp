@@ -112,6 +112,10 @@
 		<Unit filename="nodefunction.hpp" />
 		<Unit filename="nodefunctioncall.cpp" />
 		<Unit filename="nodefunctioncall.hpp" />
+		<Unit filename="nodejumpbreak.cpp" />
+		<Unit filename="nodejumpbreak.hpp" />
+		<Unit filename="nodejumpcontinue.cpp" />
+		<Unit filename="nodejumpcontinue.hpp" />
 		<Unit filename="nodeloop.cpp" />
 		<Unit filename="nodeloop.hpp" />
 		<Unit filename="nodeunary.cpp" />

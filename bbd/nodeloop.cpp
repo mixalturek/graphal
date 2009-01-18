@@ -26,6 +26,8 @@
 #include "valuebool.hpp"
 #include "nodeemptycommand.hpp"
 #include "nodevalue.hpp"
+#include "nodejumpbreak.hpp"
+#include "nodejumpcontinue.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -63,31 +65,30 @@ NodeLoop::~NodeLoop()
 CountPtr<Value> NodeLoop::execute(Context& context)
 {
 	// TODO: set position in the code to the context
-	// TODO: catch jump exceptions
 
 	m_init->execute(context);
 
-//	try
-//	{
+	try
+	{
 		while(m_condition->execute(context)->toBool())
 		{
-//			try
-//			{
-				m_body->execute(context);
-/*			}
-			catch(CContinueException& ex)
+			try
 			{
-				// Need only the exception jump
+				m_body->execute(context);
 			}
-*/
+			catch(NodeJumpContinue* ex)
+			{
+				// Only the exception jump is needed
+			}
+
 			m_inc->execute(context);
 		}
-/*	}
-	catch(CBreakException& ex)
-	{
-		// Only the jump needed
 	}
-*/
+	catch(NodeJumpBreak* ex)
+	{
+		// Only the exception jump is needed
+	}
+
 	return CountPtr<Value>(new ValueNull());
 }
 
