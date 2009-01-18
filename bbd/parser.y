@@ -61,6 +61,8 @@
 #include "nodeunarydecpost.hpp"
 #include "nodevalue.hpp"
 #include "nodevariable.hpp"
+#include "nodejumpbreak.hpp"
+#include "nodejumpcontinue.hpp"
 
 #include "valuebool.hpp"
 #include "valueedge.hpp"
@@ -112,9 +114,13 @@ void yyerror(char const *msg);
 %token <float_val>  LEX_FLOAT
 %token <string_val> LEX_STRING
 
-%type <node> primary_expression postfix_expression unary_expression multiplicative_expression additive_expression relational_expression equality_expression logical_and_expression logical_or_expression conditional_expression assignment_expression expression
+%type <node> primary_expression postfix_expression unary_expression
+%type <node> multiplicative_expression additive_expression expression
+%type <node> relational_expression equality_expression logical_and_expression
+%type <node> logical_or_expression conditional_expression assignment_expression
+%type <node> statement expression_statement compound_statement
 
-%type <nodeblock> argument_expression_list
+%type <nodeblock> argument_expression_list block_item_list
 
 %error-verbose
 
@@ -277,8 +283,38 @@ expression
 	: assignment_expression { $$ = $1; }
 	;
 
+statement
+	: compound_statement { $$ = $1; }
+	| expression_statement { $$ = $1; }
+	/* "parser.y: conflicts: 1 shift/reduce" is ok */
+	| LEX_IF '(' expression ')' statement { $$ = new NodeCondition($3, $5, new NodeEmptyCommand()); }
+	| LEX_IF '(' expression ')' statement LEX_ELSE statement { $$ = new NodeCondition($3, $5, $7); }
+	| LEX_WHILE '(' expression ')' statement { $$ = new NodeLoop(new NodeEmptyCommand(), $3, new NodeEmptyCommand(), $5); }
+	| LEX_FOR '(' expression_statement expression_statement ')' statement { $$ = new NodeLoop($3, $4, new NodeEmptyCommand(), $6); }
+	| LEX_FOR '(' expression_statement expression_statement expression ')' statement { $$ = new NodeLoop($3, $4, $5, $7); }
+	| LEX_BREAK ';' { $$ = new NodeJumpBreak(); }
+	| LEX_CONTINUE ';' { $$ = new NodeJumpContinue(); }
+	| LEX_RETURN ';' { $$ = new NodeUnaryReturn(new NodeEmptyCommand()); }
+	| LEX_RETURN expression ';' { $$ = new NodeUnaryReturn($2); }
+	;
+
+expression_statement
+	: ';' { $$ = new NodeEmptyCommand(); }
+	| expression ';' { $$ = $1; }
+	;
+
+compound_statement
+	: '{' '}' { $$ = new NodeEmptyCommand(); }
+	| '{' block_item_list '}' { $$ = $2; }
+	;
+
+block_item_list
+	: statement { $$ = new NodeBlock($1); }
+	| block_item_list statement { $1->pushCommandToBack($2); $$ = $1; }
+	;
+
 start
-	: expression { $1->dump(cout, 0); delete $1; }
+	: statement { $1->dump(cout, 0); delete $1; }
 	;
 %%
 

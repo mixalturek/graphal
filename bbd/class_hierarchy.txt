@@ -32,8 +32,8 @@ BaseObject
 			NodeBinaryAssMod
 			NodeBinaryMember
 			NodeBinaryIndex
-		NodeJumpBreak (TODO)
-		NodeJumpContinue (TODO)
+		NodeJumpBreak
+		NodeJumpContinue
 		NodeCondition
 		NodeLoop
 		NodeBlock
