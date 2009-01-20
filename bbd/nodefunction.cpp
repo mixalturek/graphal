@@ -23,15 +23,17 @@
 #include "nodefunction.hpp"
 #include "nodeemptycommand.hpp"
 #include "valuenull.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-NodeFunction::NodeFunction(list<identifier>* parameters, Node* block)
+NodeFunction::NodeFunction(list<identifier>* parameters, Node* block, identifier name)
 	: Node(),
 	m_parameters((parameters != NULL) ? parameters : new list<identifier>()),
-	m_block((block != NULL) ? block : new NodeEmptyCommand() )
+	m_block((block != NULL) ? block : new NodeEmptyCommand()),
+	m_name(name)
 {
 
 }
@@ -68,14 +70,15 @@ CountPtr<Value> NodeFunction::execute(void)
 void NodeFunction::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<Function>" << endl;
+	os << "<Function name=\"" << CONTEXT.getStringTable()->getString(m_name)
+		<< "\" id=\"" << m_name << "\">" << endl;
 
 	list<identifier>::const_iterator it;
 
 	for(it = m_parameters->begin(); it != m_parameters->end(); it++)
 	{
 		dumpIndent(os, indent + 1);
-		os << "<Parameter name=\"" << *it << "\" />" << endl;
+		os << "<Parameter name=\"" << CONTEXT.getStringTable()->getString(*it) << "\" id=\"" << *it << "\" />" << endl;
 	}
 
 	m_block->dump(os, indent + 1);

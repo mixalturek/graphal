@@ -946,7 +946,8 @@ bool Tests::testNodeFunction(void)
 			new NodeBinaryAss(
 				new NodeVariable(local_id),
 				new NodeValue(new ValueInt(10))
-			)
+			),
+			func_id
 		);
 
 	CONTEXT.addFunction(func_id, func);
@@ -966,7 +967,8 @@ bool Tests::testNodeFunction(void)
 		new NodeFunction(new list<identifier>(),
 			new NodeUnaryReturn(
 				new NodeValue(new ValueInt(5))
-			)
+			),
+			freturn_id
 		);
 
 	CONTEXT.addFunction(freturn_id, freturn);
@@ -997,7 +999,7 @@ bool Tests::testNodeFunction(void)
 		)
 	);
 
-	NodeFunction* freturn_local = new NodeFunction(new list<identifier>(), body);
+	NodeFunction* freturn_local = new NodeFunction(new list<identifier>(), body, freturn_local_id);
 	CONTEXT.addFunction(freturn_local_id, freturn_local);
 
 	NodeFunctionCall freturn_local_call(freturn_local_id, NULL);
@@ -1046,7 +1048,8 @@ bool Tests::testNodeFunction(void)
 						)
 					)
 				)
-			)
+			),
+			freturn_local_id
 		);
 
 	CONTEXT.addFunction(factorial_id, func);

@@ -319,8 +319,8 @@ block_item_list
 	;
 
 function_definition
-	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { CONTEXT.addFunction($2, new NodeFunction($4, $6)); }
-	| LEX_FUNCTION LEX_NAME '(' ')'  compound_statement {  CONTEXT.addFunction($2, new NodeFunction(new list<identifier>(), $5)); }
+	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { CONTEXT.addFunction($2, new NodeFunction($4, $6, $2)); }
+	| LEX_FUNCTION LEX_NAME '(' ')'  compound_statement {  CONTEXT.addFunction($2, new NodeFunction(new list<identifier>(), $5, $2)); }
 	;
 
 parameter_list

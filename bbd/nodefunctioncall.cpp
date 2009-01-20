@@ -97,7 +97,8 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 void NodeFunctionCall::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<FunctionCall name=\"" << m_name << "\">" << endl;
+	os << "<FunctionCall name=\"" << CONTEXT.getStringTable()->getString(m_name)
+		<< "\" id=\"" << m_name << "\">" << endl;
 
 	if(m_parameters != NULL)
 		m_parameters->dump(os, indent + 1);

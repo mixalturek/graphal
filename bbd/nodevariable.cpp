@@ -67,7 +67,8 @@ CountPtr<Value> NodeVariable::execute(void)
 void NodeVariable::dump(ostream& os, uint indent) const
 {
 	this->dumpIndent(os, indent);
-	os << "<NodeVariable name=\"" << m_name << "\" />" << endl;
+	os << "<NodeVariable name=\"" << CONTEXT.getStringTable()->getString(m_name)
+		<< "\" id=\"" << m_name << "\" />" << endl;
 }
 
 ostream& operator<<(ostream& os, const NodeVariable& node)

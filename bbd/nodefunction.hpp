@@ -31,7 +31,7 @@
 class NodeFunction : public Node
 {
 public:
-	NodeFunction(list<identifier>* parameters, Node* block);
+	NodeFunction(list<identifier>* parameters, Node* block, identifier name);
 	virtual ~NodeFunction(void);
 
 	virtual CountPtr<Value> execute(void);
@@ -42,6 +42,7 @@ public:
 private:
 	list<identifier>* m_parameters;
 	Node* m_block;
+	identifier m_name;// Actually not needed, for dump() only
 };
 
 ostream& operator<<(ostream& os, const NodeFunction& node);
