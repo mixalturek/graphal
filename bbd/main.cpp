@@ -27,7 +27,7 @@
 #include "tests.hpp"
 #include "context.hpp"
 
-int parseCode(const string& str, Context& context);
+int parseCode(const string& str);
 
 int main(int argc, char** argv)
 {
@@ -37,14 +37,15 @@ int main(int argc, char** argv)
 
 		if(argc > 1)
 		{
-			Context context;
-			parseCode(argv[1], context);
+			parseCode(argv[1]);
 		}
 
 		Tests* tests = new Tests();
 		tests->run();
 		delete tests;
 		tests = NULL;
+
+		CONTEXT.clear();
 
 #ifdef CHECK_MEMORY_LEAKS
 		BaseObject::printMemoryLeaks(number_of_static_objects);

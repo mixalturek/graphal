@@ -34,7 +34,7 @@ public:
 	NodeFunction(list<identifier>* parameters, Node* block);
 	virtual ~NodeFunction(void);
 
-	virtual CountPtr<Value> execute(Context& context);
+	virtual CountPtr<Value> execute(void);
 	virtual void dump(ostream& os, uint indent) const;
 
 	const list<identifier>& getParameterNames(void) const { return *m_parameters; }

@@ -40,7 +40,7 @@ NodeJumpBreak::~NodeJumpBreak()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> NodeJumpBreak::execute(Context& /* context */)
+CountPtr<Value> NodeJumpBreak::execute(void)
 {
 	throw this;
 

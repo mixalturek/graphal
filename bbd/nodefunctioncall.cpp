@@ -25,6 +25,7 @@
 #include "nodefunction.hpp"
 #include "nodeblock.hpp"
 #include "valuenull.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -48,9 +49,9 @@ NodeFunctionCall::~NodeFunctionCall()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> NodeFunctionCall::execute(Context& context)
+CountPtr<Value> NodeFunctionCall::execute(void)
 {
-	NodeFunction* function = context.getFunction(m_name);
+	NodeFunction* function = CONTEXT.getFunction(m_name);
 
 	if(function == NULL)
 	{
@@ -67,18 +68,18 @@ CountPtr<Value> NodeFunctionCall::execute(Context& context)
 		// Evaluate parameters in the old function context
 		list<Node*>::iterator itc;
 		for(itc = m_parameters->m_commands.begin(); itc != m_parameters->m_commands.end(); itc++)
-			values.push_back((*itc)->execute(context));
+			values.push_back((*itc)->execute());
 
-		context.pushLocal();
+		CONTEXT.pushLocal();
 			list<identifier>::const_iterator itn;
 			list< CountPtr<Value> >::iterator itv;
 
 			// Set parameters in the new function context
 			for(itn = names.begin(), itv = values.begin(); itn != names.end(); itn++, itv++)
-				context.setLocalVariable(*itn, *itv);
+				CONTEXT.setLocalVariable(*itn, *itv);
 
-			CountPtr<Value> ret = function->execute(context);
-		context.popLocal();
+			CountPtr<Value> ret = function->execute();
+		CONTEXT.popLocal();
 
 		return ret;
 	}

@@ -25,7 +25,6 @@
 
 #include "general.hpp"
 #include "baseobject.hpp"
-#include "context.hpp"
 #include "countptr.hpp"
 #include "value.hpp"
 
@@ -36,7 +35,7 @@ public:
 	Node(void);
 	virtual ~Node(void);
 
-	virtual CountPtr<Value> execute(Context& context) = 0;
+	virtual CountPtr<Value> execute(void) = 0;
 
 	virtual void dump(ostream& os, uint indent) const = 0;
 	static void dumpIndent(ostream& os, uint indent);

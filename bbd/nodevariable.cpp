@@ -22,8 +22,8 @@
 
 #include <cassert>
 #include "nodevariable.hpp"
-//#include "valuenull.hpp"
 #include "valuefloat.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -45,23 +45,23 @@ NodeVariable::~NodeVariable()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> NodeVariable::setValue(Context& context, CountPtr<Value> val)
+CountPtr<Value> NodeVariable::setValue(CountPtr<Value> val)
 {
-	return context.setLocalVariable(m_name, val);
+	return CONTEXT.setLocalVariable(m_name, val);
 }
 
-CountPtr<Value> NodeVariable::getValue(Context& context)
+CountPtr<Value> NodeVariable::getValue(void)
 {
-	return context.getLocalVariable(m_name);
+	return CONTEXT.getLocalVariable(m_name);
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> NodeVariable::execute(Context& context)
+CountPtr<Value> NodeVariable::execute(void)
 {
-	return getValue(context);
+	return getValue();
 }
 
 void NodeVariable::dump(ostream& os, uint indent) const

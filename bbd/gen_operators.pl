@@ -50,7 +50,7 @@ public:
 	$classname(Node* next);
 	virtual ~$classname(void);
 
-	virtual CountPtr<Value> execute(Context& context);
+	virtual CountPtr<Value> execute(void);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:
@@ -96,7 +96,6 @@ END_OF_HPP
  ****************************************************************************/
 $include
 #include "$hpp_filename"
-#include "context.hpp"
 #include "value.hpp"
 
 
@@ -119,7 +118,7 @@ $classname\::~$classname(void)
 ////
 
 
-CountPtr<Value> $classname\::execute(Context& context)
+CountPtr<Value> $classname\::execute(void)
 {
 	$operation
 }
@@ -212,7 +211,7 @@ public:
 	$classname(Node* left, Node* right);
 	virtual ~$classname(void);
 
-	virtual CountPtr<Value> execute(Context& context);
+	virtual CountPtr<Value> execute(void);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:
@@ -258,7 +257,6 @@ END_OF_HPP
  ****************************************************************************/
 $include
 #include "$hpp_filename"
-#include "context.hpp"
 #include "value.hpp"
 
 
@@ -280,7 +278,7 @@ $classname\::~$classname(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> $classname\::execute(Context& context)
+CountPtr<Value> $classname\::execute(void)
 {
 	$operation
 }
@@ -349,36 +347,36 @@ END_OF_CODE
 	generateUnaryOperatorClass($classname, $code, "\n#include <cassert>\n#include \"nodevariable.hpp\"\n#include \"valueint.hpp\"");
 }
 
-generateUnaryOperatorClass('NodeUnarySub', 'return m_next->execute(context)->subUn();');
-generateUnaryOperatorClass('NodeUnaryNot', 'return m_next->execute(context)->logNOT();');
-generateUnaryOperatorClass('NodeUnaryReturn', 'throw m_next->execute(context);');
+generateUnaryOperatorClass('NodeUnarySub', 'return m_next->execute()->subUn();');
+generateUnaryOperatorClass('NodeUnaryNot', 'return m_next->execute()->logNOT();');
+generateUnaryOperatorClass('NodeUnaryReturn', 'throw m_next->execute();');
 
-generateIncrementOperatorClass('NodeUnaryIncPre', 'return var->setValue(context, m_next->execute(context)->add(ValueInt(1)));');
-generateIncrementOperatorClass('NodeUnaryIncPost', "CountPtr<Value> tmp = m_next->execute(context);\n\tvar->setValue(context, tmp->add(ValueInt(1)));\n\treturn tmp;");
-generateIncrementOperatorClass('NodeUnaryDecPre', 'return var->setValue(context, m_next->execute(context)->sub(ValueInt(1)));');
-generateIncrementOperatorClass('NodeUnaryDecPost', "CountPtr<Value> tmp = m_next->execute(context);\n\tvar->setValue(context, tmp->sub(ValueInt(1)));\n\treturn tmp;");
+generateIncrementOperatorClass('NodeUnaryIncPre', 'return var->setValue(m_next->execute()->add(ValueInt(1)));');
+generateIncrementOperatorClass('NodeUnaryIncPost', "CountPtr<Value> tmp = m_next->execute();\n\tvar->setValue(tmp->add(ValueInt(1)));\n\treturn tmp;");
+generateIncrementOperatorClass('NodeUnaryDecPre', 'return var->setValue(m_next->execute()->sub(ValueInt(1)));');
+generateIncrementOperatorClass('NodeUnaryDecPost', "CountPtr<Value> tmp = m_next->execute();\n\tvar->setValue(tmp->sub(ValueInt(1)));\n\treturn tmp;");
 
-generateBinaryOperatorClass('NodeBinaryAdd', 'return m_left->execute(context)->add(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinarySub', 'return m_left->execute(context)->sub(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryMult', 'return m_left->execute(context)->mult(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryDiv', 'return m_left->execute(context)->div(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryMod', 'return m_left->execute(context)->mod(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryEq', 'return m_left->execute(context)->eq(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryNe', 'return m_left->execute(context)->ne(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryLe', 'return m_left->execute(context)->le(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryGe', 'return m_left->execute(context)->ge(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryLt', 'return m_left->execute(context)->lt(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryGt', 'return m_left->execute(context)->gt(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryAnd', 'return m_left->execute(context)->logAND(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryOr', 'return m_left->execute(context)->logOR(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryMember', 'return m_left->execute(context)->member(*(m_right->execute(context)));');
-generateBinaryOperatorClass('NodeBinaryIndex', 'return m_left->execute(context)->index(*(m_right->execute(context)));');
+generateBinaryOperatorClass('NodeBinaryAdd', 'return m_left->execute()->add(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinarySub', 'return m_left->execute()->sub(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryMult', 'return m_left->execute()->mult(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryDiv', 'return m_left->execute()->div(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryMod', 'return m_left->execute()->mod(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryEq', 'return m_left->execute()->eq(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryNe', 'return m_left->execute()->ne(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryLe', 'return m_left->execute()->le(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryGe', 'return m_left->execute()->ge(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryLt', 'return m_left->execute()->lt(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryGt', 'return m_left->execute()->gt(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryAnd', 'return m_left->execute()->logAND(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryOr', 'return m_left->execute()->logOR(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryMember', 'return m_left->execute()->member(*(m_right->execute()));');
+generateBinaryOperatorClass('NodeBinaryIndex', 'return m_left->execute()->index(*(m_right->execute()));');
 
-generateAssignOperatorClass('NodeBinaryAss', 'return var->setValue(context, m_right->execute(context));');
-generateAssignOperatorClass('NodeBinaryAssAdd', 'return var->setValue(context, m_left->execute(context)->add(*(m_right->execute(context))));');
-generateAssignOperatorClass('NodeBinaryAssSub', 'return var->setValue(context, m_left->execute(context)->sub(*(m_right->execute(context))));');
-generateAssignOperatorClass('NodeBinaryAssMult', 'return var->setValue(context, m_left->execute(context)->mult(*(m_right->execute(context))));');
-generateAssignOperatorClass('NodeBinaryAssDiv', 'return var->setValue(context, m_left->execute(context)->div(*(m_right->execute(context))));');
-generateAssignOperatorClass('NodeBinaryAssMod', 'return var->setValue(context, m_left->execute(context)->mod(*(m_right->execute(context))));');
+generateAssignOperatorClass('NodeBinaryAss', 'return var->setValue(m_right->execute());');
+generateAssignOperatorClass('NodeBinaryAssAdd', 'return var->setValue(m_left->execute()->add(*(m_right->execute())));');
+generateAssignOperatorClass('NodeBinaryAssSub', 'return var->setValue(m_left->execute()->sub(*(m_right->execute())));');
+generateAssignOperatorClass('NodeBinaryAssMult', 'return var->setValue(m_left->execute()->mult(*(m_right->execute())));');
+generateAssignOperatorClass('NodeBinaryAssDiv', 'return var->setValue(m_left->execute()->div(*(m_right->execute())));');
+generateAssignOperatorClass('NodeBinaryAssMod', 'return var->setValue(m_left->execute()->mod(*(m_right->execute())));');
 
 0;

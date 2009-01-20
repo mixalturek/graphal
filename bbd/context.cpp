@@ -1,6 +1,4 @@
 /*
- *      context.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -41,6 +39,12 @@ Context::Context()
 
 Context::~Context()
 {
+	clear();
+}
+
+
+void Context::clear(void)
+{
 	while(!m_local_variables.empty())
 		popLocal();
 
@@ -53,6 +57,7 @@ Context::~Context()
 
 	m_functions.clear();
 }
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////

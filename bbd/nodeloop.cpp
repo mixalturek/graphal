@@ -62,26 +62,26 @@ NodeLoop::~NodeLoop()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> NodeLoop::execute(Context& context)
+CountPtr<Value> NodeLoop::execute(void)
 {
 	// TODO: set position in the code to the context
 
-	m_init->execute(context);
+	m_init->execute();
 
 	try
 	{
-		while(m_condition->execute(context)->toBool())
+		while(m_condition->execute()->toBool())
 		{
 			try
 			{
-				m_body->execute(context);
+				m_body->execute();
 			}
 			catch(NodeJumpContinue* ex)
 			{
 				// Only the exception jump is needed
 			}
 
-			m_inc->execute(context);
+			m_inc->execute();
 		}
 	}
 	catch(NodeJumpBreak* ex)

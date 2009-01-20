@@ -723,15 +723,14 @@ bool Tests::testNodeUnary(void)
 {
 	bool result = true;
 
-	Context con;
 	string str;
 
 	NodeUnarySub uminus(new NodeValue(new ValueInt(10)));
-	str = uminus.execute(con)->toString();
+	str = uminus.execute()->toString();
 	verify(str == "-10");
 
 	NodeUnaryNot unot(new NodeValue(new ValueBool(true)));
-	str = unot.execute(con)->toString();
+	str = unot.execute()->toString();
 	verify(str == "false");
 
 	return testResult(__FUNCTION__, result);
@@ -742,19 +741,18 @@ bool Tests::testNodeBinary(void)
 {
 	bool result = true;
 
-	Context con;
 	string str;
 
 	NodeBinaryAdd add(new NodeValue(new ValueInt(10)), new NodeValue(new ValueInt(5)));
-	str = add.execute(con)->toString();
+	str = add.execute()->toString();
 	verify(str == "15");
 
 	NodeBinaryAdd add2(new NodeValue(new ValueInt(10)), new NodeValue(new ValueFloat(5.1f)));
-	str = add2.execute(con)->toString();
+	str = add2.execute()->toString();
 	verify(str == "15.1");
 
 	NodeBinaryAdd addsub(new NodeValue(new ValueInt(10)), new NodeUnarySub(new NodeValue(new ValueFloat(5.1f))));
-	str = addsub.execute(con)->toString();
+	str = addsub.execute()->toString();
 	verify(str == "4.9");
 
 	return testResult(__FUNCTION__, result);
@@ -765,7 +763,6 @@ bool Tests::testNodeBlock(void)
 {
 	bool result = true;
 
-	Context con;
 	string str;
 	NodeBlock* bl = new NodeBlock();// delete in cond destructor
 
@@ -789,35 +786,35 @@ bool Tests::testNodeVariable(void)
 {
 	bool result = true;
 
-	Context con;
 	string str;
 
 	NodeVariable* var0 = new NodeVariable(0);
 	NodeVariable* var1 = new NodeVariable(1);
 
-	var0->setValue(con, CountPtr<Value>(new ValueFloat(3.14f)));
-	var1->setValue(con, CountPtr<Value>(new ValueInt(15)));
+	var0->setValue(CountPtr<Value>(new ValueFloat(3.14f)));
+	var1->setValue(CountPtr<Value>(new ValueInt(15)));
 
 	NodeBinaryAdd add(new NodeValue(new ValueInt(10)), var0);
-	str = add.execute(con)->toString();
+	str = add.execute()->toString();
 	verify(str == "13.14");
 
 	NodeBinarySub sub(new NodeValue(new ValueInt(20)), var1);
-	str = sub.execute(con)->toString();
+	str = sub.execute()->toString();
 	verify(str == "5");
 
-	var1->setValue(con, CountPtr<Value>(new ValueFloat(3.5f)));
-	str = sub.execute(con)->toString();
+	var1->setValue(CountPtr<Value>(new ValueFloat(3.5f)));
+	str = sub.execute()->toString();
 	verify(str == "16.5");
 
-	verify(con.getLocalVariable(2)->toString() == "NULL");
-	verify(con.getLocalVariable(57)->toString() == "NULL");
+	verify(CONTEXT.getLocalVariable(2)->toString() == "NULL");
+	verify(CONTEXT.getLocalVariable(57)->toString() == "NULL");
 
 	// TODO:
 	// a = b = c = 15;
 	// a.member = 15;
 	// a[9] = 15;
 
+	CONTEXT.clear();
 	return testResult(__FUNCTION__, result);
 }
 
@@ -937,7 +934,6 @@ bool Tests::testNodeFunction(void)
 	const uint freturn_local_id = 5;
 
 	string str;
-	Context context;
 
 	/*
 	function func()
@@ -953,10 +949,10 @@ bool Tests::testNodeFunction(void)
 			)
 		);
 
-	context.addFunction(func_id, func);
+	CONTEXT.addFunction(func_id, func);
 
 	NodeFunctionCall func_call(func_id, NULL);
-	func_call.execute(context);
+	func_call.execute();
 
 
 
@@ -973,10 +969,10 @@ bool Tests::testNodeFunction(void)
 			)
 		);
 
-	context.addFunction(freturn_id, freturn);
+	CONTEXT.addFunction(freturn_id, freturn);
 
 	NodeFunctionCall freturn_call(freturn_id, NULL);
-	str = freturn_call.execute(context)->toString();
+	str = freturn_call.execute()->toString();
 	verify(str == "5");
 
 
@@ -1002,10 +998,10 @@ bool Tests::testNodeFunction(void)
 	);
 
 	NodeFunction* freturn_local = new NodeFunction(new list<identifier>(), body);
-	context.addFunction(freturn_local_id, freturn_local);
+	CONTEXT.addFunction(freturn_local_id, freturn_local);
 
 	NodeFunctionCall freturn_local_call(freturn_local_id, NULL);
-	str = freturn_local_call.execute(context)->toString();
+	str = freturn_local_call.execute()->toString();
 	verify(str == "10");
 
 
@@ -1053,7 +1049,7 @@ bool Tests::testNodeFunction(void)
 			)
 		);
 
-	context.addFunction(factorial_id, func);
+	CONTEXT.addFunction(factorial_id, func);
 
 	NodeBlock* init_param = new NodeBlock();
 	params->pushCommandToBack(
@@ -1061,11 +1057,12 @@ bool Tests::testNodeFunction(void)
 	);
 
 	NodeFunctionCall factorial_call(factorial_id, init_param);
-	str = factorial_call.execute(context)->toString();
+	str = factorial_call.execute()->toString();
 	cout << str << endl;
 	verify(str == "24");// TODO:
 */
 
+	CONTEXT.clear();
 	return testResult(__FUNCTION__, result);
 }
 

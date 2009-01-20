@@ -36,7 +36,7 @@ public:
 	NodeBlock(Node* node);
 	virtual ~NodeBlock(void);
 
-	virtual CountPtr<Value> execute(Context& context);
+	virtual CountPtr<Value> execute(void);
 	virtual void dump(ostream& os, uint indent) const;
 
 	void pushCommandToFront(Node* node) { assert(node != NULL); m_commands.push_front(node); }
@@ -48,7 +48,7 @@ private:
 	NodeBlock& operator=(const NodeBlock& object);
 
 private:
-	friend CountPtr<Value> NodeFunctionCall::execute(Context& context);
+	friend CountPtr<Value> NodeFunctionCall::execute(void);
 	list<Node*> m_commands;
 };
 

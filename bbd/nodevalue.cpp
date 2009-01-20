@@ -41,7 +41,7 @@ NodeValue::~NodeValue()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> NodeValue::execute(Context& /* context */)
+CountPtr<Value> NodeValue::execute(void)
 {
 	return m_value;
 }

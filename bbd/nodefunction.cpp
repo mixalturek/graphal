@@ -49,13 +49,13 @@ NodeFunction::~NodeFunction(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> NodeFunction::execute(Context& context)
+CountPtr<Value> NodeFunction::execute(void)
 {
 	// TODO: built in functions
 
 	try
 	{
-		m_block->execute(context);
+		m_block->execute();
 	}
 	catch(CountPtr<Value>& ex)
 	{

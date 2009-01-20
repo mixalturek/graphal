@@ -56,14 +56,14 @@ NodeCondition::~NodeCondition()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> NodeCondition::execute(Context& context)
+CountPtr<Value> NodeCondition::execute(void)
 {
 	// TODO: set position in the code to the context
 
-	if(m_condition->execute(context)->toBool())
-		return m_if_section->execute(context);
+	if(m_condition->execute()->toBool())
+		return m_if_section->execute();
 	else if(m_else_section != NULL)
-		return m_else_section->execute(context);
+		return m_else_section->execute();
 	else
 		return CountPtr<Value>(new ValueNull());
 }

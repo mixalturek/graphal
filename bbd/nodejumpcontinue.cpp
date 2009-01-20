@@ -40,7 +40,7 @@ NodeJumpContinue::~NodeJumpContinue()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-CountPtr<Value> NodeJumpContinue::execute(Context& /* context */)
+CountPtr<Value> NodeJumpContinue::execute(void)
 {
 	throw this;
 

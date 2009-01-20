@@ -1,6 +1,4 @@
 /*
- *      context.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -31,15 +29,20 @@
 #include "value.hpp"
 #include "stringtable.hpp"
 
+#define CONTEXT Context::getInstance()
 
 class NodeFunction;
 
-class Context: public BaseObject
+// Singleton
+class Context : public BaseObject
 {
 public:
-	Context();
-	virtual ~Context();
+	static inline Context& getInstance(void)
+	{
+		return instance;
+	}
 
+	void clear(void);
 	void dump(ostream& os, uint indent) const;
 
 	CountPtr<Value> getLocalVariable(identifier name);
@@ -51,13 +54,17 @@ public:
 	NodeFunction* getFunction(identifier name);
 	void addFunction(identifier name, NodeFunction* function);
 
-	StringTable& getStringTable(void) { return m_stringtable; }
+	StringTable* getStringTable(void) { return &m_stringtable; }
 
 private:
+	Context(void);
+	virtual ~Context(void);
 	Context(const Context& object);
 	Context& operator=(const Context& object);
 
 private:
+	static Context instance;
+
 	map<identifier, NodeFunction*> m_functions;
 	deque< map<identifier, CountPtr<Value> > > m_local_variables;
 	StringTable m_stringtable;

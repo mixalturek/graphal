@@ -31,7 +31,7 @@ public:
 	NodeJumpContinue();
 	virtual ~NodeJumpContinue();
 
-	virtual CountPtr<Value> execute(Context& context);
+	virtual CountPtr<Value> execute(void);
 	virtual void dump(ostream& os, uint indent) const;
 };
 

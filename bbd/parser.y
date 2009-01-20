@@ -23,6 +23,7 @@
 #include <cassert>
 #include "general.hpp"
 #include "lexan.hpp"
+#include "context.hpp"
 
 #include "node.hpp"
 #include "nodebinaryadd.hpp"
@@ -79,7 +80,6 @@
 
 // Ja su ale prasatko :-)
 static Lexan* g_lexan = NULL;
-static Context* g_context = NULL;
 
 int yylex(void);
 void yyerror(char const *msg);
@@ -319,8 +319,8 @@ block_item_list
 	;
 
 function_definition
-	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { g_context->addFunction($2, new NodeFunction($4, $6)); }
-	| LEX_FUNCTION LEX_NAME '(' ')'  compound_statement { g_context->addFunction($2, new NodeFunction(new list<identifier>(), $5)); }
+	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { CONTEXT.addFunction($2, new NodeFunction($4, $6)); }
+	| LEX_FUNCTION LEX_NAME '(' ')'  compound_statement {  CONTEXT.addFunction($2, new NodeFunction(new list<identifier>(), $5)); }
 	;
 
 parameter_list
@@ -365,17 +365,16 @@ void yyerror(char const *msg)
 	fprintf(stderr, "%s\n", msg);
 }
 
-int parseCode(const string& str, Context& context)
+int parseCode(const string& str)
 {
-	g_lexan = new Lexan(str, &context.getStringTable(), false);
-	g_context = &context;
+	g_lexan = new Lexan(str, CONTEXT.getStringTable(), false);
 
 	int ret = yyparse();
 
 	if(ret != 0)
 		cerr << "error while parsing" << endl;
 
-	cout << context << endl;
+	cout << CONTEXT << endl;
 
 	delete g_lexan;
 	g_lexan = NULL;

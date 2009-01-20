@@ -1,6 +1,6 @@
 CountPtr<TYPE>
 BaseObject
-	Context
+	Context (singleton)
 	Node (interface)
 		NodeUnary (interface)
 			NodeUnarySub

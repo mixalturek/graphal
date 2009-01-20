@@ -34,12 +34,12 @@ public:
 	NodeVariable(identifier name);
 	virtual ~NodeVariable(void);
 
-	virtual CountPtr<Value> execute(Context& context);
+	virtual CountPtr<Value> execute(void);
 	virtual void dump(ostream& os, uint indent) const;
 
 	identifier getName(void) const { return m_name; }
-	CountPtr<Value> setValue(Context& context, CountPtr<Value> val);
-	CountPtr<Value> getValue(Context& context);
+	CountPtr<Value> setValue(CountPtr<Value> val);
+	CountPtr<Value> getValue(void);
 
 private:
 	identifier m_name;
