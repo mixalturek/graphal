@@ -365,16 +365,14 @@ void yyerror(char const *msg)
 	fprintf(stderr, "%s\n", msg);
 }
 
-int parseCode(const string& str)
+int parseCode(const string& str, bool is_file)
 {
-	g_lexan = new Lexan(str, CONTEXT.getStringTable(), false);
+	g_lexan = new Lexan(str, CONTEXT.getStringTable(), is_file);
 
 	int ret = yyparse();
 
 	if(ret != 0)
 		cerr << "error while parsing" << endl;
-
-	cout << CONTEXT << endl;
 
 	delete g_lexan;
 	g_lexan = NULL;

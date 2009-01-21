@@ -30,7 +30,7 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Lexan::Lexan(const string& source, StringTable* stringtable, bool filename)
+Lexan::Lexan(const string& source, StringTable* stringtable, bool is_file)
 	: BaseObject(),
 	m_source(),
 	m_defines(),
@@ -40,7 +40,7 @@ Lexan::Lexan(const string& source, StringTable* stringtable, bool filename)
 	m_identifier(0),
 	m_stringtable(stringtable)
 {
-	if(filename)
+	if(is_file)
 		m_source.push(new LexanIteratorFile(source));
 	else
 		m_source.push(new LexanIteratorString("init", source));

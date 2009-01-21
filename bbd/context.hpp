@@ -44,6 +44,7 @@ public:
 
 	void clear(void);
 	void dump(ostream& os, uint indent) const;
+	int execute(int argc, char** argv);
 
 	CountPtr<Value> getLocalVariable(identifier name);
 	CountPtr<Value> setLocalVariable(identifier name, CountPtr<Value> val);

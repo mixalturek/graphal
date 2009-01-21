@@ -55,6 +55,7 @@ void Context::clear(void)
 		it->second = NULL;
 	}
 
+	m_stringtable.clear();
 	m_functions.clear();
 }
 
@@ -155,4 +156,13 @@ ostream& operator<<(ostream& os, const Context& node)
 {
 	node.dump(os, 0);
 	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+int Context::execute(int argc, char** argv)
+{
+	return 0;
 }

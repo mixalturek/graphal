@@ -33,7 +33,7 @@
 class Lexan : BaseObject
 {
 public:
-	Lexan(const string& source, StringTable* stringtable, bool filename);
+	Lexan(const string& source, StringTable* stringtable, bool is_file);
 	~Lexan(void);
 
 	LEXTOKEN nextToken(void);

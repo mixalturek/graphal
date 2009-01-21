@@ -41,6 +41,8 @@ public:
 
 	uint getNumStrings(void) const { return m_data.size(); }
 
+	void clear(void) { m_data.clear(); }
+
 private:
 	vector<string> m_data;
 };
