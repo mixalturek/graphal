@@ -926,12 +926,12 @@ bool Tests::testNodeFunction(void)
 {
 	bool result = true;
 
-	const uint func_id = 0;
-	const uint local_id = 1;
-//	const uint factorial_id = 2;
-//	const uint number_id = 3;
-	const uint freturn_id = 4;
-	const uint freturn_local_id = 5;
+	const uint func_id = CONTEXT.getStringTable()->getID("func");
+	const uint local_id = CONTEXT.getStringTable()->getID("local");
+	const uint factorial_id = CONTEXT.getStringTable()->getID("factorial");
+	const uint number_id = CONTEXT.getStringTable()->getID("number");
+	const uint freturn_id = CONTEXT.getStringTable()->getID("freturn");
+	const uint freturn_local_id = CONTEXT.getStringTable()->getID("freturn_local");
 
 	string str;
 
@@ -1016,8 +1016,6 @@ bool Tests::testNodeFunction(void)
 			return number * factorial(number - 1);
 	}
 	*/
-/*
-	// TODO: Implement NodeJumpReturn
 	list<identifier>* param_names = new list<identifier>();
 	param_names->push_back(number_id);
 
@@ -1049,21 +1047,14 @@ bool Tests::testNodeFunction(void)
 					)
 				)
 			),
-			freturn_local_id
+			factorial_id
 		);
 
-	CONTEXT.addFunction(factorial_id, func);
+	CONTEXT.addFunction(factorial_id, factorial);
 
-	NodeBlock* init_param = new NodeBlock();
-	params->pushCommandToBack(
-		new NodeValue(new ValueInt(4))
-	);
-
-	NodeFunctionCall factorial_call(factorial_id, init_param);
+	NodeFunctionCall factorial_call(factorial_id, new NodeBlock(new NodeValue(new ValueInt(4))));
 	str = factorial_call.execute()->toString();
-	cout << str << endl;
-	verify(str == "24");// TODO:
-*/
+	verify(str == "24");
 
 	CONTEXT.clear();
 	return testResult(__FUNCTION__, result);
