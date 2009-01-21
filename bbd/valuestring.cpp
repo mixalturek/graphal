@@ -65,8 +65,11 @@ ostream& operator<<(ostream& os, const ValueString& node)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueString::add(const Value& right)     const { return right.add(*this); } // +
-PTR_Value ValueString::add(const ValueString& left) const { return PTR_Value(new ValueString(left.getVal() + m_val)); }
+// Double dispatching not needed here
+// PTR_Value ValueString::add(const Value& right)     const { return right.add(*this); } // +
+// PTR_Value ValueString::add(const ValueString& left) const { return PTR_Value(new ValueString(left.getVal() + m_val)); }
+PTR_Value ValueString::add(const Value& right)     const { return PTR_Value(new ValueString(m_val + right.toString())); } // +
+
 PTR_Value ValueString::sub(const Value& right)     const { return right.sub(*this); } // -
 PTR_Value ValueString::mult(const Value& right)    const { return right.mult(*this); } // *
 PTR_Value ValueString::div(const Value& right)     const { return right.div(*this); } // /

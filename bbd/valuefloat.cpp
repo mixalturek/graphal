@@ -87,18 +87,66 @@ PTR_Value ValueFloat::mult(const ValueFloat& left)  const { return PTR_Value(new
 
 // /
 PTR_Value ValueFloat::div(const Value& right)       const { return right.div(*this); }
-PTR_Value ValueFloat::div(const ValueBool& left)    const { return PTR_Value(new ValueFloat(left.getVal() / m_val)); }
-PTR_Value ValueFloat::div(const ValueInt& left)     const { return PTR_Value(new ValueFloat(left.getVal() / m_val)); }
-PTR_Value ValueFloat::div(const ValueFloat& left)   const { return PTR_Value(new ValueFloat(left.getVal() / m_val)); }
+
+PTR_Value ValueFloat::div(const ValueBool& left)    const
+{
+	if(m_val == 0)
+	{
+		WARN << _("Division by zero") << endl;
+		return PTR_Value(new ValueNull());
+	}
+	else
+	{
+		return PTR_Value(new ValueFloat(left.getVal() / m_val));
+	}
+}
+
+PTR_Value ValueFloat::div(const ValueInt& left)     const
+{
+	if(m_val == 0)
+	{
+		WARN << _("Division by zero") << endl;
+		return PTR_Value(new ValueNull());
+	}
+	else
+	{
+		return PTR_Value(new ValueFloat(left.getVal() / m_val));
+	}
+}
+
+PTR_Value ValueFloat::div(const ValueFloat& left)   const
+{
+	if(m_val == 0)
+	{
+		WARN << _("Division by zero") << endl;
+		return PTR_Value(new ValueNull());
+	}
+	else
+	{
+		return PTR_Value(new ValueFloat(left.getVal() / m_val));
+	}
+}
 
 // %
 PTR_Value ValueFloat::mod(const Value& right)       const { return right.mod(*this); }
-// TODO: error: invalid operands of types 'bool' and 'const float' to binary 'operator%'
-PTR_Value ValueFloat::mod(const ValueBool& /* left */)    const { return PTR_Value(new ValueNull()); }
-// TODO: error: invalid operands of types 'int' and 'const float' to binary 'operator%'
-PTR_Value ValueFloat::mod(const ValueInt& /* left */)     const { return PTR_Value(new ValueNull()); }
-// TODO: error: invalid operands of types 'double' and 'int' to binary 'operator%'
-PTR_Value ValueFloat::mod(const ValueFloat& /* left */)   const { return PTR_Value(new ValueNull()); }
+
+PTR_Value ValueFloat::mod(const ValueBool& /* left */)    const
+{
+	WARN << _("Invalid operands of types bool and float to modulo operator") << endl;
+	return PTR_Value(new ValueNull());
+}
+
+PTR_Value ValueFloat::mod(const ValueInt& /* left */)     const
+{
+	WARN << _("Invalid operands of types int and float to modulo operator") << endl;
+	return PTR_Value(new ValueNull());
+}
+
+PTR_Value ValueFloat::mod(const ValueFloat& /* left */)   const
+{
+	WARN << _("Invalid operands of types float and float to modulo operator") << endl;
+	return PTR_Value(new ValueNull());
+}
 
 // ==
 PTR_Value ValueFloat::eq(const Value& right)        const { return right.eq(*this); }

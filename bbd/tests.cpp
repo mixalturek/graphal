@@ -103,6 +103,7 @@ void Tests::run(void)
 	failed += !testMemoryLeaks();
 	failed += !testDoubleDispatching();
 	failed += !testValueStruct();
+	failed += !testValueString();
 	failed += !testGraph();
 	failed += !testGraphSet();
 	failed += !testGraphInvertEdgesOrientation();
@@ -188,6 +189,25 @@ bool Tests::testValueStruct(void)
 	verify(vs.getItem("testb")->toString() == "true");
 	verify(vs.getItem("tests")->toString() == "bagr");
 	verify(vs.getItem("heh")->toString() == "NULL");
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testValueString(void)
+{
+	bool result = true;
+
+	PTR_Value var_left(new ValueString("left "));
+	PTR_Value var_str(new ValueString("bagr"));
+	PTR_Value var_bool(new ValueBool(true));
+	PTR_Value var_int(new ValueInt(3));
+	PTR_Value var_float(new ValueFloat(5.5f));
+
+	verify(var_left->add(*var_str)->toString() == "left bagr");
+	verify(var_left->add(*var_bool)->toString() == "left true");
+	verify(var_left->add(*var_int)->toString() == "left 3");
+	verify(var_left->add(*var_float)->toString() == "left 5.5");
 
 	return testResult(__FUNCTION__, result);
 }

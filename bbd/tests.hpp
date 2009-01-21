@@ -43,6 +43,7 @@ private:
 
 	bool testDoubleDispatching(void);
 	bool testValueStruct(void);
+	bool testValueString(void);
 	bool testGraph(void);
 	bool testGraphSet(void);
 	bool testGraphInvertEdgesOrientation(void);

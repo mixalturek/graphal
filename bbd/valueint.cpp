@@ -87,16 +87,80 @@ PTR_Value ValueInt::mult(const ValueFloat& left)  const { return PTR_Value(new V
 
 // /
 PTR_Value ValueInt::div(const Value& right)       const { return right.div(*this); }
-PTR_Value ValueInt::div(const ValueBool& left)    const { return PTR_Value(new ValueInt(left.getVal() / m_val)); }// TODO: division by zero!
-PTR_Value ValueInt::div(const ValueInt& left)     const { return PTR_Value(new ValueInt(left.getVal() / m_val)); }
-PTR_Value ValueInt::div(const ValueFloat& left)   const { return PTR_Value(new ValueFloat(left.getVal() / m_val)); }
+
+PTR_Value ValueInt::div(const ValueBool& left)    const
+{
+	if(m_val == 0)
+	{
+		WARN << _("Division by zero") << endl;
+		return PTR_Value(new ValueNull());
+	}
+	else
+	{
+		return PTR_Value(new ValueInt(left.getVal() / m_val));
+	}
+}
+
+PTR_Value ValueInt::div(const ValueInt& left)     const
+{
+	if(m_val == 0)
+	{
+		WARN << _("Division by zero") << endl;
+		return PTR_Value(new ValueNull());
+	}
+	else
+	{
+		return PTR_Value(new ValueInt(left.getVal() / m_val));
+	}
+}
+
+PTR_Value ValueInt::div(const ValueFloat& left)   const
+{
+	if(m_val == 0)
+	{
+		WARN << _("Division by zero") << endl;
+		return PTR_Value(new ValueNull());
+	}
+	else
+	{
+		return PTR_Value(new ValueFloat(left.getVal() / m_val));
+	}
+}
 
 // %
 PTR_Value ValueInt::mod(const Value& right)       const { return right.mod(*this); }
-PTR_Value ValueInt::mod(const ValueBool& left)    const { return PTR_Value(new ValueInt(left.getVal() % m_val)); }
-PTR_Value ValueInt::mod(const ValueInt& left)     const { return PTR_Value(new ValueInt(left.getVal() % m_val)); }
-// TODO: error: invalid operands of types 'double' and 'int' to binary 'operator%'
-PTR_Value ValueInt::mod(const ValueFloat& /* left */)   const { return PTR_Value(new ValueNull()); }
+
+PTR_Value ValueInt::mod(const ValueBool& left)    const
+{
+	if(m_val == 0)
+	{
+		WARN << _("Division (modulo) by zero") << endl;
+		return PTR_Value(new ValueNull());
+	}
+	else
+	{
+		return PTR_Value(new ValueInt(left.getVal() % m_val));
+	}
+}
+
+PTR_Value ValueInt::mod(const ValueInt& left)     const
+{
+	if(m_val == 0)
+	{
+		WARN << _("Division (modulo) by zero") << endl;
+		return PTR_Value(new ValueNull());
+	}
+	else
+	{
+		return PTR_Value(new ValueInt(left.getVal() % m_val));
+	}
+}
+
+PTR_Value ValueInt::mod(const ValueFloat& /* left */)   const
+{
+	WARN << _("Invalid operands of types float and int to modulo operator") << endl;
+	return PTR_Value(new ValueNull());
+}
 
 // ==
 PTR_Value ValueInt::eq(const Value& right)        const { return right.eq(*this); }
