@@ -59,6 +59,10 @@ public:
 
 	StringTable* getStringTable(void) { return &m_stringtable; }
 
+	// TODO: move to settings class
+	void addIncludeDirectory(const string& directory);
+	string getIncludeFullPath(const string& filename) const;
+
 private:
 	Context(void);
 	virtual ~Context(void);
@@ -71,6 +75,8 @@ private:
 	map<identifier, NodeFunction*> m_functions;
 	deque< map<identifier, CountPtr<Value> > > m_local_variables;
 	StringTable m_stringtable;
+
+	set<string> m_include_dirs;
 };
 
 ostream& operator<<(ostream& os, const Context& node);

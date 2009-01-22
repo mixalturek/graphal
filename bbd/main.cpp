@@ -41,7 +41,22 @@ void runUnitTests(void)
 
 void usage(int /* argc */, char** argv)
 {
-	ERROR << _("Usage: ") << argv[0] << " [--unit-tests] [--ast-dump] " << _("<filename>") << endl;
+	INFO << _("Usage: ") << argv[0] << " [-I<directory>] [--unit-tests] [--ast-dump] " << _("<filename>") << endl
+		<< endl
+		<< "\t-I<directory>" << endl
+		<< "\t\tSpecify include directories (relative to the current working directory)" << endl
+		<< "\t\t-I<directory_1> -I<directory_2> ... -I<directory_N>" << endl
+		<< endl
+		<< "\t--unit-tests" << endl
+		<< "\t\tRun unit tests" << endl
+		<< endl
+		<< "\t--ast-dump" << endl
+		<< "\t\tDump abstract syntax tree of the script" << endl
+		<< endl
+		<< "\tfilename" << endl
+		<< "\t\tFile to be executed" << endl
+		<< endl
+		;
 }
 
 
@@ -63,14 +78,33 @@ int main(int argc, char** argv)
 		bool unit_tests = false;
 		bool ast_dump = false;
 
-
 		for(int i = 1; i < argc; i++)
 		{
-			if(!unit_tests && string(argv[i]) == string("--unit-tests"))
+			string param(argv[i]);
+
+			if(!unit_tests && param == "--unit-tests")
 				unit_tests = true;
 
-			if(!ast_dump && string(argv[i]) == string("--ast-dump"))
+			if(!ast_dump && param == "--ast-dump")
 				ast_dump = true;
+
+			if(param.find("-I") == 0)
+			{
+				param.erase(0, 2);
+
+				if(param.length() == 0)
+				{
+					usage(argc, argv);
+					WARN << _("There should be no space after -I command line option") << endl;
+				}
+				else
+				{
+					if(param[param.length()-1] != '/')
+						param.push_back('/');
+
+					CONTEXT.addIncludeDirectory(param);
+				}
+			}
 		}
 
 
@@ -81,7 +115,7 @@ int main(int argc, char** argv)
 		}
 
 
-		parseCode(argv[argc-1], true);
+		parseCode(CONTEXT.getIncludeFullPath(argv[argc-1]), true);
 
 		if(ast_dump)
 			CONTEXT.dump(cout, 0);

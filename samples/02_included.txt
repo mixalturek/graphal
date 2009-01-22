@@ -1,0 +1,4 @@
+function fromIncludedFile(param)
+{
+	return param;
+}

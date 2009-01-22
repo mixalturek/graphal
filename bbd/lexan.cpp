@@ -25,6 +25,7 @@
 #include "lexaniteratorstring.hpp"
 #include "lexaniteratorfile.hpp"
 #include "logger.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1003,11 +1004,7 @@ void Lexan::parseInclude(void)
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
-#ifdef DEBUG
-	DBG << getSource() << _(":") << getPos() << _( " Including file: ") << filename << endl;
-#endif // DEBUG
-
-	m_source.push(new LexanIteratorFile(filename));
+	m_source.push(new LexanIteratorFile(CONTEXT.getIncludeFullPath(filename)));
 }
 
 void Lexan::parseDefine(void)
@@ -1062,7 +1059,7 @@ void Lexan::parseDefine(void)
 	}
 
 #ifdef DEBUG
-	DBG << getSource() << _(":") << getPos() << _( "Defining macro: ") << name << endl;
+	DBG << getSource() << _(":") << getPos() << _( " Defining macro: ") << name << endl;
 #endif // DEBUG
 
 	// TODO: test this
@@ -1071,74 +1068,9 @@ void Lexan::parseDefine(void)
 	ret = m_defines.insert(pair<string,string>(name, value));
 	if(ret.second == false)
 	{
+		// TODO: position
 		WARN << getSource() << _(":") << getPos()
-			<< _(" Redefining macro: ") << name << endl;
+			<< _(" Macro has been already defined: ") << name << endl;
 	}
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-string Lexan::getTokenName(LEXTOKEN token)
-{
-	static string table[] =
-	{
-		"LEX_EOF",            // End of file
-		"LEX_ERROR",          // Error
-
-		"LEX_FUNCTION",       // function
-		"LEX_RETURN",         // return
-		"LEX_IF",             // if
-		"LEX_ELSE",           // else
-		"LEX_WHILE",          // while
-		"LEX_FOR",            // for
-		"LEX_FOREACH",        // foreach
-		"LEX_BREAK",          // break
-		"LEX_CONTINUE",       // continue
-		"LEX_NULL",           // null
-		"LEX_TRUE",           // true
-		"LEX_FALSE",          // false
-
-		"LEX_LVA",            // { vinculum
-		"LEX_RVA",            // }
-		"LEX_LPA",            // ( parenthesis
-		"LEX_RPA",            // )
-		"LEX_LSA",            // [ square bracket
-		"LEX_RSA",            // ]
-		"LEX_COMMA",          // ,
-		"LEX_SEMICOLON",      // ;
-		"LEX_DOT",            // .
-
-		"LEX_OP_ASSIGN",      // =
-		"EQ_OP",              // ==
-		"NE_OP",              // !=
-		"LEX_OP_LESS",        // <
-		"LE_OP",              // <=
-		"LEX_OP_GREATER",     // >
-		"GE_OP",              // >=
-		"LEX_OP_PLUS",        // +
-		"ADD_ASSIGN",         // +=
-		"INC_OP",             // ++
-		"LEX_OP_MINUS",       // -
-		"SUB_ASSIGN",         // -=
-		"DEC_OP",             // --
-		"LEX_OP_MULT",        // *
-		"MUL_ASSIGN",         // *=
-		"LEX_OP_DIV",         // /
-		"DIV_ASSIGN",         // /=
-		"LEX_OP_MOD",         // %
-		"MOD_ASSIGN",         // %=
-		"LEX_OP_NOT",         // !
-		"AND_OP",             // &&
-		"OR_OP",              // ||
-
-		"LEX_INT",            // 58 + int
-		"LEX_FLOAT",          // 0.58 + float
-		"LEX_STRING",         // "str",'str' + string
-		"LEX_NAME"            // identifier + string
-	};
-
-	return table[token];
 }
 

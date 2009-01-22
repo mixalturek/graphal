@@ -37,7 +37,6 @@ public:
 	~Lexan(void);
 
 	LEXTOKEN nextToken(void);
-	static string getTokenName(LEXTOKEN token);
 
 	int getInt(void) const { return m_int; }
 	float getFloat(void) const { return m_float; }

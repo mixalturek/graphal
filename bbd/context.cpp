@@ -19,6 +19,7 @@
 
 
 #include <cassert>
+#include <fstream>
 #include "context.hpp"
 #include "valuenull.hpp"
 #include "nodefunction.hpp"
@@ -27,6 +28,7 @@
 #include "valuestring.hpp"
 #include "nodevalue.hpp"
 #include "nodeblock.hpp"
+#include "logger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -36,9 +38,11 @@ Context::Context()
 	: BaseObject(),
 	m_functions(),
 	m_local_variables(),
-	m_stringtable()
+	m_stringtable(),
+	m_include_dirs()
 {
 	pushLocal();
+	addIncludeDirectory("./");
 }
 
 
@@ -92,7 +96,8 @@ CountPtr<Value> Context::getLocalVariable(identifier name)
 		return it->second;
 	else
 	{
-		// TODO: message using uninitialized variable
+		// TODO: position in code
+		WARN << _("Variable has not been initialized: ") << ID2STR(name) << endl;
 		return CountPtr<Value>(new ValueNull());
 	}
 }
@@ -133,7 +138,9 @@ void Context::addFunction(identifier name, NodeFunction* function)
 
 	if(!ret.second)
 	{
-		// TODO: message function already defined
+		// TODO: position in code
+		WARN << _("Function has been already defined: ") << ID2STR(name) << "()" << endl;
+		delete function;// TODO: is it ok?
 	}
 }
 
@@ -180,4 +187,35 @@ int Context::execute(int argc, char** argv)
 	cout << str << endl;
 
 	return 0;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Context::addIncludeDirectory(const string& directory)
+{
+	m_include_dirs.insert(directory);
+}
+
+string Context::getIncludeFullPath(const string& filename) const
+{
+	ifstream infile;
+
+	set<string>::const_iterator it;
+	for(it = m_include_dirs.begin(); it != m_include_dirs.end(); it++)
+	{
+		infile.open((*it + filename).c_str());
+
+		if(infile.is_open())
+		{
+#ifdef DEBUG
+			DBG << "Including " << (*it + filename) << endl;
+#endif // DEBUG
+			return *it + filename;
+		}
+	}
+
+	// TODO: fail
+	return filename;
 }

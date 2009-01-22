@@ -11,7 +11,7 @@
 				<Option object_output="obj/debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters=" --unit-tests --ast-dump ../samples/01_factorial.txt" />
+				<Option parameters="-I../samples --unit-tests --ast-dump 01_factorial.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>

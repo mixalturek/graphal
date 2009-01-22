@@ -826,9 +826,6 @@ bool Tests::testNodeVariable(void)
 	str = sub.execute()->toString();
 	verify(str == "16.5");
 
-	verify(CONTEXT.getLocalVariable(2)->toString() == "NULL");
-	verify(CONTEXT.getLocalVariable(57)->toString() == "NULL");
-
 	// TODO:
 	// a = b = c = 15;
 	// a.member = 15;
