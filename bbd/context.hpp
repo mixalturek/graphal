@@ -30,6 +30,8 @@
 #include "stringtable.hpp"
 
 #define CONTEXT Context::getInstance()
+#define STR2ID(str) Context::getInstance().getStringTable()->getID((str))
+#define ID2STR(id) Context::getInstance().getStringTable()->getString((id))
 
 class NodeFunction;
 

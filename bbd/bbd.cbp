@@ -11,7 +11,7 @@
 				<Option object_output="obj/debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters=" --unit-tests --ast-dump ../samples/factorial.txt" />
+				<Option parameters=" --unit-tests --ast-dump ../samples/01_factorial.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -148,6 +148,8 @@
 		<Unit filename="tests.hpp" />
 		<Unit filename="value.cpp" />
 		<Unit filename="value.hpp" />
+		<Unit filename="valuearray.cpp" />
+		<Unit filename="valuearray.hpp" />
 		<Unit filename="valuebool.cpp" />
 		<Unit filename="valuebool.hpp" />
 		<Unit filename="valueedge.cpp" />

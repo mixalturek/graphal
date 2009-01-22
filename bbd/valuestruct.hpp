@@ -24,7 +24,6 @@
 #define VARIABLESTRUCT_HPP
 
 #include <map>
-#include <sstream>
 #include "general.hpp"
 #include "value.hpp"
 #include "valuenull.hpp"

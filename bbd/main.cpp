@@ -39,7 +39,7 @@ void runUnitTests(void)
 }
 
 
-void usage(int argc, char** argv)
+void usage(int /* argc */, char** argv)
 {
 	ERROR << _("Usage: ") << argv[0] << " [--unit-tests] [--ast-dump] " << _("<filename>") << endl;
 }

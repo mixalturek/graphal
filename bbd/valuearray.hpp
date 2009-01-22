@@ -1,5 +1,5 @@
 /*
- *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
+ *      Copyright 2009 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -17,52 +17,51 @@
  *      MA 02110-1301, USA.
  */
 
+#ifndef VALUEARRAY_HPP
+#define VALUEARRAY_HPP
 
-#ifndef VARIABLESTRING_HPP
-#define VARIABLESTRING_HPP
-
+#include <vector>
 #include "general.hpp"
 #include "value.hpp"
 
-class ValueString: public Value
+
+class ValueArray : public Value
 {
 public:
-	ValueString(const string& val);
-	virtual ~ValueString();
-
+	ValueArray();
+	virtual ~ValueArray();
 public:
-	string           getVal(void) const { return m_val; }
+	vector<Value*>   getVal(void) const { return m_val; }
 	virtual bool     toBool(void) const { return !m_val.empty(); }
-	virtual string toString(void) const { return m_val; }
+	virtual string toString(void) const;
 
 	virtual void dump(ostream& os, uint indent) const;
 
+	void resize(uint newsize);
+	Value* getItem(uint pos);
+	void setItem(uint pos, Value* val);
+
 	virtual PTR_Value add(const Value&     right) const; // +
-	// virtual PTR_Value add(const ValueString& left) const;
 	virtual PTR_Value sub(const Value&     right) const; // -
 	virtual PTR_Value mult(const Value&    right) const; // *
 	virtual PTR_Value div(const Value&     right) const; // /
 	virtual PTR_Value mod(const Value&     right) const; // %
 	virtual PTR_Value eq(const Value&      right) const; // ==
-	virtual PTR_Value eq(const ValueString& left) const;
+	virtual PTR_Value eq(const ValueArray&  left) const;
 	virtual PTR_Value ne(const Value&      right) const; // !=
-	virtual PTR_Value ne(const ValueString& left) const;
+	virtual PTR_Value ne(const ValueArray&  left) const;
 	virtual PTR_Value le(const Value&      right) const; // <=
-	virtual PTR_Value le(const ValueString& left) const;
 	virtual PTR_Value ge(const Value&      right) const; // >=
-	virtual PTR_Value ge(const ValueString& left) const;
 	virtual PTR_Value lt(const Value&      right) const; // <
-	virtual PTR_Value lt(const ValueString& left) const;
 	virtual PTR_Value gt(const Value&      right) const; // >
-	virtual PTR_Value gt(const ValueString& left) const;
 	virtual PTR_Value member(const Value&  right) const; // .
 	virtual PTR_Value index(const Value&   right) const; // []
 	virtual PTR_Value logNOT(void)                const; // !
 
 private:
-	string m_val;
+	vector<Value*> m_val;
 };
 
-ostream& operator<<(ostream& os, const ValueString& node);
+ostream& operator<<(ostream& os, const ValueArray& node);
 
-#endif /* VARIABLESTRING_HPP */
+#endif // VALUEARRAY_HPP

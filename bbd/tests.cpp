@@ -946,12 +946,12 @@ bool Tests::testNodeFunction(void)
 {
 	bool result = true;
 
-	const uint func_id = CONTEXT.getStringTable()->getID("func");
-	const uint local_id = CONTEXT.getStringTable()->getID("local");
-	const uint factorial_id = CONTEXT.getStringTable()->getID("factorial");
-	const uint number_id = CONTEXT.getStringTable()->getID("number");
-	const uint freturn_id = CONTEXT.getStringTable()->getID("freturn");
-	const uint freturn_local_id = CONTEXT.getStringTable()->getID("freturn_local");
+	const uint func_id = STR2ID("func");
+	const uint local_id = STR2ID("local");
+	const uint factorial_id = STR2ID("factorial");
+	const uint number_id = STR2ID("number");
+	const uint freturn_id = STR2ID("freturn");
+	const uint freturn_local_id = STR2ID("freturn_local");
 
 	string str;
 

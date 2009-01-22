@@ -70,7 +70,7 @@ CountPtr<Value> NodeFunction::execute(void)
 void NodeFunction::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<Function name=\"" << CONTEXT.getStringTable()->getString(m_name)
+	os << "<Function name=\"" << ID2STR(m_name)
 		<< "\" id=\"" << m_name << "\">" << endl;
 
 	list<identifier>::const_iterator it;
@@ -78,7 +78,7 @@ void NodeFunction::dump(ostream& os, uint indent) const
 	for(it = m_parameters->begin(); it != m_parameters->end(); it++)
 	{
 		dumpIndent(os, indent + 1);
-		os << "<Parameter name=\"" << CONTEXT.getStringTable()->getString(*it) << "\" id=\"" << *it << "\" />" << endl;
+		os << "<Parameter name=\"" << ID2STR(*it) << "\" id=\"" << *it << "\" />" << endl;
 	}
 
 	m_block->dump(os, indent + 1);
@@ -90,5 +90,19 @@ void NodeFunction::dump(ostream& os, uint indent) const
 ostream& operator<<(ostream& os, const NodeFunction& node)
 {
 	node.dump(os, 0);
+	return os;
+}
+
+ostream& operator<<(ostream& os, const list<identifier>& node)
+{
+	uint num = node.size();
+	list<identifier>::const_iterator it = node.begin();
+
+	for(uint i = 0; i < num-1; i++, it++)
+		os << ID2STR(*it) << ", ";
+
+	if(num > 0)
+		os << ID2STR(*it);
+
 	return os;
 }

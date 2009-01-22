@@ -46,5 +46,6 @@ private:
 };
 
 ostream& operator<<(ostream& os, const NodeFunction& node);
+ostream& operator<<(ostream& os, const list<identifier>& node);
 
 #endif // NODEFUNCTION_HPP

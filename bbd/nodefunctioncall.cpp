@@ -25,6 +25,7 @@
 #include "nodefunction.hpp"
 #include "nodeblock.hpp"
 #include "valuenull.hpp"
+#include "logger.hpp"
 #include "context.hpp"
 
 
@@ -55,7 +56,8 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 
 	if(function == NULL)
 	{
-		// TODO: function was not found
+		// TODO: position
+		ERROR << _("Function ") << ID2STR(m_name) << _("() has not been declared") << endl;
 		return CountPtr<Value>(new ValueNull());
 	}
 
@@ -85,7 +87,8 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 	}
 	else
 	{
-		// TODO: _("Wrong number of parameters has been passed to the function ") + m_name + _("()"),
+		// TODO: position, declared in
+		ERROR << _("Wrong number of parameters has been passed to function ") << ID2STR(m_name) << "(" << names << ")" << endl;
 		return CountPtr<Value>(new ValueNull());
 	}
 
@@ -97,7 +100,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 void NodeFunctionCall::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<FunctionCall name=\"" << CONTEXT.getStringTable()->getString(m_name)
+	os << "<FunctionCall name=\"" << ID2STR(m_name)
 		<< "\" id=\"" << m_name << "\">" << endl;
 
 	if(m_parameters != NULL)

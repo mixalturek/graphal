@@ -22,6 +22,11 @@
 #include "context.hpp"
 #include "valuenull.hpp"
 #include "nodefunction.hpp"
+#include "nodefunctioncall.hpp"
+#include "valuearray.hpp"
+#include "valuestring.hpp"
+#include "nodevalue.hpp"
+#include "nodeblock.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -164,5 +169,15 @@ ostream& operator<<(ostream& os, const Context& node)
 
 int Context::execute(int argc, char** argv)
 {
+	ValueArray* argv_array = new ValueArray();
+	argv_array->resize(argc);
+
+	for(int i = 0; i < argc; i++)
+		argv_array->setItem(i, new ValueString(argv[i]));
+
+	NodeFunctionCall main(getStringTable()->getID("main"), new NodeBlock(new NodeValue(argv_array)));
+	string str = main.execute()->toString();
+	cout << str << endl;
+
 	return 0;
 }

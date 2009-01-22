@@ -20,6 +20,7 @@
  */
 
 
+#include <sstream>
 #include "value.hpp"
 #include "valuenull.hpp"
 #include "valuebool.hpp"
