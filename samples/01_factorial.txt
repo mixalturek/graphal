@@ -1,0 +1,16 @@
+function factorial(number)
+{
+	if(number < 2)
+		return 1;
+	else
+		return number * factorial(number - 1);
+}
+
+// Enter to program
+function main(argv)
+{
+//	for(i = 0; i <= 9; i++)
+//		echo("Factorial of " + i + " is " + factorial(i) + "\n");
+
+	return factorial(5);
+}
