@@ -25,6 +25,7 @@
 #include "valuefloat.hpp"
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
+#include "valuearray.hpp"
 #include "logger.hpp"
 
 
@@ -210,7 +211,10 @@ PTR_Value ValueInt::index(const ValueString& left) const
 		return PTR_Value(new ValueString(char2string(left.getVal()[m_val])));
 	else
 	{
-		WARN << _("Index out of range") << endl;
+		WARN << _("Index out of bounds (size: ") << left.getVal().length()
+			<< _(", index: ") << m_val << ")" << endl;
 		return PTR_Value(new ValueNull());
 	}
 }
+
+PTR_Value ValueInt::index(const ValueArray& left) const { return left.getItem(m_val); }

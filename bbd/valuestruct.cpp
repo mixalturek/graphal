@@ -105,7 +105,19 @@ bool ValueStruct::isItemSet(identifier name)
 void ValueStruct::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<ValueStruct value=\"" << toString() << "\" />" << endl;// TODO: dump all
+	os << "<ValueStruct>" << endl;
+
+	map<identifier, CountPtr<Value> >::const_iterator it;
+	for(it = m_val.begin(); it != m_val.end(); it++)
+	{
+		dumpIndent(os, indent+1);
+		os << "<Name name=\"" << ID2STR(it->first) << "\" />" << endl;
+		it->second->dump(os, indent+1);
+		os << endl;
+	}
+
+	dumpIndent(os, indent);
+	os << "</ValueStruct>" << endl;
 }
 
 ostream& operator<<(ostream& os, const ValueStruct& node)

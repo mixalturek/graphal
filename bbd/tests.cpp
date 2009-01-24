@@ -196,14 +196,14 @@ bool Tests::testValueStruct(void)
 	bool result = true;
 
 	ValueStruct vs;
-	vs.setItem(0, CountPtr<Value>(new ValueInt(42)));
-	vs.setItem(1, CountPtr<Value>(new ValueBool(true)));
-	vs.setItem(2, CountPtr<Value>(new ValueString("bagr")));
+	vs.setItem(STR2ID("int_42"), CountPtr<Value>(new ValueInt(42)));
+	vs.setItem(STR2ID("bool_true"), CountPtr<Value>(new ValueBool(true)));
+	vs.setItem(STR2ID("string_bagr"), CountPtr<Value>(new ValueString("bagr")));
 
-	verify(vs.getItem(0)->toString() == "42");
-	verify(vs.getItem(1)->toString() == "true");
-	verify(vs.getItem(2)->toString() == "bagr");
-	verify(vs.getItem(3)->toString() == "NULL");
+	verify(vs.getItem(STR2ID("int_42"))->toString() == "42");
+	verify(vs.getItem(STR2ID("bool_true"))->toString() == "true");
+	verify(vs.getItem(STR2ID("string_bagr"))->toString() == "bagr");
+	verify(vs.getItem(STR2ID("undefined"))->toString() == "NULL");
 
 	return testResult(__FUNCTION__, result);
 }

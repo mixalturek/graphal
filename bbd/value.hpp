@@ -1,6 +1,4 @@
 /*
- *      value.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -34,6 +32,7 @@ class ValueInt;
 class ValueFloat;
 class ValueString;
 class ValueStruct;
+class ValueArray;
 class ValueReference;
 class ValueGraph;
 class ValueVertex;

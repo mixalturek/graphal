@@ -1,6 +1,4 @@
 /*
- *      valuefloat.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -118,6 +116,7 @@ public:
 	// []
 	virtual PTR_Value index(const Value&  right) const;
 	virtual PTR_Value index(const ValueString& left) const;
+	virtual PTR_Value index(const ValueArray& left) const;
 
 private:
 	float m_val;

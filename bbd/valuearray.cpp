@@ -70,22 +70,24 @@ void ValueArray::resize(uint newsize)
 }
 
 
-CountPtr<Value> ValueArray::getItem(uint pos)
+CountPtr<Value> ValueArray::getItem(uint pos) const
 {
-	if(pos >= m_val.size())
+	if(pos < m_val.size())
+		return m_val[pos];
+	else
 	{
-		WARN << _("Array index out of bounds, resizing to ") << (pos+1) << _(" items") << endl;
-		resize(pos+1);
+		WARN << _("Index out of bounds (size: ") << m_val.size()
+			<< _(", index: ") << pos << ")" << endl;
+		return CountPtr<Value>(new ValueNull());
 	}
-
-	return m_val[pos];
 }
 
 CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 {
 	if(pos >= m_val.size())
 	{
-		WARN << _("Array index out of bounds, resizing to ") << (pos+1) << _(" items") << endl;
+		WARN << _("Index out of bounds (size: ") << m_val.size()
+			<< _(", index: ") << pos << _("), resizing array") << endl;
 		resize(pos+1);
 	}
 
@@ -102,7 +104,14 @@ CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 void ValueArray::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<ValueArray value=\"" << toString() << "\" />" << endl;
+	os << "<ValueArray>" << endl;
+
+	vector< CountPtr<Value> >::const_iterator it;
+	for(it = m_val.begin(); it != m_val.end(); it++)
+		(*it)->dump(os, indent+1);
+
+	dumpIndent(os, indent);
+	os << "</ValueArray>" << endl;
 }
 
 ostream& operator<<(ostream& os, const ValueArray& node)

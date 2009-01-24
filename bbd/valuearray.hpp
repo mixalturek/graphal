@@ -40,7 +40,7 @@ public:
 	virtual void dump(ostream& os, uint indent) const;
 
 	void resize(uint newsize);
-	CountPtr<Value> getItem(uint pos);
+	CountPtr<Value> getItem(uint pos) const;
 	CountPtr<Value> setItem(uint pos, CountPtr<Value> val);
 
 	virtual PTR_Value add(const Value&     right) const; // +

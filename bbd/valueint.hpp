@@ -116,6 +116,7 @@ public:
 	// []
 	virtual PTR_Value index(const Value&  right) const;
 	virtual PTR_Value index(const ValueString& left) const;
+	virtual PTR_Value index(const ValueArray& left) const;
 
 private:
 	int m_val;
