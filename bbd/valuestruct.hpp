@@ -1,6 +1,4 @@
 /*
- *      valuestruct.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -28,8 +26,7 @@
 #include "value.hpp"
 #include "valuenull.hpp"
 
-// TODO: strings and numbers should be used as indices
-#define KEY_TYPE string
+class ValueReference;
 
 class ValueStruct: public Value
 {
@@ -38,9 +35,9 @@ public:
 	virtual ~ValueStruct();
 
 public:
-	void   setItem(const string& name, Value* value);
-	Value* getItem(const string& name);
-	bool   isItemSet(const string& name);
+	CountPtr<Value> setItem(identifier name, CountPtr<Value> val);
+	CountPtr<Value> getItem(identifier name);
+	bool isItemSet(identifier name);
 
 public:
 	virtual bool     toBool(void) const { return !m_val.empty(); }
@@ -66,8 +63,7 @@ public:
 	virtual PTR_Value logNOT(void)                 const; // !
 
 private:
-	map<KEY_TYPE, Value*> m_val;
-	static ValueNull m_notfound; // Used in getProperty() to return NULL like variable
+	map<identifier, CountPtr<Value> > m_val;
 };
 
 ostream& operator<<(ostream& os, const ValueStruct& node);

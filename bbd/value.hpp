@@ -52,9 +52,10 @@ public:
 	virtual ~Value();
 
 public:
-	virtual bool toBool(void)     const = 0;
-	virtual bool isNull(void)     const { return false; }
-	virtual string toString(void) const = 0;
+	virtual bool toBool(void)      const = 0;
+	virtual bool isNull(void)      const { return false; }
+	virtual bool isReference(void) const { return false; }
+	virtual string toString(void)  const = 0;
 
 	// +
 	virtual PTR_Value add(const Value&         right) const = 0;

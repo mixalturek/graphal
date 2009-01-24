@@ -19,13 +19,10 @@
 
 
 #include <sstream>
-#include "value.hpp"
-#include "valuenull.hpp"
-#include "valuebool.hpp"
-#include "valueint.hpp"
-#include "valuefloat.hpp"
-#include "valuestring.hpp"
 #include "valuestruct.hpp"
+#include "valuebool.hpp"
+#include "valuereference.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -42,10 +39,7 @@ ValueStruct::ValueStruct()
 
 ValueStruct::~ValueStruct()
 {
-	map<KEY_TYPE, Value*>::iterator it;
 
-	for(it = m_val.begin(); it != m_val.end(); it++)
-		delete it->second;
 }
 
 
@@ -55,10 +49,10 @@ ValueStruct::~ValueStruct()
 string ValueStruct::toString(void) const
 {
 	ostringstream os;
-	map<KEY_TYPE, Value*>::const_iterator it;
+	map<identifier, CountPtr<Value> >::const_iterator it;
 
 	for(it = m_val.begin(); it != m_val.end(); it++)
-		os << it->first << "=" << it->second->toString() << ",";
+		os << ID2STR(it->first) << "=" << it->second->toString() << ",";
 
 	string ret = os.str();
 	if(ret.size() != 0)
@@ -71,23 +65,35 @@ string ValueStruct::toString(void) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void ValueStruct::setItem(const string& name, Value* value)
+CountPtr<Value> ValueStruct::setItem(identifier name, CountPtr<Value> val)
 {
-	m_val[name] = value;
+/*	if(val->isReference())
+		return m_val[name] = val;
+	else
+		return m_val[name] = CountPtr<Value>(new ValueReference(val));
+*/
+	map<identifier, CountPtr<Value> >::iterator it = m_val.find(name);
+	if(it != m_val.end())
+		m_val.erase(it);
+
+	if(val->isReference())
+		return m_val.insert(pair<identifier, CountPtr<Value> >(name, val)).first->second;
+	else
+		return m_val.insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(val)))).first->second;
 }
 
 
-Value* ValueStruct::getItem(const string& name)
+CountPtr<Value> ValueStruct::getItem(identifier name)
 {
-	map<KEY_TYPE, Value*>::iterator it = m_val.find(name);
+	map<identifier, CountPtr<Value> >::iterator it = m_val.find(name);
 
 	if(it != m_val.end())
 		return it->second;
 	else
-		return &m_notfound;
+		return CountPtr<Value>(new ValueNull());
 }
 
-bool ValueStruct::isItemSet(const string& name)
+bool ValueStruct::isItemSet(identifier name)
 {
 	return m_val.count(name);
 }
@@ -118,9 +124,9 @@ PTR_Value ValueStruct::mult(const Value& right)    const { return right.mult(*th
 PTR_Value ValueStruct::div(const Value& right)     const { return right.div(*this); } // /
 PTR_Value ValueStruct::mod(const Value& right)     const { return right.mod(*this); } // %
 PTR_Value ValueStruct::eq(const Value& right)      const { return right.eq(*this); } // ==
-PTR_Value ValueStruct::eq(const ValueStruct& left) const { return PTR_Value(new ValueBool(left.m_val == m_val)); }
+PTR_Value ValueStruct::eq(const ValueStruct& /*left*/) const { return PTR_Value(new ValueBool(false /*left.m_val == m_val*/)); }// TODO
 PTR_Value ValueStruct::ne(const Value& right)      const { return right.ne(*this); } // !=
-PTR_Value ValueStruct::ne(const ValueStruct& left) const { return PTR_Value(new ValueBool(left.m_val != m_val)); }
+PTR_Value ValueStruct::ne(const ValueStruct& /*left*/) const { return PTR_Value(new ValueBool(true /*left.m_val != m_val*/)); }
 PTR_Value ValueStruct::le(const Value& right)      const { return right.le(*this); } // <=
 PTR_Value ValueStruct::ge(const Value& right)      const { return right.ge(*this); } // >=
 PTR_Value ValueStruct::lt(const Value& right)      const { return right.lt(*this); } // <

@@ -24,19 +24,21 @@
 #include <cassert>
 #include "general.hpp"
 #include "value.hpp"
+#include "countptr.hpp"
 
 class ValueReference: public Value
 {
 public:
-	ValueReference(Value* val);
+	ValueReference(CountPtr<Value> val);
 	virtual ~ValueReference();
 
 public:
-	Value*           getVal(void) const { return m_val; }
-	virtual bool     toBool(void) const { return m_val->toBool(); }
-	virtual string toString(void) const { return m_val->toString(); }
+	CountPtr<Value>   getVal(void) const { return m_val; }
+	virtual bool      toBool(void) const { return m_val->toBool(); }
+	virtual bool isReference(void) const { return true; }
+	virtual string  toString(void) const { return m_val->toString(); }
 
-	void assign(Value* val) { assert(val != NULL); m_val = val; }
+	void assign(CountPtr<Value> val) { m_val = val; }
 
 	virtual void dump(ostream& os, uint indent) const;
 
@@ -56,8 +58,7 @@ public:
 	virtual PTR_Value logNOT(void)               const; // !
 
 private:
-	// Don't delete m_val, ValueReference is not the owner
-	Value* m_val;
+	CountPtr<Value> m_val;
 };
 
 ostream& operator<<(ostream& os, const ValueReference& node);

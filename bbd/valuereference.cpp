@@ -25,17 +25,17 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-ValueReference::ValueReference(Value* val)
+ValueReference::ValueReference(CountPtr<Value> val)
 	: Value(),
 	m_val(val)
 {
-	assert(m_val != NULL);
+	assert(!val->isReference());
 }
 
 
 ValueReference::~ValueReference()
 {
-	// Don't delete m_val, ValueReference is not the owner
+
 }
 
 

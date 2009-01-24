@@ -20,6 +20,7 @@
 #ifndef COUNTPTR_HPP
 #define COUNTPTR_HPP
 
+#include <cassert>
 #include "general.hpp"
 
 
@@ -33,7 +34,7 @@ public:
 		: m_ptr(simpleptr),
 		m_num(new uint(1))
 	{
-
+		assert(simpleptr != NULL);
 	}
 
 	CountPtr(const CountPtr<TYPE>& cntptr)

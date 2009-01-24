@@ -1,6 +1,4 @@
 /*
- *      init_static_objects.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -52,12 +50,6 @@ Logger Logger::instance;
 //// Context
 
 Context Context::instance;
-
-
-/////////////////////////////////////////////////////////////////////////////
-//// ValueStruct
-
-ValueNull ValueStruct::m_notfound;
 
 
 /////////////////////////////////////////////////////////////////////////////

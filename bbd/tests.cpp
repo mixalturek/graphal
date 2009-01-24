@@ -196,14 +196,14 @@ bool Tests::testValueStruct(void)
 	bool result = true;
 
 	ValueStruct vs;
-	vs.setItem("testi", new ValueInt(42));
-	vs.setItem("testb", new ValueBool(true));
-	vs.setItem("tests", new ValueString("bagr"));
+	vs.setItem(0, CountPtr<Value>(new ValueInt(42)));
+	vs.setItem(1, CountPtr<Value>(new ValueBool(true)));
+	vs.setItem(2, CountPtr<Value>(new ValueString("bagr")));
 
-	verify(vs.getItem("testi")->toString() == "42");
-	verify(vs.getItem("testb")->toString() == "true");
-	verify(vs.getItem("tests")->toString() == "bagr");
-	verify(vs.getItem("heh")->toString() == "NULL");
+	verify(vs.getItem(0)->toString() == "42");
+	verify(vs.getItem(1)->toString() == "true");
+	verify(vs.getItem(2)->toString() == "bagr");
+	verify(vs.getItem(3)->toString() == "NULL");
 
 	return testResult(__FUNCTION__, result);
 }
@@ -232,10 +232,7 @@ bool Tests::testValueReference(void)
 {
 	bool result = true;
 
-	Value* ref_int = new ValueInt(5);
-	Value* ref_float = new ValueFloat(3.14);
-
-	PTR_Value var_left(new ValueReference(ref_int));
+	PTR_Value var_left(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueInt(5)))));
 	PTR_Value var_right(new ValueInt(3));
 
 	verify(var_left->add(*var_right)->toString() == "8");
@@ -243,16 +240,10 @@ bool Tests::testValueReference(void)
 
 	ValueReference* ref = dynamic_cast<ValueReference*>(&(*var_left));
 	assert(ref != NULL);
-	ref->assign(ref_float);
+	ref->assign(CountPtr<Value>(new ValueFloat(3.14)));
 
 	verify(var_left->add(*var_right)->toString() == "6.14");
 	verify(var_left->sub(*var_right)->toString() == "0.14");
-
-	delete ref_int;
-	ref_int = NULL;
-
-	delete ref_float;
-	ref_float = NULL;
 
 	return testResult(__FUNCTION__, result);
 }

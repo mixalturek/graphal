@@ -1,6 +1,4 @@
 /*
- *      edge.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -46,9 +44,9 @@ public:
 
 	ValueGraph* getGraph(void) { return m_graph; }
 
-	void   setItem(const string& name, Value* value) { m_properties->setItem(name, value); }
-	Value* getItem(const string& name) { return m_properties->getItem(name); }
-	bool   isItemSet(const string& name) { return m_properties->isItemSet(name); }
+	CountPtr<Value> setItem(identifier name, CountPtr<Value> value) { return m_properties->setItem(name, value); }
+	CountPtr<Value> getItem(identifier name) { return m_properties->getItem(name); }
+	bool isItemSet(identifier name) { return m_properties->isItemSet(name); }
 
 private:
 	friend void ValueGraph::invertEdgesOrientation(void);

@@ -144,5 +144,6 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
+	INFO << "*** EXITING MAIN, OK ***" << endl;
 	return 0;
 }

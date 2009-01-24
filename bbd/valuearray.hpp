@@ -24,22 +24,24 @@
 #include "general.hpp"
 #include "value.hpp"
 
+class ValueReference;
 
 class ValueArray : public Value
 {
 public:
 	ValueArray();
 	virtual ~ValueArray();
+
 public:
-	vector<Value*>   getVal(void) const { return m_val; }
+	vector< CountPtr<Value> >   getVal(void) const { return m_val; }
 	virtual bool     toBool(void) const { return !m_val.empty(); }
 	virtual string toString(void) const;
 
 	virtual void dump(ostream& os, uint indent) const;
 
 	void resize(uint newsize);
-	Value* getItem(uint pos);
-	void setItem(uint pos, Value* val);
+	CountPtr<Value> getItem(uint pos);
+	CountPtr<Value> setItem(uint pos, CountPtr<Value> val);
 
 	virtual PTR_Value add(const Value&     right) const; // +
 	virtual PTR_Value sub(const Value&     right) const; // -
@@ -59,7 +61,7 @@ public:
 	virtual PTR_Value logNOT(void)                const; // !
 
 private:
-	vector<Value*> m_val;
+	vector< CountPtr<Value> > m_val;
 };
 
 ostream& operator<<(ostream& os, const ValueArray& node);

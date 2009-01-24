@@ -21,6 +21,8 @@
 #include <sstream>
 #include "valuearray.hpp"
 #include "valuebool.hpp"
+#include "valuereference.hpp"
+#include "valuenull.hpp"
 #include "logger.hpp"
 
 
@@ -36,18 +38,7 @@ ValueArray::ValueArray()
 
 ValueArray::~ValueArray()
 {
-	vector<Value*>::iterator it;
 
-	for(it = m_val.begin(); it != m_val.end(); it++)
-	{
-		if(*it != NULL)
-		{
-			delete *it;
-			*it = NULL;
-		}
-	}
-
-	m_val.clear();
 }
 
 
@@ -57,15 +48,10 @@ ValueArray::~ValueArray()
 string ValueArray::toString(void) const
 {
 	ostringstream os;
-	vector<Value*>::const_iterator it;
+	vector< CountPtr<Value> >::const_iterator it;
 
 	for(it = m_val.begin(); it != m_val.end(); it++)
-	{
-		if(*it != NULL)
-			os << (*it)->toString() << ",";
-		else
-			os << "NULL" << ",";
-	}
+		os << (*it)->toString() << ",";
 
 	string ret = os.str();
 	if(ret.size() != 0)
@@ -80,35 +66,33 @@ string ValueArray::toString(void) const
 
 void ValueArray::resize(uint newsize)
 {
-	m_val.resize(newsize, NULL);
+	m_val.resize(newsize, CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueNull()))));
 }
 
 
-Value* ValueArray::getItem(uint pos)
+CountPtr<Value> ValueArray::getItem(uint pos)
 {
-	if(pos < m_val.size())
-		return m_val[pos];
-	else
+	if(pos >= m_val.size())
 	{
-		WARN << _("Array index out of bounds") << endl;
-		return NULL;
+		WARN << _("Array index out of bounds, resizing to ") << (pos+1) << _(" items") << endl;
+		resize(pos+1);
 	}
+
+	return m_val[pos];
 }
 
-void ValueArray::setItem(uint pos, Value* val)
+CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 {
-	if(pos < m_val.size())
+	if(pos >= m_val.size())
 	{
-		if(m_val[pos] != NULL)
-			delete m_val[pos];
+		WARN << _("Array index out of bounds, resizing to ") << (pos+1) << _(" items") << endl;
+		resize(pos+1);
+	}
 
-		m_val[pos] = val;
-	}
+	if(val->isReference())
+		return m_val[pos] = val;
 	else
-	{
-		// TODO: resize?
-		WARN << _("Array index out of bounds") << endl;
-	}
+		return m_val[pos] = CountPtr<Value>(new ValueReference(val));
 }
 
 
@@ -137,9 +121,9 @@ PTR_Value ValueArray::mult(const Value& right)    const { return right.mult(*thi
 PTR_Value ValueArray::div(const Value& right)     const { return right.div(*this); } // /
 PTR_Value ValueArray::mod(const Value& right)     const { return right.mod(*this); } // %
 PTR_Value ValueArray::eq(const Value& right)      const { return right.eq(*this); } // ==
-PTR_Value ValueArray::eq(const ValueArray& left)  const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
+PTR_Value ValueArray::eq(const ValueArray& /*left*/)  const { return PTR_Value(new ValueBool(false /*left.getVal() == m_val*/)); }// TODO
 PTR_Value ValueArray::ne(const Value& right)      const { return right.ne(*this); } // !=
-PTR_Value ValueArray::ne(const ValueArray& left)  const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
+PTR_Value ValueArray::ne(const ValueArray& /*left*/)  const { return PTR_Value(new ValueBool(true /*left.getVal() != m_val*/)); }
 PTR_Value ValueArray::le(const Value& right)      const { return right.le(*this); } // <=
 PTR_Value ValueArray::ge(const Value& right)      const { return right.ge(*this); } // >=
 PTR_Value ValueArray::lt(const Value& right)      const { return right.lt(*this); } // <
