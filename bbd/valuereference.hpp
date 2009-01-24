@@ -1,6 +1,4 @@
 /*
- *      valuereference.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -23,18 +21,22 @@
 #ifndef VALUEREFERENCE_HPP
 #define VALUEREFERENCE_HPP
 
+#include <cassert>
 #include "general.hpp"
 #include "value.hpp"
 
 class ValueReference: public Value
 {
-private: // TODO: The class is created for future use, no implementation done
-	ValueReference();
+public:
+	ValueReference(Value* val);
 	virtual ~ValueReference();
 
 public:
-	virtual bool     toBool(void) const { return false; }
-	virtual string toString(void) const { return "NULL"; }
+	Value*           getVal(void) const { return m_val; }
+	virtual bool     toBool(void) const { return m_val->toBool(); }
+	virtual string toString(void) const { return m_val->toString(); }
+
+	void assign(Value* val) { assert(val != NULL); m_val = val; }
 
 	virtual void dump(ostream& os, uint indent) const;
 
@@ -44,9 +46,7 @@ public:
 	virtual PTR_Value div(const Value&    right) const; // /
 	virtual PTR_Value mod(const Value&    right) const; // %
 	virtual PTR_Value eq(const Value&     right) const; // ==
-	virtual PTR_Value eq(const ValueReference& left)  const;
 	virtual PTR_Value ne(const Value&     right) const; // !=
-	virtual PTR_Value ne(const ValueReference& left)  const;
 	virtual PTR_Value le(const Value&     right) const; // <=
 	virtual PTR_Value ge(const Value&     right) const; // >=
 	virtual PTR_Value lt(const Value&     right) const; // <
@@ -55,7 +55,9 @@ public:
 	virtual PTR_Value index(const Value&  right) const; // []
 	virtual PTR_Value logNOT(void)               const; // !
 
-	// TODO: add class implementation ;-)
+private:
+	// Don't delete m_val, ValueReference is not the owner
+	Value* m_val;
 };
 
 ostream& operator<<(ostream& os, const ValueReference& node);

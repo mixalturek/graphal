@@ -1,6 +1,4 @@
 /*
- *      lexaniteratorstring.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -31,6 +29,8 @@ public:
 	LexanIteratorString(const string& name, const string& value);
 	virtual ~LexanIteratorString(void);
 
+	virtual void dump(ostream& os, uint indent) const;
+
 	virtual char get(void);
 	virtual void unget(void);
 
@@ -42,5 +42,7 @@ private:
 	string m_value;
 	int m_pos;
 };
+
+ostream& operator<<(ostream& os, const LexanIteratorString& node);
 
 #endif

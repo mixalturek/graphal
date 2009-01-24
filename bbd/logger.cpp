@@ -1,6 +1,4 @@
 /*
- *      logger.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -35,3 +33,18 @@ Logger::~Logger(void)
 
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Logger::dump(ostream& os, uint indent) const
+{
+	dumpIndent(os, indent);
+	os << "<Logger />" << endl;
+}
+
+ostream& operator<<(ostream& os, const Logger& node)
+{
+	node.dump(os, 0);
+	return os;
+}

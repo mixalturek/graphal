@@ -1,6 +1,4 @@
 /*
- *      vertex.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -25,7 +23,6 @@
 #include "valuegraph.hpp"
 #include "valueedge.hpp"
 #include "valuevertexset.hpp"
-#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -118,7 +115,7 @@ void ValueVertex::invertOrientation(void)
 
 void ValueVertex::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "<ValueVertex />" << endl;// TODO:
 }
 

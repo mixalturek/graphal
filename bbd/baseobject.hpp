@@ -1,6 +1,4 @@
 /*
- *      baseobject.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -34,6 +32,9 @@ class BaseObject
 public:
 	BaseObject();
 	virtual ~BaseObject();
+
+	virtual void dump(ostream& os, uint indent) const = 0;
+	static void dumpIndent(ostream& os, uint indent);
 
 #ifdef CHECK_MEMORY_LEAKS
 private:

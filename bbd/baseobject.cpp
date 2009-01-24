@@ -1,6 +1,4 @@
 /*
- *      baseobject.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -64,3 +62,13 @@ void BaseObject::printMemoryLeaks(uint number_of_static_objects)
 		ERROR << *it << ", " << typeid(**it).name() << endl;
 }
 #endif // CHECK_MEMORY_LEAKS
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void BaseObject::dumpIndent(ostream& os, uint indent)
+{
+	for(uint i = 0; i < indent; i++)
+		os << "    ";
+}

@@ -45,10 +45,11 @@ BaseObject
 		ValueNull
 		ValueString
 		ValueStruct
+		ValueArray
 		ValueBool
 		ValueInt
 		ValueFloat
-		ValueReference (for future use, no implementation)
+		ValueReference
 		ValueGraph
 		ValueVertex
 		ValueEdge

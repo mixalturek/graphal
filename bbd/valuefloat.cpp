@@ -1,6 +1,4 @@
 /*
- *      valuefloat.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -27,7 +25,6 @@
 #include "valuefloat.hpp"
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
-#include "node.hpp"
 #include "logger.hpp"
 
 
@@ -53,7 +50,7 @@ ValueFloat::~ValueFloat()
 
 void ValueFloat::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "<ValueFloat value=\"" << toString() << "\" />" << endl;
 }
 

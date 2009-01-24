@@ -1,6 +1,4 @@
 /*
- *      lexaniteratorfile.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -57,4 +55,20 @@ char LexanIteratorFile::get(void)
 void LexanIteratorFile::unget(void)
 {
 	m_file.unget();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void LexanIteratorFile::dump(ostream& os, uint indent) const
+{
+	dumpIndent(os, indent);
+	os << "<LexanIteratorFile file=\"" << m_filename << "\" />" << endl;
+}
+
+ostream& operator<<(ostream& os, const LexanIteratorFile& node)
+{
+	node.dump(os, 0);
+	return os;
 }

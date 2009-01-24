@@ -72,7 +72,6 @@
 #include "valuegraph.hpp"
 #include "valueint.hpp"
 #include "valuenull.hpp"
-#include "valuereference.hpp"
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
 #include "valuevertex.hpp"

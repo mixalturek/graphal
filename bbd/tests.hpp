@@ -1,6 +1,4 @@
 /*
- *      tests.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -32,6 +30,8 @@ public:
 	Tests();
 	virtual ~Tests();
 
+	virtual void dump(ostream& os, uint indent) const;
+
 	void run(void);
 
 private:
@@ -44,6 +44,7 @@ private:
 	bool testDoubleDispatching(void);
 	bool testValueStruct(void);
 	bool testValueString(void);
+	bool testValueReference(void);
 	bool testGraph(void);
 	bool testGraphSet(void);
 	bool testGraphInvertEdgesOrientation(void);
@@ -65,5 +66,7 @@ private:
 	// bool test(void);
 
 };
+
+ostream& operator<<(ostream& os, const Tests& node);
 
 #endif /* TESTS_HPP */

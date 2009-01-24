@@ -25,7 +25,6 @@
 #include "valuefloat.hpp"
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
-#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -49,7 +48,7 @@ ValueString::~ValueString()
 
 void ValueString::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "<ValueString value=\"" << toString() << "\" />" << endl;
 }
 

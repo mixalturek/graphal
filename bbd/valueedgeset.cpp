@@ -24,7 +24,6 @@
 #include "logger.hpp"
 #include "valuebool.hpp"
 #include "valueedge.hpp"
-#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -67,7 +66,7 @@ void ValueEdgeSet::deleteEdge(ValueEdge* edge)
 
 void ValueEdgeSet::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "<ValueEdgeSet />" << endl;// TODO:
 }
 

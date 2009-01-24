@@ -1,6 +1,4 @@
 /*
- *      lexaniterator.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -25,7 +23,7 @@
 #include "general.hpp"
 #include "baseobject.hpp"
 
-class LexanIterator : BaseObject
+class LexanIterator : public BaseObject
 {
 public:
 	LexanIterator(void);

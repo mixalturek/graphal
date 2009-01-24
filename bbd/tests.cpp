@@ -1,6 +1,4 @@
 /*
- *      tests.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -27,6 +25,7 @@
 #include "valuebool.hpp"
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
+#include "valuereference.hpp"
 #include "valuegraph.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
@@ -80,6 +79,21 @@ Tests::~Tests()
 
 }
 
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Tests::dump(ostream& os, uint indent) const
+{
+	dumpIndent(os, indent);
+	os << "<Tests />" << endl;
+}
+
+ostream& operator<<(ostream& os, const Tests& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -104,6 +118,7 @@ void Tests::run(void)
 	failed += !testDoubleDispatching();
 	failed += !testValueStruct();
 	failed += !testValueString();
+	failed += !testValueReference();
 	failed += !testGraph();
 	failed += !testGraphSet();
 	failed += !testGraphInvertEdgesOrientation();
@@ -208,6 +223,36 @@ bool Tests::testValueString(void)
 	verify(var_left->add(*var_bool)->toString() == "left true");
 	verify(var_left->add(*var_int)->toString() == "left 3");
 	verify(var_left->add(*var_float)->toString() == "left 5.5");
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testValueReference(void)
+{
+	bool result = true;
+
+	Value* ref_int = new ValueInt(5);
+	Value* ref_float = new ValueFloat(3.14);
+
+	PTR_Value var_left(new ValueReference(ref_int));
+	PTR_Value var_right(new ValueInt(3));
+
+	verify(var_left->add(*var_right)->toString() == "8");
+	verify(var_left->sub(*var_right)->toString() == "2");
+
+	ValueReference* ref = dynamic_cast<ValueReference*>(&(*var_left));
+	assert(ref != NULL);
+	ref->assign(ref_float);
+
+	verify(var_left->add(*var_right)->toString() == "6.14");
+	verify(var_left->sub(*var_right)->toString() == "0.14");
+
+	delete ref_int;
+	ref_int = NULL;
+
+	delete ref_float;
+	ref_float = NULL;
 
 	return testResult(__FUNCTION__, result);
 }

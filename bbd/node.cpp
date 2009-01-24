@@ -1,6 +1,4 @@
 /*
- *      node.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -41,10 +39,3 @@ Node::~Node(void)
 
 /////////////////////////////////////////////////////////////////////////////
 ////
-
-void Node::dumpIndent(ostream& os, uint indent)
-{
-	for(uint i = 0; i < indent; i++)
-		os << "    ";
-}
-

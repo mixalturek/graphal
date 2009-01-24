@@ -1,6 +1,4 @@
 /*
- *      stringtable.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -23,7 +21,6 @@
 #include <cassert>
 #include <algorithm>
 #include "stringtable.hpp"
-#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -67,17 +64,17 @@ string& StringTable::getString(identifier id)
 
 void StringTable::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "<StringTable>" << endl;
 
 	vector<string>::const_iterator it;
 	for(it = m_data.begin(); it != m_data.end(); it++)
 	{
-		Node::dumpIndent(os, indent+1);
+		dumpIndent(os, indent+1);
 		os << "<string id=\"" << (it - m_data.begin()) << "\">" << (*it) << "</string>" << endl;
 	}
 
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "</StringTable>" << endl;
 }
 

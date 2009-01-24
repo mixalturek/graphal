@@ -1,6 +1,4 @@
 /*
- *      lexan.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -30,11 +28,13 @@
 #include "lexantokens.hpp"
 #include "stringtable.hpp"
 
-class Lexan : BaseObject
+class Lexan : public BaseObject
 {
 public:
 	Lexan(const string& source, StringTable* stringtable, bool is_file);
 	~Lexan(void);
+
+	virtual void dump(ostream& os, uint indent) const;
 
 	LEXTOKEN nextToken(void);
 
@@ -55,7 +55,7 @@ private:
 
 private:
 	stack<LexanIterator*> m_source;
-	map<string, string> m_defines;
+	map<string, string> m_defines;// TODO: identifier
 
 	int m_int;
 	float m_float;
@@ -64,5 +64,7 @@ private:
 
 	StringTable* m_stringtable;
 };
+
+ostream& operator<<(ostream& os, const Lexan& node);
 
 #endif

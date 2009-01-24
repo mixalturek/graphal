@@ -150,7 +150,7 @@ void Context::addFunction(identifier name, NodeFunction* function)
 
 void Context::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "<Context>" << endl;
 
 
@@ -160,7 +160,7 @@ void Context::dump(ostream& os, uint indent) const
 
 	m_stringtable.dump(os, indent+1);
 
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "</Context>" << endl;
 }
 

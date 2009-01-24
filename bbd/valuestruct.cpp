@@ -1,6 +1,4 @@
 /*
- *      valuestruct.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -28,7 +26,6 @@
 #include "valuefloat.hpp"
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
-#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -101,7 +98,7 @@ bool ValueStruct::isItemSet(const string& name)
 
 void ValueStruct::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "<ValueStruct value=\"" << toString() << "\" />" << endl;// TODO: dump all
 }
 

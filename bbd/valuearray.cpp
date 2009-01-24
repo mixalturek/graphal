@@ -20,7 +20,6 @@
 
 #include <sstream>
 #include "valuearray.hpp"
-#include "node.hpp"
 #include "valuebool.hpp"
 #include "logger.hpp"
 
@@ -118,7 +117,7 @@ void ValueArray::setItem(uint pos, Value* val)
 
 void ValueArray::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "<ValueArray value=\"" << toString() << "\" />" << endl;
 }
 

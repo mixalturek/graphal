@@ -1,6 +1,4 @@
 /*
- *      logger.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -59,6 +57,8 @@ public:
 		return cerr << _("[d] ");
 	}
 
+	virtual void dump(ostream& os, uint indent) const;
+
 private:
 	static Logger instance;
 
@@ -69,5 +69,7 @@ private:
 	Logger(const Logger& object);
 	Logger& operator=(const Logger& object);
 };
+
+ostream& operator<<(ostream& os, const Logger& node);
 
 #endif

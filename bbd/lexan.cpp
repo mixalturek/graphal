@@ -1,6 +1,4 @@
 /*
- *      lexan.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -60,6 +58,22 @@ Lexan::~Lexan(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+void Lexan::dump(ostream& os, uint indent) const
+{
+	dumpIndent(os, indent);
+	os << "<Lexan />" << endl;
+}
+
+ostream& operator<<(ostream& os, const Lexan& node)
+{
+	node.dump(os, 0);
+	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 LEXTOKEN Lexan::checkKeyword(void)
 {
 	// Check keywords
@@ -112,7 +126,6 @@ LEXTOKEN Lexan::checkKeyword(void)
 
 bool Lexan::expandMacro(void)
 {
-	// TODO: test this function
 	map<string, string>::iterator it = m_defines.find(m_string);
 
     if(it != m_defines.end())
@@ -1062,13 +1075,11 @@ void Lexan::parseDefine(void)
 	DBG << getSource() << _(":") << getPos() << _( " Defining macro: ") << name << endl;
 #endif // DEBUG
 
-	// TODO: test this
 	pair< map<string, string>::iterator, bool > ret;
 
 	ret = m_defines.insert(pair<string,string>(name, value));
 	if(ret.second == false)
 	{
-		// TODO: position
 		WARN << getSource() << _(":") << getPos()
 			<< _(" Macro has been already defined: ") << name << endl;
 	}

@@ -1,6 +1,4 @@
 /*
- *      edge.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -23,7 +21,6 @@
 #include "valueedge.hpp"
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
-#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -61,7 +58,7 @@ void ValueEdge::invertOrientation(void)
 
 void ValueEdge::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "<ValueEdge />" << endl;// TODO:
 }
 

@@ -11,8 +11,6 @@ sub generateUnaryOperatorClass
 
 	my $hpp_code = <<END_OF_HPP;
 /*
- *      $hpp_filename
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -68,8 +66,6 @@ END_OF_HPP
 
 	my $cpp_code = <<END_OF_CPP;
 /*
- *      $cpp_filename
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -172,8 +168,6 @@ sub generateBinaryOperatorClass
 
 	my $hpp_code = <<END_OF_HPP;
 /*
- *      $hpp_filename
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -229,8 +223,6 @@ END_OF_HPP
 
 	my $cpp_code = <<END_OF_CPP;
 /*
- *      $cpp_filename
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify

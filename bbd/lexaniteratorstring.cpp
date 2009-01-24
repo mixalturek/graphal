@@ -1,6 +1,4 @@
 /*
- *      lexaniteratorstring.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -55,4 +53,20 @@ void LexanIteratorString::unget(void)
 {
 	if(m_pos > 0)
 		m_pos--;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void LexanIteratorString::dump(ostream& os, uint indent) const
+{
+	dumpIndent(os, indent);
+	os << "<LexanIteratorString string=\"" << m_name << "\" />" << endl;
+}
+
+ostream& operator<<(ostream& os, const LexanIteratorString& node)
+{
+	node.dump(os, 0);
+	return os;
 }

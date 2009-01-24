@@ -1,6 +1,4 @@
 /*
- *      node.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -36,9 +34,6 @@ public:
 	virtual ~Node(void);
 
 	virtual CountPtr<Value> execute(void) = 0;
-
-	virtual void dump(ostream& os, uint indent) const = 0;
-	static void dumpIndent(ostream& os, uint indent);
 
 private:
 	Node(const Node& object);

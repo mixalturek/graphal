@@ -1,6 +1,4 @@
 /*
- *      valuereference.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -22,22 +20,22 @@
 
 #include "valuereference.hpp"
 #include "valuebool.hpp"
-#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-ValueReference::ValueReference()
-	: Value()
+ValueReference::ValueReference(Value* val)
+	: Value(),
+	m_val(val)
 {
-
+	assert(m_val != NULL);
 }
 
 
 ValueReference::~ValueReference()
 {
-
+	// Don't delete m_val, ValueReference is not the owner
 }
 
 
@@ -46,8 +44,13 @@ ValueReference::~ValueReference()
 
 void ValueReference::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
-	os << "<ValueReference />" << endl;
+	dumpIndent(os, indent);
+	os << "<ValueReference>" << endl;
+
+	m_val->dump(os, indent+1);
+
+	dumpIndent(os, indent);
+	os << "</ValueReference>" << endl;
 }
 
 ostream& operator<<(ostream& os, const ValueReference& node)
@@ -66,13 +69,11 @@ PTR_Value ValueReference::mult(const Value& right)       const { return right.mu
 PTR_Value ValueReference::div(const Value& right)        const { return right.div(*this); } // /
 PTR_Value ValueReference::mod(const Value& right)        const { return right.mod(*this); } // %
 PTR_Value ValueReference::eq(const Value& right)         const { return right.eq(*this); } // ==
-PTR_Value ValueReference::eq(const ValueReference& /* left */) const { return PTR_Value(new ValueBool(true)); } // TODO
 PTR_Value ValueReference::ne(const Value& right)         const { return right.ne(*this); } // !=
-PTR_Value ValueReference::ne(const ValueReference& /* left */) const { return PTR_Value(new ValueBool(false)); } // TODO
 PTR_Value ValueReference::le(const Value& right)         const { return right.le(*this); } // <=
 PTR_Value ValueReference::ge(const Value& right)         const { return right.ge(*this); } // >=
 PTR_Value ValueReference::lt(const Value& right)         const { return right.lt(*this); } // <
 PTR_Value ValueReference::gt(const Value& right)         const { return right.gt(*this); } // >
 PTR_Value ValueReference::member(const Value& right)     const { return right.member(*this); } // .
 PTR_Value ValueReference::index(const Value& right)      const { return right.index(*this); } // []
-PTR_Value ValueReference::logNOT(void)                   const { return PTR_Value(new ValueBool(true)); } // ! // TODO
+PTR_Value ValueReference::logNOT(void)                   const { return m_val->logNOT(); } // !

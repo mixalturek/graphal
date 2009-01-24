@@ -1,6 +1,4 @@
 /*
- *      valuevertexset.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -24,7 +22,6 @@
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
 #include "logger.hpp"
-#include "node.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -67,7 +64,7 @@ void ValueVertexSet::deleteVertex(ValueVertex* vertex)
 
 void ValueVertexSet::dump(ostream& os, uint indent) const
 {
-	Node::dumpIndent(os, indent);
+	dumpIndent(os, indent);
 	os << "<ValueVertexSet />" << endl;// TODO:
 }
 
