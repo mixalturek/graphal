@@ -155,7 +155,7 @@ bool Tests::testMemoryLeaks(void)
 	uint numobjects = BaseObject::getNumberOfLeaks();
 
 	Value* i = new ValueInt(5);
-	Value* j = new ValueBool(true);
+	Value* j = new ValueFloat(3.14);
 	Value* k = new ValueString("bagr");
 
 	delete i;
@@ -197,7 +197,7 @@ bool Tests::testValueStruct(void)
 
 	ValueStruct vs;
 	vs.setItem(STR2ID("int_42"), CountPtr<Value>(new ValueInt(42)));
-	vs.setItem(STR2ID("bool_true"), CountPtr<Value>(new ValueBool(true)));
+	vs.setItem(STR2ID("bool_true"), VALUEBOOL_TRUE);
 	vs.setItem(STR2ID("string_bagr"), CountPtr<Value>(new ValueString("bagr")));
 
 	verify(vs.getItem(STR2ID("int_42"))->toString() == "42");
@@ -215,7 +215,7 @@ bool Tests::testValueString(void)
 
 	PTR_Value var_left(new ValueString("left "));
 	PTR_Value var_str(new ValueString("bagr"));
-	PTR_Value var_bool(new ValueBool(true));
+	PTR_Value var_bool(VALUEBOOL_TRUE);
 	PTR_Value var_int(new ValueInt(3));
 	PTR_Value var_float(new ValueFloat(5.5f));
 
@@ -785,7 +785,7 @@ bool Tests::testNodeUnary(void)
 	str = uminus.execute()->toString();
 	verify(str == "-10");
 
-	NodeUnaryNot unot(new NodeValue(new ValueBool(true)));
+	NodeUnaryNot unot(new NodeValue(VALUEBOOL_TRUE));
 	str = unot.execute()->toString();
 	verify(str == "false");
 
@@ -829,7 +829,7 @@ bool Tests::testNodeBlock(void)
 	bl->pushCommandToBack(new NodeEmptyCommand());
 	verify(bl->getNumberOfCommands() == 3);
 
-	NodeCondition cond(new NodeValue(new ValueBool(true)), bl, NULL);
+	NodeCondition cond(new NodeValue(VALUEBOOL_TRUE), bl, NULL);
 
 	return testResult(__FUNCTION__, result);
 }

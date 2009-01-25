@@ -90,7 +90,7 @@ CountPtr<Value> ValueStruct::getItem(identifier name)
 	if(it != m_val.end())
 		return it->second;
 	else
-		return CountPtr<Value>(new ValueNull());
+		return VALUENULL;
 }
 
 bool ValueStruct::isItemSet(identifier name)
@@ -136,13 +136,13 @@ PTR_Value ValueStruct::mult(const Value& right)    const { return right.mult(*th
 PTR_Value ValueStruct::div(const Value& right)     const { return right.div(*this); } // /
 PTR_Value ValueStruct::mod(const Value& right)     const { return right.mod(*this); } // %
 PTR_Value ValueStruct::eq(const Value& right)      const { return right.eq(*this); } // ==
-PTR_Value ValueStruct::eq(const ValueStruct& /*left*/) const { return PTR_Value(new ValueBool(false /*left.m_val == m_val*/)); }// TODO
+PTR_Value ValueStruct::eq(const ValueStruct& /*left*/) const { return VALUEBOOL_FALSE; }// TODO
 PTR_Value ValueStruct::ne(const Value& right)      const { return right.ne(*this); } // !=
-PTR_Value ValueStruct::ne(const ValueStruct& /*left*/) const { return PTR_Value(new ValueBool(true /*left.m_val != m_val*/)); }
+PTR_Value ValueStruct::ne(const ValueStruct& /*left*/) const { return VALUEBOOL_TRUE; }
 PTR_Value ValueStruct::le(const Value& right)      const { return right.le(*this); } // <=
 PTR_Value ValueStruct::ge(const Value& right)      const { return right.ge(*this); } // >=
 PTR_Value ValueStruct::lt(const Value& right)      const { return right.lt(*this); } // <
 PTR_Value ValueStruct::gt(const Value& right)      const { return right.gt(*this); } // >
 PTR_Value ValueStruct::member(const Value& right)  const { return right.member(*this); } // .
 PTR_Value ValueStruct::index(const Value& right)   const { return right.index(*this); } // []
-PTR_Value ValueStruct::logNOT(void)                const { return PTR_Value(new ValueBool(m_val.empty())); } // !
+PTR_Value ValueStruct::logNOT(void)                const { return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !

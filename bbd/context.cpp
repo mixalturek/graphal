@@ -98,7 +98,7 @@ CountPtr<Value> Context::getLocalVariable(identifier name)
 	{
 		// TODO: position in code
 		WARN << _("Variable has not been initialized: ") << ID2STR(name) << endl;
-		return CountPtr<Value>(new ValueNull());
+		return VALUENULL;
 	}
 }
 

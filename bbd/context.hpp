@@ -41,7 +41,7 @@ class Context : public BaseObject
 public:
 	static inline Context& getInstance(void)
 	{
-		return instance;
+		return m_instance;
 	}
 
 	void clear(void);
@@ -70,7 +70,7 @@ private:
 	Context& operator=(const Context& object);
 
 private:
-	static Context instance;
+	static Context m_instance;
 
 	map<identifier, NodeFunction*> m_functions;
 	deque< map<identifier, CountPtr<Value> > > m_local_variables;

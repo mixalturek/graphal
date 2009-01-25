@@ -45,7 +45,7 @@ CountPtr<Value> NodeJumpContinue::execute(void)
 	throw this;
 
 	// It will never be called
-	return CountPtr<Value>(new ValueNull());
+	return VALUENULL;
 }
 
 void NodeJumpContinue::dump(ostream& os, uint indent) const

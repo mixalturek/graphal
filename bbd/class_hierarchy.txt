@@ -42,11 +42,11 @@ BaseObject
 		NodeFunction
 		NodeVariable
 	Value (interface)
-		ValueNull
+		ValueNull (singleton)
 		ValueString
 		ValueStruct
 		ValueArray
-		ValueBool
+		ValueBool ("singleton")
 		ValueInt
 		ValueFloat
 		ValueReference

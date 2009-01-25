@@ -91,7 +91,7 @@ PTR_Value ValueInt::div(const ValueBool& left)    const
 	if(m_val == 0)
 	{
 		WARN << _("Division by zero") << endl;
-		return PTR_Value(new ValueNull());
+		return VALUENULL;
 	}
 	else
 	{
@@ -104,7 +104,7 @@ PTR_Value ValueInt::div(const ValueInt& left)     const
 	if(m_val == 0)
 	{
 		WARN << _("Division by zero") << endl;
-		return PTR_Value(new ValueNull());
+		return VALUENULL;
 	}
 	else
 	{
@@ -117,7 +117,7 @@ PTR_Value ValueInt::div(const ValueFloat& left)   const
 	if(m_val == 0)
 	{
 		WARN << _("Division by zero") << endl;
-		return PTR_Value(new ValueNull());
+		return VALUENULL;
 	}
 	else
 	{
@@ -133,7 +133,7 @@ PTR_Value ValueInt::mod(const ValueBool& left)    const
 	if(m_val == 0)
 	{
 		WARN << _("Division (modulo) by zero") << endl;
-		return PTR_Value(new ValueNull());
+		return VALUENULL;
 	}
 	else
 	{
@@ -146,7 +146,7 @@ PTR_Value ValueInt::mod(const ValueInt& left)     const
 	if(m_val == 0)
 	{
 		WARN << _("Division (modulo) by zero") << endl;
-		return PTR_Value(new ValueNull());
+		return VALUENULL;
 	}
 	else
 	{
@@ -157,47 +157,47 @@ PTR_Value ValueInt::mod(const ValueInt& left)     const
 PTR_Value ValueInt::mod(const ValueFloat& /* left */)   const
 {
 	WARN << _("Invalid operands of types float and int to modulo operator") << endl;
-	return PTR_Value(new ValueNull());
+	return VALUENULL;
 }
 
 // ==
 PTR_Value ValueInt::eq(const Value& right)        const { return right.eq(*this); }
-PTR_Value ValueInt::eq(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
-PTR_Value ValueInt::eq(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
-PTR_Value ValueInt::eq(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
+PTR_Value ValueInt::eq(const ValueBool& left)     const { return (left.getVal() == m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::eq(const ValueInt& left)      const { return (left.getVal() == m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::eq(const ValueFloat& left)    const { return (left.getVal() == m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 
 // !=
 PTR_Value ValueInt::ne(const Value& right)        const { return right.ne(*this); }
-PTR_Value ValueInt::ne(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
-PTR_Value ValueInt::ne(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
-PTR_Value ValueInt::ne(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
+PTR_Value ValueInt::ne(const ValueBool& left)     const { return (left.getVal() != m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::ne(const ValueInt& left)      const { return (left.getVal() != m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::ne(const ValueFloat& left)    const { return (left.getVal() != m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 
 // <=
 PTR_Value ValueInt::le(const Value& right)        const { return right.le(*this); }
-PTR_Value ValueInt::le(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
-PTR_Value ValueInt::le(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
-PTR_Value ValueInt::le(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
+PTR_Value ValueInt::le(const ValueBool& left)     const { return (left.getVal() <= m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::le(const ValueInt& left)      const { return (left.getVal() <= m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::le(const ValueFloat& left)    const { return (left.getVal() <= m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 
 // >=
 PTR_Value ValueInt::ge(const Value& right)        const { return right.ge(*this); }
-PTR_Value ValueInt::ge(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
-PTR_Value ValueInt::ge(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
-PTR_Value ValueInt::ge(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
+PTR_Value ValueInt::ge(const ValueBool& left)     const { return (left.getVal() >= m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::ge(const ValueInt& left)      const { return (left.getVal() >= m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::ge(const ValueFloat& left)    const { return (left.getVal() >= m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 
 // <
 PTR_Value ValueInt::lt(const Value& right)        const { return right.lt(*this); }
-PTR_Value ValueInt::lt(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
-PTR_Value ValueInt::lt(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
-PTR_Value ValueInt::lt(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
+PTR_Value ValueInt::lt(const ValueBool& left)     const { return (left.getVal() < m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::lt(const ValueInt& left)      const { return (left.getVal() < m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::lt(const ValueFloat& left)    const { return (left.getVal() < m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 
 // >
 PTR_Value ValueInt::gt(const Value& right)        const { return right.gt(*this); }
-PTR_Value ValueInt::gt(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
-PTR_Value ValueInt::gt(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
-PTR_Value ValueInt::gt(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
+PTR_Value ValueInt::gt(const ValueBool& left)     const { return (left.getVal() > m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::gt(const ValueInt& left)      const { return (left.getVal() > m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueInt::gt(const ValueFloat& left)    const { return (left.getVal() > m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 
 // !
-PTR_Value ValueInt::logNOT(void)  const { return PTR_Value(new ValueBool(!m_val)); }
+PTR_Value ValueInt::logNOT(void)  const { return (!m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 
 // - (unary)
 PTR_Value ValueInt::subUn(void)   const { return PTR_Value(new ValueInt(-m_val)); }
@@ -213,7 +213,7 @@ PTR_Value ValueInt::index(const ValueString& left) const
 	{
 		WARN << _("Index out of bounds (size: ") << left.getVal().length()
 			<< _(", index: ") << m_val << ")" << endl;
-		return PTR_Value(new ValueNull());
+		return VALUENULL;
 	}
 }
 

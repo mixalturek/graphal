@@ -139,9 +139,9 @@ http://www.quut.com/c/ANSI-C-grammar-y.html
 */
 
 primary_expression
-	: LEX_NULL { $$ = new NodeValue(new ValueNull()); }
-	| LEX_TRUE { $$ = new NodeValue(new ValueBool(true)); }
-	| LEX_FALSE { $$ = new NodeValue(new ValueBool(false)); }
+	: LEX_NULL { $$ = new NodeValue(VALUENULL); }
+	| LEX_TRUE { $$ = new NodeValue(VALUEBOOL_TRUE); }
+	| LEX_FALSE { $$ = new NodeValue(VALUEBOOL_FALSE); }
 	| LEX_INT { $$ = new NodeValue(new ValueInt($1)); }
 	| LEX_NAME { $$ = new NodeVariable($1); }
 	| LEX_FLOAT { $$ = new NodeValue(new ValueFloat($1)); }

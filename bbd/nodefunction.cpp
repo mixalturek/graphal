@@ -1,6 +1,4 @@
 /*
- *      nodefunction.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -64,7 +62,7 @@ CountPtr<Value> NodeFunction::execute(void)
 		return ex;
 	}
 
-	return CountPtr<Value>(new ValueNull());;
+	return VALUENULL;
 }
 
 void NodeFunction::dump(ostream& os, uint indent) const

@@ -27,9 +27,10 @@
 
 #include "general.hpp"
 #include "baseobject.hpp"
-#include "valuestruct.hpp"
 #include "logger.hpp"
 #include "context.hpp"
+#include "valuenull.hpp"
+#include "valuebool.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -41,15 +42,23 @@ set<BaseObject*> BaseObject::m_allocated_objects = set<BaseObject*>();
 
 
 /////////////////////////////////////////////////////////////////////////////
+//// ValueNull, ValueBool
+
+CountPtr<Value> ValueNull::m_instance(new ValueNull());
+CountPtr<Value> ValueBool::m_instance_true(new ValueBool(true));
+CountPtr<Value> ValueBool::m_instance_false(new ValueBool(false));
+
+
+/////////////////////////////////////////////////////////////////////////////
 //// Logger
 
-Logger Logger::instance;
+Logger Logger::m_instance;
 
 
 /////////////////////////////////////////////////////////////////////////////
 //// Context
 
-Context Context::instance;
+Context Context::m_instance;
 
 
 /////////////////////////////////////////////////////////////////////////////

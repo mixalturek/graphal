@@ -1,6 +1,4 @@
 /*
- *      valuebool.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -23,14 +21,32 @@
 #ifndef VARIABLEBOOL_HPP
 #define VARIABLEBOOL_HPP
 
-# include "general.hpp"
+#include "general.hpp"
 #include "value.hpp"
 
-class ValueBool: public Value
+#define VALUEBOOL_TRUE  ValueBool::getInstanceTrue()
+#define VALUEBOOL_FALSE ValueBool::getInstanceFalse()
+
+// Singleton
+class ValueBool : public Value
 {
 public:
+	static inline CountPtr<Value>& getInstanceTrue(void)
+	{
+		return m_instance_true;
+	}
+
+	static inline CountPtr<Value>& getInstanceFalse(void)
+	{
+		return m_instance_false;
+	}
+
+private:
+	ValueBool();
 	ValueBool(bool val);
 	virtual ~ValueBool();
+	ValueBool(const ValueBool& object);
+	ValueBool& operator=(const ValueBool& object);
 
 public:
 	bool             getVal(void) const { return m_val; }
@@ -120,6 +136,8 @@ public:
 	virtual PTR_Value index(const ValueArray& left) const;
 
 private:
+	static CountPtr<Value> m_instance_true;
+	static CountPtr<Value> m_instance_false;
 	bool m_val;
 };
 

@@ -1,6 +1,4 @@
 /*
- *      valueedgeset.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -86,13 +84,13 @@ PTR_Value ValueEdgeSet::mult(const Value& right)     const { return right.mult(*
 PTR_Value ValueEdgeSet::div(const Value& right)      const { return right.div(*this); } // /
 PTR_Value ValueEdgeSet::mod(const Value& right)      const { return right.mod(*this); } // %
 PTR_Value ValueEdgeSet::eq(const Value& right)       const { return right.eq(*this); } // ==
-PTR_Value ValueEdgeSet::eq(const ValueEdgeSet& left) const { return PTR_Value(new ValueBool(left.m_edges == m_edges)); }
+PTR_Value ValueEdgeSet::eq(const ValueEdgeSet& left) const { return (left.m_edges == m_edges) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 PTR_Value ValueEdgeSet::ne(const Value& right)       const { return right.ne(*this); } // !=
-PTR_Value ValueEdgeSet::ne(const ValueEdgeSet& left) const { return PTR_Value(new ValueBool(left.m_edges == m_edges)); }
+PTR_Value ValueEdgeSet::ne(const ValueEdgeSet& left) const { return (left.m_edges != m_edges) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 PTR_Value ValueEdgeSet::le(const Value& right)       const { return right.le(*this); } // <=
 PTR_Value ValueEdgeSet::ge(const Value& right)       const { return right.ge(*this); } // >=
 PTR_Value ValueEdgeSet::lt(const Value& right)       const { return right.lt(*this); } // <
 PTR_Value ValueEdgeSet::gt(const Value& right)       const { return right.gt(*this); } // >
 PTR_Value ValueEdgeSet::member(const Value& right)   const { return right.member(*this); } // .
 PTR_Value ValueEdgeSet::index(const Value& right)    const { return right.index(*this); } // []
-PTR_Value ValueEdgeSet::logNOT(void)                 const { return PTR_Value(new ValueBool(m_edges.empty())); } // !
+PTR_Value ValueEdgeSet::logNOT(void)                 const { return (m_edges.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !

@@ -1,6 +1,4 @@
 /*
- *      nodeblock.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -67,7 +65,7 @@ CountPtr<Value> NodeBlock::execute(void)
 	for(it = m_commands.begin(); it != m_commands.end(); it++)
 		(*it)->execute();
 
-	return CountPtr<Value>(new ValueNull());
+	return VALUENULL;
 }
 
 void NodeBlock::dump(ostream& os, uint indent) const

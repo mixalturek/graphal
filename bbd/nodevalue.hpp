@@ -29,6 +29,7 @@ class NodeValue : public Node
 {
 public:
 	NodeValue(Value* value);
+	NodeValue(CountPtr<Value> value);
 	virtual ~NodeValue();
 
 	virtual CountPtr<Value> execute(void);

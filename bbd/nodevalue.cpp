@@ -29,6 +29,13 @@ NodeValue::NodeValue(Value* value)
 	: Node(),
 	m_value(value)
 {
+	assert(value != NULL);
+}
+
+NodeValue::NodeValue(CountPtr<Value> value)
+	: Node(),
+	m_value(value)
+{
 
 }
 

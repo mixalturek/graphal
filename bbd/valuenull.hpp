@@ -1,6 +1,4 @@
 /*
- *      valuenull.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -26,11 +24,22 @@
 #include "general.hpp"
 #include "value.hpp"
 
-class ValueNull: public Value
+#define VALUENULL ValueNull::getInstance()
+
+// Singleton
+class ValueNull : public Value
 {
 public:
+	static inline CountPtr<Value>& getInstance(void)
+	{
+		return m_instance;
+	}
+
+private:
 	ValueNull();
 	virtual ~ValueNull();
+	ValueNull(const ValueNull& object);
+	ValueNull& operator=(const ValueNull& object);
 
 public:
 	virtual bool     toBool(void) const { return false; }
@@ -55,6 +64,9 @@ public:
 	virtual PTR_Value member(const Value& right) const; // .
 	virtual PTR_Value index(const Value&  right) const; // []
 	virtual PTR_Value logNOT(void)               const; // !
+
+private:
+	static CountPtr<Value> m_instance;
 };
 
 ostream& operator<<(ostream& os, const ValueNull& node);

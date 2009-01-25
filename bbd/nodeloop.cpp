@@ -1,6 +1,4 @@
 /*
- *      nodeloop.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -36,7 +34,7 @@
 NodeLoop::NodeLoop(Node* init, Node* condition, Node* inc, Node* body)
 	: Node(),
 	m_init((init != NULL) ? init : new NodeEmptyCommand()),
-	m_condition((condition != NULL) ? condition : new NodeValue(new ValueBool(true))),
+	m_condition((condition != NULL) ? condition : new NodeValue(VALUEBOOL_TRUE)),
 	m_inc((inc != NULL) ? inc : new NodeEmptyCommand()),
 	m_body((body != NULL) ? body : new NodeEmptyCommand())
 {
@@ -89,7 +87,7 @@ CountPtr<Value> NodeLoop::execute(void)
 		// Only the exception jump is needed
 	}
 
-	return CountPtr<Value>(new ValueNull());
+	return VALUENULL;
 }
 
 void NodeLoop::dump(ostream& os, uint indent) const

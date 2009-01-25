@@ -1,6 +1,4 @@
 /*
- *      nodefunctioncall.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -58,7 +56,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 	{
 		// TODO: position
 		ERROR << _("Function ") << ID2STR(m_name) << _("() has not been declared") << endl;
-		return CountPtr<Value>(new ValueNull());
+		return VALUENULL;
 	}
 
 	const list<identifier>& names = function->getParameterNames();
@@ -89,12 +87,12 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 	{
 		// TODO: position, declared in
 		ERROR << _("Wrong number of parameters has been passed to function ") << ID2STR(m_name) << "(" << names << ")" << endl;
-		return CountPtr<Value>(new ValueNull());
+		return VALUENULL;
 	}
 
 	// Should never be called
 	assert(false);
-	return CountPtr<Value>(new ValueNull());
+	return VALUENULL;
 }
 
 void NodeFunctionCall::dump(ostream& os, uint indent) const

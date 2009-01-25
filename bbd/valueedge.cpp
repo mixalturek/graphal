@@ -78,13 +78,13 @@ PTR_Value ValueEdge::mult(const Value& right)  const { return right.mult(*this);
 PTR_Value ValueEdge::div(const Value& right)   const { return right.div(*this); } // /
 PTR_Value ValueEdge::mod(const Value& right)   const { return right.mod(*this); } // %
 PTR_Value ValueEdge::eq(const Value& right)    const { return right.eq(*this); } // ==
-PTR_Value ValueEdge::eq(const ValueEdge& left) const { return PTR_Value(new ValueBool(&left == this)); }
+PTR_Value ValueEdge::eq(const ValueEdge& left) const { return (&left == this) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 PTR_Value ValueEdge::ne(const Value& right)    const { return right.ne(*this); } // !=
-PTR_Value ValueEdge::ne(const ValueEdge& left) const { return PTR_Value(new ValueBool(&left != this)); }
+PTR_Value ValueEdge::ne(const ValueEdge& left) const { return (&left != this) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 PTR_Value ValueEdge::le(const Value& right)    const { return right.le(*this); } // <=
 PTR_Value ValueEdge::ge(const Value& right)    const { return right.ge(*this); } // >=
 PTR_Value ValueEdge::lt(const Value& right)    const { return right.lt(*this); } // <
 PTR_Value ValueEdge::gt(const Value& right)    const { return right.gt(*this); } // >
 PTR_Value ValueEdge::member(const Value& right) const { return right.member(*this); } // .
 PTR_Value ValueEdge::index(const Value& right) const { return right.index(*this); } // []
-PTR_Value ValueEdge::logNOT(void)              const { return PTR_Value(new ValueBool(false)); } // !
+PTR_Value ValueEdge::logNOT(void)              const { return VALUEBOOL_FALSE; } // !

@@ -1,6 +1,4 @@
 /*
- *      nodeemptycommand.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -43,7 +41,7 @@ NodeEmptyCommand::~NodeEmptyCommand()
 
 CountPtr<Value> NodeEmptyCommand::execute(void)
 {
-	return CountPtr<Value>(new ValueNull());
+	return VALUENULL;
 }
 
 void NodeEmptyCommand::dump(ostream& os, uint indent) const

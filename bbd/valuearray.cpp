@@ -66,7 +66,7 @@ string ValueArray::toString(void) const
 
 void ValueArray::resize(uint newsize)
 {
-	m_val.resize(newsize, CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueNull()))));
+	m_val.resize(newsize, CountPtr<Value>(new ValueReference(VALUENULL)));
 }
 
 
@@ -78,7 +78,7 @@ CountPtr<Value> ValueArray::getItem(uint pos) const
 	{
 		WARN << _("Index out of bounds (size: ") << m_val.size()
 			<< _(", index: ") << pos << ")" << endl;
-		return CountPtr<Value>(new ValueNull());
+		return VALUENULL;
 	}
 }
 
@@ -130,13 +130,13 @@ PTR_Value ValueArray::mult(const Value& right)    const { return right.mult(*thi
 PTR_Value ValueArray::div(const Value& right)     const { return right.div(*this); } // /
 PTR_Value ValueArray::mod(const Value& right)     const { return right.mod(*this); } // %
 PTR_Value ValueArray::eq(const Value& right)      const { return right.eq(*this); } // ==
-PTR_Value ValueArray::eq(const ValueArray& /*left*/)  const { return PTR_Value(new ValueBool(false /*left.getVal() == m_val*/)); }// TODO
+PTR_Value ValueArray::eq(const ValueArray& /*left*/) const { return VALUEBOOL_FALSE; }// TODO
 PTR_Value ValueArray::ne(const Value& right)      const { return right.ne(*this); } // !=
-PTR_Value ValueArray::ne(const ValueArray& /*left*/)  const { return PTR_Value(new ValueBool(true /*left.getVal() != m_val*/)); }
+PTR_Value ValueArray::ne(const ValueArray& /*left*/) const { return VALUEBOOL_TRUE; }
 PTR_Value ValueArray::le(const Value& right)      const { return right.le(*this); } // <=
 PTR_Value ValueArray::ge(const Value& right)      const { return right.ge(*this); } // >=
 PTR_Value ValueArray::lt(const Value& right)      const { return right.lt(*this); } // <
 PTR_Value ValueArray::gt(const Value& right)      const { return right.gt(*this); } // >
 PTR_Value ValueArray::member(const Value& right)  const { return right.member(*this); } // .
 PTR_Value ValueArray::index(const Value& right)   const { return right.index(*this); } // []
-PTR_Value ValueArray::logNOT(void)                const { return PTR_Value(new ValueBool(m_val.empty())); } // !
+PTR_Value ValueArray::logNOT(void)                const { return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !

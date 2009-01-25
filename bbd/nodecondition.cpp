@@ -1,6 +1,4 @@
 /*
- *      nodecondition.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -62,10 +60,8 @@ CountPtr<Value> NodeCondition::execute(void)
 
 	if(m_condition->execute()->toBool())
 		return m_if_section->execute();
-	else if(m_else_section != NULL)
-		return m_else_section->execute();
 	else
-		return CountPtr<Value>(new ValueNull());
+		return m_else_section->execute();
 }
 
 void NodeCondition::dump(ostream& os, uint indent) const

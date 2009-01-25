@@ -34,7 +34,7 @@ class Logger : public BaseObject
 public:
 	static inline Logger& getInstance(void)
 	{
-		return instance;
+		return m_instance;
 	}
 
 	ostream& error(void)
@@ -60,7 +60,7 @@ public:
 	virtual void dump(ostream& os, uint indent) const;
 
 private:
-	static Logger instance;
+	static Logger m_instance;
 
 private:
 	Logger(void);
