@@ -26,6 +26,7 @@
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
 #include "valuereference.hpp"
+#include "valueidentifier.hpp"
 #include "valuegraph.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
@@ -119,6 +120,7 @@ void Tests::run(void)
 	failed += !testValueStruct();
 	failed += !testValueString();
 	failed += !testValueReference();
+	failed += !testValueIdentifier();
 	failed += !testGraph();
 	failed += !testGraphSet();
 	failed += !testGraphInvertEdgesOrientation();
@@ -232,18 +234,59 @@ bool Tests::testValueReference(void)
 {
 	bool result = true;
 
-	PTR_Value var_left(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueInt(5)))));
-	PTR_Value var_right(new ValueInt(3));
+	PTR_Value valref(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueInt(5)))));
+	PTR_Value valref2(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueFloat(5.5)))));
+	PTR_Value val(new ValueInt(3));
 
-	verify(var_left->add(*var_right)->toString() == "8");
-	verify(var_left->sub(*var_right)->toString() == "2");
+	verify(valref->add(*val)->toString() == "8");
+	verify(valref->sub(*val)->toString() == "2");
+	verify(val->add(*valref)->toString() == "8");
+	verify(val->sub(*valref)->toString() == "-2");
+	verify(valref->add(*valref2)->toString() == "10.5");
+	verify(valref->sub(*valref2)->toString() == "-0.5");
 
-	ValueReference* ref = dynamic_cast<ValueReference*>(&(*var_left));
+	ValueReference* ref = dynamic_cast<ValueReference*>(&(*valref));
 	assert(ref != NULL);
 	ref->assign(CountPtr<Value>(new ValueFloat(3.14)));
 
-	verify(var_left->add(*var_right)->toString() == "6.14");
-	verify(var_left->sub(*var_right)->toString() == "0.14");
+	verify(valref->add(*val)->toString() == "6.14");
+	verify(valref->sub(*val)->toString() == "0.14");
+	verify(val->add(*valref)->toString() == "6.14");
+	verify(val->sub(*valref)->toString() == "-0.14");
+	verify(valref->add(*valref2)->toString() == "8.64");
+	verify(valref->sub(*valref2)->toString() == "-2.36");
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testValueIdentifier(void)
+{
+	bool result = true;
+
+	PTR_Value valref(CountPtr<Value>(new ValueIdentifier(STR2ID("var"))));
+	PTR_Value valref2(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueFloat(5.5)))));
+	PTR_Value val(new ValueInt(3));
+
+	ValueIdentifier* ref = dynamic_cast<ValueIdentifier*>(&(*valref));
+	assert(ref != NULL);
+	ref->assign(CountPtr<Value>(new ValueInt(5)));
+
+	verify(valref->add(*val)->toString() == "8");
+	verify(valref->sub(*val)->toString() == "2");
+	verify(val->add(*valref)->toString() == "8");
+	verify(val->sub(*valref)->toString() == "-2");
+	verify(valref->add(*valref2)->toString() == "10.5");
+	verify(valref->sub(*valref2)->toString() == "-0.5");
+
+	ref->assign(CountPtr<Value>(new ValueFloat(3.14)));
+
+	verify(valref->add(*val)->toString() == "6.14");
+	verify(valref->sub(*val)->toString() == "0.14");
+	verify(val->add(*valref)->toString() == "6.14");
+	verify(val->sub(*valref)->toString() == "-0.14");
+	verify(valref->add(*valref2)->toString() == "8.64");
+	verify(valref->sub(*valref2)->toString() == "-2.36");
 
 	return testResult(__FUNCTION__, result);
 }

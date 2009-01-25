@@ -18,47 +18,32 @@
  */
 
 
-#ifndef VARIABLE_HPP
-#define VARIABLE_HPP
+#ifndef VALUEIDENTIFIER_HPP
+#define VALUEIDENTIFIER_HPP
 
 #include "general.hpp"
-#include "baseobject.hpp"
-#include "countptr.hpp"
-
-class Value;
-class ValueNull;
-class ValueBool;
-class ValueInt;
-class ValueFloat;
-class ValueString;
-class ValueStruct;
-class ValueArray;
-class ValueReference;
-class ValueIdentifier;
-class ValueGraph;
-class ValueVertex;
-class ValueEdge;
-class ValueVertexSet;
-class ValueEdgeSet;
+#include "value.hpp"
+#include "context.hpp"
 
 
-typedef CountPtr<Value> PTR_Value;
-
-
-class Value : public BaseObject
+class ValueIdentifier : public Value
 {
 public:
-	Value();
-	virtual ~Value();
+	ValueIdentifier(identifier val);
+	virtual ~ValueIdentifier();
 
 public:
-	virtual bool toBool(void)      const = 0;
-	virtual bool isNull(void)      const { return false; }
-	virtual bool isReference(void) const { return false; }
-	virtual string toString(void)  const = 0;
+	CountPtr<Value>   getVal(void) const { return CONTEXT.getLocalVariable(m_val); }
+	virtual bool      toBool(void) const { return CONTEXT.getLocalVariable(m_val)->toBool(); }
+	virtual bool isReference(void) const { return true; }
+	virtual string  toString(void) const { return CONTEXT.getLocalVariable(m_val)->toString(); }
+
+	void assign(CountPtr<Value> val) { CONTEXT.setLocalVariable(m_val, val); }
+
+	virtual void dump(ostream& os, uint indent) const;
 
 	// +
-	virtual PTR_Value add(const Value&         right) const = 0;
+	virtual PTR_Value add(const Value&         right) const;
 	virtual PTR_Value add(const ValueNull&      left) const;
 	virtual PTR_Value add(const ValueBool&      left) const;
 	virtual PTR_Value add(const ValueInt&       left) const;
@@ -74,7 +59,7 @@ public:
 	virtual PTR_Value add(const ValueEdgeSet&   left) const;
 
 	// -
-	virtual PTR_Value sub(const Value&         right) const = 0;
+	virtual PTR_Value sub(const Value&         right) const;
 	virtual PTR_Value sub(const ValueNull&      left) const;
 	virtual PTR_Value sub(const ValueBool&      left) const;
 	virtual PTR_Value sub(const ValueInt&       left) const;
@@ -90,7 +75,7 @@ public:
 	virtual PTR_Value sub(const ValueEdgeSet&   left) const;
 
 	// *
-	virtual PTR_Value mult(const Value&         right) const = 0;
+	virtual PTR_Value mult(const Value&         right) const;
 	virtual PTR_Value mult(const ValueNull&      left) const;
 	virtual PTR_Value mult(const ValueBool&      left) const;
 	virtual PTR_Value mult(const ValueInt&       left) const;
@@ -106,7 +91,7 @@ public:
 	virtual PTR_Value mult(const ValueEdgeSet&   left) const;
 
 	// /
-	virtual PTR_Value div(const Value&         right) const = 0;
+	virtual PTR_Value div(const Value&         right) const;
 	virtual PTR_Value div(const ValueNull&      left) const;
 	virtual PTR_Value div(const ValueBool&      left) const;
 	virtual PTR_Value div(const ValueInt&       left) const;
@@ -122,7 +107,7 @@ public:
 	virtual PTR_Value div(const ValueEdgeSet&   left) const;
 
 	// %
-	virtual PTR_Value mod(const Value&         right) const = 0;
+	virtual PTR_Value mod(const Value&         right) const;
 	virtual PTR_Value mod(const ValueNull&      left) const;
 	virtual PTR_Value mod(const ValueBool&      left) const;
 	virtual PTR_Value mod(const ValueInt&       left) const;
@@ -138,7 +123,7 @@ public:
 	virtual PTR_Value mod(const ValueEdgeSet&   left) const;
 
 	// ==
-	virtual PTR_Value eq(const Value&         right) const = 0;
+	virtual PTR_Value eq(const Value&         right) const;
 	virtual PTR_Value eq(const ValueNull&      left) const;
 	virtual PTR_Value eq(const ValueBool&      left) const;
 	virtual PTR_Value eq(const ValueInt&       left) const;
@@ -154,7 +139,7 @@ public:
 	virtual PTR_Value eq(const ValueEdgeSet&   left) const;
 
 	// !=
-	virtual PTR_Value ne(const Value&         right) const = 0;
+	virtual PTR_Value ne(const Value&         right) const;
 	virtual PTR_Value ne(const ValueNull&      left) const;
 	virtual PTR_Value ne(const ValueBool&      left) const;
 	virtual PTR_Value ne(const ValueInt&       left) const;
@@ -170,7 +155,7 @@ public:
 	virtual PTR_Value ne(const ValueEdgeSet&   left) const;
 
 	// <=
-	virtual PTR_Value le(const Value&         right) const = 0;
+	virtual PTR_Value le(const Value&         right) const;
 	virtual PTR_Value le(const ValueNull&      left) const;
 	virtual PTR_Value le(const ValueBool&      left) const;
 	virtual PTR_Value le(const ValueInt&       left) const;
@@ -186,7 +171,7 @@ public:
 	virtual PTR_Value le(const ValueEdgeSet&   left) const;
 
 	// >=
-	virtual PTR_Value ge(const Value&         right) const = 0;
+	virtual PTR_Value ge(const Value&         right) const;
 	virtual PTR_Value ge(const ValueNull&      left) const;
 	virtual PTR_Value ge(const ValueBool&      left) const;
 	virtual PTR_Value ge(const ValueInt&       left) const;
@@ -202,7 +187,7 @@ public:
 	virtual PTR_Value ge(const ValueEdgeSet&   left) const;
 
 	// <
-	virtual PTR_Value lt(const Value&         right) const = 0;
+	virtual PTR_Value lt(const Value&         right) const;
 	virtual PTR_Value lt(const ValueNull&      left) const;
 	virtual PTR_Value lt(const ValueBool&      left) const;
 	virtual PTR_Value lt(const ValueInt&       left) const;
@@ -218,7 +203,7 @@ public:
 	virtual PTR_Value lt(const ValueEdgeSet&   left) const;
 
 	// >
-	virtual PTR_Value gt(const Value&         right) const = 0;
+	virtual PTR_Value gt(const Value&         right) const;
 	virtual PTR_Value gt(const ValueNull&      left) const;
 	virtual PTR_Value gt(const ValueBool&      left) const;
 	virtual PTR_Value gt(const ValueInt&       left) const;
@@ -234,7 +219,7 @@ public:
 	virtual PTR_Value gt(const ValueEdgeSet&   left) const;
 
 	// . (member access)
-	virtual PTR_Value member(const Value&     right) const = 0;
+	virtual PTR_Value member(const Value&         right) const;
 	virtual PTR_Value member(const ValueNull&      left) const;
 	virtual PTR_Value member(const ValueBool&      left) const;
 	virtual PTR_Value member(const ValueInt&       left) const;
@@ -250,7 +235,7 @@ public:
 	virtual PTR_Value member(const ValueEdgeSet&   left) const;
 
 	// [] index
-	virtual PTR_Value index(const Value&     right) const = 0;
+	virtual PTR_Value index(const Value&         right) const;
 	virtual PTR_Value index(const ValueNull&      left) const;
 	virtual PTR_Value index(const ValueBool&      left) const;
 	virtual PTR_Value index(const ValueInt&       left) const;
@@ -265,15 +250,12 @@ public:
 	virtual PTR_Value index(const ValueVertexSet& left) const;
 	virtual PTR_Value index(const ValueEdgeSet&   left) const;
 
-	// !
-	virtual PTR_Value logNOT(void) const = 0;
+	virtual PTR_Value logNOT(void)               const; // !
 
-	// - (unary)
-	virtual PTR_Value subUn(void) const;
-
-	// &&, ||
-	PTR_Value logAND(const Value& right) const;
-	PTR_Value logOR (const Value& right) const;
+private:
+	identifier m_val;
 };
 
-#endif /* VARIABLE_HPP */
+ostream& operator<<(ostream& os, const ValueReference& node);
+
+#endif // VALUEIDENTIFIER_HPP

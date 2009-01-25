@@ -50,6 +50,7 @@ BaseObject
 		ValueInt
 		ValueFloat
 		ValueReference
+		ValueIdentifier
 		ValueGraph
 		ValueVertex
 		ValueEdge

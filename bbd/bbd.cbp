@@ -160,6 +160,8 @@
 		<Unit filename="valuefloat.hpp" />
 		<Unit filename="valuegraph.cpp" />
 		<Unit filename="valuegraph.hpp" />
+		<Unit filename="valueidentifier.cpp" />
+		<Unit filename="valueidentifier.hpp" />
 		<Unit filename="valueint.cpp" />
 		<Unit filename="valueint.hpp" />
 		<Unit filename="valuenull.cpp" />
