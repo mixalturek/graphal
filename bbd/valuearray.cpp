@@ -94,7 +94,10 @@ CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 	if(val->isReference())
 		return m_val[pos] = val;
 	else
-		return m_val[pos] = CountPtr<Value>(new ValueReference(val));
+	{
+		m_val[pos] = CountPtr<Value>(new ValueReference(val));
+		return val;
+	}
 }
 
 

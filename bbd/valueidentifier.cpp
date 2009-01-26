@@ -30,6 +30,7 @@
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
 #include "valuevertexset.hpp"
+#include "logger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -248,20 +249,20 @@ PTR_Value ValueIdentifier::gt(const ValueEdge& left)        const { return left.
 PTR_Value ValueIdentifier::gt(const ValueVertexSet& left)   const { return left.gt(*getVal()); }
 PTR_Value ValueIdentifier::gt(const ValueEdgeSet& left)     const { return left.gt(*getVal()); }
 
-PTR_Value ValueIdentifier::member(const Value& right)         const { return right.member(*this); } // .
-PTR_Value ValueIdentifier::member(const ValueNull& left)      const { return left.member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueBool& left)      const { return left.member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueInt& left)       const { return left.member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueFloat& left)     const { return left.member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueString& left)    const { return left.member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueStruct& left)    const { return left.member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueReference& left) const { return left.getVal()->member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueIdentifier& left)const { return left.getVal()->member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueGraph& left)     const { return left.member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueVertex& left)    const { return left.member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueEdge& left)      const { return left.member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueVertexSet& left) const { return left.member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueEdgeSet& left)   const { return left.member(*getVal()); }
+PTR_Value ValueIdentifier::member(const Value& right)             const { return right.member(*this); } // .
+PTR_Value ValueIdentifier::member(const ValueNull& /*left*/)      const { WARN << _("Member access to the NULL variable, operation is not supported") << endl; return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueBool& /*left*/)      const { WARN << _("Member access to the bool variable, operation is not supported") << endl; return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueInt& /*left*/)       const { WARN << _("Member access to the int variable, operation is not supported") << endl; return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueFloat& /*left*/)     const { WARN << _("Member access to the float variable, operation is not supported") << endl; return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueString& /*left*/)    const { WARN << _("Member access to the string variable, operation is not supported") << endl; return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueStruct& left)        const { return const_cast<ValueStruct&>(left).getItem(m_val); }
+PTR_Value ValueIdentifier::member(const ValueReference& left)     const { return left.getVal()->member(*getVal()); }
+PTR_Value ValueIdentifier::member(const ValueIdentifier& left)    const { return left.getVal()->member(*getVal()); }
+PTR_Value ValueIdentifier::member(const ValueGraph& /*left*/)     const { WARN << _("Member access to the graph variable, operation is not supported") << endl; return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueVertex& left)        const { return const_cast<ValueVertex&>(left).getItem(m_val); }
+PTR_Value ValueIdentifier::member(const ValueEdge& left)          const { return const_cast<ValueEdge&>(left).getItem(m_val); }
+PTR_Value ValueIdentifier::member(const ValueVertexSet& /*left*/) const { WARN << _("Member access to the VertexSet variable, operation is not supported") << endl; return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueEdgeSet& /*left*/)   const { WARN << _("Member access to the EdgeSet variable, operation is not supported") << endl; return VALUENULL; }
 
 PTR_Value ValueIdentifier::index(const Value& right)         const { return right.index(*this); } // []
 PTR_Value ValueIdentifier::index(const ValueNull& left)      const { return left.index(*getVal()); }

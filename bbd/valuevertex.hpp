@@ -86,8 +86,8 @@ public:
 	virtual PTR_Value ge(const Value&      right) const; // >=
 	virtual PTR_Value lt(const Value&      right) const; // <
 	virtual PTR_Value gt(const Value&      right) const; // >
-	virtual PTR_Value member(const Value&  right) const; // .  // TODO: implementation
-	virtual PTR_Value index(const Value&   right) const; // [] // TODO: implementation
+	virtual PTR_Value member(const Value&  right) const; // .
+	virtual PTR_Value index(const Value&   right) const; // []
 	virtual PTR_Value logNOT(void)                const; // !
 
 private:

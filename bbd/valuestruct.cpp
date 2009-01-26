@@ -77,9 +77,15 @@ CountPtr<Value> ValueStruct::setItem(identifier name, CountPtr<Value> val)
 		m_val.erase(it);
 
 	if(val->isReference())
-		return m_val.insert(pair<identifier, CountPtr<Value> >(name, val)).first->second;
+	{
+		m_val.insert(pair<identifier, CountPtr<Value> >(name, val));
+		return val;
+	}
 	else
-		return m_val.insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(val)))).first->second;
+	{
+		m_val.insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(val))));
+		return val;
+	}
 }
 
 
