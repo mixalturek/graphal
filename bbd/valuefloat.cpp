@@ -194,7 +194,7 @@ PTR_Value ValueFloat::index(const Value& right)     const { return right.index(*
 PTR_Value ValueFloat::index(const ValueString& left) const
 {
 	if(m_val < left.getVal().length())
-		return PTR_Value(new ValueString(char2string(left.getVal()[m_val])));
+		return PTR_Value(new ValueString(char2string(left.getVal()[(uint)m_val])));
 	else
 	{
 		WARN << _("Index out of bounds (size: ") << left.getVal().length()
@@ -203,4 +203,4 @@ PTR_Value ValueFloat::index(const ValueString& left) const
 	}
 }
 
-PTR_Value ValueFloat::index(const ValueArray& left) const { return left.getItem(m_val); }
+PTR_Value ValueFloat::index(const ValueArray& left) const { return left.getItem((uint)m_val); }

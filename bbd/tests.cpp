@@ -55,14 +55,19 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-// TODO: check __STRING(expr) in non-Linux OS, see /usr/include/assert.h
-// TODO: Try to use VERIFY() from MFC in MS Windows
-
 // Verify macro, like assert but without exiting
+#ifdef _WIN32
+#define verify(expr)                                                          \
+	result = result && (expr);                                                \
+	if(!(expr))                                                               \
+		ERROR << __FILE__ << ":" << __LINE__ << endl
+#else
+// __STRING(expr), see /usr/include/assert.h
 #define verify(expr)                                                          \
 	result = result && (expr);                                                \
 	if(!(expr))                                                               \
 		ERROR << __FILE__ << ":" << __LINE__ << "   " << __STRING(expr) << endl
+#endif
 
 
 /////////////////////////////////////////////////////////////////////////////
