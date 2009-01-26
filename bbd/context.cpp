@@ -26,6 +26,7 @@
 #include "nodefunctioncall.hpp"
 #include "valuearray.hpp"
 #include "valuestring.hpp"
+#include "valuereference.hpp"
 #include "nodevalue.hpp"
 #include "nodeblock.hpp"
 #include "logger.hpp"
@@ -97,8 +98,9 @@ CountPtr<Value> Context::getLocalVariable(identifier name)
 	else
 	{
 		// TODO: position in code
-		WARN << _("Variable has not been initialized: ") << ID2STR(name) << endl;
-		return VALUENULL;
+		// WARN << _("Variable has not been initialized: ") << ID2STR(name) << endl;
+		// Variable have to be created because of assigning
+		return m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(VALUENULL)))).first->second;
 	}
 }
 
@@ -111,8 +113,16 @@ CountPtr<Value> Context::setLocalVariable(identifier name, CountPtr<Value> val)
 	if(it != m_local_variables.back().end())
 		m_local_variables.back().erase(it);
 
-	m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, val));
-	return val;
+	if(val->isReference())
+	{
+		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, val));
+		return val;
+	}
+	else
+	{
+		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(val))));
+		return val;
+	}
 }
 
 
@@ -174,7 +184,7 @@ ostream& operator<<(ostream& os, const Context& node)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-int Context::execute(int argc, char** argv)
+int Context::executeScriptMain(int argc, char** argv)
 {
 	ValueArray* argv_array = new ValueArray();
 	argv_array->resize(argc);
@@ -183,8 +193,12 @@ int Context::execute(int argc, char** argv)
 		argv_array->setItem(i, CountPtr<Value>(new ValueString(argv[i])));
 
 	NodeFunctionCall main(getStringTable()->getID("main"), new NodeBlock(new NodeValue(argv_array)));
-	string str = main.execute()->toString();
-	cout << str << endl;
+
+	CountPtr<Value> main_retval = main.execute();
+
+	INFO << _("*** EXITING SCRIPT MAIN, OK ***") << endl;
+	INFO << _("Return value: ") << main_retval->toString() << endl;
+	// main_retval->dump(cout, 0);
 
 	return 0;
 }

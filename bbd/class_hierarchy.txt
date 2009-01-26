@@ -40,7 +40,6 @@ BaseObject
 		NodeEmptyCommand
 		NodeFunctionCall
 		NodeFunction
-		NodeVariable
 	Value (interface)
 		ValueNull (singleton)
 		ValueString

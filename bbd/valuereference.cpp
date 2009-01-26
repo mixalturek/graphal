@@ -52,6 +52,20 @@ ValueReference::~ValueReference()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+CountPtr<Value> ValueReference::getReferredValue(void) const
+{
+	CountPtr<Value> tmp(m_val);
+
+	while(tmp->isReference())
+		tmp = tmp->getReferredValue();
+
+	return tmp;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueReference::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);

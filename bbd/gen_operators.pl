@@ -313,40 +313,15 @@ END_OF_CPP
 	close FILE_CPP;
 }
 
-sub generateAssignOperatorClass
-{
-	my ($classname, $operation) = @_;
-
-	my $code = <<END_OF_CODE;
-NodeVariable* var = dynamic_cast<NodeVariable*>(m_left);
-	assert(var != NULL);// TODO: Use if-then instead of assert!
-	$operation
-END_OF_CODE
-
-	generateBinaryOperatorClass($classname, $code, "\n#include <cassert>\n#include \"nodevariable.hpp\"");
-}
-
-sub generateIncrementOperatorClass
-{
-	my ($classname, $operation) = @_;
-
-	my $code = <<END_OF_CODE;
-NodeVariable* var = dynamic_cast<NodeVariable*>(m_next);
-	assert(var != NULL);// TODO: Use if-then instead of assert!
-	$operation
-END_OF_CODE
-
-	generateUnaryOperatorClass($classname, $code, "\n#include <cassert>\n#include \"nodevariable.hpp\"\n#include \"valueint.hpp\"");
-}
 
 generateUnaryOperatorClass('NodeUnarySub', 'return m_next->execute()->subUn();');
 generateUnaryOperatorClass('NodeUnaryNot', 'return m_next->execute()->logNOT();');
 generateUnaryOperatorClass('NodeUnaryReturn', 'throw m_next->execute();');
 
-generateIncrementOperatorClass('NodeUnaryIncPre', 'return var->setValue(m_next->execute()->add(ValueInt(1)));');
-generateIncrementOperatorClass('NodeUnaryIncPost', "CountPtr<Value> tmp = m_next->execute();\n\tvar->setValue(tmp->add(ValueInt(1)));\n\treturn tmp;");
-generateIncrementOperatorClass('NodeUnaryDecPre', 'return var->setValue(m_next->execute()->sub(ValueInt(1)));');
-generateIncrementOperatorClass('NodeUnaryDecPost', "CountPtr<Value> tmp = m_next->execute();\n\tvar->setValue(tmp->sub(ValueInt(1)));\n\treturn tmp;");
+generateUnaryOperatorClass('NodeUnaryIncPre', "CountPtr<Value> tmp(m_next->execute());\n\treturn tmp->assign(tmp->add(*VALUEBOOL_TRUE));", "\n#include \"valuebool.hpp\"");
+generateUnaryOperatorClass('NodeUnaryIncPost', "CountPtr<Value> tmp(m_next->execute());\n\tCountPtr<Value> ret(tmp->getReferredValue());\n\ttmp->assign(tmp->add(*VALUEBOOL_TRUE));\n\treturn ret;", "\n#include \"valuebool.hpp\"");
+generateUnaryOperatorClass('NodeUnaryDecPre', "CountPtr<Value> tmp(m_next->execute());\n\treturn tmp->assign(tmp->sub(*VALUEBOOL_TRUE));", "\n#include \"valuebool.hpp\"");
+generateUnaryOperatorClass('NodeUnaryDecPost', "CountPtr<Value> tmp(m_next->execute());\n\tCountPtr<Value> ret(tmp->getReferredValue());\n\ttmp->assign(tmp->sub(*VALUEBOOL_TRUE));\n\treturn ret;", "\n#include \"valuebool.hpp\"");
 
 generateBinaryOperatorClass('NodeBinaryAdd', 'return m_left->execute()->add(*(m_right->execute()));');
 generateBinaryOperatorClass('NodeBinarySub', 'return m_left->execute()->sub(*(m_right->execute()));');
@@ -364,11 +339,11 @@ generateBinaryOperatorClass('NodeBinaryOr', 'return m_left->execute()->logOR(*(m
 generateBinaryOperatorClass('NodeBinaryMember', 'return m_left->execute()->member(*(m_right->execute()));');
 generateBinaryOperatorClass('NodeBinaryIndex', 'return m_left->execute()->index(*(m_right->execute()));');
 
-generateAssignOperatorClass('NodeBinaryAss', 'return var->setValue(m_right->execute());');
-generateAssignOperatorClass('NodeBinaryAssAdd', 'return var->setValue(m_left->execute()->add(*(m_right->execute())));');
-generateAssignOperatorClass('NodeBinaryAssSub', 'return var->setValue(m_left->execute()->sub(*(m_right->execute())));');
-generateAssignOperatorClass('NodeBinaryAssMult', 'return var->setValue(m_left->execute()->mult(*(m_right->execute())));');
-generateAssignOperatorClass('NodeBinaryAssDiv', 'return var->setValue(m_left->execute()->div(*(m_right->execute())));');
-generateAssignOperatorClass('NodeBinaryAssMod', 'return var->setValue(m_left->execute()->mod(*(m_right->execute())));');
+generateBinaryOperatorClass('NodeBinaryAss', 'return m_left->execute()->assign(m_right->execute());');
+generateBinaryOperatorClass('NodeBinaryAssAdd', "CountPtr<Value> tmp(m_left->execute());\n\treturn tmp->assign(tmp->add(*(m_right->execute())));");
+generateBinaryOperatorClass('NodeBinaryAssSub', "CountPtr<Value> tmp(m_left->execute());\n\treturn tmp->assign(tmp->sub(*(m_right->execute())));");
+generateBinaryOperatorClass('NodeBinaryAssMult', "CountPtr<Value> tmp(m_left->execute());\n\treturn tmp->assign(tmp->mult(*(m_right->execute())));");
+generateBinaryOperatorClass('NodeBinaryAssDiv', "CountPtr<Value> tmp(m_left->execute());\n\treturn tmp->assign(tmp->div(*(m_right->execute())));");
+generateBinaryOperatorClass('NodeBinaryAssMod', "CountPtr<Value> tmp(m_left->execute());\n\treturn tmp->assign(tmp->mod(*(m_right->execute())));");
 
 0;

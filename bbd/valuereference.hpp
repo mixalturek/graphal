@@ -38,7 +38,8 @@ public:
 	virtual bool isReference(void) const { return true; }
 	virtual string  toString(void) const { return m_val->toString(); }
 
-	void assign(CountPtr<Value> val) { m_val = val; }
+	virtual CountPtr<Value> assign(CountPtr<Value> val) { assert(!val->isReference()); return m_val = val; }
+	virtual CountPtr<Value> getReferredValue(void) const;
 
 	virtual void dump(ostream& os, uint indent) const;
 

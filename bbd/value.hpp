@@ -57,6 +57,9 @@ public:
 	virtual bool isReference(void) const { return false; }
 	virtual string toString(void)  const = 0;
 
+	virtual CountPtr<Value> assign(CountPtr<Value> val);
+	virtual CountPtr<Value> getReferredValue(void) const;
+
 	// +
 	virtual PTR_Value add(const Value&         right) const = 0;
 	virtual PTR_Value add(const ValueNull&      left) const;

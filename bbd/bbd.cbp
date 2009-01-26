@@ -137,8 +137,6 @@
 		<Unit filename="nodeunarysub.hpp" />
 		<Unit filename="nodevalue.cpp" />
 		<Unit filename="nodevalue.hpp" />
-		<Unit filename="nodevariable.cpp" />
-		<Unit filename="nodevariable.hpp" />
 		<Unit filename="parser.cpp" />
 		<Unit filename="parser.hpp" />
 		<Unit filename="parser.y" />

@@ -55,7 +55,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 	if(function == NULL)
 	{
 		// TODO: position
-		ERROR << _("Function ") << ID2STR(m_name) << _("() has not been declared") << endl;
+		ERROR << _("Function ") << ID2STR(m_name) << _("() has not been defined") << endl;
 		return VALUENULL;
 	}
 
@@ -68,7 +68,17 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 		// Evaluate parameters in the old function context
 		list<Node*>::iterator itc;
 		for(itc = m_parameters->m_commands.begin(); itc != m_parameters->m_commands.end(); itc++)
-			values.push_back((*itc)->execute());
+		{
+			CountPtr<Value> tmp((*itc)->execute());
+
+			if(tmp->isReference())
+			{
+				// Passing by value
+				values.push_back(tmp->getReferredValue());
+			}
+			else
+				values.push_back(tmp);
+		}
 
 		CONTEXT.pushLocal();
 			list<identifier>::const_iterator itn;
@@ -101,8 +111,7 @@ void NodeFunctionCall::dump(ostream& os, uint indent) const
 	os << "<FunctionCall name=\"" << ID2STR(m_name)
 		<< "\" id=\"" << m_name << "\">" << endl;
 
-	if(m_parameters != NULL)
-		m_parameters->dump(os, indent + 1);
+	m_parameters->dump(os, indent + 1);
 
 	dumpIndent(os, indent);
 	os << "</FunctionCall>" << endl;

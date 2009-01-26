@@ -40,7 +40,6 @@
 #include "nodebinarysub.hpp"
 #include "nodeblock.hpp"
 #include "nodecondition.hpp"
-#include "nodevariable.hpp"
 #include "stringtable.hpp"
 #include "countptr.hpp"
 #include "nodeemptycommand.hpp"
@@ -887,21 +886,22 @@ bool Tests::testNodeVariable(void)
 
 	string str;
 
-	NodeVariable* var0 = new NodeVariable(0);
-	NodeVariable* var1 = new NodeVariable(1);
+	ValueIdentifier* var0 = new ValueIdentifier(STR2ID("var0"));
+	ValueIdentifier* var1 = new ValueIdentifier(STR2ID("var1"));
 
-	var0->setValue(CountPtr<Value>(new ValueFloat(3.14f)));
-	var1->setValue(CountPtr<Value>(new ValueInt(15)));
+	var0->assign(CountPtr<Value>(new ValueFloat(3.14f)));
+	var1->assign(CountPtr<Value>(new ValueInt(15)));
 
-	NodeBinaryAdd add(new NodeValue(new ValueInt(10)), var0);
+	NodeBinaryAdd add(new NodeValue(new ValueInt(10)), new NodeValue(var0));
 	str = add.execute()->toString();
 	verify(str == "13.14");
 
-	NodeBinarySub sub(new NodeValue(new ValueInt(20)), var1);
+	NodeBinarySub sub(new NodeValue(new ValueInt(20)), new NodeValue(var1));
 	str = sub.execute()->toString();
 	verify(str == "5");
 
-	var1->setValue(CountPtr<Value>(new ValueFloat(3.5f)));
+	var1->assign(CountPtr<Value>(new ValueFloat(3.5f)));
+
 	str = sub.execute()->toString();
 	verify(str == "16.5");
 
@@ -1040,7 +1040,7 @@ bool Tests::testNodeFunction(void)
 	NodeFunction* func =
 		new NodeFunction(new list<identifier>(),
 			new NodeBinaryAss(
-				new NodeVariable(local_id),
+				new NodeValue(new ValueIdentifier(local_id)),
 				new NodeValue(new ValueInt(10))
 			),
 			func_id
@@ -1085,13 +1085,13 @@ bool Tests::testNodeFunction(void)
 
 	body->pushCommandToBack(
 		new NodeBinaryAss(
-			new NodeVariable(local_id),
+			new NodeValue(new ValueIdentifier(local_id)),
 			new NodeValue(new ValueInt(10))
 		)
 	);
 	body->pushCommandToBack(
 		new NodeUnaryReturn(
-			new NodeVariable(local_id)
+			new NodeValue(new ValueIdentifier(local_id))
 		)
 	);
 
@@ -1118,7 +1118,7 @@ bool Tests::testNodeFunction(void)
 	NodeBlock* params = new NodeBlock();
 	params->pushCommandToBack(
 		new NodeBinarySub(
-			new NodeVariable(number_id),
+			new NodeValue(new ValueIdentifier(number_id)),
 			new NodeValue(new ValueInt(1))
 		)
 	);
@@ -1127,7 +1127,7 @@ bool Tests::testNodeFunction(void)
 		new NodeFunction(param_names,
 			new NodeCondition(
 				new NodeBinaryLt(
-					new NodeVariable(number_id),
+					new NodeValue(new ValueIdentifier(number_id)),
 					new NodeValue(new ValueInt(2))
 				),
 				new NodeUnaryReturn(
@@ -1135,7 +1135,7 @@ bool Tests::testNodeFunction(void)
 				),
 				new NodeUnaryReturn(
 					new NodeBinaryMult(
-						new NodeVariable(number_id),
+						new NodeValue(new ValueIdentifier(number_id)),
 						new NodeFunctionCall(
 							factorial_id,
 							params

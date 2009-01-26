@@ -18,6 +18,7 @@
  */
 
 
+#include <stdexcept>
 #include "value.hpp"
 #include "valuenull.hpp"
 #include "valuebool.hpp"
@@ -30,7 +31,7 @@
 #include "valuegraph.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
-
+#include "logger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -60,6 +61,30 @@ PTR_Value Value::logAND(const Value& right) const
 PTR_Value Value::logOR(const Value& right) const
 {
 	return (this->toBool() || right.toBool()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> Value::assign(CountPtr<Value> /* val */)
+{
+	// TODO: location in the code
+	ERROR << _("lvalue required as left operand of assignment, attempt to assign to") << endl;
+	this->dump(cout, 1);// TODO: cout is bad
+	throw runtime_error(_("Operation not supported"));
+
+	return VALUENULL;
+}
+
+CountPtr<Value> Value::getReferredValue(void) const
+{
+	// TODO: location in the code
+	ERROR << _("Attemp to get referred value, value is not reference") << endl;
+	this->dump(cout, 1);// TODO: cout is bad
+	throw runtime_error(_("Operation not supported"));
+
+	return VALUENULL;
 }
 
 

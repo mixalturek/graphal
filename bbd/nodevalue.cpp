@@ -55,8 +55,11 @@ CountPtr<Value> NodeValue::execute(void)
 
 void NodeValue::dump(ostream& os, uint indent) const
 {
-	dumpIndent(os, indent);
-	os << "<NodeValue value=\"" << m_value->toString() << "\" />" << endl;
+//	dumpIndent(os, indent);
+//	os << "<NodeValue>" << endl;
+	m_value->dump(os, indent);
+//	dumpIndent(os, indent);
+//	os << "</NodeValue>" << endl;
 }
 
 ostream& operator<<(ostream& os, const NodeValue& node)

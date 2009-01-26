@@ -33,12 +33,14 @@ public:
 	virtual ~ValueIdentifier();
 
 public:
+	identifier       getName(void) const { return m_val; }
 	CountPtr<Value>   getVal(void) const { return CONTEXT.getLocalVariable(m_val); }
 	virtual bool      toBool(void) const { return CONTEXT.getLocalVariable(m_val)->toBool(); }
 	virtual bool isReference(void) const { return true; }
 	virtual string  toString(void) const { return CONTEXT.getLocalVariable(m_val)->toString(); }
 
-	void assign(CountPtr<Value> val) { CONTEXT.setLocalVariable(m_val, val); }
+	virtual CountPtr<Value> assign(CountPtr<Value> val) { return CONTEXT.setLocalVariable(m_val, val); }
+	virtual CountPtr<Value> getReferredValue(void) const;
 
 	virtual void dump(ostream& os, uint indent) const;
 

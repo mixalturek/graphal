@@ -59,6 +59,13 @@ CountPtr<Value> NodeFunction::execute(void)
 	}
 	catch(CountPtr<Value>& ex)
 	{
+		// The value would be inaccessible after CONTEXT.popLocal() call in NodeFunctionCall::execute()
+		// NodeIdentifier contains only ID, not reference, so the CountPtr<> delete it
+		if(ex->isReference())
+			return ex->getReferredValue();
+		else
+			return ex;
+
 		return ex;
 	}
 

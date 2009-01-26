@@ -1,6 +1,4 @@
 /*
- *      main.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -120,7 +118,7 @@ int main(int argc, char** argv)
 		if(ast_dump)
 			CONTEXT.dump(cout, 0);
 
-		CONTEXT.execute(argc, argv);
+		CONTEXT.executeScriptMain(argc, argv);
 		CONTEXT.clear();
 
 

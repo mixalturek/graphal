@@ -61,7 +61,6 @@
 #include "nodeunarydecpre.hpp"
 #include "nodeunarydecpost.hpp"
 #include "nodevalue.hpp"
-#include "nodevariable.hpp"
 #include "nodejumpbreak.hpp"
 #include "nodejumpcontinue.hpp"
 
@@ -76,6 +75,7 @@
 #include "valuestruct.hpp"
 #include "valuevertex.hpp"
 #include "valuevertexset.hpp"
+#include "valueidentifier.hpp"
 
 // Ja su ale prasatko :-)
 static Lexan* g_lexan = NULL;
@@ -143,7 +143,7 @@ primary_expression
 	| LEX_TRUE { $$ = new NodeValue(VALUEBOOL_TRUE); }
 	| LEX_FALSE { $$ = new NodeValue(VALUEBOOL_FALSE); }
 	| LEX_INT { $$ = new NodeValue(new ValueInt($1)); }
-	| LEX_NAME { $$ = new NodeVariable($1); }
+	| LEX_NAME { $$ = new NodeValue(new ValueIdentifier($1)); }
 	| LEX_FLOAT { $$ = new NodeValue(new ValueFloat($1)); }
 	| LEX_STRING { $$ = new NodeValue(new ValueString(*$1)); }
 	| '(' expression ')' { $$ = $2; }
@@ -152,67 +152,11 @@ primary_expression
 postfix_expression
 	: primary_expression { $$ = $1; }
 	| postfix_expression '[' expression ']' { $$ = new NodeBinaryIndex($1, $3); }
-	| postfix_expression '(' ')'
-	{
-		// To je hnus velebnosti...
-		NodeVariable* var = dynamic_cast<NodeVariable*>($1);
-		if(var == NULL)
-		{
-			NodeBinaryMember* mem = dynamic_cast<NodeBinaryMember*>($1);
-			if(mem == NULL)
-			{
-				delete $1;
-				yyerror(_("Call operator expects identifier on the left"));
-				YYABORT;
-			}
-			else // variable.f() -> f(variable)
-			{
-				var = dynamic_cast<NodeVariable*>(mem->getRight());
-				assert(var != NULL);// LEX_NAME is always on the right
-
-				$$ = new NodeFunctionCall(var->getName(), new NodeBlock(mem->getLeft()));
-				mem->detachLeft();
-				delete mem;
-			}
-		}
-		else // f()
-		{
-			$$ = new NodeFunctionCall(var->getName(), NULL);
-			delete $1;
-		}
-	}
-	| postfix_expression '(' argument_expression_list ')'
-	{
-		// Vidis to, panenko Maria podsrpenska, vidis to?
-		NodeVariable* var = dynamic_cast<NodeVariable*>($1);
-		if(var == NULL)
-		{
-			NodeBinaryMember* mem = dynamic_cast<NodeBinaryMember*>($1);
-			if(mem == NULL)
-			{
-				delete $1;
-				delete $3;
-				yyerror(_("Call operator expects identifier on the left"));
-				YYABORT;
-			}
-			else // variable.f(parameters) -> f(variable, parameters)
-			{
-				var = dynamic_cast<NodeVariable*>(mem->getRight());
-				assert(var != NULL);// LEX_NAME is always on the right
-
-				$3->pushCommandToFront(mem->getLeft());
-				$$ = new NodeFunctionCall(var->getName(), $3);
-				mem->detachLeft();
-				delete mem;
-			}
-		}
-		else // f(parameters)
-		{
-			$$ = new NodeFunctionCall(var->getName(), $3);
-			delete $1;
-		}
-	}
-	| postfix_expression '.' LEX_NAME { $$ = new NodeBinaryMember($1, new NodeVariable($3)); }
+	| LEX_NAME '(' ')' { $$ = new NodeFunctionCall($1, new NodeBlock()); }
+	| LEX_NAME '(' argument_expression_list ')' { $$ = new NodeFunctionCall($1, $3); }
+	| postfix_expression '.' LEX_NAME { $$ = new NodeBinaryMember($1, new NodeValue(new ValueIdentifier($3))); }
+	| postfix_expression '.' LEX_NAME '(' ')' { $$ = new NodeFunctionCall($3, new NodeBlock($1)); }
+	| postfix_expression '.' LEX_NAME '(' argument_expression_list ')' { $5->pushCommandToFront($1); $$ = new NodeFunctionCall($3, $5); }
 	| postfix_expression INC_OP { $$ = new NodeUnaryIncPost($1); }
 	| postfix_expression DEC_OP { $$ = new NodeUnaryDecPost($1); }
 	;
