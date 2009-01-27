@@ -93,6 +93,13 @@ void Context::popLocal(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+bool Context::isVariableSet(identifier name)
+{
+	assert(!m_local_variables.empty());
+
+	return m_local_variables.back().count(name);
+}
+
 CountPtr<Value> Context::getLocalVariable(identifier name)
 {
 	assert(!m_local_variables.empty());

@@ -46,6 +46,7 @@ private:
 	bool testValueString(void);
 	bool testValueReference(void);
 	bool testValueIdentifier(void);
+	bool testValueArray(void);
 	bool testGraph(void);
 	bool testGraphSet(void);
 	bool testGraphInvertEdgesOrientation(void);

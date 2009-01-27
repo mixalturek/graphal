@@ -50,6 +50,7 @@
 #include "nodebinarylt.hpp"
 #include "nodeunaryreturn.hpp"
 #include "nodebinarymult.hpp"
+#include "valuearray.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -125,6 +126,7 @@ void Tests::run(void)
 	failed += !testValueString();
 	failed += !testValueReference();
 	failed += !testValueIdentifier();
+	failed += !testValueArray();
 	failed += !testGraph();
 	failed += !testGraphSet();
 	failed += !testGraphInvertEdgesOrientation();
@@ -272,9 +274,7 @@ bool Tests::testValueIdentifier(void)
 	PTR_Value valref2(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueFloat(5.5)))));
 	PTR_Value val(new ValueInt(3));
 
-	ValueIdentifier* ref = dynamic_cast<ValueIdentifier*>(&(*valref));
-	assert(ref != NULL);
-	ref->assign(CountPtr<Value>(new ValueInt(5)));
+	valref->assign(CountPtr<Value>(new ValueInt(5)));
 
 	verify(valref->add(*val)->toString() == "8");
 	verify(valref->sub(*val)->toString() == "2");
@@ -283,7 +283,7 @@ bool Tests::testValueIdentifier(void)
 	verify(valref->add(*valref2)->toString() == "10.5");
 	verify(valref->sub(*valref2)->toString() == "-0.5");
 
-	ref->assign(CountPtr<Value>(new ValueFloat(3.14)));
+	valref->assign(CountPtr<Value>(new ValueFloat(3.14)));
 
 	verify(valref->add(*val)->toString() == "6.14");
 	verify(valref->sub(*val)->toString() == "0.14");
@@ -291,6 +291,16 @@ bool Tests::testValueIdentifier(void)
 	verify(val->sub(*valref)->toString() == "-0.14");
 	verify(valref->add(*valref2)->toString() == "8.64");
 	verify(valref->sub(*valref2)->toString() == "-2.36");
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+bool Tests::testValueArray(void)
+{
+	bool result = true;
+
+
 
 	return testResult(__FUNCTION__, result);
 }

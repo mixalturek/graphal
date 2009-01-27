@@ -70,8 +70,18 @@ CountPtr<Value> ValueIdentifier::getReferredValue(void) const
 void ValueIdentifier::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<ValueIdentifier name=\"" << ID2STR(m_val) << "\" id=\"" << m_val << "\" />" << endl;
-	// TODO: if variable is defined dump its content
+	os << "<ValueIdentifier name=\"" << ID2STR(m_val) << "\" id=\"" << m_val << "\">" << endl;
+
+	if(CONTEXT.isVariableSet(m_val))
+		CONTEXT.getLocalVariable(m_val)->dump(os, indent+1);
+	else
+	{
+		dumpIndent(os, indent+1);
+		os << "<NoValue />" << endl;
+	}
+
+	dumpIndent(os, indent);
+	os << "</ValueIdentifier>" << endl;
 }
 
 ostream& operator<<(ostream& os, const ValueIdentifier& node)

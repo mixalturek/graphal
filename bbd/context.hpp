@@ -48,6 +48,7 @@ public:
 	void dump(ostream& os, uint indent) const;
 	int executeScriptMain(int argc, char** argv);
 
+	bool isVariableSet(identifier name);
 	CountPtr<Value> getLocalVariable(identifier name);
 	CountPtr<Value> setLocalVariable(identifier name, CountPtr<Value> val);
 
