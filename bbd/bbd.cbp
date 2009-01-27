@@ -106,6 +106,16 @@
 		<Unit filename="nodebinarysub.hpp" />
 		<Unit filename="nodeblock.cpp" />
 		<Unit filename="nodeblock.hpp" />
+		<Unit filename="nodebuiltinarray.cpp" />
+		<Unit filename="nodebuiltinarray.hpp" />
+		<Unit filename="nodebuiltindump.cpp" />
+		<Unit filename="nodebuiltindump.hpp" />
+		<Unit filename="nodebuiltinecho.cpp" />
+		<Unit filename="nodebuiltinecho.hpp" />
+		<Unit filename="nodebuiltingraph.cpp" />
+		<Unit filename="nodebuiltingraph.hpp" />
+		<Unit filename="nodebuiltinstruct.cpp" />
+		<Unit filename="nodebuiltinstruct.hpp" />
 		<Unit filename="nodecondition.cpp" />
 		<Unit filename="nodecondition.hpp" />
 		<Unit filename="nodeemptycommand.cpp" />
@@ -114,8 +124,6 @@
 		<Unit filename="nodefunction.hpp" />
 		<Unit filename="nodefunctionbuiltin.cpp" />
 		<Unit filename="nodefunctionbuiltin.hpp" />
-		<Unit filename="nodefunctionbuiltinecho.cpp" />
-		<Unit filename="nodefunctionbuiltinecho.hpp" />
 		<Unit filename="nodefunctioncall.cpp" />
 		<Unit filename="nodefunctioncall.hpp" />
 		<Unit filename="nodejumpbreak.cpp" />

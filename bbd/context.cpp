@@ -31,7 +31,11 @@
 #include "nodeblock.hpp"
 #include "logger.hpp"
 
-#include "nodefunctionbuiltinecho.hpp"
+#include "nodebuiltinecho.hpp"
+#include "nodebuiltindump.hpp"
+#include "nodebuiltinarray.hpp"
+#include "nodebuiltinstruct.hpp"
+#include "nodebuiltingraph.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -243,11 +247,28 @@ string Context::getIncludeFullPath(const string& filename) const
 
 void Context::generateBuiltinFunctions(void)
 {
-	list<identifier>* params;
 	identifier name;
+	list<identifier> params;
+	params.push_back(STR2ID("a"));
+	params.push_back(STR2ID("b"));
 
-	name = STR2ID("echo");
-	params = new list<identifier>;
-	params->push_back(STR2ID("a"));
-	addFunction(name, new NodeFunctionBuiltinEcho(params, name));
+	list<identifier>::iterator p0 = params.begin();
+	list<identifier>::iterator p1 = ++p0;
+	p0 = params.begin();
+
+
+	name = STR2ID("echo");// echo(object)
+	addFunction(name, new NodeBuiltinEcho(new list<identifier>(p0, p1), name));
+
+	name = STR2ID("dump");// dump(object)
+	addFunction(name, new NodeBuiltinDump(new list<identifier>(p0, p1), name));
+
+	name = STR2ID("array");// array()
+	addFunction(name, new NodeBuiltinArray(new list<identifier>(), name));
+
+	name = STR2ID("struct");// struct()
+	addFunction(name, new NodeBuiltinStruct(new list<identifier>(), name));
+
+	name = STR2ID("graph");// graph()
+	addFunction(name, new NodeBuiltinGraph(new list<identifier>(), name));
 }

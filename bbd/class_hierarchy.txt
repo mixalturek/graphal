@@ -41,7 +41,11 @@ BaseObject
 		NodeFunctionCall
 		NodeFunction
 			NodeFunctionBuiltin (interface)
-				NodeFunctionBuiltinEcho
+				NodeBuiltinEcho
+				NodeBuiltinDump
+				NodeBuiltinArray
+				NodeBuiltinStruct
+				NodeBuiltinGraph
 	Value (interface)
 		ValueNull (singleton)
 		ValueString

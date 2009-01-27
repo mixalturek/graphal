@@ -89,12 +89,12 @@ END_OF_HPP
  *                           Don't update directly                          *
  *                                                                          *
  ****************************************************************************/
-$include
+
 #include <cassert>
 #include "$hpp_filename"
 #include "context.hpp"
 #include "logger.hpp"
-
+$include
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -117,9 +117,18 @@ $classname\::~$classname(void)
 
 CountPtr<Value> $classname\::execute(void)
 {
+END_OF_CPP
+
+	if($numberofparameters > 0)
+	{
+		$cpp_code .= <<END_OF_CPP;
 	vector< CountPtr<Value> > par = getParametersValues();
 	assert(par.size() == $numberofparameters);
 
+END_OF_CPP
+	}
+
+$cpp_code .= <<END_OF_CPP;
 	$operation
 }
 
@@ -149,6 +158,11 @@ END_OF_CPP
 	close FILE_CPP;
 }
 
-genBFClass('NodeFunctionBuiltinEcho', 1, "SCRIPT_STDOUT << par[0]->toString();\n\treturn par[0];");
+genBFClass('NodeBuiltinEcho', 1, "SCRIPT_STDOUT << par[0]->toString();\n\treturn par[0];");
+genBFClass('NodeBuiltinDump', 1, "par[0]->dump(SCRIPT_STDOUT, 0);\n\treturn par[0];");
+
+genBFClass('NodeBuiltinArray', 0, "return CountPtr<Value>(new ValueArray());", "#include \"valuearray.hpp\"");
+genBFClass('NodeBuiltinStruct', 0, "return CountPtr<Value>(new ValueStruct());", "#include \"valuestruct.hpp\"");
+genBFClass('NodeBuiltinGraph', 0, "return CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");
 
 0;
