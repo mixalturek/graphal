@@ -96,7 +96,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 	else
 	{
 		// TODO: position, declared in
-		ERROR << _("Wrong number of parameters has been passed to function ") << ID2STR(m_name) << "(" << names << ")" << endl;
+		ERROR << _("Wrong number of parameters was passed to function ") << ID2STR(m_name) << "(" << names << ")" << endl;
 		return VALUENULL;
 	}
 

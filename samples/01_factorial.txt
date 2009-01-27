@@ -9,7 +9,8 @@ function factorial(number)
 // Enter to program
 function main(argv)
 {
-	tmp = 10;
-	tmp -= 5;
-	return factorial(tmp++);
+	for(i = 0; i < 10; i++)
+		echo("Factorial of " + i + " is " + factorial(i) + "\n");
+
+	return 0;
 }

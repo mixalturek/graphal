@@ -71,7 +71,7 @@ void ValueIdentifier::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
 	os << "<ValueIdentifier name=\"" << ID2STR(m_val) << "\" id=\"" << m_val << "\" />" << endl;
-	// The value is known during the script execution, not now
+	// TODO: if variable is defined dump its content
 }
 
 ostream& operator<<(ostream& os, const ValueIdentifier& node)

@@ -1,5 +1,5 @@
 /*
- *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
+ *      Copyright 2009 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -18,34 +18,27 @@
  */
 
 
-#ifndef NODEFUNCTION_HPP
-#define NODEFUNCTION_HPP
+#ifndef NODEFUNCTIONBUILTIN_HPP
+#define NODEFUNCTIONBUILTIN_HPP
 
-#include <list>
+#include <vector>
 #include "general.hpp"
-#include "node.hpp"
+#include "nodefunction.hpp"
 
 
-class NodeFunction : public Node
+/////////////////////////////////////////////////////////////////////////////
+////
+
+class NodeFunctionBuiltin : public NodeFunction
 {
 public:
-	NodeFunction(list<identifier>* parameters, Node* block, identifier name);
-	virtual ~NodeFunction(void);
+	NodeFunctionBuiltin(list<identifier>* parameters, identifier name);
+	virtual ~NodeFunctionBuiltin();
 
-	identifier getName(void) const { return m_name; }
-
-	virtual CountPtr<Value> execute(void);
+	virtual CountPtr<Value> execute(void) = 0;
 	virtual void dump(ostream& os, uint indent) const;
 
-	const list<identifier>& getParameterNames(void) const { return *m_parameters; }
-
-private:
-	list<identifier>* m_parameters;
-	Node* m_block;
-	identifier m_name;// Actually not needed, for dump() only
+	vector< CountPtr<Value> > getParametersValues(void) const;
 };
 
-ostream& operator<<(ostream& os, const NodeFunction& node);
-ostream& operator<<(ostream& os, const list<identifier>& node);
-
-#endif // NODEFUNCTION_HPP
+#endif // NODEFUNCTIONBUILTIN_HPP

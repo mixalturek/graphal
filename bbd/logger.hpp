@@ -27,6 +27,7 @@
 #define WARN Logger::getInstance().warn()
 #define INFO Logger::getInstance().info()
 #define DBG Logger::getInstance().debug()
+#define SCRIPT_STDOUT Logger::getInstance().script_stdout()
 
 // Singleton
 class Logger : public BaseObject
@@ -55,6 +56,11 @@ public:
 	ostream& debug(void)
 	{
 		return cerr << _("[d] ");
+	}
+
+	ostream& script_stdout(void)
+	{
+		return cout;
 	}
 
 	virtual void dump(ostream& os, uint indent) const;

@@ -13,14 +13,16 @@ OBJECTS		= $(shell ls *.cpp | sed 's/.cpp/.o/')
 .PHONY: todo
 .PHONY: lines
 .PHONY: bison
-.PHYNY: operators
+.PHONY: operators
+.PHONY: builtin
+.PHONY: svnlog
 #.PHONY: install
 
 build: $(TARGET)
 
 rebuild: clean all
 
-all: bison operators depend $(TARGET)
+all: bison operators builtin depend $(TARGET)
 
 %.o: %.cpp
 	$(CC) -c $< $(CFLAGS)
@@ -33,6 +35,9 @@ bison:
 
 operators: gen_operators.pl
 	perl gen_operators.pl
+
+builtin: gen_builtin.pl
+	perl gen_builtin.pl
 
 depend:
 	makedepend -Y -m $(shell ls *.cpp) 2>&1 | grep -v '\(cassert\|algorithm\|set\|stream\|fstream\|iostream\|map\|deque\|vector\|stack\|list\|typeinfo\|stdexcept\|cmath\)'
@@ -48,4 +53,7 @@ todo:
 
 lines:
 	cat *.hpp *.cpp | wc -l
+
+svnlog:
+	svn log --revision $(shell svnversion -c | tr 'A-Z' ' ') --verbose
 

@@ -63,6 +63,8 @@ public:
 	void addIncludeDirectory(const string& directory);
 	string getIncludeFullPath(const string& filename) const;
 
+	void generateBuiltinFunctions(void);
+
 private:
 	Context(void);
 	virtual ~Context(void);

@@ -113,6 +113,7 @@ int main(int argc, char** argv)
 		}
 
 
+		CONTEXT.generateBuiltinFunctions();
 		parseCode(CONTEXT.getIncludeFullPath(argv[argc-1]), true);
 
 		if(ast_dump)

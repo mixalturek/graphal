@@ -42,6 +42,7 @@
 		<Unit filename="context.cpp" />
 		<Unit filename="context.hpp" />
 		<Unit filename="countptr.hpp" />
+		<Unit filename="gen_builtin.pl" />
 		<Unit filename="gen_operators.pl" />
 		<Unit filename="general.hpp" />
 		<Unit filename="init_static_objects.cpp" />
@@ -111,6 +112,10 @@
 		<Unit filename="nodeemptycommand.hpp" />
 		<Unit filename="nodefunction.cpp" />
 		<Unit filename="nodefunction.hpp" />
+		<Unit filename="nodefunctionbuiltin.cpp" />
+		<Unit filename="nodefunctionbuiltin.hpp" />
+		<Unit filename="nodefunctionbuiltinecho.cpp" />
+		<Unit filename="nodefunctionbuiltinecho.hpp" />
 		<Unit filename="nodefunctioncall.cpp" />
 		<Unit filename="nodefunctioncall.hpp" />
 		<Unit filename="nodejumpbreak.cpp" />

@@ -51,8 +51,6 @@ NodeFunction::~NodeFunction(void)
 
 CountPtr<Value> NodeFunction::execute(void)
 {
-	// TODO: built in functions
-
 	try
 	{
 		m_block->execute();

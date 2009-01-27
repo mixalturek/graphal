@@ -40,6 +40,8 @@ BaseObject
 		NodeEmptyCommand
 		NodeFunctionCall
 		NodeFunction
+			NodeFunctionBuiltin (interface)
+				NodeFunctionBuiltinEcho
 	Value (interface)
 		ValueNull (singleton)
 		ValueString

@@ -31,6 +31,8 @@
 #include "nodeblock.hpp"
 #include "logger.hpp"
 
+#include "nodefunctionbuiltinecho.hpp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -233,4 +235,19 @@ string Context::getIncludeFullPath(const string& filename) const
 
 	// TODO: fail
 	return filename;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Context::generateBuiltinFunctions(void)
+{
+	list<identifier>* params;
+	identifier name;
+
+	name = STR2ID("echo");
+	params = new list<identifier>;
+	params->push_back(STR2ID("a"));
+	addFunction(name, new NodeFunctionBuiltinEcho(params, name));
 }
