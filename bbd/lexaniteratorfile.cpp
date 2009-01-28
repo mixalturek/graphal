@@ -19,19 +19,18 @@
 
 #include <stdexcept>
 #include "lexaniteratorfile.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
 LexanIteratorFile::LexanIteratorFile(const string& filename)
-	: LexanIterator(),
-	m_filename(filename),
-	m_file(filename.c_str(), ios::in),
-	m_line(1)
+	: LexanIterator(STR2ID(filename), 1),
+	m_file(filename.c_str(), ios::in)
 {
 	if(!m_file.is_open())
-		THROW(runtime_error(_("Unable to open included file: ") + filename));
+		THROW(runtime_error(_("Unable to open file: ") + filename));
 }
 
 LexanIteratorFile::~LexanIteratorFile(void)
@@ -45,11 +44,7 @@ LexanIteratorFile::~LexanIteratorFile(void)
 
 char LexanIteratorFile::get(void)
 {
-	char c = m_file.get();
-	if(c == '\n')
-		m_line++;
-
-	return c;
+	return m_file.get();
 }
 
 void LexanIteratorFile::unget(void)
@@ -64,7 +59,7 @@ void LexanIteratorFile::unget(void)
 void LexanIteratorFile::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<LexanIteratorFile file=\"" << m_filename << "\" />" << endl;
+	os << "<LexanIteratorFile file=\"" << ID2STR(getFile()) << "\" />" << endl;
 }
 
 ostream& operator<<(ostream& os, const LexanIteratorFile& node)

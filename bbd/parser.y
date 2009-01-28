@@ -79,6 +79,9 @@
 
 #include "logger.hpp"
 
+#define FILE last_column
+#define LINE last_line
+
 // Ja su ale prasatko :-)
 static Lexan* g_lexan = NULL;
 
@@ -275,7 +278,7 @@ block_item_list
 	;
 
 function_definition
-	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { CONTEXT.addFunction($2, new NodeFunction($4, $6, $2)); }
+	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { cout << @1.LINE << endl; CONTEXT.addFunction($2, new NodeFunction($4, $6, $2)); }
 	| LEX_FUNCTION LEX_NAME '(' ')'  compound_statement {  CONTEXT.addFunction($2, new NodeFunction(new list<identifier>(), $5, $2)); }
 	;
 
@@ -294,6 +297,9 @@ int yylex(void)
 {
 	assert(g_lexan != NULL);
 	int tok = g_lexan->nextToken();
+
+	yylloc.FILE = g_lexan->getFile();
+	yylloc.LINE = g_lexan->getLine();
 
 	switch(tok)
 	{
@@ -321,9 +327,9 @@ void yyerror(char const *msg)
 	ERROR << msg << endl;
 }
 
-int parseCode(const string& str, bool is_file)
+int parseCode(const string& str)
 {
-	g_lexan = new Lexan(str, CONTEXT.getStringTable(), is_file);
+	g_lexan = new Lexan(STR2ID(str));
 
 	int ret = yyparse();
 

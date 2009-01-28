@@ -26,14 +26,20 @@
 class LexanIterator : public BaseObject
 {
 public:
-	LexanIterator(void);
+	LexanIterator(identifier filename, uint line);
 	virtual ~LexanIterator(void);
 
 	virtual char get(void) = 0;
 	virtual void unget(void) = 0;
 
-	virtual const string getSource(void) const = 0;
-	virtual int getPos(void) const = 0;
+	identifier getFile(void) const { return m_filename; }
+	uint getLine(void) const { return m_line; }
+
+	void incLine(void) { m_line++; }
+
+private:
+	identifier m_filename;
+	uint m_line;
 };
 
 #endif

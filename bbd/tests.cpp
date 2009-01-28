@@ -40,7 +40,6 @@
 #include "nodebinarysub.hpp"
 #include "nodeblock.hpp"
 #include "nodecondition.hpp"
-#include "stringtable.hpp"
 #include "countptr.hpp"
 #include "nodeemptycommand.hpp"
 #include "nodefunction.hpp"
@@ -566,11 +565,10 @@ bool Tests::testLexanTerminalSymbols(void)
 {
 	bool result = true;
 
-	StringTable stringtable;
 	Lexan lexan(
 		"function return if else while for foreach break continue { } ( ) [ ] "
 		", ; . ! = += -= *= /= %= || && < > <= >= == != + - * / % ++ -- "
-		"null true false ? :", &stringtable, false);
+		"null true false ? :");
 
 	LEXTOKEN tok;
 
@@ -635,9 +633,7 @@ bool Tests::testLexanInt(void)
 	int i;
 
 	StringTable stringtable;
-	Lexan lexan(
-		"2 26 999999999 2147483647 -2147483647 0 05 006 0362457 0x20 0x20e9 0xff 0x36a5d 25,356",
-		&stringtable, false);
+	Lexan lexan("2 26 999999999 2147483647 -2147483647 0 05 006 0362457 0x20 0x20e9 0xff 0x36a5d 25,356");
 
 	tok = lexan.nextToken(); verify(tok == LEX_INT);
 	i = lexan.getInt(); verify(i == 2);
@@ -703,9 +699,7 @@ bool Tests::testLexanFloat(void)
 	float f;
 
 	StringTable stringtable;
-	Lexan lexan(
-		". .= .1 .12 .12e6 0.12e6 0.0 .0 0. 25.3688 12e-1 12e+1 25e7",
-		&stringtable, false);
+	Lexan lexan(". .= .1 .12 .12e6 0.12e6 0.0 .0 0. 25.3688 12e-1 12e+1 25e7");
 
 	tok = lexan.nextToken(); verify(tok == LEX_DOT);
 	tok = lexan.nextToken(); verify(tok == LEX_DOT);
@@ -755,8 +749,7 @@ bool Tests::testLexanString(void)
 	Lexan lexan(
 		"  \"privet, mir\"  \"rm -rf c:\\\\windows\\\\\"  \"begin-\\x30-end\"  \"begin-\\x20-end\"  "
 		"  \"begin-\\065-end\"  \"begin-\\066-end\"  \"begin-\\111-end\" "
-		"  \"begin-\\112-end\"  \"begin-\\377-end\"  "
-		, &stringtable, false);
+		"  \"begin-\\112-end\"  \"begin-\\377-end\"  ");
 
 	tok = lexan.nextToken(); verify(tok == LEX_STRING);
 	str = lexan.getString(); verify(str == "privet, mir");
@@ -806,9 +799,7 @@ bool Tests::testLexanComments(void)
 	LEXTOKEN tok;
 
 	StringTable stringtable;
-	Lexan lexan(
-		"  /**/   /*  */   /***/   /* blem */   /***sf asf*sad/fasd*/  // :-) ",
-		&stringtable, false);
+	Lexan lexan("  /**/   /*  */   /***/   /* blem */   /***sf asf*sad/fasd*/  // :-) ");
 
 
 	tok = lexan.nextToken(); verify(tok == LEX_EOF);
@@ -836,8 +827,7 @@ bool Tests::testLexanSourceCode(void)
 		"	else"
 		"		return number * factorial(number - 1);"
 		"}"
-		"/* EOF */",
-		&stringtable, false);
+		"/* EOF */");
 
 	tok = lexan.nextToken(); verify(tok == LEX_FUNCTION);
 	tok = lexan.nextToken(); verify(tok == LEX_NAME);

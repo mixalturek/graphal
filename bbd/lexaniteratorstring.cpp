@@ -17,14 +17,17 @@
  *      MA 02110-1301, USA.
  */
 
+
 #include "lexaniteratorstring.hpp"
+#include "context.hpp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-LexanIteratorString::LexanIteratorString(const string& name, const string& value)
-	: LexanIterator(),
-	m_name(name),
+LexanIteratorString::LexanIteratorString(identifier filename, uint line, identifier macroname, const string& value)
+	: LexanIterator(filename, line),
+	m_macroname(macroname),
 	m_value(value),
 	m_pos(-1)
 {
@@ -62,7 +65,7 @@ void LexanIteratorString::unget(void)
 void LexanIteratorString::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<LexanIteratorString string=\"" << m_name << "\" />" << endl;
+	os << "<LexanIteratorString string=\"" << ID2STR(m_macroname) << "\" />" << endl;
 }
 
 ostream& operator<<(ostream& os, const LexanIteratorString& node)

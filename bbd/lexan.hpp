@@ -26,12 +26,13 @@
 #include "baseobject.hpp"
 #include "lexaniterator.hpp"
 #include "lexantokens.hpp"
-#include "stringtable.hpp"
+
 
 class Lexan : public BaseObject
 {
 public:
-	Lexan(const string& source, StringTable* stringtable, bool is_file);
+	Lexan(identifier filename);
+	Lexan(const string& source);
 	~Lexan(void);
 
 	virtual void dump(ostream& os, uint indent) const;
@@ -43,8 +44,8 @@ public:
 	string& getString(void) { return m_string; }
 	identifier getIdentifier(void) { return m_identifier; }
 
-	inline const string getSource(void) const { return m_source.top()->getSource(); }
-	inline uint getPos(void) const { return m_source.top()->getPos(); }
+	inline identifier getFile(void) const { return m_source.empty() ? 0 : m_source.top()->getFile(); }
+	inline uint getLine(void) const { return m_source.empty() ? 0 : m_source.top()->getLine(); }
 
 private:
 	LEXTOKEN checkKeyword(void);
@@ -55,14 +56,12 @@ private:
 
 private:
 	stack<LexanIterator*> m_source;
-	map<string, string> m_defines;// TODO: identifier
+	map<identifier, string> m_defines;
 
 	int m_int;
 	float m_float;
 	string m_string;
 	identifier m_identifier;
-
-	StringTable* m_stringtable;
 };
 
 ostream& operator<<(ostream& os, const Lexan& node);

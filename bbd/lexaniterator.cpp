@@ -1,6 +1,4 @@
 /*
- *      lexaniterator.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -24,8 +22,10 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-LexanIterator::LexanIterator(void)
-	: BaseObject()
+LexanIterator::LexanIterator(identifier filename, uint line)
+	: BaseObject(),
+	m_filename(filename),
+	m_line(line)
 {
 
 }

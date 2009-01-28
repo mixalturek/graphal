@@ -1,0 +1,47 @@
+add error and warning messages if ValueNull is returned
+
+add breakpoint(condition) builtin functions
+	add command line option --breakpoints to enable/disable
+
+resolve all TODOs
+
+clean up code
+
+add built-in functions
+	type casting
+		toInt()
+		toBool()
+		...
+	type checking
+		isInt()
+		isGraph()
+		isIterable()
+		...
+
+test . [] operators
+
+resolve ?gcc bug? - Tests::testValueArray()
+
+segmentation fault on Windows
+	graph unit test
+	remove EDGE_WITH_ORIENTATION from ValueVertex
+
+catch exceptions in the script main()
+
+add position to the generated code
+	#line number "gen_operators.pl"
+	#line number "gen_builtin.pl"
+
+bison
+	rewrite parser to C++ (it is in documentation)
+	rename tokens LEX_
+	function overloading (save names like "name<numberofparameters>")
+	foreach, iterators
+	switch
+	add position tracking to the parser
+		NodeCommand::execute() will update position in Context
+		add function declarations, warning already declared at
+	add "global variable;" statement
+	constructor statements (not build-in functions)
+		array()
+		array(size)

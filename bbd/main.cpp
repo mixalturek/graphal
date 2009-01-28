@@ -25,7 +25,7 @@
 #include "tests.hpp"
 #include "context.hpp"
 
-int parseCode(const string& str, bool is_file);
+int parseCode(const string& str);
 
 
 void runUnitTests(void)
@@ -115,7 +115,7 @@ int main(int argc, char** argv)
 
 		CONTEXT.generateBuiltinFunctions();
 
-		if(parseCode(argv[argc-1], true) == 0)
+		if(parseCode(argv[argc-1]) == 0)
 		{
 			if(ast_dump)
 				CONTEXT.dump(cout, 0);

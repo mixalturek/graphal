@@ -238,9 +238,6 @@ string Context::getIncludeFullPath(const string& filename) const
 
 		if(infile.is_open())
 		{
-#ifdef DEBUG
-			DBG << "Including " << (*it + filename) << endl;
-#endif // DEBUG
 			infile.close();
 			return *it + filename;
 		}

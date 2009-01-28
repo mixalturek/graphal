@@ -26,7 +26,7 @@
 class LexanIteratorString : public LexanIterator
 {
 public:
-	LexanIteratorString(const string& name, const string& value);
+	LexanIteratorString(identifier filename, uint line, identifier macroname, const string& value);
 	virtual ~LexanIteratorString(void);
 
 	virtual void dump(ostream& os, uint indent) const;
@@ -34,11 +34,10 @@ public:
 	virtual char get(void);
 	virtual void unget(void);
 
-	virtual const string getSource(void) const { return _("Macro ") + m_name; }
-	virtual int getPos(void) const { return m_pos; }
+	identifier getMacroName(void) const { return m_macroname; }
 
 private:
-	string m_name;
+	identifier m_macroname;
 	string m_value;
 	int m_pos;
 };

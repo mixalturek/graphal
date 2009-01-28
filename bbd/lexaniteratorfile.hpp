@@ -35,13 +35,8 @@ public:
 	virtual char get(void);
 	virtual void unget(void);
 
-	virtual const string getSource(void) const { return _("File ") + m_filename; }
-	virtual int getPos(void) const { return m_line; }
-
 private:
-	string m_filename;
 	ifstream m_file;
-	uint m_line;
 };
 
 ostream& operator<<(ostream& os, const LexanIteratorFile& node);
