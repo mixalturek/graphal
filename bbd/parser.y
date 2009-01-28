@@ -51,7 +51,7 @@
 #include "nodecondition.hpp"
 #include "nodeemptycommand.hpp"
 #include "nodefunctioncall.hpp"
-#include "nodefunction.hpp"
+#include "nodefunctionscript.hpp"
 #include "nodeloop.hpp"
 #include "nodeunarynot.hpp"
 #include "nodeunaryreturn.hpp"
@@ -278,8 +278,8 @@ block_item_list
 	;
 
 function_definition
-	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { cout << @1.LINE << endl; CONTEXT.addFunction($2, new NodeFunction($4, $6, $2)); }
-	| LEX_FUNCTION LEX_NAME '(' ')'  compound_statement {  CONTEXT.addFunction($2, new NodeFunction(new list<identifier>(), $5, $2)); }
+	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { cout << @1.LINE << endl; CONTEXT.addFunction(new NodeFunctionScript($2, $4, $6)); }
+	| LEX_FUNCTION LEX_NAME '(' ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($2, new list<identifier>(), $5)); }
 	;
 
 parameter_list

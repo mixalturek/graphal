@@ -32,10 +32,9 @@
 class NodeFunctionBuiltin : public NodeFunction
 {
 public:
-	NodeFunctionBuiltin(list<identifier>* parameters, identifier name);
+	NodeFunctionBuiltin(identifier name, list<identifier>* parameters);
 	virtual ~NodeFunctionBuiltin();
 
-	virtual CountPtr<Value> execute(void) = 0;
 	virtual void dump(ostream& os, uint indent) const;
 
 	vector< CountPtr<Value> > getParametersValues(void) const;

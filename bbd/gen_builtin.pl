@@ -45,7 +45,7 @@ sub genBFClass
 class $classname : public NodeFunctionBuiltin
 {
 public:
-	$classname(list<identifier>* parameters, identifier name);
+	$classname(identifier name, list<identifier>* parameters);
 	virtual ~$classname(void);
 
 	virtual CountPtr<Value> execute(void);
@@ -99,8 +99,8 @@ $include
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-$classname\::$classname(list<identifier>* parameters, identifier name)
-	: NodeFunctionBuiltin(parameters, name)
+$classname\::$classname(identifier name, list<identifier>* parameters)
+	: NodeFunctionBuiltin(name, parameters)
 {
 
 }

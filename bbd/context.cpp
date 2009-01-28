@@ -154,17 +154,17 @@ NodeFunction* Context::getFunction(identifier name)
 		return NULL;
 }
 
-void Context::addFunction(identifier name, NodeFunction* function)
+void Context::addFunction(NodeFunction* function)
 {
 	assert(function != NULL);
 
 	pair< map<identifier, NodeFunction*>::iterator, bool> ret
-		= m_functions.insert(pair<identifier, NodeFunction*>(name, function));
+		= m_functions.insert(pair<identifier, NodeFunction*>(function->getName(), function));
 
 	if(!ret.second)
 	{
 		// TODO: position in code
-		WARN << _("Function has been already defined: ") << ID2STR(name) << "()" << endl;
+		WARN << _("Function has been already defined: ") << ID2STR(function->getName()) << "()" << endl;
 		delete function;// TODO: is it ok?
 	}
 }
@@ -253,7 +253,6 @@ string Context::getIncludeFullPath(const string& filename) const
 
 void Context::generateBuiltinFunctions(void)
 {
-	identifier name;
 	list<identifier> params;
 	params.push_back(STR2ID("a"));
 	params.push_back(STR2ID("b"));
@@ -263,18 +262,18 @@ void Context::generateBuiltinFunctions(void)
 	p0 = params.begin();
 
 
-	name = STR2ID("echo");// echo(object)
-	addFunction(name, new NodeBuiltinEcho(new list<identifier>(p0, p1), name));
+	// echo(object)
+	addFunction(new NodeBuiltinEcho(STR2ID("echo"), new list<identifier>(p0, p1)));
 
-	name = STR2ID("dump");// dump(object)
-	addFunction(name, new NodeBuiltinDump(new list<identifier>(p0, p1), name));
+	// dump(object)
+	addFunction(new NodeBuiltinDump(STR2ID("dump"), new list<identifier>(p0, p1)));
 
-	name = STR2ID("array");// array()
-	addFunction(name, new NodeBuiltinArray(new list<identifier>(), name));
+	// array()
+	addFunction(new NodeBuiltinArray(STR2ID("array"), new list<identifier>()));
 
-	name = STR2ID("struct");// struct()
-	addFunction(name, new NodeBuiltinStruct(new list<identifier>(), name));
+	// struct()
+	addFunction(new NodeBuiltinStruct(STR2ID("struct"), new list<identifier>()));
 
-	name = STR2ID("graph");// graph()
-	addFunction(name, new NodeBuiltinGraph(new list<identifier>(), name));
+	// graph()
+	addFunction(new NodeBuiltinGraph(STR2ID("graph"), new list<identifier>()));
 }

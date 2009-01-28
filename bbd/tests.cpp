@@ -42,7 +42,7 @@
 #include "nodecondition.hpp"
 #include "countptr.hpp"
 #include "nodeemptycommand.hpp"
-#include "nodefunction.hpp"
+#include "nodefunctionscript.hpp"
 #include "nodefunctioncall.hpp"
 #include "nodebinaryass.hpp"
 #include "nodevalue.hpp"
@@ -1100,15 +1100,14 @@ bool Tests::testNodeFunction(void)
 	}
 	*/
 	NodeFunction* func =
-		new NodeFunction(new list<identifier>(),
+		new NodeFunctionScript(func_id, new list<identifier>(),
 			new NodeBinaryAss(
 				new NodeValue(new ValueIdentifier(local_id)),
 				new NodeValue(new ValueInt(10))
-			),
-			func_id
+			)
 		);
 
-	CONTEXT.addFunction(func_id, func);
+	CONTEXT.addFunction(func);
 
 	NodeFunctionCall func_call(func_id, NULL);
 	func_call.execute();
@@ -1122,14 +1121,13 @@ bool Tests::testNodeFunction(void)
 	}
 	*/
 	NodeFunction* freturn =
-		new NodeFunction(new list<identifier>(),
+		new NodeFunctionScript(freturn_id, new list<identifier>(),
 			new NodeUnaryReturn(
 				new NodeValue(new ValueInt(5))
-			),
-			freturn_id
+			)
 		);
 
-	CONTEXT.addFunction(freturn_id, freturn);
+	CONTEXT.addFunction(freturn);
 
 	NodeFunctionCall freturn_call(freturn_id, NULL);
 	str = freturn_call.execute()->toString();
@@ -1157,8 +1155,8 @@ bool Tests::testNodeFunction(void)
 		)
 	);
 
-	NodeFunction* freturn_local = new NodeFunction(new list<identifier>(), body, freturn_local_id);
-	CONTEXT.addFunction(freturn_local_id, freturn_local);
+	NodeFunction* freturn_local = new NodeFunctionScript(freturn_local_id, new list<identifier>(), body);
+	CONTEXT.addFunction(freturn_local);
 
 	NodeFunctionCall freturn_local_call(freturn_local_id, NULL);
 	str = freturn_local_call.execute()->toString();
@@ -1186,7 +1184,7 @@ bool Tests::testNodeFunction(void)
 	);
 
 	NodeFunction* factorial =
-		new NodeFunction(param_names,
+		new NodeFunctionScript(factorial_id, param_names,
 			new NodeCondition(
 				new NodeBinaryLt(
 					new NodeValue(new ValueIdentifier(number_id)),
@@ -1204,11 +1202,10 @@ bool Tests::testNodeFunction(void)
 						)
 					)
 				)
-			),
-			factorial_id
+			)
 		);
 
-	CONTEXT.addFunction(factorial_id, factorial);
+	CONTEXT.addFunction(factorial);
 
 	NodeFunctionCall factorial_call(factorial_id, new NodeBlock(new NodeValue(new ValueInt(4))));
 	str = factorial_call.execute()->toString();

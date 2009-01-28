@@ -27,8 +27,8 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-NodeFunctionBuiltin::NodeFunctionBuiltin(list<identifier>* parameters, identifier name)
-	: NodeFunction(parameters, NULL, name)
+NodeFunctionBuiltin::NodeFunctionBuiltin(identifier name, list<identifier>* parameters)
+	: NodeFunction(name, parameters)
 {
 
 }

@@ -56,7 +56,7 @@ public:
 	void popLocal(void);
 
 	NodeFunction* getFunction(identifier name);
-	void addFunction(identifier name, NodeFunction* function);
+	void addFunction(NodeFunction* function);
 
 	StringTable* getStringTable(void) { return &m_stringtable; }
 

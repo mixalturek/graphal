@@ -39,7 +39,8 @@ BaseObject
 		NodeBlock
 		NodeEmptyCommand
 		NodeFunctionCall
-		NodeFunction
+		NodeFunction (interface)
+			NodeFunctionScript
 			NodeFunctionBuiltin (interface)
 				NodeBuiltinEcho
 				NodeBuiltinDump

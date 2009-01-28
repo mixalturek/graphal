@@ -29,23 +29,17 @@
 class NodeFunction : public Node
 {
 public:
-	NodeFunction(list<identifier>* parameters, Node* block, identifier name);
+	NodeFunction(identifier name, list<identifier>* parameters);
 	virtual ~NodeFunction(void);
 
 	identifier getName(void) const { return m_name; }
-
-	virtual CountPtr<Value> execute(void);
-	virtual void dump(ostream& os, uint indent) const;
-
 	const list<identifier>& getParameterNames(void) const { return *m_parameters; }
 
 private:
 	list<identifier>* m_parameters;
-	Node* m_block;
 	identifier m_name;// Actually not needed, for dump() only
 };
 
-ostream& operator<<(ostream& os, const NodeFunction& node);
 ostream& operator<<(ostream& os, const list<identifier>& node);
 
 #endif // NODEFUNCTION_HPP

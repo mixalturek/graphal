@@ -1,5 +1,5 @@
 /*
- *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
+ *      Copyright 2009 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -18,41 +18,26 @@
  */
 
 
+#ifndef NODEFUNCTIONSCRIPT_HPP
+#define NODEFUNCTIONSCRIPT_HPP
+
+#include "general.hpp"
 #include "nodefunction.hpp"
-#include "context.hpp"
 
 
-/////////////////////////////////////////////////////////////////////////////
-////
-
-NodeFunction::NodeFunction(identifier name, list<identifier>* parameters)
-	: Node(),
-	m_parameters((parameters != NULL) ? parameters : new list<identifier>()),
-	m_name(name)
+class NodeFunctionScript : public NodeFunction
 {
+public:
+	NodeFunctionScript(identifier name, list<identifier>* parameters, Node* block);
+	virtual ~NodeFunctionScript();
 
-}
+	virtual CountPtr<Value> execute(void);
+	virtual void dump(ostream& os, uint indent) const;
 
-NodeFunction::~NodeFunction(void)
-{
-	delete m_parameters;
-	m_parameters = NULL;
-}
+private:
+	Node* m_block;
+};
 
+ostream& operator<<(ostream& os, const NodeFunctionScript& node);
 
-/////////////////////////////////////////////////////////////////////////////
-////
-
-ostream& operator<<(ostream& os, const list<identifier>& node)
-{
-	uint num = node.size();
-	list<identifier>::const_iterator it = node.begin();
-
-	for(uint i = 0; i < num-1; i++, it++)
-		os << ID2STR(*it) << ", ";
-
-	if(num > 0)
-		os << ID2STR(*it);
-
-	return os;
-}
+#endif // NODEFUNCTIONSCRIPT_HPP

@@ -11,7 +11,7 @@
 				<Option object_output="obj/debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-I../samples --unit-tests --ast-dump 01_factorial.txt" />
+				<Option parameters="-I../samples --unit-tests --ast-dump ../samples/01_factorial.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -126,6 +126,8 @@
 		<Unit filename="nodefunctionbuiltin.hpp" />
 		<Unit filename="nodefunctioncall.cpp" />
 		<Unit filename="nodefunctioncall.hpp" />
+		<Unit filename="nodefunctionscript.cpp" />
+		<Unit filename="nodefunctionscript.hpp" />
 		<Unit filename="nodejumpbreak.cpp" />
 		<Unit filename="nodejumpbreak.hpp" />
 		<Unit filename="nodejumpcontinue.cpp" />
