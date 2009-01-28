@@ -77,6 +77,8 @@
 #include "valuevertexset.hpp"
 #include "valueidentifier.hpp"
 
+#include "logger.hpp"
+
 // Ja su ale prasatko :-)
 static Lexan* g_lexan = NULL;
 
@@ -125,6 +127,17 @@ void yyerror(char const *msg);
 %type <node> statement expression_statement compound_statement
 %type <nodeblock> argument_expression_list block_item_list
 %type <list_ids> parameter_list
+
+%destructor { delete ($$); } primary_expression postfix_expression unary_expression
+%destructor { delete ($$); } multiplicative_expression additive_expression expression
+%destructor { delete ($$); } relational_expression equality_expression logical_and_expression
+%destructor { delete ($$); } logical_or_expression conditional_expression assignment_expression
+%destructor { delete ($$); } statement expression_statement compound_statement
+%destructor { delete ($$); } argument_expression_list block_item_list
+%destructor { delete ($$); } parameter_list
+
+// if-else conflicts: 1 shift/reduce
+%expect 1
 
 %error-verbose
 
@@ -305,7 +318,7 @@ int yylex(void)
 
 void yyerror(char const *msg)
 {
-	fprintf(stderr, "%s\n", msg);
+	ERROR << msg << endl;
 }
 
 int parseCode(const string& str, bool is_file)
@@ -313,9 +326,6 @@ int parseCode(const string& str, bool is_file)
 	g_lexan = new Lexan(str, CONTEXT.getStringTable(), is_file);
 
 	int ret = yyparse();
-
-	if(ret != 0)
-		cerr << "error while parsing" << endl;
 
 	delete g_lexan;
 	g_lexan = NULL;

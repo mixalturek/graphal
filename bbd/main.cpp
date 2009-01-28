@@ -60,7 +60,7 @@ void usage(int /* argc */, char** argv)
 
 int main(int argc, char** argv)
 {
-	INFO << "bbd [svn version 60]" << endl;
+	INFO << "bbd [svn version 79]" << endl;
 
 	if(argc < 2)
 	{
@@ -114,14 +114,18 @@ int main(int argc, char** argv)
 
 
 		CONTEXT.generateBuiltinFunctions();
-		parseCode(CONTEXT.getIncludeFullPath(argv[argc-1]), true);
 
-		if(ast_dump)
-			CONTEXT.dump(cout, 0);
+		if(parseCode(argv[argc-1], true) == 0)
+		{
+			if(ast_dump)
+				CONTEXT.dump(cout, 0);
 
-		CONTEXT.executeScriptMain(argc, argv);
+			CONTEXT.executeScriptMain(argc, argv);
+		}
+		else
+			ERROR << _("Error while parsing") << endl;
+
 		CONTEXT.clear();
-
 
 #ifdef CHECK_MEMORY_LEAKS
 		BaseObject::printMemoryLeaks(number_of_static_objects);

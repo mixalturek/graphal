@@ -73,6 +73,8 @@ void Context::clear(void)
 
 	m_stringtable.clear();
 	m_functions.clear();
+
+	pushLocal();
 }
 
 
