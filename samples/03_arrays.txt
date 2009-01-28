@@ -1,0 +1,15 @@
+function main(argv)
+{
+	i = 0;
+	dump(argv);
+	echo(argv[0] + "\n");
+	echo(argv[1] + "\n");
+	echo("" + argv[2] + "\n");// Index out of bounds
+
+/*	brm = array();
+	dump(brm);
+	brm[0] = "bagr";
+	brm[1] = "brm";
+	brm[2] = 3;
+*/
+}

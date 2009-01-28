@@ -217,4 +217,27 @@ PTR_Value ValueInt::index(const ValueString& left) const
 	}
 }
 
-PTR_Value ValueInt::index(const ValueArray& left) const { return left.getItem(m_val); }
+
+/*
+TODO: ??? gcc bug ???
+Tests::testValueArray()
+
+right.index(*this) in ValueArray::index(const Value& right) calls
+ValueInt::index(const Value& right)
+ValueFloat::index(const Value& right)
+etc.
+
+instead of
+ValueInt::index(const ValueArray& left)
+ValueFloat::index(const ValueArray& left)
+etc.
+
+There is no problem with indexing of ValueString, why? It is the same!
+
+Temporary fixed in Value::index() by dynamic_cast
+*/
+PTR_Value ValueInt::index(const ValueArray& left) const
+{
+	assert("TODO: gcc bug? analyze, if called" != NULL);
+	return left.getItem(m_val);
+}

@@ -23,6 +23,8 @@
 #include "valuebool.hpp"
 #include "valuereference.hpp"
 #include "valuenull.hpp"
+#include "valueint.hpp"
+#include "valuefloat.hpp"
 #include "logger.hpp"
 
 
@@ -141,5 +143,25 @@ PTR_Value ValueArray::ge(const Value& right)      const { return right.ge(*this)
 PTR_Value ValueArray::lt(const Value& right)      const { return right.lt(*this); } // <
 PTR_Value ValueArray::gt(const Value& right)      const { return right.gt(*this); } // >
 PTR_Value ValueArray::member(const Value& right)  const { return right.member(*this); } // .
+
+/*
+TODO: ??? gcc bug ???
+Tests::testValueArray()
+
+right.index(*this) in ValueArray::index(const Value& right) calls
+ValueInt::index(const Value& right)
+ValueFloat::index(const Value& right)
+etc.
+
+instead of
+ValueInt::index(const ValueArray& left)
+ValueFloat::index(const ValueArray& left)
+etc.
+
+There is no problem with indexing of ValueString, why? It is the same!
+
+Temporary fixed in Value::index() by dynamic_cast
+*/
 PTR_Value ValueArray::index(const Value& right)   const { return right.index(*this); } // []
+
 PTR_Value ValueArray::logNOT(void)                const { return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !

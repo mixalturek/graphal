@@ -300,6 +300,63 @@ bool Tests::testValueArray(void)
 {
 	bool result = true;
 
+	/*
+	TODO: ??? gcc bug ???
+	Tests::testValueArray()
+
+	right.index(*this) in ValueArray::index(const Value& right) calls
+	ValueInt::index(const Value& right)
+	ValueFloat::index(const Value& right)
+	etc.
+
+	instead of
+	ValueInt::index(const ValueArray& left)
+	ValueFloat::index(const ValueArray& left)
+	etc.
+
+	There is no problem with indexing of ValueString, why? It is the same!
+
+	Temporary fixed in Value::index() by dynamic_cast
+	*/
+	ValueArray* a = new ValueArray();
+	a->resize(1);
+	a->setItem(0, CountPtr<Value>(new ValueString("bagr")));
+
+	//PTR_Value array(new ValueString("abc"));
+	PTR_Value str(new ValueString("abc"));
+	PTR_Value array(a);
+	PTR_Value ind(new ValueInt(0));
+
+	//str->index(*ind)->dump(cout, 0);
+	//array->index(*ind)->dump(cout, 0);
+
+	verify(str->index(*ind)->toString() != "NULL");
+	verify(array->index(*ind)->toString() != "NULL");
+
+
+	/////////////////
+
+
+	identifier varid = STR2ID("brm");
+	CountPtr<Value> ident(new ValueIdentifier(varid));
+
+	a = new ValueArray();
+	a->resize(1);
+	ident->assign(CountPtr<Value>(a));
+	// ident->dump(cout, 0);
+
+	CountPtr<Value> index(new ValueInt(0));
+	CountPtr<Value> val(new ValueInt(3));
+
+	CountPtr<Value> indexval = ident->index(*index);
+	// indexval->dump(cout, 0);
+
+	verify(indexval->toString() == "NULL");
+	verify(ident->toString() == "NULL");
+	indexval->assign(val);
+	// ident->dump(cout, 0);
+	verify(indexval->toString() != "NULL");
+	verify(ident->toString() != "NULL");
 
 
 	return testResult(__FUNCTION__, result);

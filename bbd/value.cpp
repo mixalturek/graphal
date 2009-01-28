@@ -26,6 +26,7 @@
 #include "valuefloat.hpp"
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
+#include "valuearray.hpp"
 #include "valuereference.hpp"
 #include "valueidentifier.hpp"
 #include "valuegraph.hpp"
@@ -272,10 +273,53 @@ PTR_Value Value::member(const ValueVertexSet& /* left */) const { return VALUENU
 PTR_Value Value::member(const ValueEdgeSet& /* left */)   const { return VALUENULL; }
 
 // [] index
+
+/*
+TODO: ??? gcc bug ???
+Tests::testValueArray()
+
+right.index(*this) in ValueArray::index(const Value& right) calls
+ValueInt::index(const Value& right)
+ValueFloat::index(const Value& right)
+etc.
+
+instead of
+ValueInt::index(const ValueArray& left)
+ValueFloat::index(const ValueArray& left)
+etc.
+
+There is no problem with indexing of ValueString, why? It is the same!
+
+Temporary fixed in Value::index() by dynamic_cast
+*/
 PTR_Value Value::index(const ValueNull& /* left */)      const { return VALUENULL; }
-PTR_Value Value::index(const ValueBool& /* left */)      const { return VALUENULL; }
-PTR_Value Value::index(const ValueInt& /* left */)       const { return VALUENULL; }
-PTR_Value Value::index(const ValueFloat& /* left */)     const { return VALUENULL; }
+PTR_Value Value::index(const ValueBool& left)      const // { return VALUENULL; }
+{
+	const ValueArray* tmp = dynamic_cast<const ValueArray*>(this);
+	if(tmp != NULL)
+		return tmp->getItem(left.getVal());
+	else
+		return VALUENULL;
+}
+
+PTR_Value Value::index(const ValueInt& left)       const // { return VALUENULL; }
+{
+	const ValueArray* tmp = dynamic_cast<const ValueArray*>(this);
+	if(tmp != NULL)
+		return tmp->getItem(left.getVal());
+	else
+		return VALUENULL;
+}
+
+PTR_Value Value::index(const ValueFloat& left)     const // { return VALUENULL; }
+{
+	const ValueArray* tmp = dynamic_cast<const ValueArray*>(this);
+	if(tmp != NULL)
+		return tmp->getItem((uint)left.getVal());
+	else
+		return VALUENULL;
+}
+
 PTR_Value Value::index(const ValueString& /* left */)    const { return VALUENULL; }
 PTR_Value Value::index(const ValueStruct& /* left */)    const { return VALUENULL; }
 PTR_Value Value::index(const ValueReference& left)       const { return left.getVal()->index(*this); }

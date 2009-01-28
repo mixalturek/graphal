@@ -39,6 +39,7 @@ public:
 
 	virtual void dump(ostream& os, uint indent) const;
 
+	uint size(void) const { return m_val.size(); }
 	void resize(uint newsize);
 	CountPtr<Value> getItem(uint pos) const;
 	CountPtr<Value> setItem(uint pos, CountPtr<Value> val);
