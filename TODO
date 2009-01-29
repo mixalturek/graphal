@@ -23,10 +23,6 @@ test . [] operators
 
 resolve ?gcc bug? - Tests::testValueArray()
 
-segmentation fault on Windows
-	graph unit test
-	remove EDGE_WITH_ORIENTATION from ValueVertex
-
 catch exceptions in the script main()
 
 add position to the generated code

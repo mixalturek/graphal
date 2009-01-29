@@ -81,6 +81,10 @@ void ValueGraph::deleteVertex(ValueVertex* vertex)
 	set<ValueEdge*>* edges = vertex->getEdges();
 
 	set<ValueEdge*>::iterator it;
+#ifdef _WIN32
+    // Program receives segmentation fault without this line :-O
+    cout << "";
+#endif
 	for(it = edges->begin(); it != edges->end(); it++)
 		deleteEdge(*it);
 

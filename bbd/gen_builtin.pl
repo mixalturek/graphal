@@ -201,7 +201,7 @@ $code = <<END_OF_CODE;
 	if((i = par[0]->toValueInt()) != NULL)
 		return CountPtr<Value>(new ValueArray(i->getVal()));
 	if((f = par[0]->toValueFloat()) != NULL)
-		return CountPtr<Value>(new ValueArray(f->getVal()));
+		return CountPtr<Value>(new ValueArray((uint)f->getVal()));
 	else
 	{
 		WARN << _("Array constructor expects numeric variable") << endl;
