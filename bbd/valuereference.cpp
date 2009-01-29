@@ -39,7 +39,7 @@ ValueReference::ValueReference(CountPtr<Value> val)
 	: Value(),
 	m_val(val)
 {
-	assert(!val->isReference());
+	assert(!val->isLValue());
 }
 
 
@@ -56,7 +56,7 @@ CountPtr<Value> ValueReference::getReferredValue(void) const
 {
 	CountPtr<Value> tmp(m_val);
 
-	while(tmp->isReference())
+	while(tmp->isLValue())
 		tmp = tmp->getReferredValue();
 
 	return tmp;
@@ -260,7 +260,7 @@ PTR_Value ValueReference::member(const ValueFloat& left)     const { return left
 PTR_Value ValueReference::member(const ValueString& left)    const { return left.member(*m_val); }
 PTR_Value ValueReference::member(const ValueStruct& left)    const { return left.member(*m_val); }
 PTR_Value ValueReference::member(const ValueReference& left) const { return left.getVal()->member(*m_val); }
-PTR_Value ValueReference::member(const ValueIdentifier& left)const { return left.getVal()->member(*m_val); }
+PTR_Value ValueReference::member(const ValueIdentifier& left)const { return m_val->member(left); }
 PTR_Value ValueReference::member(const ValueGraph& left)     const { return left.member(*m_val); }
 PTR_Value ValueReference::member(const ValueVertex& left)    const { return left.member(*m_val); }
 PTR_Value ValueReference::member(const ValueEdge& left)      const { return left.member(*m_val); }

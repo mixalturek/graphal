@@ -35,10 +35,22 @@ public:
 public:
 	CountPtr<Value>   getVal(void) const { return m_val; }
 	virtual bool      toBool(void) const { return m_val->toBool(); }
-	virtual bool isReference(void) const { return true; }
+	virtual bool    isLValue(void) const { return true; }
 	virtual string  toString(void) const { return m_val->toString(); }
 
-	virtual CountPtr<Value> assign(CountPtr<Value> val) { assert(!val->isReference()); return m_val = val; }
+	virtual ValueBool*           toValueBool(void) { return m_val->toValueBool(); }
+	virtual ValueInt*             toValueInt(void) { return m_val->toValueInt(); }
+	virtual ValueFloat*         toValueFloat(void) { return m_val->toValueFloat(); }
+	virtual ValueString*       toValueString(void) { return m_val->toValueString(); }
+	virtual ValueStruct*       toValueStruct(void) { return m_val->toValueStruct(); }
+	virtual ValueArray*         toValueArray(void) { return m_val->toValueArray(); }
+	virtual ValueGraph*         toValueGraph(void) { return m_val->toValueGraph(); }
+	virtual ValueVertex*       toValueVertex(void) { return m_val->toValueVertex(); }
+	virtual ValueEdge*           toValueEdge(void) { return m_val->toValueEdge(); }
+	virtual ValueVertexSet* toValueVertexSet(void) { return m_val->toValueVertexSet(); }
+	virtual ValueEdgeSet*     toValueEdgeSet(void) { return m_val->toValueEdgeSet(); }
+
+	virtual CountPtr<Value> assign(CountPtr<Value> val) { assert(!val->isLValue()); return m_val = val; }
 	virtual CountPtr<Value> getReferredValue(void) const;
 
 	virtual void dump(ostream& os, uint indent) const;

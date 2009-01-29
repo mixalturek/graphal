@@ -129,7 +129,7 @@ END_OF_CPP
 	}
 
 $cpp_code .= <<END_OF_CPP;
-	$operation
+$operation
 }
 
 ostream& operator<<(ostream& os, const $classname& node)
@@ -158,11 +158,94 @@ END_OF_CPP
 	close FILE_CPP;
 }
 
-genBFClass('NodeBuiltinEcho', 1, "SCRIPT_STDOUT << par[0]->toString();\n\treturn par[0];");
-genBFClass('NodeBuiltinDump', 1, "par[0]->dump(SCRIPT_STDOUT, 0);\n\treturn par[0];");
 
-genBFClass('NodeBuiltinArray', 0, "return CountPtr<Value>(new ValueArray());", "#include \"valuearray.hpp\"");
-genBFClass('NodeBuiltinStruct', 0, "return CountPtr<Value>(new ValueStruct());", "#include \"valuestruct.hpp\"");
-genBFClass('NodeBuiltinGraph', 0, "return CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");
+my $code;
+my $include;
+
+
+#############################################################################
+
+$code = <<END_OF_CODE;
+	SCRIPT_STDOUT << par[0]->toString();
+	return par[0];
+END_OF_CODE
+genBFClass('NodeBuiltinEcho', 1, $code);
+
+
+#############################################################################
+
+$code = <<END_OF_CODE;
+	par[0]->dump(SCRIPT_STDOUT, 0);
+	return par[0];
+END_OF_CODE
+genBFClass('NodeBuiltinDump', 1, $code);
+
+
+#############################################################################
+
+$include = <<END_OF_CODE;
+#include "valuearray.hpp"
+#include "valuebool.hpp"
+#include "valueint.hpp"
+#include "valuefloat.hpp"
+#include "valuenull.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueBool* b = NULL;
+	ValueInt* i = NULL;
+	ValueFloat* f = NULL;
+
+	if((b = par[0]->toValueBool()) != NULL)
+		return CountPtr<Value>(new ValueArray(b->getVal()));
+	if((i = par[0]->toValueInt()) != NULL)
+		return CountPtr<Value>(new ValueArray(i->getVal()));
+	if((f = par[0]->toValueFloat()) != NULL)
+		return CountPtr<Value>(new ValueArray(f->getVal()));
+	else
+	{
+		WARN << _("Array constructor expects numeric variable") << endl;
+		return VALUENULL;
+	}
+END_OF_CODE
+genBFClass('NodeBuiltinArray', 1, $code, $include);
+
+
+#############################################################################
+
+genBFClass('NodeBuiltinStruct', 0, "\treturn CountPtr<Value>(new ValueStruct());", "#include \"valuestruct.hpp\"");
+
+
+#############################################################################
+
+genBFClass('NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");
+
+
+#############################################################################
+
+$include = <<END_OF_CODE;
+#include "valuearray.hpp"
+#include "valuestring.hpp"
+#include "valueint.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueArray* a = NULL;
+	ValueString* s = NULL;
+
+	if((a = par[0]->toValueArray()) != NULL)
+		return CountPtr<Value>(new ValueInt(a->getSize()));
+	if((s = par[0]->toValueString()) != NULL)
+		return CountPtr<Value>(new ValueInt(s->getSize()));
+	else
+	{
+		WARN << _("Function size() expects array or string in parameter") << endl;
+		return CountPtr<Value>(new ValueInt(0));
+	}
+END_OF_CODE
+genBFClass('NodeBuiltinSize', 1, $code, $include);
+
+
+#############################################################################
 
 0;

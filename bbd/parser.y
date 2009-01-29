@@ -278,7 +278,7 @@ block_item_list
 	;
 
 function_definition
-	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { cout << @1.LINE << endl; CONTEXT.addFunction(new NodeFunctionScript($2, $4, $6)); }
+	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { cout << "Function declaration at line: " << @1.LINE << endl; CONTEXT.addFunction(new NodeFunctionScript($2, $4, $6)); }
 	| LEX_FUNCTION LEX_NAME '(' ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($2, new list<identifier>(), $5)); }
 	;
 

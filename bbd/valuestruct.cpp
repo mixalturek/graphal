@@ -67,7 +67,7 @@ string ValueStruct::toString(void) const
 
 CountPtr<Value> ValueStruct::setItem(identifier name, CountPtr<Value> val)
 {
-/*	if(val->isReference())
+/*	if(val->isLValue())
 		return m_val[name] = val;
 	else
 		return m_val[name] = CountPtr<Value>(new ValueReference(val));
@@ -76,7 +76,7 @@ CountPtr<Value> ValueStruct::setItem(identifier name, CountPtr<Value> val)
 	if(it != m_val.end())
 		m_val.erase(it);
 
-	if(val->isReference())
+	if(val->isLValue())
 	{
 		m_val.insert(pair<identifier, CountPtr<Value> >(name, val));
 		return val;
@@ -96,7 +96,7 @@ CountPtr<Value> ValueStruct::getItem(identifier name)
 	if(it != m_val.end())
 		return it->second;
 	else
-		return VALUENULL;
+		return m_val.insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(VALUENULL)))).first->second;
 }
 
 bool ValueStruct::isItemSet(identifier name)

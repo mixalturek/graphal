@@ -31,12 +31,6 @@
 #include "nodeblock.hpp"
 #include "logger.hpp"
 
-#include "nodebuiltinecho.hpp"
-#include "nodebuiltindump.hpp"
-#include "nodebuiltinarray.hpp"
-#include "nodebuiltinstruct.hpp"
-#include "nodebuiltingraph.hpp"
-
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -128,7 +122,7 @@ CountPtr<Value> Context::setLocalVariable(identifier name, CountPtr<Value> val)
 	if(it != m_local_variables.back().end())
 		m_local_variables.back().erase(it);
 
-	if(val->isReference())
+	if(val->isLValue())
 	{
 		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, val));
 		return val;
@@ -251,6 +245,14 @@ string Context::getIncludeFullPath(const string& filename) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+#include "nodebuiltinecho.hpp"
+#include "nodebuiltindump.hpp"
+#include "nodebuiltinarray.hpp"
+#include "nodebuiltinstruct.hpp"
+#include "nodebuiltingraph.hpp"
+#include "nodebuiltinsize.hpp"
+
+
 void Context::generateBuiltinFunctions(void)
 {
 	list<identifier> params;
@@ -268,12 +270,15 @@ void Context::generateBuiltinFunctions(void)
 	// dump(object)
 	addFunction(new NodeBuiltinDump(STR2ID("dump"), new list<identifier>(p0, p1)));
 
-	// array()
-	addFunction(new NodeBuiltinArray(STR2ID("array"), new list<identifier>()));
+	// array(int|bool|float)
+	addFunction(new NodeBuiltinArray(STR2ID("array"), new list<identifier>(p0, p1)));
 
 	// struct()
 	addFunction(new NodeBuiltinStruct(STR2ID("struct"), new list<identifier>()));
 
 	// graph()
 	addFunction(new NodeBuiltinGraph(STR2ID("graph"), new list<identifier>()));
+
+	// size(array|string)
+	addFunction(new NodeBuiltinSize(STR2ID("size"), new list<identifier>(p0, p1)));
 }

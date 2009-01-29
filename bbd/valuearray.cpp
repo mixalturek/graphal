@@ -38,6 +38,13 @@ ValueArray::ValueArray()
 
 }
 
+ValueArray::ValueArray(uint size)
+	: Value(),
+	m_val()
+{
+	resize(size);
+}
+
 ValueArray::~ValueArray()
 {
 
@@ -68,7 +75,16 @@ string ValueArray::toString(void) const
 
 void ValueArray::resize(uint newsize)
 {
-	m_val.resize(newsize, CountPtr<Value>(new ValueReference(VALUENULL)));
+	// All references are the same object, assigning to a[5] causes assign to all indices
+	// m_val.resize(newsize, CountPtr<Value>(new ValueReference(VALUENULL)));
+
+	if(newsize <= m_val.size())
+		return;
+
+	m_val.reserve(newsize);
+
+	for(uint i = m_val.size(); i < newsize; i++)
+		m_val.push_back(CountPtr<Value>(new ValueReference(VALUENULL)));
 }
 
 
@@ -93,7 +109,7 @@ CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 		resize(pos+1);
 	}
 
-	if(val->isReference())
+	if(val->isLValue())
 		return m_val[pos] = val;
 	else
 	{

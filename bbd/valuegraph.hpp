@@ -1,6 +1,4 @@
 /*
- *      graph.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -35,6 +33,8 @@ class ValueGraph : public Value
 public:
 	ValueGraph(bool oriented = false);
 	virtual ~ValueGraph();
+
+	virtual ValueGraph*         toValueGraph(void) { return this; }
 
 	virtual void dump(ostream& os, uint indent) const;
 

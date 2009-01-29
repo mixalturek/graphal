@@ -114,6 +114,8 @@
 		<Unit filename="nodebuiltinecho.hpp" />
 		<Unit filename="nodebuiltingraph.cpp" />
 		<Unit filename="nodebuiltingraph.hpp" />
+		<Unit filename="nodebuiltinsize.cpp" />
+		<Unit filename="nodebuiltinsize.hpp" />
 		<Unit filename="nodebuiltinstruct.cpp" />
 		<Unit filename="nodebuiltinstruct.hpp" />
 		<Unit filename="nodecondition.cpp" />

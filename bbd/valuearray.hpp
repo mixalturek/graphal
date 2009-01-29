@@ -30,6 +30,7 @@ class ValueArray : public Value
 {
 public:
 	ValueArray();
+	ValueArray(uint size);
 	virtual ~ValueArray();
 
 public:
@@ -37,9 +38,11 @@ public:
 	virtual bool     toBool(void) const { return !m_val.empty(); }
 	virtual string toString(void) const;
 
+	virtual ValueArray*         toValueArray(void) { return this; }
+
 	virtual void dump(ostream& os, uint indent) const;
 
-	uint size(void) const { return m_val.size(); }
+	uint getSize(void) const { return m_val.size(); }
 	void resize(uint newsize);
 	CountPtr<Value> getItem(uint pos) const;
 	CountPtr<Value> setItem(uint pos, CountPtr<Value> val);

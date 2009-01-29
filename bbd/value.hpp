@@ -54,8 +54,20 @@ public:
 public:
 	virtual bool toBool(void)      const = 0;
 	virtual bool isNull(void)      const { return false; }
-	virtual bool isReference(void) const { return false; }
+	virtual bool isLValue(void)    const { return false; }
 	virtual string toString(void)  const = 0;
+
+	virtual ValueBool*           toValueBool(void) { return NULL; }
+	virtual ValueInt*             toValueInt(void) { return NULL; }
+	virtual ValueFloat*         toValueFloat(void) { return NULL; }
+	virtual ValueString*       toValueString(void) { return NULL; }
+	virtual ValueStruct*       toValueStruct(void) { return NULL; }
+	virtual ValueArray*         toValueArray(void) { return NULL; }
+	virtual ValueGraph*         toValueGraph(void) { return NULL; }
+	virtual ValueVertex*       toValueVertex(void) { return NULL; }
+	virtual ValueEdge*           toValueEdge(void) { return NULL; }
+	virtual ValueVertexSet* toValueVertexSet(void) { return NULL; }
+	virtual ValueEdgeSet*     toValueEdgeSet(void) { return NULL; }
 
 	virtual CountPtr<Value> assign(CountPtr<Value> val);
 	virtual CountPtr<Value> getReferredValue(void) const;

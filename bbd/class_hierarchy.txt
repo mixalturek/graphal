@@ -47,6 +47,7 @@ BaseObject
 				NodeBuiltinArray
 				NodeBuiltinStruct
 				NodeBuiltinGraph
+				NodeBuiltinSize
 	Value (interface)
 		ValueNull (singleton)
 		ValueString

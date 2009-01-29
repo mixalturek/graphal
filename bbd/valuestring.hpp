@@ -35,6 +35,10 @@ public:
 	virtual bool     toBool(void) const { return !m_val.empty(); }
 	virtual string toString(void) const { return m_val; }
 
+	virtual ValueString*       toValueString(void) { return this; }
+
+	uint getSize(void) const { return m_val.size(); }
+
 	virtual void dump(ostream& os, uint indent) const;
 
 	virtual PTR_Value add(const Value&     right) const; // +

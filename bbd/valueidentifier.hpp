@@ -36,8 +36,20 @@ public:
 	identifier       getName(void) const { return m_val; }
 	CountPtr<Value>   getVal(void) const { return CONTEXT.getLocalVariable(m_val); }
 	virtual bool      toBool(void) const { return CONTEXT.getLocalVariable(m_val)->toBool(); }
-	virtual bool isReference(void) const { return true; }
+	virtual bool    isLValue(void) const { return true; }
 	virtual string  toString(void) const { return CONTEXT.getLocalVariable(m_val)->toString(); }
+
+	virtual ValueBool*           toValueBool(void) { return CONTEXT.getLocalVariable(m_val)->toValueBool(); }
+	virtual ValueInt*             toValueInt(void) { return CONTEXT.getLocalVariable(m_val)->toValueInt(); }
+	virtual ValueFloat*         toValueFloat(void) { return CONTEXT.getLocalVariable(m_val)->toValueFloat(); }
+	virtual ValueString*       toValueString(void) { return CONTEXT.getLocalVariable(m_val)->toValueString(); }
+	virtual ValueStruct*       toValueStruct(void) { return CONTEXT.getLocalVariable(m_val)->toValueStruct(); }
+	virtual ValueArray*         toValueArray(void) { return CONTEXT.getLocalVariable(m_val)->toValueArray(); }
+	virtual ValueGraph*         toValueGraph(void) { return CONTEXT.getLocalVariable(m_val)->toValueGraph(); }
+	virtual ValueVertex*       toValueVertex(void) { return CONTEXT.getLocalVariable(m_val)->toValueVertex(); }
+	virtual ValueEdge*           toValueEdge(void) { return CONTEXT.getLocalVariable(m_val)->toValueEdge(); }
+	virtual ValueVertexSet* toValueVertexSet(void) { return CONTEXT.getLocalVariable(m_val)->toValueVertexSet(); }
+	virtual ValueEdgeSet*     toValueEdgeSet(void) { return CONTEXT.getLocalVariable(m_val)->toValueEdgeSet(); }
 
 	virtual CountPtr<Value> assign(CountPtr<Value> val) { return CONTEXT.setLocalVariable(m_val, val); }
 	virtual CountPtr<Value> getReferredValue(void) const;

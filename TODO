@@ -19,6 +19,7 @@ add built-in functions
 		...
 
 test . [] operators
+	check member access to edges and vertices (ValueStruct had bugs)
 
 resolve ?gcc bug? - Tests::testValueArray()
 

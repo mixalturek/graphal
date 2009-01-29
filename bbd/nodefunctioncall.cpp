@@ -71,7 +71,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 		{
 			CountPtr<Value> tmp((*itc)->execute());
 
-			if(tmp->isReference())
+			if(tmp->isLValue())
 			{
 				// Passing by value
 				values.push_back(tmp->getReferredValue());

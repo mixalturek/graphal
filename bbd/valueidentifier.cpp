@@ -56,7 +56,7 @@ CountPtr<Value> ValueIdentifier::getReferredValue(void) const
 {
 	CountPtr<Value> tmp(CONTEXT.getLocalVariable(m_val));
 
-	while(tmp->isReference())
+	while(tmp->isLValue())
 		tmp = tmp->getReferredValue();
 
 	return tmp;
@@ -266,8 +266,8 @@ PTR_Value ValueIdentifier::member(const ValueInt& /*left*/)       const { WARN <
 PTR_Value ValueIdentifier::member(const ValueFloat& /*left*/)     const { WARN << _("Member access to the float variable, operation is not supported") << endl; return VALUENULL; }
 PTR_Value ValueIdentifier::member(const ValueString& /*left*/)    const { WARN << _("Member access to the string variable, operation is not supported") << endl; return VALUENULL; }
 PTR_Value ValueIdentifier::member(const ValueStruct& left)        const { return const_cast<ValueStruct&>(left).getItem(m_val); }
-PTR_Value ValueIdentifier::member(const ValueReference& left)     const { return left.getVal()->member(*getVal()); }
-PTR_Value ValueIdentifier::member(const ValueIdentifier& left)    const { return left.getVal()->member(*getVal()); }
+PTR_Value ValueIdentifier::member(const ValueReference& left)     const { return left.getVal()->member(*dynamic_cast<const Value*>(this)); }
+PTR_Value ValueIdentifier::member(const ValueIdentifier& left)    const { return left.getVal()->member(*dynamic_cast<const Value*>(this)); }
 PTR_Value ValueIdentifier::member(const ValueGraph& /*left*/)     const { WARN << _("Member access to the graph variable, operation is not supported") << endl; return VALUENULL; }
 PTR_Value ValueIdentifier::member(const ValueVertex& left)        const { return const_cast<ValueVertex&>(left).getItem(m_val); }
 PTR_Value ValueIdentifier::member(const ValueEdge& left)          const { return const_cast<ValueEdge&>(left).getItem(m_val); }

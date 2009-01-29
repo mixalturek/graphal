@@ -1,15 +1,23 @@
 function main(argv)
 {
-	i = 0;
-	dump(argv);
-	echo(argv[0] + "\n");
-	echo(argv[1] + "\n");
-	echo("" + argv[2] + "\n");// Index out of bounds
+	num = argv.size();
+	for(i = 0; i < num; i++)
+		echo("argv[" + i + "]: " + argv[i] + "\n");
 
-/*	brm = array();
-	dump(brm);
-	brm[0] = "bagr";
-	brm[1] = "brm";
-	brm[2] = 3;
-*/
+	arr = array(5);
+	arr[0] = "bagr";
+	arr[1] = 5.5;
+	arr[4] = 3;
+
+	for(i = 0; i < 5; i++)
+		echo("arr[" + i + "]: " + arr[i] + "\n");
+
+	st = struct();
+	st.bagr = "bagr";
+	st.brm = true;
+
+	echo("st.bagr: " + st.bagr + "\n");
+	echo("st.brm: " + st.brm + "\n");
+	st.bagr = "jiny bagr";
+	echo("st.bagr: " + st.bagr + "\n");
 }

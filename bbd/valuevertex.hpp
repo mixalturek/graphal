@@ -49,6 +49,9 @@ public:
 	virtual bool     toBool(void) const { return true; }
 	virtual string toString(void) const { return "ValueVertex"; }
 
+	virtual ValueStruct*       toValueStruct(void) { return m_properties; }
+	virtual ValueVertex*       toValueVertex(void) { return this; }
+
 	virtual void dump(ostream& os, uint indent) const;
 
 	set<EDGE_WITH_ORIENTATION>* getEdges(void) { return m_edges; }

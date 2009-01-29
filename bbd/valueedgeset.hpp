@@ -1,6 +1,4 @@
 /*
- *      valueedgeset.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -34,6 +32,8 @@ class ValueEdgeSet : public Value
 public:
 	ValueEdgeSet(ValueGraph* graph);
 	virtual ~ValueEdgeSet();
+
+	virtual ValueEdgeSet*     toValueEdgeSet(void) { return this; }
 
 	virtual void dump(ostream& os, uint indent) const;
 

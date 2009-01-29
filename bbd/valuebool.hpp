@@ -53,6 +53,8 @@ public:
 	virtual bool     toBool(void) const { return m_val; }
 	virtual string toString(void) const { return (m_val) ? "true" : "false"; }
 
+	virtual ValueBool*           toValueBool(void) { return this; }
+
 	virtual void dump(ostream& os, uint indent) const;
 
 	// +
