@@ -30,15 +30,6 @@
 
 class ValueEdge;
 
-
-enum ORIENTATION
-{
-	BEGIN = true,
-	END = false
-};
-
-typedef pair<ValueEdge*, ORIENTATION> EDGE_WITH_ORIENTATION;
-
 class ValueVertex : public Value
 {
 public:
@@ -54,7 +45,7 @@ public:
 
 	virtual void dump(ostream& os, uint indent) const;
 
-	set<EDGE_WITH_ORIENTATION>* getEdges(void) { return m_edges; }
+	set<ValueEdge*>* getEdges(void) { return m_edges; }
 
 	uint getDegree(void) const { return m_edges->size(); }
 	ValueVertexSet getNeighbors(void);
@@ -66,14 +57,11 @@ public:
 	bool isItemSet(identifier name) { return m_properties->isItemSet(name); }
 
 private:
-	friend void ValueGraph::invertEdgesOrientation(void);
-	void invertOrientation(void);
-
 	friend ValueEdge* ValueGraph::addEdge(ValueVertex* begin, ValueVertex* end);
-	void addEdge(ValueEdge* edge, ORIENTATION orientation);
+	void addEdge(ValueEdge* edge);
 
 	friend void ValueGraph::deleteEdge(ValueEdge* edge);
-	void deleteEdge(ValueEdge* edge, ORIENTATION orientation);
+	void deleteEdge(ValueEdge* edge);
 
 public:
 	virtual PTR_Value add(const Value&     right) const; // +
@@ -95,7 +83,7 @@ public:
 
 private:
 	ValueGraph* m_graph;
-	set<EDGE_WITH_ORIENTATION>* m_edges;// TODO: remove orientation
+	set<ValueEdge*>* m_edges;
 	ValueStruct* m_properties;
 };
 

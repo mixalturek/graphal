@@ -1,6 +1,4 @@
 /*
- *      graph.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -72,19 +70,19 @@ ValueEdge* ValueGraph::addEdge(ValueVertex* begin, ValueVertex* end)
 	ValueEdge* edge = new ValueEdge(this, begin, end);
 	m_edges.insert(edge);
 
-	begin->addEdge(edge, BEGIN);
-	end->addEdge(edge, END);
+	begin->addEdge(edge);
+	end->addEdge(edge);
 
 	return edge;
 }
 
 void ValueGraph::deleteVertex(ValueVertex* vertex)
 {
-	set<EDGE_WITH_ORIENTATION>* edges = vertex->getEdges();
+	set<ValueEdge*>* edges = vertex->getEdges();
 
-	set<EDGE_WITH_ORIENTATION>::iterator it;
+	set<ValueEdge*>::iterator it;
 	for(it = edges->begin(); it != edges->end(); it++)
-		deleteEdge(it->first);
+		deleteEdge(*it);
 
 	m_vertices.erase(vertex);
 	delete vertex;
@@ -92,8 +90,8 @@ void ValueGraph::deleteVertex(ValueVertex* vertex)
 
 void ValueGraph::deleteEdge(ValueEdge* edge)
 {
-	edge->getBeginVertex()->deleteEdge(edge, BEGIN);
-	edge->getEndVertex()->deleteEdge(edge, END);
+	edge->getBeginVertex()->deleteEdge(edge);
+	edge->getEndVertex()->deleteEdge(edge);
 	m_edges.erase(edge);
 	delete edge;
 }
@@ -104,10 +102,6 @@ void ValueGraph::deleteEdge(ValueEdge* edge)
 
 void ValueGraph::invertEdgesOrientation(void)
 {
-	set<ValueVertex*>::iterator vit;
-	for(vit = m_vertices.begin(); vit != m_vertices.end(); vit++)
-		(*vit)->invertOrientation();
-
 	set<ValueEdge*>::iterator eit;
 	for(eit = m_edges.begin(); eit != m_edges.end(); eit++)
 		(*eit)->invertOrientation();

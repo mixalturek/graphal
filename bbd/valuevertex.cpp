@@ -31,7 +31,7 @@
 ValueVertex::ValueVertex(ValueGraph* graph)
 	: Value(),
 	m_graph(graph),
-	m_edges(new set<EDGE_WITH_ORIENTATION>()),
+	m_edges(new set<ValueEdge*>()),
 	m_properties(new ValueStruct())
 {
 
@@ -47,14 +47,14 @@ ValueVertex::~ValueVertex()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void ValueVertex::addEdge(ValueEdge* edge, ORIENTATION orientation)
+void ValueVertex::addEdge(ValueEdge* edge)
 {
-	m_edges->insert(EDGE_WITH_ORIENTATION(edge, orientation));
+	m_edges->insert(edge);
 }
 
-void ValueVertex::deleteEdge(ValueEdge* edge, ORIENTATION orientation)
+void ValueVertex::deleteEdge(ValueEdge* edge)
 {
-	m_edges->erase(EDGE_WITH_ORIENTATION(edge, orientation));
+	m_edges->erase(edge);
 }
 
 
@@ -64,49 +64,28 @@ void ValueVertex::deleteEdge(ValueEdge* edge, ORIENTATION orientation)
 ValueVertexSet ValueVertex::getNeighbors(void)
 {
 	ValueVertexSet ret(m_graph);
-	set<EDGE_WITH_ORIENTATION>::iterator it;
+	set<ValueEdge*>::iterator it;
 
 	if(m_graph->isOriented())
 	{
 		for(it = m_edges->begin(); it != m_edges->end(); it++)
 		{
-			if(it->second == BEGIN)
-				ret.addVertex(it->first->getEndVertex());
+			if((*it)->getBeginVertex() == this)
+				ret.addVertex((*it)->getEndVertex());
 		}
 	}
 	else
 	{
 		for(it = m_edges->begin(); it != m_edges->end(); it++)
 		{
-			if(it->second == BEGIN)
-				ret.addVertex(it->first->getEndVertex());
+			if((*it)->getBeginVertex() == this)
+				ret.addVertex((*it)->getEndVertex());
 			else
-				ret.addVertex(it->first->getBeginVertex());
+				ret.addVertex((*it)->getBeginVertex());
 		}
 	}
 
 	return ret;
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void ValueVertex::invertOrientation(void)
-{
-	set<EDGE_WITH_ORIENTATION> tmp;
-	set<EDGE_WITH_ORIENTATION>::iterator it;
-
-	for(it = m_edges->begin(); it != m_edges->end(); it++)
-	{
-		if(it->second == BEGIN)
-			// The orientation can't be inverted here, it is part of the set key
-			tmp.insert(EDGE_WITH_ORIENTATION(it->first, END));
-		else
-			tmp.insert(EDGE_WITH_ORIENTATION(it->first, BEGIN));
-	}
-
-	*m_edges = tmp;
 }
 
 
