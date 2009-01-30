@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs">
+
+<head>
+<title>Interpret grafových algoritmů</title>
+
+<style media="all">
+body
+{
+	margin: 100px 20% 100px 20%;
+	font-family: Verdana, "Bitstream Vera Sans", Geneva, sans-serif;
+	font-size: 9pt;
+	text-align: justify;
+	line-height: 1.8em;
+}
+
+h1		{ text-align: center; }
+h2		{ background-color: #ddddff; padding: 0.5em; text-align: center; border-top: 1px solid gray; margin-top: 3em; }
+table		{ margin: auto; max-width: 100%; }
+tr		{ background-color: rgb(230,230,230); }
+tr:hover	{ background-color: rgb(190,200,230); }
+th, td		{ padding-left: 10px; padding-right: 10px; }
+th		{ border: 1px solid rgb(160,160,160); }
+a:hover		{ color: red; }
+.img		{ text-align: center; }
+.autor		{ font-weight: bold; text-align: center; }
+.todo		{ color: red; }
+.todo:before	{ content: "TODO: "}
+pre		{ overflow: auto; line-height: 1.1em; max-height: 25em; border: 1px solid silver; padding: 1em; }
+pre:hover	{ border: 1px solid gray; }
+</style>
+
+<style media="print">
+body		{ margin: 0%; }
+</style>
+
+</head>
+
+<body>
+
+<h1>Diplomová práce: Interpret grafových algoritmů</h1>
+<p class="autor"><a href="http://woq.nipax.cz/">Michal Turek</a>, FEL ČVUT</p>
+
+
+<!-- /////////////////////////////////////////////////////////////////// -->
+<a id="obsah" href="#"></a>
+<h2>Obsah</h2>
+
+<ul>
+<li><a href="#obsah">Obsah</a></li>
+<li><a href="#download">Download</a></li>
+<li><a href="#nastroje">Vývojové nástroje, závislosti, verze</a></li>
+<li><a href="#kompilace">Kompilace</a></li>
+<li><a href="#spusteni">Spuštění</a></li>
+<li><a href="#gramatika">Gramatika, syntaxe, built-in funkce</a></li>
+</ul>
+
+
+<!-- /////////////////////////////////////////////////////////////////// -->
+<a id="download" href="#"></a>
+<h2>Download</h2>
+
+<p>ChangeLog a TODO soubory jsou uloženy v archivech.</p>
+
+<ul>
+<li><a href="down/bbd_svn84.tar.gz">Fri, 30 Jan 09 13:31:09 +0100, svn v84</a></li>
+</ul>
+
+
+<!-- /////////////////////////////////////////////////////////////////// -->
+<a id="nastroje" href="#"></a>
+<h2>Vývojové nástroje, závislosti, verze</h2>
+
+
+<h3>Operační systémy</h3>
+
+<p>Vývoj probíhá v Debian Lenny GNU/Linuxu, aplikace byla portována do MS Windows 2000 (VirtualBox) a MS Windows XP.</p>
+
+<pre>
+[woq@evm bbd]$ <strong>uname -a</strong>
+Linux evm 2.6.26-1-686 #1 SMP Wed Nov 26 19:14:11 UTC 2008 i686 GNU/Linux
+[woq@evm bbd]$
+</pre>
+
+
+<h3><a href="http://www.codeblocks.org/">Code::Blocks</a></h3>
+
+<p>Při instalaci pod MS Windows byla použita verze s integrovaným <em>GCC</em> a <em>GDB</em> (<em>codeblocks-8.02mingw-setup.exe</em>), v GNU/Linuxu verze z repozitáře.</p>
+
+<pre>
+[woq@evm bbd]$ <strong>apt-cache search codeblocks</strong>
+codeblocks-dev - Code::Blocks development files (SDK)
+codeblocks - Code::Blocks integrated development environment (IDE)
+libcodeblocks0 - Code::Blocks shared library
+codeblocks-contrib - Contrib plugins for Code::Blocks IDE
+libwxsmithlib0-dev - wxSmith development files
+codeblocks-dbg - Code::Blocks debugging libraries
+libwxsmithlib0 - wxSmith shared library (wxSmith is a Code::Blocks plugin for RAD GUI editing)
+[woq@evm bbd]$ <strong>apt-cache show codeblocks | grep Version</strong>
+Version: 8.02
+[woq@evm bbd]$
+</pre>
+
+
+<h3>GNU Make</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>make -v</strong>
+GNU Make 3.81
+Copyright (C) 2006  Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.
+There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.
+
+This program built for i486-pc-linux-gnu
+[woq@evm bbd]$
+</pre>
+
+
+<h3>GCC</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>gcc -v</strong>
+Using built-in specs.
+Target: i486-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Debian 4.3.2-1.1' --with-bugurl=file:///usr/share/doc/gcc-4.3/README.Bugs --enable-languages=c,c++,fortran,objc,obj-c++ --prefix=/usr --enable-shared --with-system-zlib --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --enable-nls --with-gxx-include-dir=/usr/include/c++/4.3 --program-suffix=-4.3 --enable-clocale=gnu --enable-libstdcxx-debug --enable-objc-gc --enable-mpfr --enable-targets=all --enable-cld --enable-checking=release --build=i486-linux-gnu --host=i486-linux-gnu --target=i486-linux-gnu
+Thread model: posix
+gcc version 4.3.2 (Debian 4.3.2-1.1)
+[woq@evm bbd]$
+</pre>
+
+
+<h3>makedepend</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>apt-cache search makedepend</strong>
+xutils-dev - X Window System utility programs for development
+[woq@evm bbd]$ <strong>apt-cache show xutils-dev | grep Version</strong>
+Version: 1:7.4+3
+[woq@evm bbd]$
+</pre>
+
+
+<h3>Perl</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>perl -v</strong>
+
+This is perl, v5.10.0 built for i486-linux-gnu-thread-multi
+
+Copyright 1987-2007, Larry Wall
+
+Perl may be copied only under the terms of either the Artistic License or the
+GNU General Public License, which may be found in the Perl 5 source kit.
+
+Complete documentation for Perl, including FAQ lists, should be found on
+this system using "man perl" or "perldoc perl".  If you have access to the
+Internet, point your browser at http://www.perl.org/, the Perl Home Page.
+
+[woq@evm bbd]$
+</pre>
+
+
+<h3>Meld</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>apt-cache search meld</strong>
+meld - graphical tool to diff and merge files
+[woq@evm bbd]$ <strong>apt-cache show meld | grep Version</strong>
+Version: 1.1.5.1-2
+[woq@evm bbd]$
+</pre>
+
+
+<h3>SVN</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>svn --version | grep version</strong>
+svn, version 1.5.1 (r32289)
+Subversion is open source software, see http://subversion.tigris.org/
+[woq@evm bbd]$
+</pre>
+
+
+<!-- /////////////////////////////////////////////////////////////////// -->
+<a id="kompilace" href="#"></a>
+<h2>Kompilace</h2>
+
+<h3>Konfigurace</h3>
+
+<p>Zdrojový soubor <em>general.hpp</em> obsahuje základní konfiguraci a je inkludován do všech ostatních souborů. Je v něm možné zapnout debug/release konfiguraci (+ parametry kompilátoru v <em>Makefile</em>) a testování úniků paměti. Pro základní použití a vývoj není třeba cokoli měnit.</p>
+
+
+<h3>Code::Blocks</h3>
+
+<p>Otevřít projekt, v menu <em>Build</em> - <em>Build</em> (F9).</p>
+
+<p>Prostředí není nastaveno, aby volalo skripty na generování zdrojových kódů (<em>bison</em>, <em>gen_operators.pl</em>, <em>gen_builtin.pl</em>), vygenerované soubory už musí být na disku. Nejjednodušší cesta je po jejich změně spustit <em>make rebuild</em> a poté kompilovat ve vývojovém prostředí.</p>
+
+
+<h3>Makefile</h3>
+
+<p>Kompletní rebuild, včetně generování zdrojových kódů (<em>bison</em>, <em>gen_operators.pl</em>, <em>gen_builtin.pl</em>) a závislostí mezi soubory (<em>makedepend</em>).</p>
+
+<p>Je možné samostatně spouštět i jednotlivé části kompilace (<em>make bison</em>, <em>make operators</em>, <em>make builtin</em> atd.), pro podrobnosti viz obsah souboru <em>Makefile</em>.</p>
+
+<pre>
+[woq@evm diplomka]$ <strong>cd bbd/</strong>
+[woq@evm bbd]$ <strong>make rebuild</strong>
+rm -f bbd *.o core
+bison -d -o parser.cpp parser.y
+perl gen_operators.pl
+Generating NodeUnarySub
+Generating NodeUnaryNot
+Generating NodeUnaryReturn
+Generating NodeUnaryIncPre
+Generating NodeUnaryIncPost
+Generating NodeUnaryDecPre
+Generating NodeUnaryDecPost
+Generating NodeBinaryAdd
+Generating NodeBinarySub
+Generating NodeBinaryMult
+Generating NodeBinaryDiv
+Generating NodeBinaryMod
+Generating NodeBinaryEq
+Generating NodeBinaryNe
+Generating NodeBinaryLe
+Generating NodeBinaryGe
+Generating NodeBinaryLt
+Generating NodeBinaryGt
+Generating NodeBinaryAnd
+Generating NodeBinaryOr
+Generating NodeBinaryMember
+Generating NodeBinaryIndex
+Generating NodeBinaryAss
+Generating NodeBinaryAssAdd
+Generating NodeBinaryAssSub
+Generating NodeBinaryAssMult
+Generating NodeBinaryAssDiv
+Generating NodeBinaryAssMod
+perl gen_builtin.pl
+Generating NodeBuiltinEcho
+Generating NodeBuiltinDump
+Generating NodeBuiltinArray
+Generating NodeBuiltinStruct
+Generating NodeBuiltinGraph
+Generating NodeBuiltinSize
+makedepend -Y -m baseobject.cpp context.cpp init_static_objects.cpp lexan.cpp lexaniterator.cpp lexaniteratorfile.cpp lexaniteratorstring.cpp logger.cpp main.cpp nodebinaryadd.cpp nodebinaryand.cpp nodebinaryassadd.cpp nodebinaryass.cpp nodebinaryassdiv.cpp nodebinaryassmod.cpp nodebinaryassmult.cpp nodebinaryasssub.cpp nodebinary.cpp nodebinarydiv.cpp nodebinaryeq.cpp nodebinaryge.cpp nodebinarygt.cpp nodebinaryindex.cpp nodebinaryle.cpp nodebinarylt.cpp nodebinarymember.cpp nodebinarymod.cpp nodebinarymult.cpp nodebinaryne.cpp nodebinaryor.cpp nodebinarysub.cpp nodeblock.cpp nodebuiltinarray.cpp nodebuiltindump.cpp nodebuiltinecho.cpp nodebuiltingraph.cpp nodebuiltinsize.cpp nodebuiltinstruct.cpp nodecondition.cpp node.cpp nodeemptycommand.cpp nodefunctionbuiltin.cpp nodefunctioncall.cpp nodefunction.cpp nodefunctionscript.cpp nodejumpbreak.cpp nodejumpcontinue.cpp nodeloop.cpp nodeunary.cpp nodeunarydecpost.cpp nodeunarydecpre.cpp nodeunaryincpost.cpp nodeunaryincpre.cpp nodeunarynot.cpp nodeunaryreturn.cpp nodeunarysub.cpp nodevalue.cpp parser.cpp stringtable.cpp tests.cpp valuearray.cpp valuebool.cpp value.cpp valueedge.cpp valueedgeset.cpp valuefloat.cpp valuegraph.cpp valueidentifier.cpp valueint.cpp valuenull.cpp valuereference.cpp valuestring.cpp valuestruct.cpp valuevertex.cpp valuevertexset.cpp 2>&1 | grep -v '\(cassert\|algorithm\|set\|stream\|fstream\|iostream\|map\|deque\|vector\|stack\|list\|typeinfo\|stdexcept\|cmath\)'
+makedepend: warning:  parser.cpp, line 324: cannot find include file "stddef.h"
+g++ -c baseobject.cpp -std=c++98 -pedantic -Wall
+g++ -c context.cpp -std=c++98 -pedantic -Wall
+g++ -c init_static_objects.cpp -std=c++98 -pedantic -Wall
+g++ -c lexan.cpp -std=c++98 -pedantic -Wall
+g++ -c lexaniterator.cpp -std=c++98 -pedantic -Wall
+g++ -c lexaniteratorfile.cpp -std=c++98 -pedantic -Wall
+g++ -c lexaniteratorstring.cpp -std=c++98 -pedantic -Wall
+g++ -c logger.cpp -std=c++98 -pedantic -Wall
+g++ -c main.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryadd.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryand.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryassadd.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryass.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryassdiv.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryassmod.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryassmult.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryasssub.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinary.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinarydiv.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryeq.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryge.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinarygt.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryindex.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryle.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinarylt.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinarymember.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinarymod.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinarymult.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryne.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinaryor.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebinarysub.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeblock.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebuiltinarray.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebuiltindump.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebuiltinecho.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebuiltingraph.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebuiltinsize.cpp -std=c++98 -pedantic -Wall
+g++ -c nodebuiltinstruct.cpp -std=c++98 -pedantic -Wall
+g++ -c nodecondition.cpp -std=c++98 -pedantic -Wall
+g++ -c node.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeemptycommand.cpp -std=c++98 -pedantic -Wall
+g++ -c nodefunctionbuiltin.cpp -std=c++98 -pedantic -Wall
+g++ -c nodefunctioncall.cpp -std=c++98 -pedantic -Wall
+g++ -c nodefunction.cpp -std=c++98 -pedantic -Wall
+g++ -c nodefunctionscript.cpp -std=c++98 -pedantic -Wall
+g++ -c nodejumpbreak.cpp -std=c++98 -pedantic -Wall
+g++ -c nodejumpcontinue.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeloop.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeunary.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeunarydecpost.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeunarydecpre.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeunaryincpost.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeunaryincpre.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeunarynot.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeunaryreturn.cpp -std=c++98 -pedantic -Wall
+g++ -c nodeunarysub.cpp -std=c++98 -pedantic -Wall
+g++ -c nodevalue.cpp -std=c++98 -pedantic -Wall
+g++ -c parser.cpp -std=c++98 -pedantic -Wall
+g++ -c stringtable.cpp -std=c++98 -pedantic -Wall
+g++ -c tests.cpp -std=c++98 -pedantic -Wall
+g++ -c valuearray.cpp -std=c++98 -pedantic -Wall
+g++ -c valuebool.cpp -std=c++98 -pedantic -Wall
+g++ -c value.cpp -std=c++98 -pedantic -Wall
+g++ -c valueedge.cpp -std=c++98 -pedantic -Wall
+g++ -c valueedgeset.cpp -std=c++98 -pedantic -Wall
+g++ -c valuefloat.cpp -std=c++98 -pedantic -Wall
+g++ -c valuegraph.cpp -std=c++98 -pedantic -Wall
+g++ -c valueidentifier.cpp -std=c++98 -pedantic -Wall
+g++ -c valueint.cpp -std=c++98 -pedantic -Wall
+g++ -c valuenull.cpp -std=c++98 -pedantic -Wall
+g++ -c valuereference.cpp -std=c++98 -pedantic -Wall
+g++ -c valuestring.cpp -std=c++98 -pedantic -Wall
+g++ -c valuestruct.cpp -std=c++98 -pedantic -Wall
+g++ -c valuevertex.cpp -std=c++98 -pedantic -Wall
+g++ -c valuevertexset.cpp -std=c++98 -pedantic -Wall
+g++ -o bbd baseobject.o context.o init_static_objects.o lexan.o lexaniterator.o lexaniteratorfile.o lexaniteratorstring.o logger.o main.o nodebinaryadd.o nodebinaryand.o nodebinaryassadd.o nodebinaryass.o nodebinaryassdiv.o nodebinaryassmod.o nodebinaryassmult.o nodebinaryasssub.o nodebinary.o nodebinarydiv.o nodebinaryeq.o nodebinaryge.o nodebinarygt.o nodebinaryindex.o nodebinaryle.o nodebinarylt.o nodebinarymember.o nodebinarymod.o nodebinarymult.o nodebinaryne.o nodebinaryor.o nodebinarysub.o nodeblock.o nodebuiltinarray.o nodebuiltindump.o nodebuiltinecho.o nodebuiltingraph.o nodebuiltinsize.o nodebuiltinstruct.o nodecondition.o node.o nodeemptycommand.o nodefunctionbuiltin.o nodefunctioncall.o nodefunction.o nodefunctionscript.o nodejumpbreak.o nodejumpcontinue.o nodeloop.o nodeunary.o nodeunarydecpost.o nodeunarydecpre.o nodeunaryincpost.o nodeunaryincpre.o nodeunarynot.o nodeunaryreturn.o nodeunarysub.o nodevalue.o parser.o stringtable.o tests.o valuearray.o valuebool.o value.o valueedge.o valueedgeset.o valuefloat.o valuegraph.o valueidentifier.o valueint.o valuenull.o valuereference.o valuestring.o valuestruct.o valuevertex.o valuevertexset.o
+[woq@evm bbd]$
+</pre>
+
+
+<!-- /////////////////////////////////////////////////////////////////// -->
+<a id="spusteni" href="#"></a>
+<h2>Spuštění</h2>
+
+
+<h3>Parametry programu</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>./bbd</strong>
+[i] bbd [svn version 84]
+[i] Usage: ./bbd [-I&lt;directory&gt;] [--unit-tests] [--ast-dump] &lt;filename&gt;
+
+        -I&lt;directory&gt;
+                Specify include directories (relative to the current working directory)
+                -I&lt;directory_1&gt; -I&lt;directory_2&gt; ... -I&lt;directory_N&gt;
+
+        --unit-tests
+                Run unit tests
+
+        --ast-dump
+                Dump abstract syntax tree of the script
+
+        filename
+                File to be executed
+
+[woq@evm bbd]$
+</pre>
+
+
+<h3>Vykonání skriptu</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>cat ../samples/01_factorial.txt</strong>
+function factorial(number)
+{
+        if(number &lt; 2)
+                return 1;
+        else
+                return number * factorial(number - 1);
+}
+
+// Enter to program
+function main(argv)
+{
+        for(i = 0; i &lt; 10; i++)
+                echo("Factorial of " + i + " is " + factorial(i) + "\n");
+
+        return 0;
+}
+[woq@evm bbd]$ <strong>./bbd ../samples/01_factorial.txt</strong>
+[i] bbd [svn version 79]
+Function declaration at line: 1
+Function declaration at line: 10
+Factorial of 0 is 1
+Factorial of 1 is 1
+Factorial of 2 is 2
+Factorial of 3 is 6
+Factorial of 4 is 24
+Factorial of 5 is 120
+Factorial of 6 is 720
+Factorial of 7 is 5040
+Factorial of 8 is 40320
+Factorial of 9 is 362880
+[i] *** EXITING SCRIPT MAIN, OK ***
+[i] Return value: 0
+[i] Number of memory leaks: 0
+[i] *** EXITING MAIN, OK ***
+[woq@evm bbd]$
+</pre>
+
+
+<h3>Unit testy</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>./bbd --unit-tests</strong>
+[i] bbd [svn version 79]
+[i] [ OK ]     testMemoryLeaks
+[i] [ OK ]     testDoubleDispatching
+[i] [ OK ]     testValueStruct
+[i] [ OK ]     testValueString
+[i] [ OK ]     testValueReference
+[i] [ OK ]     testValueIdentifier
+[i] [ OK ]     testValueArray
+[i] [ OK ]     testGraph
+[i] [ OK ]     testGraphSet
+[i] [ OK ]     testGraphInvertEdgesOrientation
+[i] [ OK ]     testLexanTerminalSymbols
+[i] [ OK ]     testLexanInt
+[i] [ OK ]     testLexanFloat
+[i] [ OK ]     testLexanString
+[i] [ OK ]     testLexanComments
+[i] [ OK ]     testLexanSourceCode
+[i] [ OK ]     testNodeUnary
+[i] [ OK ]     testNodeBinary
+[i] [ OK ]     testNodeBlock
+[i] [ OK ]     testNodeVariable
+[i] [ OK ]     testStringTable
+[i] [ OK ]     testCountPtr
+[i] [ OK ]     testNodeFunction
+[i] Number of failed tests: 0
+[exception] lexaniteratorfile.cpp:33 function LexanIteratorFile()
+[e] Unable to open file: --unit-tests
+[woq@evm bbd]$
+</pre>
+
+
+<h3>Dump abstract syntax tree</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>./bbd --ast-dump ../samples/01_factorial.txt</strong>
+[i] bbd [svn version 84]
+Function declaration at line: 1
+Function declaration at line: 10
+&lt;Context&gt;
+    &lt;BuiltinFunction name="echo" id="2" /&gt;
+    &lt;BuiltinFunction name="dump" id="3" /&gt;
+    &lt;BuiltinFunction name="array" id="4" /&gt;
+    &lt;BuiltinFunction name="struct" id="5" /&gt;
+    &lt;BuiltinFunction name="graph" id="6" /&gt;
+    &lt;BuiltinFunction name="size" id="7" /&gt;
+    &lt;Function name="factorial" id="9"&gt;
+        &lt;Parameter name="number" id="10" /&gt;
+        &lt;If&gt;
+            &lt;Condition&gt;
+                &lt;NodeBinaryLt&gt;
+                    &lt;ValueIdentifier name="number" id="10"&gt;
+                        &lt;NoValue /&gt;
+                    &lt;/ValueIdentifier&gt;
+                    &lt;ValueInt value="2" /&gt;
+                &lt;/NodeBinaryLt&gt;
+            &lt;/Condition&gt;
+            &lt;IfSection&gt;
+                &lt;NodeUnaryReturn&gt;
+                    &lt;ValueInt value="1" /&gt;
+                &lt;/NodeUnaryReturn&gt;
+            &lt;/IfSection&gt;
+            &lt;ElseSection&gt;
+                &lt;NodeUnaryReturn&gt;
+                    &lt;NodeBinaryMult&gt;
+                        &lt;ValueIdentifier name="number" id="10"&gt;
+                            &lt;NoValue /&gt;
+                        &lt;/ValueIdentifier&gt;
+                        &lt;FunctionCall name="factorial" id="9"&gt;
+                            &lt;NodeBinarySub&gt;
+                                &lt;ValueIdentifier name="number" id="10"&gt;
+                                    &lt;NoValue /&gt;
+                                &lt;/ValueIdentifier&gt;
+                                &lt;ValueInt value="1" /&gt;
+                            &lt;/NodeBinarySub&gt;
+                        &lt;/FunctionCall&gt;
+                    &lt;/NodeBinaryMult&gt;
+                &lt;/NodeUnaryReturn&gt;
+            &lt;/ElseSection&gt;
+        &lt;/If&gt;
+    &lt;/Function&gt;
+    &lt;Function name="main" id="11"&gt;
+        &lt;Parameter name="argv" id="12" /&gt;
+        &lt;Loop&gt;
+            &lt;Init&gt;
+                &lt;NodeBinaryAss&gt;
+                    &lt;ValueIdentifier name="i" id="13"&gt;
+                        &lt;NoValue /&gt;
+                    &lt;/ValueIdentifier&gt;
+                    &lt;ValueInt value="0" /&gt;
+                &lt;/NodeBinaryAss&gt;
+            &lt;/Init&gt;
+            &lt;Condition&gt;
+                &lt;NodeBinaryLt&gt;
+                    &lt;ValueIdentifier name="i" id="13"&gt;
+                        &lt;NoValue /&gt;
+                    &lt;/ValueIdentifier&gt;
+                    &lt;ValueInt value="10" /&gt;
+                &lt;/NodeBinaryLt&gt;
+            &lt;/Condition&gt;
+            &lt;Inc&gt;
+                &lt;NodeUnaryIncPost&gt;
+                    &lt;ValueIdentifier name="i" id="13"&gt;
+                        &lt;NoValue /&gt;
+                    &lt;/ValueIdentifier&gt;
+                &lt;/NodeUnaryIncPost&gt;
+            &lt;/Inc&gt;
+            &lt;Body&gt;
+                &lt;FunctionCall name="echo" id="2"&gt;
+                    &lt;NodeBinaryAdd&gt;
+                        &lt;NodeBinaryAdd&gt;
+                            &lt;NodeBinaryAdd&gt;
+                                &lt;NodeBinaryAdd&gt;
+                                    &lt;ValueString value="Factorial of " /&gt;
+                                    &lt;ValueIdentifier name="i" id="13"&gt;
+                                        &lt;NoValue /&gt;
+                                    &lt;/ValueIdentifier&gt;
+                                &lt;/NodeBinaryAdd&gt;
+                                &lt;ValueString value=" is " /&gt;
+                            &lt;/NodeBinaryAdd&gt;
+                            &lt;FunctionCall name="factorial" id="9"&gt;
+                                &lt;ValueIdentifier name="i" id="13"&gt;
+                                    &lt;NoValue /&gt;
+                                &lt;/ValueIdentifier&gt;
+                            &lt;/FunctionCall&gt;
+                        &lt;/NodeBinaryAdd&gt;
+                        &lt;ValueString value="
+" /&gt;
+                    &lt;/NodeBinaryAdd&gt;
+                &lt;/FunctionCall&gt;
+            &lt;/Body&gt;
+        &lt;/Loop&gt;
+        &lt;NodeUnaryReturn&gt;
+            &lt;ValueInt value="0" /&gt;
+        &lt;/NodeUnaryReturn&gt;
+    &lt;/Function&gt;
+    &lt;StringTable&gt;
+        &lt;string id="0"&gt;a&lt;/string&gt;
+        &lt;string id="1"&gt;b&lt;/string&gt;
+        &lt;string id="2"&gt;echo&lt;/string&gt;
+        &lt;string id="3"&gt;dump&lt;/string&gt;
+        &lt;string id="4"&gt;array&lt;/string&gt;
+        &lt;string id="5"&gt;struct&lt;/string&gt;
+        &lt;string id="6"&gt;graph&lt;/string&gt;
+        &lt;string id="7"&gt;size&lt;/string&gt;
+        &lt;string id="8"&gt;../samples/01_factorial.txt&lt;/string&gt;
+        &lt;string id="9"&gt;factorial&lt;/string&gt;
+        &lt;string id="10"&gt;number&lt;/string&gt;
+        &lt;string id="11"&gt;main&lt;/string&gt;
+        &lt;string id="12"&gt;argv&lt;/string&gt;
+        &lt;string id="13"&gt;i&lt;/string&gt;
+    &lt;/StringTable&gt;
+&lt;/Context&gt;
+Factorial of 0 is 1
+Factorial of 1 is 1
+Factorial of 2 is 2
+Factorial of 3 is 6
+Factorial of 4 is 24
+Factorial of 5 is 120
+Factorial of 6 is 720
+Factorial of 7 is 5040
+Factorial of 8 is 40320
+Factorial of 9 is 362880
+[i] *** EXITING SCRIPT MAIN, OK ***
+[i] Return value: 0
+[i] Number of memory leaks: 0
+[i] *** EXITING MAIN, OK ***
+[woq@evm bbd]$
+</pre>
+
+
+<!-- /////////////////////////////////////////////////////////////////// -->
+<a id="gramatika" href="#"></a>
+<h2>Gramatika, syntaxe, built-in funkce</h2>
+
+<p>Viz soubory <em>parser.y</em> a <em>gen_builtin.pl</em>. Aktuální verze je příliš vývojová, aby mělo cenu to sepisovat.</p>
+
+
+</body>
+</html>
