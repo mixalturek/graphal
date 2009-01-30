@@ -1,44 +1,61 @@
+/////////////////////////////////////////////////////////////////////////////
+//// Code clean up
+
 add error and warning messages if ValueNull is returned
-
-add breakpoint(condition) builtin functions
-	add command line option --breakpoints to enable/disable
-
 resolve all TODOs
-
-clean up code
-
-add built-in functions
-	type casting
-		toInt()
-		toBool()
-		...
-	type checking
-		isInt()
-		isGraph()
-		isIterable()
-		...
-
-test . [] operators
-	check member access to edges and vertices (ValueStruct had bugs)
-
-resolve ?gcc bug? - Tests::testValueArray()
-
+ValueIdentifier and ValueReference double dispatching cleanup!!!
 catch exceptions in the script main()
+	break, continue, runtime_error
 
 add position to the generated code
 	#line number "gen_operators.pl"
 	#line number "gen_builtin.pl"
 
-bison
-	rewrite parser to C++ (it is in documentation)
-	rename tokens LEX_
-	function overloading (save names like "name<numberofparameters>")
-	foreach, iterators
-	switch
-	add position tracking to the parser
-		NodeCommand::execute() will update position in Context
-		add function declarations, warning already declared at
-	add "global variable;" statement
-	constructor statements (not build-in functions)
-		array()
-		array(size)
+
+/////////////////////////////////////////////////////////////////////////////
+//// Built-in functions
+
+type casting
+	toInt()
+	toBool()
+	...
+type checking
+	isInt()
+	isGraph()
+	isIterable()
+	...
+graphs
+breakpoint(condition)
+	add command line option --breakpoints to enable/disable
+
+
+/////////////////////////////////////////////////////////////////////////////
+//// Tests
+
+. [] operators
+	check member access to edges and vertices (ValueStruct had bugs)
+test multiple assignment
+	a = array[3] = b = 2;
+unit tests
+	add new for basic things
+	split to several files by groups (values, nodes, builtins ...)
+	resolve ?gcc bug? - Tests::testValueArray()
+	why is cout << ""; needed on windows
+		ValueGraph::deleteVertex()
+		Tests::testGraph()
+
+
+/////////////////////////////////////////////////////////////////////////////
+//// Bison
+
+rewrite parser to C++ (it is in documentation)
+rename tokens LEX_
+function overloading (save names like "name<numberofparameters>")
+	array() - array0()
+	array(size) - array1()
+add foreach, iterators
+add "global variable;" statement
+add switch
+add position tracking to the parser
+	NodeCommand::execute() will update position in Context
+	add function declarations, warning "function already declared at"

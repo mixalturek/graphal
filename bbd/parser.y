@@ -324,7 +324,7 @@ int yylex(void)
 
 void yyerror(char const *msg)
 {
-	ERROR << msg << endl;
+	ERROR << ID2STR(g_lexan->getFile()) << ":" << g_lexan->getLine() << ": " << msg << endl;
 }
 
 int parseCode(const string& str)
