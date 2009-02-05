@@ -24,6 +24,7 @@
 #include "logger.hpp"
 #include "tests.hpp"
 #include "context.hpp"
+#include "nodebuiltin_inst.hpp"
 
 int parseCode(const string& str);
 
@@ -113,7 +114,7 @@ int main(int argc, char** argv)
 		}
 
 
-		CONTEXT.generateBuiltinFunctions();
+		generateBuiltinFunctions();
 
 		if(parseCode(argv[argc-1]) == 0)
 		{
