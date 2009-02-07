@@ -457,7 +457,7 @@ bool Tests::testGraphSet(void)
 
 	// v1 ----> v2 ----> v3 ----> v4
 	//     e1       e2       e3
-	g.setOrientation(true);
+	g.setOriented(true);
 
 	vvs = v1->getNeighbors();
 	verify(vvs.getNumVertices() == 1);
@@ -471,7 +471,7 @@ bool Tests::testGraphSet(void)
 	verify(vvs.contains(v3));
 	verify(!vvs.contains(v4));
 
-	g.setOrientation(false);
+	g.setOriented(false);
 
 
 	ValueEdgeSet ves(&g);

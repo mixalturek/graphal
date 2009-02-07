@@ -42,7 +42,7 @@ public:
 	virtual string toString(void) const { return "ValueGraph"; } // TODO:
 
 	bool isOriented(void) const { return m_oriented; }
-	void setOrientation(bool oriented) { m_oriented = oriented; }
+	bool setOriented(bool oriented) { bool ret = m_oriented; m_oriented = oriented; return ret; }
 	void invertEdgesOrientation(void);
 
 	ValueVertex* addVertex(void);

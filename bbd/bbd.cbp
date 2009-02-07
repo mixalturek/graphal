@@ -106,6 +106,8 @@
 		<Unit filename="nodebinarysub.hpp" />
 		<Unit filename="nodeblock.cpp" />
 		<Unit filename="nodeblock.hpp" />
+		<Unit filename="nodebuiltin_inst.cpp" />
+		<Unit filename="nodebuiltin_inst.hpp" />
 		<Unit filename="nodebuiltinarray.cpp" />
 		<Unit filename="nodebuiltinarray.hpp" />
 		<Unit filename="nodebuiltindump.cpp" />
@@ -114,6 +116,12 @@
 		<Unit filename="nodebuiltinecho.hpp" />
 		<Unit filename="nodebuiltingraph.cpp" />
 		<Unit filename="nodebuiltingraph.hpp" />
+		<Unit filename="nodebuiltininvertedgesorientation.cpp" />
+		<Unit filename="nodebuiltininvertedgesorientation.hpp" />
+		<Unit filename="nodebuiltinisoriented.cpp" />
+		<Unit filename="nodebuiltinisoriented.hpp" />
+		<Unit filename="nodebuiltinsetoriented.cpp" />
+		<Unit filename="nodebuiltinsetoriented.hpp" />
 		<Unit filename="nodebuiltinsize.cpp" />
 		<Unit filename="nodebuiltinsize.hpp" />
 		<Unit filename="nodebuiltinstruct.cpp" />
@@ -126,8 +134,6 @@
 		<Unit filename="nodefunction.hpp" />
 		<Unit filename="nodefunctionbuiltin.cpp" />
 		<Unit filename="nodefunctionbuiltin.hpp" />
-		<Unit filename="nodebuiltin_inst.cpp" />
-		<Unit filename="nodebuiltin_inst.hpp" />
 		<Unit filename="nodefunctioncall.cpp" />
 		<Unit filename="nodefunctioncall.hpp" />
 		<Unit filename="nodefunctionscript.cpp" />

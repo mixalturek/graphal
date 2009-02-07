@@ -37,9 +37,15 @@ void generateBuiltinFunctions(void)
 	list<identifier> params;
 	params.push_back(STR2ID("a"));
 	params.push_back(STR2ID("b"));
+	params.push_back(STR2ID("c"));
+	params.push_back(STR2ID("d"));
+	params.push_back(STR2ID("e"));
 
 	list<identifier>::iterator p0 = params.begin();
 	list<identifier>::iterator p1 = ++p0;
+	list<identifier>::iterator p2 = ++p0;
+	list<identifier>::iterator p3 = ++p0;
+	list<identifier>::iterator p4 = ++p0;
 	p0 = params.begin();
 
 END_OF_CODE
@@ -89,6 +95,7 @@ $fileheader
 
 #include <cassert>
 #include "$hpp_filename"
+#include "valuenull.hpp"
 #include "context.hpp"
 #include "logger.hpp"
 $include
@@ -162,10 +169,14 @@ END_OF_CPP
 
 my $code;
 my $include;
+my $funcdecl;
+
 
 
 #############################################################################
-#### echo(object)
+####
+
+$funcdecl = 'echo(object)';
 
 $code = <<END_OF_CODE;
 	SCRIPT_STDOUT << par[0]->toString();
@@ -175,7 +186,9 @@ genBFClass('echo', 'NodeBuiltinEcho', 1, $code);
 
 
 #############################################################################
-#### dump(object)
+####
+
+$funcdecl = 'dump(object)';
 
 $code = <<END_OF_CODE;
 	par[0]->dump(SCRIPT_STDOUT, 0);
@@ -185,14 +198,15 @@ genBFClass('dump', 'NodeBuiltinDump', 1, $code);
 
 
 #############################################################################
-#### array(int|bool|float)
+####
+
+$funcdecl = 'array(int|bool|float)';
 
 $include = <<END_OF_CODE;
 #include "valuearray.hpp"
 #include "valuebool.hpp"
 #include "valueint.hpp"
 #include "valuefloat.hpp"
-#include "valuenull.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -208,7 +222,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(new ValueArray((uint)f->getVal()));
 	else
 	{
-		WARN << _("Array constructor expects numeric variable") << endl;
+		WARN << _("Bad parameters type: $funcdecl") << endl;
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -216,19 +230,17 @@ genBFClass('array', 'NodeBuiltinArray', 1, $code, $include);
 
 
 #############################################################################
-#### struct()
+####
+
+$funcdecl = 'struct()';
 
 genBFClass('struct', 'NodeBuiltinStruct', 0, "\treturn CountPtr<Value>(new ValueStruct());", "#include \"valuestruct.hpp\"");
 
 
 #############################################################################
-#### graph()
+####
 
-genBFClass('grahp', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");
-
-
-#############################################################################
-#### size(array|string)
+$funcdecl = 'size(array|string)';
 
 $include = <<END_OF_CODE;
 #include "valuearray.hpp"
@@ -246,11 +258,106 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(new ValueInt(s->getSize()));
 	else
 	{
-		WARN << _("Function size() expects array or string in parameter") << endl;
-		return CountPtr<Value>(new ValueInt(0));
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
 	}
 END_OF_CODE
 genBFClass('size', 'NodeBuiltinSize', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'graph()';
+
+genBFClass('grahp', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");
+
+
+#############################################################################
+####
+
+$funcdecl = 'isOriented(graph)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+#include "valuegraph.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL)
+		return CountPtr<Value>((g->isOriented()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('isOriented', 'NodeBuiltinIsOriented', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'setOriented(graph, bool|int)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+#include "valueint.hpp"
+#include "valuegraph.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+	ValueBool* b = NULL;
+	ValueInt* i = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL)
+	{
+		if((b = par[1]->toValueBool()) != NULL)
+			return CountPtr<Value>((g->setOriented(b->getVal())) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
+		if((i = par[1]->toValueInt()) != NULL)
+			return CountPtr<Value>((g->setOriented(i->getVal())) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
+		else
+		{
+			WARN << _("Bad parameters type: $funcdecl") << endl;
+			return CountPtr<Value>(VALUENULL);
+		}
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('setOriented', 'NodeBuiltinSetOriented', 2, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'invertEdgesOrientation(graph)';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL)
+	{
+		g->invertEdgesOrientation();
+		return CountPtr<Value>(VALUENULL);
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('invertEdgesOrientation', 'NodeBuiltinInvertEdgesOrientation', 1, $code, $include);
 
 
 #############################################################################
