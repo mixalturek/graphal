@@ -11,7 +11,7 @@
 				<Option object_output="obj/debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-I../samples --unit-tests --ast-dump ../samples/01_factorial.txt" />
+				<Option parameters="-I../samples --unit-tests ../samples/01_factorial.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,7 +21,7 @@
 				<Option object_output="obj/release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-I../samples --unit-tests --ast-dump ../samples/01_factorial.txt" />
+				<Option parameters="-I../samples --unit-tests ../samples/01_factorial.txt" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -122,6 +122,14 @@
 		<Unit filename="nodebuiltindump.hpp" />
 		<Unit filename="nodebuiltinecho.cpp" />
 		<Unit filename="nodebuiltinecho.hpp" />
+		<Unit filename="nodebuiltingetbeginvertex.cpp" />
+		<Unit filename="nodebuiltingetbeginvertex.hpp" />
+		<Unit filename="nodebuiltingetdegree.cpp" />
+		<Unit filename="nodebuiltingetdegree.hpp" />
+		<Unit filename="nodebuiltingetendvertex.cpp" />
+		<Unit filename="nodebuiltingetendvertex.hpp" />
+		<Unit filename="nodebuiltingetneighbors.cpp" />
+		<Unit filename="nodebuiltingetneighbors.hpp" />
 		<Unit filename="nodebuiltingetnumedges.cpp" />
 		<Unit filename="nodebuiltingetnumedges.hpp" />
 		<Unit filename="nodebuiltingetnumvertices.cpp" />

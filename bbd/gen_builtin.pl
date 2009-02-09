@@ -406,7 +406,11 @@ $code = <<END_OF_CODE;
 
 	if((g = par[0]->toValueGraph()) != NULL && (v1 = par[1]->toValueVertex()) != NULL && (v2 = par[2]->toValueVertex()) != NULL)
 	{
-		CountPtr<Value> ret(g->addEdge(v1, v2));
+		ValueEdge* tmp = g->addEdge(v1, v2);
+		if(tmp == NULL)
+			return CountPtr<Value>(VALUENULL);
+
+		CountPtr<Value> ret(tmp);
 		ret.dontDeleteAutomatically();
 		return ret;
 	}
@@ -525,6 +529,114 @@ $code = <<END_OF_CODE;
 	}
 END_OF_CODE
 genBFClass('getNumEdges', 'NodeBuiltinGetNumEdges', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'getDegree(vertex)';
+
+$include = <<END_OF_CODE;
+#include "valuevertex.hpp"
+#include "valueint.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueVertex* v = NULL;
+
+	if((v = par[0]->toValueVertex()) != NULL)
+	{
+		return CountPtr<Value>(new ValueInt(v->getDegree()));
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('getDegree', 'NodeBuiltinGetDegree', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'getNeighbors(vertex)';
+
+$include = <<END_OF_CODE;
+#include "valuevertex.hpp"
+#include "valuevertexset.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueVertex* v = NULL;
+
+	if((v = par[0]->toValueVertex()) != NULL)
+	{
+		return CountPtr<Value>(v->getNeighbors());
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('getNeighbors', 'NodeBuiltinGetNeighbors', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'getBeginVertex(edge)';
+
+$include = <<END_OF_CODE;
+#include "valueedge.hpp"
+#include "valuevertex.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueEdge* e = NULL;
+
+	if((e = par[0]->toValueEdge()) != NULL)
+	{
+		CountPtr<Value> ret(e->getBeginVertex());
+		ret.dontDeleteAutomatically();
+		return ret;
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('getBeginVertex', 'NodeBuiltinGetBeginVertex', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'getEndVertex(edge)';
+
+$include = <<END_OF_CODE;
+#include "valueedge.hpp"
+#include "valuevertex.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueEdge* e = NULL;
+
+	if((e = par[0]->toValueEdge()) != NULL)
+	{
+		CountPtr<Value> ret(e->getEndVertex());
+		ret.dontDeleteAutomatically();
+		return ret;
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('getEndVertex', 'NodeBuiltinGetEndVertex', 1, $code, $include);
 
 
 #############################################################################

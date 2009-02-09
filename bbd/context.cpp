@@ -203,6 +203,7 @@ int Context::executeScriptMain(int argc, char** argv)
 
 	NodeFunctionCall main(getStringTable()->getID("main"), new NodeBlock(new NodeValue(argv_array)));
 
+	INFO << _("*** ENTERING SCRIPT MAIN ***") << endl;
 	CountPtr<Value> main_retval = main.execute();
 
 	INFO << _("*** EXITING SCRIPT MAIN, OK ***") << endl;

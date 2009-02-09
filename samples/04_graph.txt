@@ -27,39 +27,37 @@ function main(argv)
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 3);
 
-/*
-	verify(e1->getBeginVertex() == v1);
-	verify(e1->getEndVertex() == v2);
-	verify(e2->getBeginVertex() == v2);
-	verify(e2->getEndVertex() == v3);
-	verify(e3->getBeginVertex() == v3);
-	verify(e3->getEndVertex() == v4);
+	verify(e1.getBeginVertex() == v1);
+	verify(e1.getEndVertex() == v2);
+	verify(e2.getBeginVertex() == v2);
+	verify(e2.getEndVertex() == v3);
+	verify(e3.getBeginVertex() == v3);
+	verify(e3.getEndVertex() == v4);
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 3);
-	verify(v1->getDegree() == 1);
-	verify(v2->getDegree() == 2);
-	verify(v3->getDegree() == 2);
-	verify(v4->getDegree() == 1);
+	verify(v1.getDegree() == 1);
+	verify(v2.getDegree() == 2);
+	verify(v3.getDegree() == 2);
+	verify(v4.getDegree() == 1);
 
 	g.deleteEdge(e1);
 	e1 = NULL;
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 2);
-	verify(v1->getDegree() == 0);
-	verify(v2->getDegree() == 1);
-	verify(v3->getDegree() == 2);
-	verify(v4->getDegree() == 1);
+	verify(v1.getDegree() == 0);
+	verify(v2.getDegree() == 1);
+	verify(v3.getDegree() == 2);
+	verify(v4.getDegree() == 1);
 
 	g.deleteVertex(v2);
 	v2 = NULL;
 
 	verify(g.getNumVertices() == 3);
 	verify(g.getNumEdges() == 1);
-	verify(v1->getDegree() == 0);
-	// verify(v2->getDegree() == 1); // deleted
-	verify(v3->getDegree() == 1);
-	verify(v4->getDegree() == 1);
-*/
+	verify(v1.getDegree() == 0);
+	// verify(v2.getDegree() == 1); // deleted
+	verify(v3.getDegree() == 1);
+	verify(v4.getDegree() == 1);
 }

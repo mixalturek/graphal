@@ -48,7 +48,7 @@ public:
 	set<ValueEdge*>* getEdges(void) { return m_edges; }
 
 	uint getDegree(void) const { return m_edges->size(); }
-	ValueVertexSet getNeighbors(void);
+	ValueVertexSet* getNeighbors(void);// Caller have to delete the memory
 
 	ValueGraph* getGraph(void) { return m_graph; }
 

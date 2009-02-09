@@ -61,9 +61,9 @@ void ValueVertex::deleteEdge(ValueEdge* edge)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-ValueVertexSet ValueVertex::getNeighbors(void)
+ValueVertexSet* ValueVertex::getNeighbors(void)
 {
-	ValueVertexSet ret(m_graph);
+	ValueVertexSet* ret = new ValueVertexSet(m_graph);
 	set<ValueEdge*>::iterator it;
 
 	if(m_graph->isOriented())
@@ -71,7 +71,7 @@ ValueVertexSet ValueVertex::getNeighbors(void)
 		for(it = m_edges->begin(); it != m_edges->end(); it++)
 		{
 			if((*it)->getBeginVertex() == this)
-				ret.addVertex((*it)->getEndVertex());
+				ret->addVertex((*it)->getEndVertex());
 		}
 	}
 	else
@@ -79,9 +79,9 @@ ValueVertexSet ValueVertex::getNeighbors(void)
 		for(it = m_edges->begin(); it != m_edges->end(); it++)
 		{
 			if((*it)->getBeginVertex() == this)
-				ret.addVertex((*it)->getEndVertex());
+				ret->addVertex((*it)->getEndVertex());
 			else
-				ret.addVertex((*it)->getBeginVertex());
+				ret->addVertex((*it)->getBeginVertex());
 		}
 	}
 

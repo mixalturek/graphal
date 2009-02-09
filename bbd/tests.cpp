@@ -441,18 +441,24 @@ bool Tests::testGraphSet(void)
 	ValueEdge* e3 = g.addEdge(v3, v4);
 
 
-	ValueVertexSet vvs(&g);
+	ValueVertexSet* vvs;
 	vvs = v1->getNeighbors();
-	verify(vvs.getNumVertices() == 1);
-	verify(vvs.contains(v2));
-	verify(!vvs.contains(v3));
-	verify(!vvs.contains(v4));
+	verify(vvs->getNumVertices() == 1);
+	verify(vvs->contains(v2));
+	verify(!vvs->contains(v3));
+	verify(!vvs->contains(v4));
+
+	delete vvs;
+	vvs = NULL;
 
 	vvs = v2->getNeighbors();
-	verify(vvs.getNumVertices() == 2);
-	verify(vvs.contains(v1));
-	verify(vvs.contains(v3));
-	verify(!vvs.contains(v4));
+	verify(vvs->getNumVertices() == 2);
+	verify(vvs->contains(v1));
+	verify(vvs->contains(v3));
+	verify(!vvs->contains(v4));
+
+	delete vvs;
+	vvs = NULL;
 
 
 	// v1 ----> v2 ----> v3 ----> v4
@@ -460,16 +466,23 @@ bool Tests::testGraphSet(void)
 	g.setOriented(true);
 
 	vvs = v1->getNeighbors();
-	verify(vvs.getNumVertices() == 1);
-	verify(vvs.contains(v2));
-	verify(!vvs.contains(v3));
-	verify(!vvs.contains(v4));
+	verify(vvs->getNumVertices() == 1);
+	verify(vvs->contains(v2));
+	verify(!vvs->contains(v3));
+	verify(!vvs->contains(v4));
+
+	delete vvs;
+	vvs = NULL;
 
 	vvs = v2->getNeighbors();
-	verify(vvs.getNumVertices() == 1);
-	verify(!vvs.contains(v1));
-	verify(vvs.contains(v3));
-	verify(!vvs.contains(v4));
+	verify(vvs->getNumVertices() == 1);
+	verify(!vvs->contains(v1));
+	verify(vvs->contains(v3));
+	verify(!vvs->contains(v4));
+
+	delete vvs;
+	vvs = NULL;
+
 
 	g.setOriented(false);
 
@@ -520,31 +533,43 @@ bool Tests::testGraphInvertEdgesOrientation(void)
 	//      e1       e2       e3
 	g.invertEdgesOrientation();
 
-	ValueVertexSet vvs(&g);
+	ValueVertexSet* vvs;
 
 	vvs = v1->getNeighbors();
-	verify(vvs.getNumVertices() == 0);
-	verify(!vvs.contains(v2));
-	verify(!vvs.contains(v3));
-	verify(!vvs.contains(v4));
+	verify(vvs->getNumVertices() == 0);
+	verify(!vvs->contains(v2));
+	verify(!vvs->contains(v3));
+	verify(!vvs->contains(v4));
+
+	delete vvs;
+	vvs = NULL;
 
 	vvs = v2->getNeighbors();
-	verify(vvs.getNumVertices() == 1);
-	verify(vvs.contains(v1));
-	verify(!vvs.contains(v3));
-	verify(!vvs.contains(v4));
+	verify(vvs->getNumVertices() == 1);
+	verify(vvs->contains(v1));
+	verify(!vvs->contains(v3));
+	verify(!vvs->contains(v4));
+
+	delete vvs;
+	vvs = NULL;
 
 	vvs = v3->getNeighbors();
-	verify(vvs.getNumVertices() == 1);
-	verify(!vvs.contains(v1));
-	verify(vvs.contains(v2));
-	verify(!vvs.contains(v4));
+	verify(vvs->getNumVertices() == 1);
+	verify(!vvs->contains(v1));
+	verify(vvs->contains(v2));
+	verify(!vvs->contains(v4));
+
+	delete vvs;
+	vvs = NULL;
 
 	vvs = v4->getNeighbors();
-	verify(vvs.getNumVertices() == 1);
-	verify(!vvs.contains(v1));
-	verify(!vvs.contains(v2));
-	verify(vvs.contains(v3));
+	verify(vvs->getNumVertices() == 1);
+	verify(!vvs->contains(v1));
+	verify(!vvs->contains(v2));
+	verify(vvs->contains(v3));
+
+	delete vvs;
+	vvs = NULL;
 
 	verify(e1->getBeginVertex() == v2);
 	verify(e1->getEndVertex() == v1);
