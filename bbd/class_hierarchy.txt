@@ -1,6 +1,7 @@
 CountPtr<TYPE>
 BaseObject
 	Context (singleton)
+	ExitValue
 	Node (interface)
 		NodeUnary (interface)
 			NodeUnarySub
@@ -42,12 +43,7 @@ BaseObject
 		NodeFunction (interface)
 			NodeFunctionScript
 			NodeFunctionBuiltin (interface)
-				NodeBuiltinEcho
-				NodeBuiltinDump
-				NodeBuiltinArray
-				NodeBuiltinStruct
-				NodeBuiltinGraph
-				NodeBuiltinSize
+				...
 	Value (interface)
 		ValueNull (singleton)
 		ValueString

@@ -20,8 +20,11 @@
 
 #include "nodefunctionscript.hpp"
 #include "nodeemptycommand.hpp"
+#include "nodejumpcontinue.hpp"
+#include "nodejumpbreak.hpp"
 #include "valuenull.hpp"
 #include "context.hpp"
+#include "logger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -60,6 +63,14 @@ CountPtr<Value> NodeFunctionScript::execute(void)
 			return ex;
 
 		return ex;
+	}
+	catch(NodeJumpContinue* ex)
+	{
+		WARN << "Continue command occured outside of a loop." << endl;
+	}
+	catch(NodeJumpBreak* ex)
+	{
+		WARN << "Break command occured outside of a loop." << endl;
 	}
 
 	return VALUENULL;

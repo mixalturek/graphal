@@ -200,6 +200,62 @@ genBFClass('dump', 'NodeBuiltinDump', 1, $code);
 #############################################################################
 ####
 
+$funcdecl = 'exit(object)';
+
+$include = <<END_OF_CODE;
+#include "exitvalue.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	throw ExitValue(par[0]);
+
+	// It will never be called
+	return VALUENULL;
+END_OF_CODE
+genBFClass('exit', 'NodeBuiltinExit', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'assert(object)';
+
+$include = <<END_OF_CODE;
+#include <stdexcept>
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	if(!par[0]->toBool())
+		throw runtime_error(_("Assertion failed"));
+
+	// It will never be called
+	return VALUENULL;
+END_OF_CODE
+genBFClass('assert', 'NodeBuiltinAssert', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'verify(object)';
+
+$include = <<END_OF_CODE;
+#include <stdexcept>
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	if(!par[0]->toBool())
+		WARN << _("Verify: Operation was not successful") << endl;
+
+	// It will never be called
+	return VALUENULL;
+END_OF_CODE
+genBFClass('verify', 'NodeBuiltinVerify', 1, $code, $include);
+
+
+#############################################################################
+####
+
 $funcdecl = 'array(int|bool|float)';
 
 $include = <<END_OF_CODE;

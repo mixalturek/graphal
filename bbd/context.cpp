@@ -20,6 +20,7 @@
 
 #include <cassert>
 #include <fstream>
+#include <stdexcept>
 #include "context.hpp"
 #include "valuenull.hpp"
 #include "nodefunction.hpp"
@@ -30,6 +31,7 @@
 #include "nodevalue.hpp"
 #include "nodeblock.hpp"
 #include "logger.hpp"
+#include "exitvalue.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -204,11 +206,26 @@ int Context::executeScriptMain(int argc, char** argv)
 	NodeFunctionCall main(getStringTable()->getID("main"), new NodeBlock(new NodeValue(argv_array)));
 
 	INFO << _("*** ENTERING SCRIPT MAIN ***") << endl;
-	CountPtr<Value> main_retval = main.execute();
 
-	INFO << _("*** EXITING SCRIPT MAIN, OK ***") << endl;
-	INFO << _("Return value: ") << main_retval->toString() << endl;
-	// main_retval->dump(cout, 0);
+	try
+	{
+		CountPtr<Value> main_retval = main.execute();
+		INFO << _("*** EXITING SCRIPT MAIN, OK ***") << endl;
+		INFO << _("Return value: ") << main_retval->toString() << endl;
+	}
+	catch(ExitValue& ex)
+	{
+		INFO << _("*** EXITING SCRIPT MAIN, OK ***") << endl;
+		INFO << _("Exit value: ") << ex.getValue()->toString() << endl;
+	}
+	catch(runtime_error& ex)
+	{
+		WARN << "Runtime error occured in the script: " << ex.what() << endl;
+	}
+	catch(...)
+	{
+		WARN << "Unexpected exception was thrown from the script!" << endl;
+	}
 
 	return 0;
 }

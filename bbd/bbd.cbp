@@ -42,6 +42,8 @@
 		<Unit filename="context.cpp" />
 		<Unit filename="context.hpp" />
 		<Unit filename="countptr.hpp" />
+		<Unit filename="exitvalue.cpp" />
+		<Unit filename="exitvalue.hpp" />
 		<Unit filename="gen_builtin.pl" />
 		<Unit filename="gen_operators.pl" />
 		<Unit filename="general.hpp" />
@@ -114,6 +116,8 @@
 		<Unit filename="nodebuiltinaddvertex.hpp" />
 		<Unit filename="nodebuiltinarray.cpp" />
 		<Unit filename="nodebuiltinarray.hpp" />
+		<Unit filename="nodebuiltinassert.cpp" />
+		<Unit filename="nodebuiltinassert.hpp" />
 		<Unit filename="nodebuiltindeleteedge.cpp" />
 		<Unit filename="nodebuiltindeleteedge.hpp" />
 		<Unit filename="nodebuiltindeletevertex.cpp" />
@@ -122,6 +126,8 @@
 		<Unit filename="nodebuiltindump.hpp" />
 		<Unit filename="nodebuiltinecho.cpp" />
 		<Unit filename="nodebuiltinecho.hpp" />
+		<Unit filename="nodebuiltinexit.cpp" />
+		<Unit filename="nodebuiltinexit.hpp" />
 		<Unit filename="nodebuiltingetbeginvertex.cpp" />
 		<Unit filename="nodebuiltingetbeginvertex.hpp" />
 		<Unit filename="nodebuiltingetdegree.cpp" />
@@ -146,6 +152,8 @@
 		<Unit filename="nodebuiltinsize.hpp" />
 		<Unit filename="nodebuiltinstruct.cpp" />
 		<Unit filename="nodebuiltinstruct.hpp" />
+		<Unit filename="nodebuiltinverify.cpp" />
+		<Unit filename="nodebuiltinverify.hpp" />
 		<Unit filename="nodecondition.cpp" />
 		<Unit filename="nodecondition.hpp" />
 		<Unit filename="nodeemptycommand.cpp" />
