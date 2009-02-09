@@ -270,7 +270,7 @@ genBFClass('size', 'NodeBuiltinSize', 1, $code, $include);
 
 $funcdecl = 'graph()';
 
-genBFClass('grahp', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");
+genBFClass('graph', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");
 
 
 #############################################################################
@@ -358,6 +358,173 @@ $code = <<END_OF_CODE;
 	}
 END_OF_CODE
 genBFClass('invertEdgesOrientation', 'NodeBuiltinInvertEdgesOrientation', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'addVertex(graph)';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+#include "valuevertex.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL)
+	{
+		CountPtr<Value> ret(g->addVertex());
+		ret.dontDeleteAutomatically();
+		return ret;
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('addVertex', 'NodeBuiltinAddVertex', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'addEdge(graph, vertex, vertex)';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+#include "valuevertex.hpp"
+#include "valueedge.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+	ValueVertex* v1 = NULL;
+	ValueVertex* v2 = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL && (v1 = par[1]->toValueVertex()) != NULL && (v2 = par[2]->toValueVertex()) != NULL)
+	{
+		CountPtr<Value> ret(g->addEdge(v1, v2));
+		ret.dontDeleteAutomatically();
+		return ret;
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('addEdge', 'NodeBuiltinAddEdge', 3, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'deleteVertex(graph, vertex)';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+#include "valuevertex.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+	ValueVertex* v = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL && (v = par[1]->toValueVertex()) != NULL)
+	{
+		g->deleteVertex(v);
+		return CountPtr<Value>(VALUENULL);
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('deleteVertex', 'NodeBuiltinDeleteVertex', 2, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'deleteEdge(graph, edge)';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+#include "valueedge.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+	ValueEdge* e = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL && (e = par[1]->toValueEdge()) != NULL)
+	{
+		g->deleteEdge(e);
+		return CountPtr<Value>(VALUENULL);
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('deleteEdge', 'NodeBuiltinDeleteEdge', 2, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'getNumVertices(graph)';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+#include "valueint.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL)
+	{
+		return CountPtr<Value>(new ValueInt(g->getNumVertices()));
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('getNumVertices', 'NodeBuiltinGetNumVertices', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'getNumEdges(graph)';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+#include "valueint.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL)
+	{
+		return CountPtr<Value>(new ValueInt(g->getNumEdges()));
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('getNumEdges', 'NodeBuiltinGetNumEdges', 1, $code, $include);
 
 
 #############################################################################

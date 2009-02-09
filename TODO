@@ -27,6 +27,9 @@ type checking
 graphs
 breakpoint(condition)
 	add command line option --breakpoints to enable/disable
+general
+	assert(condition)
+	verify(condition)
 
 
 /////////////////////////////////////////////////////////////////////////////

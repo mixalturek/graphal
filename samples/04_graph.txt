@@ -1,0 +1,65 @@
+function verify(result)
+{
+	if(result)
+		echo("Verify: Operation was successful.\n");
+	else
+		echo("Verify: Operation was not successful.\n");
+}
+
+function main(argv)
+{
+	// v1 ---- v2 ---- v3 ---- v4
+	//     e1      e2      e3
+	g = graph();
+
+	v1 = g.addVertex();
+	v2 = g.addVertex();
+	v3 = g.addVertex();
+	v4 = g.addVertex();
+
+	verify(g.getNumVertices() == 4);
+	verify(g.getNumEdges() == 0);
+
+	e1 = g.addEdge(v1, v2);
+	e2 = g.addEdge(v2, v3);
+	e3 = g.addEdge(v3, v4);
+
+	verify(g.getNumVertices() == 4);
+	verify(g.getNumEdges() == 3);
+
+/*
+	verify(e1->getBeginVertex() == v1);
+	verify(e1->getEndVertex() == v2);
+	verify(e2->getBeginVertex() == v2);
+	verify(e2->getEndVertex() == v3);
+	verify(e3->getBeginVertex() == v3);
+	verify(e3->getEndVertex() == v4);
+
+	verify(g.getNumVertices() == 4);
+	verify(g.getNumEdges() == 3);
+	verify(v1->getDegree() == 1);
+	verify(v2->getDegree() == 2);
+	verify(v3->getDegree() == 2);
+	verify(v4->getDegree() == 1);
+
+	g.deleteEdge(e1);
+	e1 = NULL;
+
+	verify(g.getNumVertices() == 4);
+	verify(g.getNumEdges() == 2);
+	verify(v1->getDegree() == 0);
+	verify(v2->getDegree() == 1);
+	verify(v3->getDegree() == 2);
+	verify(v4->getDegree() == 1);
+
+	g.deleteVertex(v2);
+	v2 = NULL;
+
+	verify(g.getNumVertices() == 3);
+	verify(g.getNumEdges() == 1);
+	verify(v1->getDegree() == 0);
+	// verify(v2->getDegree() == 1); // deleted
+	verify(v3->getDegree() == 1);
+	verify(v4->getDegree() == 1);
+*/
+}

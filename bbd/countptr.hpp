@@ -85,6 +85,12 @@ public:
 		return *m_num;
 	}
 
+	// Vertices and Edges in ValueGraph
+	void dontDeleteAutomatically(void)
+	{
+		++*m_num;
+	}
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////
