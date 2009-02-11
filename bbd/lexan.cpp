@@ -132,7 +132,7 @@ LEXTOKEN Lexan::checkKeyword(void)
 
 	// The string is variable or function name
 	m_identifier = STR2ID(m_string);
-	return LEX_NAME;
+	return LEX_IDENTIFIER;
 }
 
 
@@ -881,53 +881,53 @@ LEXTOKEN Lexan::nextToken(void)
 
 		case ST_OP_ASSIGN:		// =
 			if(c == '=')
-				return EQ_OP;
+				return LEX_EQ_OP;
 
 			unget();
 			return LEX_OP_ASSIGN;
 
 		case ST_OP_LESS:		// <
 			if(c == '=')
-				return LE_OP;
+				return LEX_LE_OP;
 
 			unget();
 			return LEX_OP_LESS;
 
 		case ST_OP_NOT:
 			if(c == '=')
-				return NE_OP;
+				return LEX_NE_OP;
 
 			unget();
 			return LEX_OP_NOT;
 
 		case ST_OP_GREATER:		// >
 			if(c == '=')
-				return GE_OP;
+				return LEX_GE_OP;
 
 			unget();
 			return LEX_OP_GREATER;
 
 		case ST_OP_PLUS:		// +
 			if(c == '=')
-				return ADD_ASSIGN;
+				return LEX_ADD_ASSIGN;
 			if(c == '+')
-				return INC_OP;
+				return LEX_INC_OP;
 
 			unget();
 			return LEX_OP_PLUS;
 
 		case ST_OP_MINUS:		// -
 			if(c == '=')
-				return SUB_ASSIGN;
+				return LEX_SUB_ASSIGN;
 			if(c == '-')
-				return DEC_OP;
+				return LEX_DEC_OP;
 
 			unget();
 			return LEX_OP_MINUS;
 
 		case ST_OP_MULT:		// *
 			if(c == '=')
-				return MUL_ASSIGN;
+				return LEX_MUL_ASSIGN;
 
 			unget();
 			return LEX_OP_MULT;
@@ -935,7 +935,7 @@ LEXTOKEN Lexan::nextToken(void)
 		case ST_OP_DIV:			// /
 			if(c == '=')
 			{
-				return DIV_ASSIGN;
+				return LEX_DIV_ASSIGN;
 			}
 			if(c == '/')
 			{
@@ -953,7 +953,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 		case ST_OP_MOD:
 			if(c == '=')
-				return MOD_ASSIGN;
+				return LEX_MOD_ASSIGN;
 
 			unget();
 			return LEX_OP_MOD;
@@ -972,7 +972,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 		case ST_OP_AND:
 			if(c == '&')
-				return AND_OP;
+				return LEX_AND_OP;
 
 			unget();
 			ERROR << POSITION
@@ -982,7 +982,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 		case ST_OP_OR:
 			if(c == '|')
-				return OR_OP;
+				return LEX_OR_OP;
 
 			unget();
 			ERROR << POSITION

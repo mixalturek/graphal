@@ -110,16 +110,16 @@ void yyerror(char const *msg);
 %token LEX_BREAK
 %token LEX_CONTINUE
 
-%right SUB_ASSIGN ADD_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN
-%token INC_OP DEC_OP
-%token EQ_OP NE_OP LE_OP GE_OP
-%token OR_OP AND_OP
+%right LEX_SUB_ASSIGN LEX_ADD_ASSIGN LEX_MUL_ASSIGN LEX_DIV_ASSIGN LEX_MOD_ASSIGN
+%token LEX_INC_OP LEX_DEC_OP
+%token LEX_EQ_OP LEX_NE_OP LEX_LE_OP LEX_GE_OP
+%token LEX_OR_OP LEX_AND_OP
 
 %token LEX_NULL
 %token LEX_TRUE
 %token LEX_FALSE
 %token <int_val>    LEX_INT
-%token <int_val>    LEX_NAME
+%token <int_val>    LEX_IDENTIFIER
 %token <float_val>  LEX_FLOAT
 %token <string_val> LEX_STRING
 
@@ -159,7 +159,7 @@ primary_expression
 	| LEX_TRUE { $$ = new NodeValue(VALUEBOOL_TRUE); }
 	| LEX_FALSE { $$ = new NodeValue(VALUEBOOL_FALSE); }
 	| LEX_INT { $$ = new NodeValue(new ValueInt($1)); }
-	| LEX_NAME { $$ = new NodeValue(new ValueIdentifier($1)); }
+	| LEX_IDENTIFIER { $$ = new NodeValue(new ValueIdentifier($1)); }
 	| LEX_FLOAT { $$ = new NodeValue(new ValueFloat($1)); }
 	| LEX_STRING { $$ = new NodeValue(new ValueString(*$1)); }
 	| '(' expression ')' { $$ = $2; }
@@ -168,13 +168,13 @@ primary_expression
 postfix_expression
 	: primary_expression { $$ = $1; }
 	| postfix_expression '[' expression ']' { $$ = new NodeBinaryIndex($1, $3); }
-	| LEX_NAME '(' ')' { $$ = new NodeFunctionCall($1, new NodeBlock()); }
-	| LEX_NAME '(' argument_expression_list ')' { $$ = new NodeFunctionCall($1, $3); }
-	| postfix_expression '.' LEX_NAME { $$ = new NodeBinaryMember($1, new NodeValue(new ValueIdentifier($3))); }
-	| postfix_expression '.' LEX_NAME '(' ')' { $$ = new NodeFunctionCall($3, new NodeBlock($1)); }
-	| postfix_expression '.' LEX_NAME '(' argument_expression_list ')' { $5->pushCommandToFront($1); $$ = new NodeFunctionCall($3, $5); }
-	| postfix_expression INC_OP { $$ = new NodeUnaryIncPost($1); }
-	| postfix_expression DEC_OP { $$ = new NodeUnaryDecPost($1); }
+	| LEX_IDENTIFIER '(' ')' { $$ = new NodeFunctionCall($1, new NodeBlock()); }
+	| LEX_IDENTIFIER '(' argument_expression_list ')' { $$ = new NodeFunctionCall($1, $3); }
+	| postfix_expression '.' LEX_IDENTIFIER { $$ = new NodeBinaryMember($1, new NodeValue(new ValueIdentifier($3))); }
+	| postfix_expression '.' LEX_IDENTIFIER '(' ')' { $$ = new NodeFunctionCall($3, new NodeBlock($1)); }
+	| postfix_expression '.' LEX_IDENTIFIER '(' argument_expression_list ')' { $5->pushCommandToFront($1); $$ = new NodeFunctionCall($3, $5); }
+	| postfix_expression LEX_INC_OP { $$ = new NodeUnaryIncPost($1); }
+	| postfix_expression LEX_DEC_OP { $$ = new NodeUnaryDecPost($1); }
 	;
 
 argument_expression_list
@@ -184,8 +184,8 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression { $$ = $1; }
-	| INC_OP unary_expression { $$ = new NodeUnaryIncPre($2); }
-	| DEC_OP unary_expression { $$ = new NodeUnaryDecPre($2); }
+	| LEX_INC_OP unary_expression { $$ = new NodeUnaryIncPre($2); }
+	| LEX_DEC_OP unary_expression { $$ = new NodeUnaryDecPre($2); }
 	| '+' unary_expression { $$ = $2; }
 	| '-' unary_expression { $$ = new NodeUnarySub($2); }
 	| '!' unary_expression { $$ = new NodeUnaryNot($2); }
@@ -208,24 +208,24 @@ relational_expression
 	: additive_expression { $$ = $1; }
 	| relational_expression '<' additive_expression { $$ = new NodeBinaryLt($1, $3); }
 	| relational_expression '>' additive_expression { $$ = new NodeBinaryGt($1, $3); }
-	| relational_expression LE_OP additive_expression { $$ = new NodeBinaryLe($1, $3); }
-	| relational_expression GE_OP additive_expression { $$ = new NodeBinaryGe($1, $3); }
+	| relational_expression LEX_LE_OP additive_expression { $$ = new NodeBinaryLe($1, $3); }
+	| relational_expression LEX_GE_OP additive_expression { $$ = new NodeBinaryGe($1, $3); }
 	;
 
 equality_expression
 	: relational_expression { $$ = $1; }
-	| equality_expression EQ_OP relational_expression { $$ = new NodeBinaryEq($1, $3); }
-	| equality_expression NE_OP relational_expression { $$ = new NodeBinaryNe($1, $3); }
+	| equality_expression LEX_EQ_OP relational_expression { $$ = new NodeBinaryEq($1, $3); }
+	| equality_expression LEX_NE_OP relational_expression { $$ = new NodeBinaryNe($1, $3); }
 	;
 
 logical_and_expression
 	: equality_expression { $$ = $1; }
-	| logical_and_expression AND_OP equality_expression { $$ = new NodeBinaryAnd($1, $3); }
+	| logical_and_expression LEX_AND_OP equality_expression { $$ = new NodeBinaryAnd($1, $3); }
 	;
 
 logical_or_expression
 	: logical_and_expression { $$ = $1; }
-	| logical_or_expression OR_OP logical_and_expression { $$ = new NodeBinaryOr($1, $3); }
+	| logical_or_expression LEX_OR_OP logical_and_expression { $$ = new NodeBinaryOr($1, $3); }
 	;
 
 conditional_expression
@@ -236,11 +236,11 @@ conditional_expression
 assignment_expression
 	: conditional_expression { $$ = $1; }
 	| unary_expression '=' assignment_expression { $$ = new NodeBinaryAss($1, $3); }
-	| unary_expression MUL_ASSIGN assignment_expression { $$ = new NodeBinaryAssMult($1, $3); }
-	| unary_expression DIV_ASSIGN assignment_expression { $$ = new NodeBinaryAssDiv($1, $3); }
-	| unary_expression MOD_ASSIGN assignment_expression { $$ = new NodeBinaryAssMod($1, $3); }
-	| unary_expression ADD_ASSIGN assignment_expression { $$ = new NodeBinaryAssAdd($1, $3); }
-	| unary_expression SUB_ASSIGN assignment_expression { $$ = new NodeBinaryAssSub($1, $3); }
+	| unary_expression LEX_MUL_ASSIGN assignment_expression { $$ = new NodeBinaryAssMult($1, $3); }
+	| unary_expression LEX_DIV_ASSIGN assignment_expression { $$ = new NodeBinaryAssDiv($1, $3); }
+	| unary_expression LEX_MOD_ASSIGN assignment_expression { $$ = new NodeBinaryAssMod($1, $3); }
+	| unary_expression LEX_ADD_ASSIGN assignment_expression { $$ = new NodeBinaryAssAdd($1, $3); }
+	| unary_expression LEX_SUB_ASSIGN assignment_expression { $$ = new NodeBinaryAssSub($1, $3); }
 	;
 
 expression
@@ -278,13 +278,13 @@ block_item_list
 	;
 
 function_definition
-	: LEX_FUNCTION LEX_NAME '(' parameter_list ')' compound_statement { cout << "Function declaration at line: " << @1.LINE << endl; CONTEXT.addFunction(new NodeFunctionScript($2, $4, $6)); }
-	| LEX_FUNCTION LEX_NAME '(' ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($2, new list<identifier>(), $5)); }
+	: LEX_FUNCTION LEX_IDENTIFIER '(' parameter_list ')' compound_statement { cout << "Function declaration at line: " << @1.LINE << endl; CONTEXT.addFunction(new NodeFunctionScript($2, $4, $6)); }
+	| LEX_FUNCTION LEX_IDENTIFIER '(' ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($2, new list<identifier>(), $5)); }
 	;
 
 parameter_list
-	: LEX_NAME { $$ = new list<identifier>(); $$->push_back($1); }
-	| parameter_list ',' LEX_NAME { $1->push_back($3); $$ = $1; }
+	: LEX_IDENTIFIER { $$ = new list<identifier>(); $$->push_back($1); }
+	| parameter_list ',' LEX_IDENTIFIER { $1->push_back($3); $$ = $1; }
 	;
 
 start
@@ -306,7 +306,7 @@ int yylex(void)
 	case LEX_INT:
 		yylval.int_val = g_lexan->getInt();
 		break;
-	case LEX_NAME:
+	case LEX_IDENTIFIER:
 		yylval.int_val = g_lexan->getIdentifier();
 		break;
 	case LEX_FLOAT:
