@@ -30,10 +30,11 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-NodeFunctionCall::NodeFunctionCall(identifier name, NodeBlock* parameters)
+NodeFunctionCall::NodeFunctionCall(identifier name, NodeBlock* parameters, const CodePosition& pos)
 	: Node(),
 	m_name(name),
-	m_parameters((parameters != NULL) ? parameters : new NodeBlock())
+	m_parameters((parameters != NULL) ? parameters : new NodeBlock()),
+	m_position(pos)
 {
 
 }
@@ -91,6 +92,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 			CountPtr<Value> ret = function->execute();
 		CONTEXT.popLocal();
 
+		CONTEXT.setPosition(m_position);// Set caller's position
 		return ret;
 	}
 	else

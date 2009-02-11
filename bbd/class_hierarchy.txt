@@ -45,6 +45,7 @@ BaseObject
 			NodeFunctionScript
 			NodeFunctionBuiltin (interface)
 				...
+		NodePosition
 	Value (interface)
 		ValueNull (singleton)
 		ValueString

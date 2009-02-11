@@ -53,11 +53,3 @@ function overloading (save names like "name<numberofparameters>")
 add foreach, iterators
 add "global variable;" statement
 add switch
-add position tracking to the parser
-	NodeCommand::execute() will update position in Context
-	add function declarations, warning "function already declared at"
-		nodecondition.cpp
-		nodejumpbreak.cpp
-		nodejumpcontinue.cpp
-		nodeloop.cpp
-		nodeunaryreturn.cpp

@@ -18,30 +18,26 @@
  */
 
 
-#ifndef NODEFUNCTIONCALL_HPP
-#define NODEFUNCTIONCALL_HPP
+#ifndef NODEPOSITION_HPP
+#define NODEPOSITION_HPP
 
 #include "general.hpp"
 #include "node.hpp"
 #include "codeposition.hpp"
 
-class NodeBlock;
 
-class NodeFunctionCall : public Node
+class NodePosition : public Node
 {
 public:
-	NodeFunctionCall(identifier name, NodeBlock* parameters, const CodePosition& pos);
-	virtual ~NodeFunctionCall();
+	NodePosition(Node* next, const CodePosition& pos);
+	virtual ~NodePosition();
 
 	virtual CountPtr<Value> execute(void);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:
-	identifier m_name;
-	NodeBlock* m_parameters;
-	CodePosition m_position;// Position of the caller
+	Node* m_next;
+	CodePosition m_position;
 };
 
-ostream& operator<<(ostream& os, const NodeFunctionCall& node);
-
-#endif // NODEFUNCTIONCALL_HPP
+#endif // NODEPOSITION_HPP

@@ -79,6 +79,7 @@
 
 #include "logger.hpp"
 #include "codeposition.hpp"
+#include "nodeposition.hpp"
 
 #define FILE last_column
 #define LINE last_line
@@ -169,11 +170,11 @@ primary_expression
 postfix_expression
 	: primary_expression { $$ = $1; }
 	| postfix_expression '[' expression ']' { $$ = new NodeBinaryIndex($1, $3); }
-	| LEX_IDENTIFIER '(' ')' { $$ = new NodeFunctionCall($1, new NodeBlock()); }
-	| LEX_IDENTIFIER '(' argument_expression_list ')' { $$ = new NodeFunctionCall($1, $3); }
+	| LEX_IDENTIFIER '(' ')' { $$ = new NodeFunctionCall($1, new NodeBlock(), CodePosition(@1.FILE, @1.LINE)); }
+	| LEX_IDENTIFIER '(' argument_expression_list ')' { $$ = new NodeFunctionCall($1, $3, CodePosition(@1.FILE, @1.LINE)); }
 	| postfix_expression '.' LEX_IDENTIFIER { $$ = new NodeBinaryMember($1, new NodeValue(new ValueIdentifier($3))); }
-	| postfix_expression '.' LEX_IDENTIFIER '(' ')' { $$ = new NodeFunctionCall($3, new NodeBlock($1)); }
-	| postfix_expression '.' LEX_IDENTIFIER '(' argument_expression_list ')' { $5->pushCommandToFront($1); $$ = new NodeFunctionCall($3, $5); }
+	| postfix_expression '.' LEX_IDENTIFIER '(' ')' { $$ = new NodeFunctionCall($3, new NodeBlock($1), CodePosition(@3.FILE, @3.LINE)); }
+	| postfix_expression '.' LEX_IDENTIFIER '(' argument_expression_list ')' { $5->pushCommandToFront($1); $$ = new NodeFunctionCall($3, $5, CodePosition(@3.FILE, @3.LINE)); }
 	| postfix_expression LEX_INC_OP { $$ = new NodeUnaryIncPost($1); }
 	| postfix_expression LEX_DEC_OP { $$ = new NodeUnaryDecPost($1); }
 	;
@@ -250,17 +251,17 @@ expression
 
 statement
 	: compound_statement { $$ = $1; }
-	| expression_statement { $$ = $1; }
+	| expression_statement { $$ = new NodePosition($1, CodePosition(@1.FILE, @1.LINE)); }
 	/* "parser.y: conflicts: 1 shift/reduce" is ok */
-	| LEX_IF '(' expression ')' statement { $$ = new NodeCondition($3, $5, new NodeEmptyCommand()); }
-	| LEX_IF '(' expression ')' statement LEX_ELSE statement { $$ = new NodeCondition($3, $5, $7); }
-	| LEX_WHILE '(' expression ')' statement { $$ = new NodeLoop(new NodeEmptyCommand(), $3, new NodeEmptyCommand(), $5); }
-	| LEX_FOR '(' expression_statement expression_statement ')' statement { $$ = new NodeLoop($3, $4, new NodeEmptyCommand(), $6); }
-	| LEX_FOR '(' expression_statement expression_statement expression ')' statement { $$ = new NodeLoop($3, $4, $5, $7); }
-	| LEX_BREAK ';' { $$ = new NodeJumpBreak(); }
-	| LEX_CONTINUE ';' { $$ = new NodeJumpContinue(); }
-	| LEX_RETURN ';' { $$ = new NodeUnaryReturn(new NodeEmptyCommand()); }
-	| LEX_RETURN expression ';' { $$ = new NodeUnaryReturn($2); }
+	| LEX_IF '(' expression ')' statement { $$ = new NodeCondition(new NodePosition($3, CodePosition(@3.FILE, @3.LINE)), $5, new NodeEmptyCommand()); }
+	| LEX_IF '(' expression ')' statement LEX_ELSE statement { $$ = new NodeCondition(new NodePosition($3, CodePosition(@3.FILE, @3.LINE)), $5, $7); }
+	| LEX_WHILE '(' expression ')' statement { $$ = new NodeLoop(new NodeEmptyCommand(), new NodePosition($3, CodePosition(@3.FILE, @3.LINE)), new NodeEmptyCommand(), $5); }
+	| LEX_FOR '(' expression_statement expression_statement ')' statement { $$ = new NodeLoop($3, new NodePosition($4, CodePosition(@4.FILE, @4.LINE)), new NodeEmptyCommand(), $6); }
+	| LEX_FOR '(' expression_statement expression_statement expression ')' statement { $$ = new NodeLoop($3, new NodePosition($4, CodePosition(@4.FILE, @4.LINE)), $5, $7); }
+	| LEX_BREAK ';' { $$ = new NodePosition(new NodeJumpBreak(), CodePosition(@2.FILE, @2.LINE)); }
+	| LEX_CONTINUE ';' { $$ = new NodePosition(new NodeJumpContinue(), CodePosition(@2.FILE, @2.LINE)); }
+	| LEX_RETURN ';' { $$ = new NodePosition(new NodeUnaryReturn(new NodeEmptyCommand()), CodePosition(@2.FILE, @2.LINE)); }
+	| LEX_RETURN expression ';' { $$ = new NodePosition(new NodeUnaryReturn($2), CodePosition(@3.FILE, @3.LINE)); }
 	;
 
 expression_statement

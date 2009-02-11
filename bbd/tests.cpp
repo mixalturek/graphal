@@ -1130,12 +1130,12 @@ bool Tests::testNodeFunction(void)
 				new NodeValue(new ValueIdentifier(local_id)),
 				new NodeValue(new ValueInt(10))
 			),
-			CodePosition(0, 0)
+			CodePosition(STR2ID("unittest"), 0)
 		);
 
 	CONTEXT.addFunction(func);
 
-	NodeFunctionCall func_call(func_id, NULL);
+	NodeFunctionCall func_call(func_id, NULL, CodePosition(STR2ID("unittest"), 0));
 	func_call.execute();
 
 
@@ -1151,12 +1151,12 @@ bool Tests::testNodeFunction(void)
 			new NodeUnaryReturn(
 				new NodeValue(new ValueInt(5))
 			),
-			CodePosition(0, 0)
+			CodePosition(STR2ID("unittest"), 0)
 		);
 
 	CONTEXT.addFunction(freturn);
 
-	NodeFunctionCall freturn_call(freturn_id, NULL);
+	NodeFunctionCall freturn_call(freturn_id, NULL, CodePosition(STR2ID("unittest"), 0));
 	str = freturn_call.execute()->toString();
 	verify(str == "5");
 
@@ -1183,10 +1183,10 @@ bool Tests::testNodeFunction(void)
 	);
 
 	NodeFunction* freturn_local = new NodeFunctionScript(freturn_local_id,
-		new list<identifier>(), body, CodePosition(0, 0));
+		new list<identifier>(), body, CodePosition(STR2ID("unittest"), 0));
 	CONTEXT.addFunction(freturn_local);
 
-	NodeFunctionCall freturn_local_call(freturn_local_id, NULL);
+	NodeFunctionCall freturn_local_call(freturn_local_id, NULL, CodePosition(STR2ID("unittest"), 0));
 	str = freturn_local_call.execute()->toString();
 	verify(str == "10");
 
@@ -1226,17 +1226,21 @@ bool Tests::testNodeFunction(void)
 						new NodeValue(new ValueIdentifier(number_id)),
 						new NodeFunctionCall(
 							factorial_id,
-							params
+							params,
+							CodePosition(STR2ID("unittest"), 0)
 						)
 					)
 				)
 			),
-			CodePosition(0, 0)
+			CodePosition(STR2ID("unittest"), 0)
 		);
 
 	CONTEXT.addFunction(factorial);
 
-	NodeFunctionCall factorial_call(factorial_id, new NodeBlock(new NodeValue(new ValueInt(4))));
+	NodeFunctionCall factorial_call(factorial_id,
+		new NodeBlock(new NodeValue(new ValueInt(4))),
+		CodePosition(STR2ID("unittest"), 0));
+
 	str = factorial_call.execute()->toString();
 	verify(str == "24");
 

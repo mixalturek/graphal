@@ -18,30 +18,43 @@
  */
 
 
-#ifndef NODEFUNCTIONCALL_HPP
-#define NODEFUNCTIONCALL_HPP
+#include "nodeposition.hpp"
+#include "context.hpp"
 
-#include "general.hpp"
-#include "node.hpp"
-#include "codeposition.hpp"
 
-class NodeBlock;
+/////////////////////////////////////////////////////////////////////////////
+////
 
-class NodeFunctionCall : public Node
+NodePosition::NodePosition(Node* next, const CodePosition& pos)
+	: Node(),
+	m_next(next),
+	m_position(pos)
 {
-public:
-	NodeFunctionCall(identifier name, NodeBlock* parameters, const CodePosition& pos);
-	virtual ~NodeFunctionCall();
+	assert(next != NULL);
+}
 
-	virtual CountPtr<Value> execute(void);
-	virtual void dump(ostream& os, uint indent) const;
+NodePosition::~NodePosition()
+{
+	delete m_next;
+}
 
-private:
-	identifier m_name;
-	NodeBlock* m_parameters;
-	CodePosition m_position;// Position of the caller
-};
 
-ostream& operator<<(ostream& os, const NodeFunctionCall& node);
+/////////////////////////////////////////////////////////////////////////////
+////
 
-#endif // NODEFUNCTIONCALL_HPP
+CountPtr<Value> NodePosition::execute(void)
+{
+	CONTEXT.setPosition(m_position);
+	return m_next->execute();
+}
+
+void NodePosition::dump(ostream& os, uint indent) const
+{
+//	dumpIndent(os, indent);
+//	os << "<NodePosition>" << endl;
+
+	m_next->dump(os, indent);
+
+//	dumpIndent(os, indent);
+//	os << "</NodePosition>" << endl;
+}

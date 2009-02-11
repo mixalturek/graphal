@@ -205,7 +205,9 @@ int Context::executeScriptMain(int argc, char** argv)
 	for(int i = 0; i < argc; i++)
 		argv_array->setItem(i, CountPtr<Value>(new ValueString(argv[i])));
 
-	NodeFunctionCall main(getStringTable()->getID("main"), new NodeBlock(new NodeValue(argv_array)));
+	NodeFunctionCall main(getStringTable()->getID("main"),
+		new NodeBlock(new NodeValue(argv_array)),
+		CodePosition(STR2ID("script enter"), 0));
 
 	INFO << _("*** ENTERING SCRIPT MAIN ***") << endl;
 
