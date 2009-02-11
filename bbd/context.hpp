@@ -28,6 +28,7 @@
 #include "countptr.hpp"
 #include "value.hpp"
 #include "stringtable.hpp"
+#include "codeposition.hpp"
 
 #define CONTEXT Context::getInstance()
 #define STR2ID(str) Context::getInstance().getStringTable()->getID((str))
@@ -64,6 +65,9 @@ public:
 	void addIncludeDirectory(const string& directory);
 	string getIncludeFullPath(const string& filename) const;
 
+	void setPosition(const CodePosition& pos) { m_position = pos; }
+	const CodePosition& getPosition(void) const { return m_position; }
+
 private:
 	Context(void);
 	virtual ~Context(void);
@@ -75,6 +79,7 @@ private:
 
 	map<identifier, NodeFunction*> m_functions;
 	deque< map<identifier, CountPtr<Value> > > m_local_variables;
+	CodePosition m_position;
 	StringTable m_stringtable;
 
 	set<string> m_include_dirs;

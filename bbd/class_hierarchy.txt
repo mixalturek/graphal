@@ -2,6 +2,7 @@ CountPtr<TYPE>
 BaseObject
 	Context (singleton)
 	ExitValue
+	CodePosition
 	Node (interface)
 		NodeUnary (interface)
 			NodeUnarySub

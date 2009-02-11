@@ -30,9 +30,10 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-NodeFunctionScript::NodeFunctionScript(identifier name, list<identifier>* parameters, Node* block)
+NodeFunctionScript::NodeFunctionScript(identifier name, list<identifier>* parameters, Node* block, const CodePosition& pos)
 	: NodeFunction(name, parameters),
-	m_block((block != NULL) ? block : new NodeEmptyCommand())
+	m_block((block != NULL) ? block : new NodeEmptyCommand()),
+	m_position(pos)
 {
 
 }
@@ -49,6 +50,8 @@ NodeFunctionScript::~NodeFunctionScript()
 
 CountPtr<Value> NodeFunctionScript::execute(void)
 {
+	CONTEXT.setPosition(m_position);
+
 	try
 	{
 		m_block->execute();

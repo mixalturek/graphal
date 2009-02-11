@@ -1129,7 +1129,8 @@ bool Tests::testNodeFunction(void)
 			new NodeBinaryAss(
 				new NodeValue(new ValueIdentifier(local_id)),
 				new NodeValue(new ValueInt(10))
-			)
+			),
+			CodePosition(0, 0)
 		);
 
 	CONTEXT.addFunction(func);
@@ -1149,7 +1150,8 @@ bool Tests::testNodeFunction(void)
 		new NodeFunctionScript(freturn_id, new list<identifier>(),
 			new NodeUnaryReturn(
 				new NodeValue(new ValueInt(5))
-			)
+			),
+			CodePosition(0, 0)
 		);
 
 	CONTEXT.addFunction(freturn);
@@ -1180,7 +1182,8 @@ bool Tests::testNodeFunction(void)
 		)
 	);
 
-	NodeFunction* freturn_local = new NodeFunctionScript(freturn_local_id, new list<identifier>(), body);
+	NodeFunction* freturn_local = new NodeFunctionScript(freturn_local_id,
+		new list<identifier>(), body, CodePosition(0, 0));
 	CONTEXT.addFunction(freturn_local);
 
 	NodeFunctionCall freturn_local_call(freturn_local_id, NULL);
@@ -1227,7 +1230,8 @@ bool Tests::testNodeFunction(void)
 						)
 					)
 				)
-			)
+			),
+			CodePosition(0, 0)
 		);
 
 	CONTEXT.addFunction(factorial);

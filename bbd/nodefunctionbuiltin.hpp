@@ -36,6 +36,7 @@ public:
 	virtual ~NodeFunctionBuiltin();
 
 	virtual void dump(ostream& os, uint indent) const;
+	virtual string declarationPos(void) const { return _("built-in"); }
 
 	vector< CountPtr<Value> > getParametersValues(void) const;
 };

@@ -39,6 +39,8 @@
 		<Unit filename="baseobject.cpp" />
 		<Unit filename="baseobject.hpp" />
 		<Unit filename="class_hierarchy.txt" />
+		<Unit filename="codeposition.cpp" />
+		<Unit filename="codeposition.hpp" />
 		<Unit filename="context.cpp" />
 		<Unit filename="context.hpp" />
 		<Unit filename="countptr.hpp" />

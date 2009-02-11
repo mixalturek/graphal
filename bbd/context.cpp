@@ -41,6 +41,7 @@ Context::Context()
 	: BaseObject(),
 	m_functions(),
 	m_local_variables(),
+	m_position(STR2ID("nofile"), 0),
 	m_stringtable(),
 	m_include_dirs()
 {
@@ -159,9 +160,10 @@ void Context::addFunction(NodeFunction* function)
 
 	if(!ret.second)
 	{
-		// TODO: position in code
-		WARN << _("Function has been already defined: ") << ID2STR(function->getName()) << "()" << endl;
-		delete function;// TODO: is it ok?
+		WARN << _("Function has been already defined: ")
+			<< ID2STR(function->getName()) << _("() at ")
+			<< ret.first->second->declarationPos() << endl;
+		delete function;
 	}
 }
 

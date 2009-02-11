@@ -35,6 +35,8 @@ public:
 	identifier getName(void) const { return m_name; }
 	const list<identifier>& getParameterNames(void) const { return *m_parameters; }
 
+	virtual string declarationPos(void) const = 0;
+
 private:
 	list<identifier>* m_parameters;
 	identifier m_name;// Actually not needed, for dump() only

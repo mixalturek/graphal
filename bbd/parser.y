@@ -78,6 +78,7 @@
 #include "valueidentifier.hpp"
 
 #include "logger.hpp"
+#include "codeposition.hpp"
 
 #define FILE last_column
 #define LINE last_line
@@ -278,8 +279,8 @@ block_item_list
 	;
 
 function_definition
-	: LEX_FUNCTION LEX_IDENTIFIER '(' parameter_list ')' compound_statement { cout << "Function declaration at line: " << @1.LINE << endl; CONTEXT.addFunction(new NodeFunctionScript($2, $4, $6)); }
-	| LEX_FUNCTION LEX_IDENTIFIER '(' ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($2, new list<identifier>(), $5)); }
+	: LEX_FUNCTION LEX_IDENTIFIER '(' parameter_list ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($2, $4, $6, CodePosition(@2.FILE, @2.LINE))); }
+	| LEX_FUNCTION LEX_IDENTIFIER '(' ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($2, new list<identifier>(), $5, CodePosition(@2.FILE, @2.LINE))); }
 	;
 
 parameter_list

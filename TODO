@@ -47,7 +47,6 @@ unit tests
 //// Bison
 
 rewrite parser to C++ (it is in documentation)
-rename tokens LEX_
 function overloading (save names like "name<numberofparameters>")
 	array() - array0()
 	array(size) - array1()
@@ -57,3 +56,8 @@ add switch
 add position tracking to the parser
 	NodeCommand::execute() will update position in Context
 	add function declarations, warning "function already declared at"
+		nodecondition.cpp
+		nodejumpbreak.cpp
+		nodejumpcontinue.cpp
+		nodeloop.cpp
+		nodeunaryreturn.cpp

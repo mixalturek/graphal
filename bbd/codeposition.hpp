@@ -1,5 +1,5 @@
 /*
- *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
+ *      Copyright 2009 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -17,42 +17,26 @@
  *      MA 02110-1301, USA.
  */
 
-#ifndef LEXANTOKENS_HPP
-#define LEXANTOKENS_HPP
 
-#include "node.hpp"
-#include "nodeblock.hpp"
-#include "parser.hpp"
+#ifndef CODEPOSITION_HPP
+#define CODEPOSITION_HPP
 
-#define LEX_EOF 0
-#define LEX_OP_PLUS '+'
-#define LEX_OP_MINUS '-'
-
-#define LEX_OP_MULT '*'
-#define LEX_OP_DIV '/'
-#define LEX_OP_MOD '%'
-
-#define LEX_LVA '{'
-#define LEX_RVA '}'
-#define LEX_LPA '('
-#define LEX_RPA ')'
-#define LEX_LSA '['
-#define LEX_RSA ']'
-#define LEX_COMMA ','
-#define LEX_SEMICOLON ';'
-#define LEX_DOT '.'
-
-#define LEX_OP_NOT '!'
-#define LEX_OP_LESS '<'
-#define LEX_OP_GREATER '>'
-
-#define LEX_OP_ASSIGN '='
-
-#define LEX_QUESTIONMARK '?'
-#define LEX_COLON ':'
+#include "general.hpp"
+#include "baseobject.hpp"
 
 
-typedef int LEXTOKEN;
+class CodePosition : public BaseObject
+{
+public:
+	CodePosition(identifier file, uint line);
+	virtual ~CodePosition();
 
+	virtual void dump(ostream& os, uint indent) const;
+	string toString(void) const;
 
-#endif
+private:
+	identifier m_file;
+	uint m_line;
+};
+
+#endif // CODEPOSITION_HPP
