@@ -70,7 +70,6 @@ PTR_Value Value::logOR(const Value& right) const
 
 CountPtr<Value> Value::assign(CountPtr<Value> /* val */)
 {
-	// TODO: location in the code
 	ERROR << _("lvalue required as left operand of assignment, attempt to assign to") << endl;
 	this->dump(SCRIPT_STDOUT, 1);
 	throw runtime_error(_("Operation not supported"));
@@ -80,7 +79,6 @@ CountPtr<Value> Value::assign(CountPtr<Value> /* val */)
 
 CountPtr<Value> Value::getReferredValue(void) const
 {
-	// TODO: location in the code
 	ERROR << _("Attemp to get referred value, but value is not reference") << endl;
 	this->dump(SCRIPT_STDOUT, 1);
 	throw runtime_error(_("Operation not supported"));

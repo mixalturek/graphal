@@ -35,7 +35,7 @@ public:
 	virtual ~ValueEdge();
 
 	virtual bool     toBool(void) const { return true; }
-	virtual string toString(void) const { return "ValueEdge"; } // TODO:
+	virtual string toString(void) const { return "ValueEdge"; }
 
 	virtual ValueEdge*           toValueEdge(void) { return this; }
 	virtual ValueStruct*       toValueStruct(void) { return m_properties; }

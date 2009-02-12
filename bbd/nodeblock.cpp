@@ -58,8 +58,6 @@ NodeBlock::~NodeBlock()
 
 CountPtr<Value> NodeBlock::execute(void)
 {
-	// TODO: set position in the code to the context
-
 	list<Node*>::iterator it;
 
 	for(it = m_commands.begin(); it != m_commands.end(); it++)

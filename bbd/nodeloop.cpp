@@ -62,8 +62,6 @@ NodeLoop::~NodeLoop()
 
 CountPtr<Value> NodeLoop::execute(void)
 {
-	// TODO: set position in the code to the context
-
 	m_init->execute();
 
 	try

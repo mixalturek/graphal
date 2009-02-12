@@ -55,7 +55,6 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 
 	if(function == NULL)
 	{
-		// TODO: position
 		ERROR << _("Function ") << ID2STR(m_name) << _("() has not been defined") << endl;
 		return VALUENULL;
 	}
@@ -97,8 +96,9 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 	}
 	else
 	{
-		// TODO: position, declared in
-		ERROR << _("Wrong number of parameters was passed to function ") << ID2STR(m_name) << "(" << names << ")" << endl;
+		ERROR << _("Wrong number of parameters was passed to function ")
+			<< ID2STR(m_name) << "(" << names << _("), declared at ")
+			<< function->declarationPos() << endl;
 		return VALUENULL;
 	}
 

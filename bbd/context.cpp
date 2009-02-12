@@ -109,7 +109,6 @@ CountPtr<Value> Context::getLocalVariable(identifier name)
 		return it->second;
 	else
 	{
-		// TODO: position in code
 		// WARN << _("Variable has not been initialized: ") << ID2STR(name) << endl;
 		// Variable have to be created because of assigning
 		return m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(VALUENULL)))).first->second;
@@ -259,7 +258,6 @@ string Context::getIncludeFullPath(const string& filename) const
 		}
 	}
 
-	// TODO: fail
 	return filename;
 }
 

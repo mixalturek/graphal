@@ -992,11 +992,6 @@ bool Tests::testNodeVariable(void)
 	str = sub.execute()->toString();
 	verify(str == "16.5");
 
-	// TODO:
-	// a = b = c = 15;
-	// a.member = 15;
-	// a[9] = 15;
-
 	CONTEXT.clear();
 	return testResult(__FUNCTION__, result);
 }

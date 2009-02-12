@@ -16,6 +16,7 @@ OBJECTS		= $(shell ls *.cpp | sed 's/.cpp/.o/')
 .PHONY: operators
 .PHONY: builtin
 .PHONY: svnlog
+.PHONY: listbuiltin
 #.PHONY: install
 
 build: $(TARGET)
@@ -56,5 +57,8 @@ lines:
 
 svnlog:
 	svn log --revision $(shell svnversion -c | tr 'A-Z' ' ') --verbose
+
+listbuiltin:
+	grep '$funcdecl =' gen_builtin.pl
 
 # DO NOT DELETE

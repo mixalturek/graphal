@@ -1,6 +1,4 @@
 /*
- *      valuevertexset.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -37,7 +35,7 @@ public:
 	virtual ~ValueVertexSet();
 
 	virtual bool     toBool(void) const { return !m_vertices.empty(); }
-	virtual string toString(void) const { return "ValueVertexSet"; } // TODO:
+	virtual string toString(void) const { return "ValueVertexSet"; }
 
 	virtual ValueVertexSet* toValueVertexSet(void) { return this; }
 

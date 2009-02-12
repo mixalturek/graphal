@@ -56,8 +56,6 @@ NodeCondition::~NodeCondition()
 
 CountPtr<Value> NodeCondition::execute(void)
 {
-	// TODO: set position in the code to the context
-
 	if(m_condition->execute()->toBool())
 		return m_if_section->execute();
 	else

@@ -653,7 +653,7 @@ LEXTOKEN Lexan::nextToken(void)
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			m_string += "\\x";
-			m_string += (m_int < 10) ? '0' + m_int : 'a' + m_int - 10;// TODO: lower/upper
+			m_string += (m_int < 10) ? '0' + m_int : 'a' + m_int - 10;
 			unget();
 			state = ST_STRING;
 			break;

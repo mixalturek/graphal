@@ -151,7 +151,7 @@ PTR_Value ValueArray::mult(const Value& right)    const { return right.mult(*thi
 PTR_Value ValueArray::div(const Value& right)     const { return right.div(*this); } // /
 PTR_Value ValueArray::mod(const Value& right)     const { return right.mod(*this); } // %
 PTR_Value ValueArray::eq(const Value& right)      const { return right.eq(*this); } // ==
-PTR_Value ValueArray::eq(const ValueArray& /*left*/) const { return VALUEBOOL_FALSE; }// TODO
+PTR_Value ValueArray::eq(const ValueArray& /*left*/) const { return VALUEBOOL_FALSE; }
 PTR_Value ValueArray::ne(const Value& right)      const { return right.ne(*this); } // !=
 PTR_Value ValueArray::ne(const ValueArray& /*left*/) const { return VALUEBOOL_TRUE; }
 PTR_Value ValueArray::le(const Value& right)      const { return right.le(*this); } // <=
