@@ -94,7 +94,7 @@ int main(int argc, char** argv)
 				if(param.length() == 0)
 				{
 					usage(argc, argv);
-					WARN << _("There should be no space after -I command line option") << endl;
+					WARN_S << _("There should be no space after -I command line option") << endl;
 				}
 				else
 				{
@@ -124,7 +124,7 @@ int main(int argc, char** argv)
 			CONTEXT.executeScriptMain(argc, argv);
 		}
 		else
-			ERROR << _("Error while parsing") << endl;
+			ERROR_S << _("Error while parsing") << endl;
 
 		CONTEXT.clear();
 

@@ -22,9 +22,12 @@
 
 #include "general.hpp"
 #include "baseobject.hpp"
+#include "context.hpp"
 
-#define ERROR Logger::getInstance().error()
-#define WARN Logger::getInstance().warn()
+#define ERROR Logger::getInstance().errorPos()
+#define WARN Logger::getInstance().warnPos()
+#define ERROR_S Logger::getInstance().error()
+#define WARN_S Logger::getInstance().warn()
 #define INFO Logger::getInstance().info()
 #define DBG Logger::getInstance().debug()
 #define SCRIPT_STDOUT Logger::getInstance().script_stdout()
@@ -36,6 +39,16 @@ public:
 	static inline Logger& getInstance(void)
 	{
 		return m_instance;
+	}
+
+	ostream& errorPos(void)
+	{
+		return cerr << _("[e] ") << CONTEXT.getPosition().toString() << ": ";
+	}
+
+	ostream& warnPos(void)
+	{
+		return cerr << _("[w] ") << CONTEXT.getPosition().toString() << ": ";
 	}
 
 	ostream& error(void)

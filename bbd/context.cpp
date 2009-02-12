@@ -224,7 +224,7 @@ int Context::executeScriptMain(int argc, char** argv)
 	}
 	catch(runtime_error& ex)
 	{
-		WARN << "Runtime error occured in the script: " << ex.what() << endl;
+		WARN << "Runtime error: " << ex.what() << endl;
 	}
 	catch(...)
 	{
