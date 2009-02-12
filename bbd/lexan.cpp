@@ -143,7 +143,7 @@ bool Lexan::expandMacro(void)
     if(it != m_defines.end())
     {
 #ifdef DEBUG
-		DBG << POSITION << _("Expanding macro: ") << it->first << endl;
+		DBG << POSITION << _("Expanding macro: ") << ID2STR(it->first) << endl;
 #endif // DEBUG
 		m_source.push(new LexanIteratorString(getFile(), getLine(), it->first, it->second));
 		return true;// Macro expanded

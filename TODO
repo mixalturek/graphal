@@ -3,11 +3,6 @@
 
 add error and warning messages if ValueNull is returned
 resolve all TODOs
-ValueIdentifier and ValueReference double dispatching cleanup!!!
-
-add position to the generated code
-	#line number "gen_operators.pl"
-	#line number "gen_builtin.pl"
 
 
 /////////////////////////////////////////////////////////////////////////////
