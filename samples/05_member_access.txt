@@ -1,0 +1,26 @@
+define("PI", "3.14159");
+
+function main(argv)
+{
+	arr = array(4);
+	stru = struct();
+	a = arr[2] = stru.member = 5;
+	stru.blem = "blem";
+
+	g = graph();
+	v1 = g.addVertex();
+	v2 = g.addVertex();
+	e = g.addEdge(v1, v2);
+
+	v1.prop = "bagr";
+	v1.smth = PI;
+	e.smth = 2.81;
+
+	echo("" + a + "\n");
+	echo("" + arr[2] + "\n");
+	echo("" + stru.member + "\n");
+	echo("" + stru.blem + "\n");
+	echo("" + v1.prop + "\n");
+	echo("" + v1.smth + "\n");
+	echo("" + e.smth + "\n");
+}

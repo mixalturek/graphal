@@ -341,7 +341,7 @@ LEXTOKEN Lexan::nextToken(void)
 				break;
 			}
 
-			ERROR << POSITION << _("Unexpected character: '")
+			ERROR_S << POSITION << _("Unexpected character: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
 			return LEX_ERROR;
@@ -377,7 +377,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("Unexpected end of source: unterminated /* c-style */ comment")
 					<< endl;
 
@@ -410,7 +410,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("Unexpected end of source: unterminated /* c-style */ comment")
 					<< endl;
 
@@ -449,14 +449,14 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c == '\n')
 			{
 				m_source.top()->incLine();
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("Unexpected end of line: unterminated \"string\" constant")
 					<< endl;
 				return LEX_ERROR;
 			}
 			if(c == EOF)
 			{
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
@@ -546,7 +546,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == '\r')// Trash MS Windows \r
 			{
-				WARN << POSITION
+				WARN_S << POSITION
 					<< _("Detected \\r character (CR, 13 in ascii) in string escape sequence after backslash. This would be without problem if you want to use multiline string here and your script uses CR-LF style of line ending (common for text editors under MS Windows)")
 					<< endl;
 
@@ -561,7 +561,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
@@ -572,7 +572,7 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_ERROR;
 			}
 
-			WARN << POSITION
+			WARN_S << POSITION
 				<< _("Unrecognized escape sequence in \"string\" constant: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
@@ -597,7 +597,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
@@ -608,7 +608,7 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_ERROR;
 			}
 
-			WARN << POSITION
+			WARN_S << POSITION
 				<< _("Character is not valid in \"string\" HEX escape sequence context: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
@@ -637,7 +637,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
@@ -648,7 +648,7 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_ERROR;
 			}
 
-			WARN << POSITION
+			WARN_S << POSITION
 				<< _("Character is not valid in \"string\" HEX escape sequence context: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
@@ -668,7 +668,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
@@ -679,7 +679,7 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_ERROR;
 			}
 
-			WARN << POSITION
+			WARN_S << POSITION
 				<< _("Character is not valid in \"string\" OCT escape sequence context: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
@@ -697,7 +697,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 				if(m_int > 255)
 				{
-					WARN << POSITION
+					WARN_S << POSITION
 						<< _("The value of \"string\" OCT escape sequence is too big ( > 0377)")
 						<< endl;
 
@@ -716,7 +716,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("Unexpected end of source: unterminated \"string\" constant")
 					<< endl;
 
@@ -727,7 +727,7 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_ERROR;
 			}
 
-			WARN << POSITION
+			WARN_S << POSITION
 				<< _("Character is not valid in \"string\" OCT escape sequence context: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
@@ -771,7 +771,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c >= '8' && c <= '9')
 			{
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("This number is not valid in \"string\" OCT escape sequence context: '")
 					<< (char)c << "' (ascii " << c << ")" << endl;
 
@@ -803,7 +803,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c >= '8' && c <= '9')
 			{
-				ERROR << POSITION
+				ERROR_S << POSITION
 					<< _("This number is not valid in \"string\" OCT escape sequence context: '")
 					<< (char)c << "' (ascii " << c << ")" << endl;
 				return LEX_ERROR;
@@ -975,7 +975,7 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_AND_OP;
 
 			unget();
-			ERROR << POSITION
+			ERROR_S << POSITION
 				<< _("Unexpected character, this is not operator &&: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 			return LEX_ERROR;
@@ -985,7 +985,7 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_OR_OP;
 
 			unget();
-			ERROR << POSITION
+			ERROR_S << POSITION
 				<< _("Unexpected character, this is not operator ||: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 
@@ -1005,19 +1005,19 @@ LEXTOKEN Lexan::nextToken(void)
 void Lexan::parseInclude(void)
 {
 	// include("filename");
-	// include word already processed!
+	// include token has been already processed!
 
 	if(nextToken() != LEX_LPA)
 	{
-		ERROR << POSITION
+		ERROR_S << POSITION
 			<< _("Left parenthesis '(' expected") << endl;
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
 	if(nextToken() != LEX_STRING)
 	{
-		ERROR << POSITION
-			<< _("\"String\" constant expected") << endl;
+		ERROR_S << POSITION
+			<< _("String constant expected") << endl;
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
@@ -1025,14 +1025,14 @@ void Lexan::parseInclude(void)
 
 	if(nextToken() != LEX_RPA)
 	{
-		ERROR << POSITION
+		ERROR_S << POSITION
 			<< _("Right parenthesis ')' expected") << endl;
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
 	if(nextToken() != LEX_SEMICOLON)
 	{
-		ERROR << POSITION
+		ERROR_S << POSITION
 			<< _("Semicolon ';' expected") << endl;
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
@@ -1050,56 +1050,56 @@ void Lexan::parseInclude(void)
 void Lexan::parseDefine(void)
 {
 	// define("name", "value");
-	// define word already processed!
+	// define token has been already processed!
 
 	if(nextToken() != LEX_LPA)
 	{
-		ERROR << POSITION
+		ERROR_S << POSITION
 			<< _("Left parenthesis '(' expected") << endl;
-		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
+		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	if(nextToken() != LEX_STRING)
 	{
-		ERROR << POSITION
-			<< _("\"String\" constant expected") << endl;
-		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
+		ERROR_S << POSITION
+			<< _("String constant expected") << endl;
+		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	string name(getString());
 
 	if(nextToken() != LEX_COMMA)
 	{
-		ERROR << POSITION
+		ERROR_S << POSITION
 			<< _("Comma ',' expected") << endl;
-		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
+		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	if(nextToken() != LEX_STRING)
 	{
-		ERROR << POSITION
-			<< _("\"String\" constant expected") << endl;
-		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
+		ERROR_S << POSITION
+			<< _("String constant expected") << endl;
+		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	string value(getString());
 
 	if(nextToken() != LEX_RPA)
 	{
-		ERROR << POSITION
+		ERROR_S << POSITION
 			<< _("Right parenthesis ')' expected") << endl;
-		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
+		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	if(nextToken() != LEX_SEMICOLON)
 	{
-		ERROR << POSITION
+		ERROR_S << POSITION
 			<< _("Semicolon ';' expected") << endl;
-		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
+		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 #ifdef DEBUG
-	DBG << POSITION << _( "Defining macro: ") << name << endl;
+	DBG << POSITION << _("Defining macro: ") << name << endl;
 #endif // DEBUG
 
 	pair< map<identifier, string>::iterator, bool > ret;
@@ -1107,7 +1107,7 @@ void Lexan::parseDefine(void)
 	ret = m_defines.insert(pair<identifier,string>(STR2ID(name), value));
 	if(ret.second == false)
 	{
-		WARN << POSITION
+		WARN_S << POSITION
 			<< _("Macro has been already defined: ") << name << endl;
 	}
 }

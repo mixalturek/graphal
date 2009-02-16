@@ -1,6 +1,4 @@
 /*
- *      general.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -37,16 +35,15 @@
 #define _(str) (str)
 
 // throw alias
-#ifdef DEBUG
+/*
 #define THROW(obj)                                         \
 {                                                          \
 	cout << "[exception] " << __FILE__ << ":" << __LINE__  \
 		<< " function " << __FUNCTION__ << "()" << endl;   \
 	throw (obj);                                           \
 }
-#else
+*/
 #define THROW(obj) { throw (obj); }
-#endif
 
 
 /////////////////////////////////////////////////////////////////////////////

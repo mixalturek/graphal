@@ -25,10 +25,6 @@ breakpoint(condition)
 /////////////////////////////////////////////////////////////////////////////
 //// Tests
 
-. [] operators
-	check member access to edges and vertices (ValueStruct had bugs)
-test multiple assignment
-	a = array[3] = b = 2;
 unit tests
 	add new for basic things
 	split to several files by groups (values, nodes, builtins ...)

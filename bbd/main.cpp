@@ -69,11 +69,11 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
+	bool error_occured = false;
+	uint number_of_static_objects = BaseObject::getNumberOfLeaks();
+
 	try
 	{
-		uint number_of_static_objects = BaseObject::getNumberOfLeaks();
-
-
 		bool unit_tests = false;
 		bool ast_dump = false;
 
@@ -113,7 +113,6 @@ int main(int argc, char** argv)
 			CONTEXT.clear();
 		}
 
-
 		generateBuiltinFunctions();
 
 		if(parseCode(argv[argc-1]) == 0)
@@ -124,30 +123,41 @@ int main(int argc, char** argv)
 			CONTEXT.executeScriptMain(argc, argv);
 		}
 		else
+		{
 			ERROR_S << _("Error while parsing") << endl;
-
-		CONTEXT.clear();
-
-#ifdef CHECK_MEMORY_LEAKS
-		BaseObject::printMemoryLeaks(number_of_static_objects);
-#endif // CHECK_MEMORY_LEAKS
+			error_occured = true;
+		}
 	}
 	catch(runtime_error& ex)
 	{
-		ERROR << ex.what() << endl;
-		return 1;
+		ERROR_S << ex.what() << endl;
+		error_occured = true;
 	}
 	catch(exception& ex)
 	{
-		ERROR << ex.what() << endl;
-		return 1;
+		ERROR_S << ex.what() << endl;
+		error_occured = true;
 	}
 	catch(...)
 	{
-		ERROR << _("Unknown exception catched!") << endl;
-		return 1;
+		ERROR_S << _("Unknown exception catched!") << endl;
+		error_occured = true;
 	}
 
-	INFO << "*** EXITING MAIN, OK ***" << endl;
-	return 0;
+	CONTEXT.clear();
+
+#ifdef CHECK_MEMORY_LEAKS
+	BaseObject::printMemoryLeaks(number_of_static_objects);
+#endif // CHECK_MEMORY_LEAKS
+
+	if(error_occured)
+	{
+		INFO << "*** EXITING MAIN, FAILED ***" << endl;
+		return 1;
+	}
+	else
+	{
+		INFO << "*** EXITING MAIN, OK ***" << endl;
+		return 0;
+	}
 }

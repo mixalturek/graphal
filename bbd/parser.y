@@ -331,9 +331,19 @@ void yyerror(char const *msg)
 
 int parseCode(const string& str)
 {
+	int ret = 0;
 	g_lexan = new Lexan(STR2ID(str));
 
-	int ret = yyparse();
+	try
+	{
+		ret = yyparse();
+	}
+	catch(...)
+	{
+		delete g_lexan;
+		g_lexan = NULL;
+		throw;
+	}
 
 	delete g_lexan;
 	g_lexan = NULL;
