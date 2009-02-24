@@ -59,6 +59,6 @@ svnlog:
 	svn log --revision $(shell svnversion -c | tr 'A-Z' ' ') --verbose
 
 listbuiltin:
-	grep '$funcdecl =' gen_builtin.pl
+	grep '\$funcdecl =' gen_builtin.pl | sed "s/.*'\(.*\)'.*/\1/"
 
 # DO NOT DELETE

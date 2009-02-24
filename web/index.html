@@ -578,8 +578,35 @@ Factorial of 9 is 362880
 <a id="gramatika" href="#"></a>
 <h2>Gramatika, syntaxe, built-in funkce</h2>
 
-<p>Viz soubory <em>parser.y</em> a <em>gen_builtin.pl</em>. Aktuální verze je příliš vývojová, aby mělo cenu to sepisovat.</p>
+<p>Gramatika viz soubor <em>parser.y</em></p>
 
+<pre>
+[woq@evm bbd]$ <strong>make listbuiltin</strong>
+grep '\uncdecl =' gen_builtin.pl | sed "s/.*'\(.*\)'.*/\1/"
+echo(object)
+dump(object)
+exit(object)
+assert(object)
+verify(object)
+array(int|bool|float)
+struct()
+size(array|string)
+graph()
+isOriented(graph)
+setOriented(graph, bool|int)
+invertEdgesOrientation(graph)
+addVertex(graph)
+addEdge(graph, vertex, vertex)
+deleteVertex(graph, vertex)
+deleteEdge(graph, edge)
+getNumVertices(graph)
+getNumEdges(graph)
+getDegree(vertex)
+getNeighbors(vertex)
+getBeginVertex(edge)
+getEndVertex(edge)
+[woq@evm bbd]$
+</pre>
 
 </body>
 </html>
