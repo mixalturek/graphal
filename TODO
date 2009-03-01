@@ -4,7 +4,7 @@
 add error and warning messages if ValueNull is returned
 resolve all TODOs
 segmentation fault in Tests::testGraph(), _WIN32 only
-segmentation fault 04_graph.txt after deleteVertex() and accessing it!
+	update: check it, changes were done in the graph classes
 
 
 /////////////////////////////////////////////////////////////////////////////
