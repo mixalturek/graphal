@@ -76,6 +76,13 @@ private:
 	bool m_oriented;
 	set<ValueVertex*> m_vertices;
 	set<ValueEdge*> m_edges;
+
+	// Wait with the real deleting. Some variables in the script may contain
+	// another reference to the deleted object -> segmentation fault
+	// CountPtr<Value> can't be used here (circle in vertex and edge classes),
+	// memory wouldn't be deleted
+	set<ValueVertex*> m_vertices_deleted;
+	set<ValueEdge*> m_edges_deleted;
 };
 
 ostream& operator<<(ostream& os, const ValueGraph& node);

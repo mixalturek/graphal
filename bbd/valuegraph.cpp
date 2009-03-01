@@ -32,7 +32,9 @@ ValueGraph::ValueGraph(bool oriented)
 	: Value(),
 	m_oriented(oriented),
 	m_vertices(),
-	m_edges()
+	m_edges(),
+	m_vertices_deleted(),
+	m_edges_deleted()
 {
 
 }
@@ -45,6 +47,12 @@ ValueGraph::~ValueGraph()
 
 	set<ValueEdge*>::const_iterator eit;
 	for(eit = m_edges.begin(); eit != m_edges.end(); eit++)
+		delete *eit;
+
+	for(vit = m_vertices_deleted.begin(); vit != m_vertices_deleted.end(); vit++)
+		delete *vit;
+
+	for(eit = m_edges_deleted.begin(); eit != m_edges_deleted.end(); eit++)
 		delete *eit;
 }
 
@@ -85,7 +93,7 @@ void ValueGraph::deleteVertex(ValueVertex* vertex)
 		deleteEdge(*it);
 
 	m_vertices.erase(vertex);
-	delete vertex;
+	m_vertices_deleted.insert(vertex);
 }
 
 void ValueGraph::deleteEdge(ValueEdge* edge)
@@ -93,7 +101,7 @@ void ValueGraph::deleteEdge(ValueEdge* edge)
 	edge->getBeginVertex()->deleteEdge(edge);
 	edge->getEndVertex()->deleteEdge(edge);
 	m_edges.erase(edge);
-	delete edge;
+	m_edges_deleted.insert(edge);
 }
 
 

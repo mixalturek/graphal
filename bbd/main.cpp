@@ -83,11 +83,9 @@ int main(int argc, char** argv)
 
 			if(!unit_tests && param == "--unit-tests")
 				unit_tests = true;
-
-			if(!ast_dump && param == "--ast-dump")
+			else if(!ast_dump && param == "--ast-dump")
 				ast_dump = true;
-
-			if(param.find("-I") == 0)
+			else if(param.find("-I") == 0)
 			{
 				param.erase(0, 2);
 
@@ -103,6 +101,12 @@ int main(int argc, char** argv)
 
 					CONTEXT.addIncludeDirectory(param);
 				}
+			}
+			else
+			{
+				// The last is the filename
+				if(i < argc-1)
+					WARN_S << _("Unknown command line option: ") << param << endl;
 			}
 		}
 
