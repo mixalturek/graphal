@@ -142,6 +142,7 @@ void Tests::run(void)
 	failed += !testStringTable();
 	failed += !testCountPtr();
 	failed += !testNodeFunction();
+	failed += !testValueArrayIterator();
 
 	// Template
 	// failed += !test();
@@ -1240,6 +1241,66 @@ bool Tests::testNodeFunction(void)
 	verify(str == "24");
 
 	CONTEXT.clear();
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool Tests::testValueArrayIterator(void)
+{
+	bool result = true;
+
+	CountPtr<Value> array(new ValueArray(3));
+
+	array->toValueArray()->setItem(0, CountPtr<Value>(new ValueInt(9)));
+	array->toValueArray()->setItem(1, CountPtr<Value>(new ValueString("bagr")));
+	array->toValueArray()->setItem(2, CountPtr<Value>(new ValueFloat(3.14f)));
+
+	CountPtr<Value> iterator(array->iterator());
+
+	// Check number of elements
+	verify(array->toValueArray()->getSize() == 3);
+	verify(iterator->toValueArray()->getSize() == 3);
+
+	// Change value in array by iterator
+	iterator->toValueArray()->setItem(0, CountPtr<Value>(new ValueFloat(5.5f)));
+	verify(array->toValueArray()->getItem(0)->toString() == "5.5");
+
+	// Change all values in array by iterator + check that all items were processed
+	int num = 0;
+	iterator->resetIterator();
+	while(iterator->hasNext()->toBool())
+			iterator->next()->toValueReference()->assign(CountPtr<Value>(new ValueInt(num++)));
+
+	verify(num == 3);
+
+	verify(array->toValueArray()->getItem(0)->toString() == "0");
+	verify(array->toValueArray()->getItem(1)->toString() == "1");
+	verify(array->toValueArray()->getItem(2)->toString() == "2");
+
+	// Reallocate the array and verify that the iterator is still working
+	array->toValueArray()->resize(5);
+	verify(array->toValueArray()->getSize() == 5);
+	verify(iterator->toValueArray()->getSize() == 3);
+
+	iterator->resetIterator();
+
+	verify(iterator->hasNext()->toBool());
+	CountPtr<Value> tmp(iterator->next());
+	verify(tmp->toString() == "0");
+
+	verify(iterator->hasNext()->toBool());
+	tmp = iterator->next();
+	verify(tmp->toString() == "1");
+
+	verify(iterator->hasNext()->toBool());
+	tmp = iterator->next();
+	verify(tmp->toString() == "2");
+
+	verify(!iterator->hasNext()->toBool());
+
 	return testResult(__FUNCTION__, result);
 }
 

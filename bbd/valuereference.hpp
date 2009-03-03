@@ -49,6 +49,7 @@ public:
 	virtual ValueEdge*           toValueEdge(void) { return m_val->toValueEdge(); }
 	virtual ValueVertexSet* toValueVertexSet(void) { return m_val->toValueVertexSet(); }
 	virtual ValueEdgeSet*     toValueEdgeSet(void) { return m_val->toValueEdgeSet(); }
+	virtual ValueReference* toValueReference(void) { return this; }
 
 	virtual CountPtr<Value> assign(CountPtr<Value> val) { assert(!val->isLValue()); return m_val = val; }
 	virtual CountPtr<Value> getReferredValue(void) const;

@@ -90,6 +90,33 @@ CountPtr<Value> Value::getReferredValue(void) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+CountPtr<Value> Value::iterator(void) const
+{
+	WARN << _("The value is not iterable") << endl;
+	return VALUENULL;
+}
+
+CountPtr<Value> Value::hasNext(void) const
+{
+	WARN << _("The value is not iterable") << endl;
+	return VALUEBOOL_FALSE;
+}
+
+CountPtr<Value> Value::next(void)
+{
+	WARN << _("The value is not iterable") << endl;
+	return VALUENULL;
+}
+
+void Value::resetIterator(void)
+{
+	WARN << _("The value is not iterable") << endl;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 // +
 PTR_Value Value::add(const ValueNull& /* left */)       const { return VALUENULL; }
 PTR_Value Value::add(const ValueBool& /* left */)       const { return VALUENULL; }

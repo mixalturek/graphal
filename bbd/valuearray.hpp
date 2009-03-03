@@ -47,6 +47,11 @@ public:
 	CountPtr<Value> getItem(uint pos) const;
 	CountPtr<Value> setItem(uint pos, CountPtr<Value> val);
 
+	virtual CountPtr<Value> iterator(void) const;
+	virtual CountPtr<Value> hasNext(void) const;
+	virtual CountPtr<Value> next(void);
+	virtual void resetIterator(void);
+
 	virtual PTR_Value add(const Value&     right) const; // +
 	virtual PTR_Value sub(const Value&     right) const; // -
 	virtual PTR_Value mult(const Value&    right) const; // *
@@ -66,6 +71,7 @@ public:
 
 private:
 	vector< CountPtr<Value> > m_val;
+	vector< CountPtr<Value> >::iterator m_it;
 };
 
 ostream& operator<<(ostream& os, const ValueArray& node);

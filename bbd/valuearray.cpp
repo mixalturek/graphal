@@ -33,7 +33,8 @@
 
 ValueArray::ValueArray()
 	: Value(),
-	m_val()
+	m_val(),
+	m_it(m_val.begin())
 {
 
 }
@@ -113,9 +114,41 @@ CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 		return m_val[pos] = val;
 	else
 	{
-		m_val[pos] = CountPtr<Value>(new ValueReference(val));
+		// Problem with assigning to the iterator
+//		m_val[pos] = CountPtr<Value>(new ValueReference(val));
+		m_val[pos]->toValueReference()->assign(val);
 		return val;
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueArray::iterator(void) const
+{
+	ValueArray* tmp = new ValueArray(m_val.size());
+	tmp->m_val = m_val;
+	tmp->resetIterator();
+
+	return CountPtr<Value>(tmp);
+}
+
+CountPtr<Value> ValueArray::hasNext(void) const
+{
+	return (m_it == m_val.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
+}
+
+CountPtr<Value> ValueArray::next(void)
+{
+	CountPtr<Value> ret(*m_it);
+	m_it++;
+	return ret;
+}
+
+void ValueArray::resetIterator(void)
+{
+	m_it = m_val.begin();
 }
 
 

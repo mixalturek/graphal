@@ -63,6 +63,7 @@ private:
 	bool testStringTable(void);
 	bool testCountPtr(void);
 	bool testNodeFunction(void);
+	bool testValueArrayIterator(void);
 
 	// Template
 	// bool test(void);
