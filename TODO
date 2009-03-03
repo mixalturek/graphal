@@ -3,6 +3,7 @@
 
 add error and warning messages if ValueNull is returned
 resolve all TODOs
+add execution of scripts from external files to the unit tests
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -17,7 +18,6 @@ type checking
 	isGraph()
 	isIterable()
 	...
-graphs
 breakpoint(condition)
 	add command line option --breakpoints to enable/disable
 
