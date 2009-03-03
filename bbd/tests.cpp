@@ -126,12 +126,7 @@ void Tests::run(void)
 	failed += !testValueReference();
 	failed += !testValueIdentifier();
 	failed += !testValueArray();
-#ifdef _WIN32
-    // TODO: Segmentation fault on Windows
-    INFO << _("[ SKIP ]   testGraph") << endl;
-#else
 	failed += !testGraph();
-#endif
 	failed += !testGraphSet();
 	failed += !testGraphInvertEdgesOrientation();
 	failed += !testLexanTerminalSymbols();
