@@ -53,6 +53,7 @@
 #include "nodefunctioncall.hpp"
 #include "nodefunctionscript.hpp"
 #include "nodeloop.hpp"
+#include "nodeforeach.hpp"
 #include "nodeunarynot.hpp"
 #include "nodeunaryreturn.hpp"
 #include "nodeunarysub.hpp"
@@ -258,6 +259,7 @@ statement
 	| LEX_WHILE '(' expression ')' statement { $$ = new NodeLoop(new NodeEmptyCommand(), new NodePosition($3, CodePosition(@3.FILE, @3.LINE)), new NodeEmptyCommand(), $5); }
 	| LEX_FOR '(' expression_statement expression_statement ')' statement { $$ = new NodeLoop($3, new NodePosition($4, CodePosition(@4.FILE, @4.LINE)), new NodeEmptyCommand(), $6); }
 	| LEX_FOR '(' expression_statement expression_statement expression ')' statement { $$ = new NodeLoop($3, new NodePosition($4, CodePosition(@4.FILE, @4.LINE)), $5, $7); }
+	| LEX_FOREACH '(' LEX_IDENTIFIER ';' expression ')' statement { $$ = new NodeForeach($3, new NodePosition($5, CodePosition(@5.FILE, @5.LINE)), $7); }
 	| LEX_BREAK ';' { $$ = new NodePosition(new NodeJumpBreak(), CodePosition(@2.FILE, @2.LINE)); }
 	| LEX_CONTINUE ';' { $$ = new NodePosition(new NodeJumpContinue(), CodePosition(@2.FILE, @2.LINE)); }
 	| LEX_RETURN ';' { $$ = new NodePosition(new NodeUnaryReturn(new NodeEmptyCommand()), CodePosition(@2.FILE, @2.LINE)); }

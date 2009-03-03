@@ -66,6 +66,30 @@ CountPtr<Value> ValueReference::getReferredValue(void) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+CountPtr<Value> ValueReference::iterator(void) const
+{
+	return getReferredValue()->iterator();
+}
+
+CountPtr<Value> ValueReference::hasNext(void) const
+{
+	return getReferredValue()->hasNext();
+}
+
+CountPtr<Value> ValueReference::next(void)
+{
+	return getReferredValue()->next();
+}
+
+void ValueReference::resetIterator(void)
+{
+	getReferredValue()->resetIterator();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueReference::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);

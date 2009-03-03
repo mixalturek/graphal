@@ -122,18 +122,29 @@ CountPtr<Value> Context::setLocalVariable(identifier name, CountPtr<Value> val)
 
 	map<identifier, CountPtr<Value> >::iterator it = m_local_variables.back().find(name);
 	if(it != m_local_variables.back().end())
-		m_local_variables.back().erase(it);
-
-	if(val->isLValue())
 	{
-		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, val));
-		return val;
+		assert((*it).second->toValueReference() != NULL);
+
+		if(val->isLValue())
+			(*it).second->toValueReference()->assign(val->getReferredValue());
+		else
+			(*it).second->toValueReference()->assign(val);
 	}
 	else
 	{
-		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(val))));
-		return val;
+		if(val->isLValue())
+			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, val));
+		else
+			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(val))));
 	}
+
+	return val;
+}
+
+void Context::deleteLocalVariable(identifier name)
+{
+	assert(!m_local_variables.empty());
+	m_local_variables.back().erase(name);
 }
 
 

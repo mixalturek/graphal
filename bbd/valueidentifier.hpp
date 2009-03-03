@@ -54,6 +54,11 @@ public:
 	virtual CountPtr<Value> assign(CountPtr<Value> val) { return CONTEXT.setLocalVariable(m_val, val); }
 	virtual CountPtr<Value> getReferredValue(void) const;
 
+	virtual CountPtr<Value> iterator(void) const;
+	virtual CountPtr<Value> hasNext(void) const;
+	virtual CountPtr<Value> next(void);
+	virtual void resetIterator(void);
+
 	virtual void dump(ostream& os, uint indent) const;
 
 	// +

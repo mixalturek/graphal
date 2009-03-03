@@ -18,33 +18,26 @@
  */
 
 
-#ifndef NODELOOP_HPP
-#define NODELOOP_HPP
+#ifndef NODEFOREACH_HPP
+#define NODEFOREACH_HPP
 
 #include "general.hpp"
 #include "node.hpp"
 
 
-class NodeLoop : public Node
+class NodeForeach : public Node
 {
 public:
-	NodeLoop(Node* init, Node* condition, Node* inc, Node* body);
-	virtual ~NodeLoop();
+	NodeForeach(identifier var_name, Node* iterable, Node* body);
+	virtual ~NodeForeach(void);
 
 	virtual CountPtr<Value> execute(void);
 	virtual void dump(ostream& os, uint indent) const;
 
 private:
-	NodeLoop(const NodeLoop& object);
-	NodeLoop& operator=(const NodeLoop& object);
-
-private:
-	Node* m_init;
-	Node* m_condition;
-	Node* m_inc;
+	identifier m_var_name;
+	Node* m_iterable;
 	Node* m_body;
 };
 
-ostream& operator<<(ostream& os, const NodeLoop& node);
-
-#endif // NODELOOP_HPP
+#endif // NODEFOREACH_HPP

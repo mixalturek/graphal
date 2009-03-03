@@ -52,6 +52,7 @@ public:
 	bool isVariableSet(identifier name);
 	CountPtr<Value> getLocalVariable(identifier name);
 	CountPtr<Value> setLocalVariable(identifier name, CountPtr<Value> val);
+	void deleteLocalVariable(identifier name);
 
 	void pushLocal(void);
 	void popLocal(void);

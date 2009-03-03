@@ -38,6 +38,7 @@ BaseObject
 		NodeJumpContinue
 		NodeCondition
 		NodeLoop
+		NodeForeach
 		NodeBlock
 		NodeEmptyCommand
 		NodeFunctionCall

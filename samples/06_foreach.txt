@@ -1,0 +1,13 @@
+function main(argv)
+{
+	arr = array(5);
+	i = 0;
+
+	// Set the array items
+	foreach(var ; arr)
+		var = i++;
+
+	// Display them
+	foreach(var ; arr)
+		echo("" + var + "\n");
+}
