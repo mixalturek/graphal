@@ -148,9 +148,10 @@ void ValueStruct::dump(ostream& os, uint indent) const
 	for(it = m_val.begin(); it != m_val.end(); it++)
 	{
 		dumpIndent(os, indent+1);
-		os << "<Name name=\"" << ID2STR(it->first) << "\" />" << endl;
-		it->second->dump(os, indent+1);
-		os << endl;
+		os << "<Item name=\"" << ID2STR(it->first) << "\">" << endl;
+		it->second->dump(os, indent+2);
+		dumpIndent(os, indent+1);
+		os << "</Item>" << endl;
 	}
 
 	dumpIndent(os, indent);

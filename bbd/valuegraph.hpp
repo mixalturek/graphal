@@ -54,6 +54,9 @@ public:
 	uint getNumVertices(void) const { return m_vertices.size(); }
 	uint getNumEdges(void)    const { return m_edges.size(); }
 
+	CountPtr<Value> getVertices(void) const;// Returns ValueVertexSet
+	CountPtr<Value> getEdges(void) const;// Returns ValueEdgeSet
+
 
 	virtual PTR_Value add(const Value&     right) const; // +
 	virtual PTR_Value sub(const Value&     right) const; // -

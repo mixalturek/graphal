@@ -1,25 +1,76 @@
 function main(argv)
 {
+	// Array
 	arr = array(5);
 	i = 0;
 
-	// Set the array items
 	foreach(var ; arr)
 		var = i++;
 
-	// Display them
 	echo("--- array items ---\n");
 	foreach(var ; arr)
 		echo("" + var + "\n");
 
-	// Set the struct items
+	// Struct
 	st = struct();
 	st.number = 42;
 	st.pi = 3.14;
 	st.str = "bagr";
 
-	// Display them
 	echo("--- struct items ---\n");
 	foreach(var ; st)
 		echo("" + var + "\n");
+
+	// Graph
+	g = graph();
+
+	v1 = g.addVertex();
+	v2 = g.addVertex();
+	v3 = g.addVertex();
+	e1 = g.addEdge(v1, v2);
+	e2 = g.addEdge(v2, v3);
+
+	v1.color = "red";
+	v2.color = "green";
+	v3.color = "blue";
+	e1.value = 0.5;
+	e2.value = 0.4;
+
+	echo("--- vertex set ---\n");
+	foreach(var ; g.getVertices())
+		echo("" + var + ": " + var.color + "\n");
+
+	echo("--- edge set ---\n");
+	foreach(var ; g.getEdges())
+		echo("" + var + ": " + var.value + "\n");
+
+	echo("--- vertex neighbors ---\n");
+	foreach(var ; v2.getNeighbors())
+		echo("" + var + ": " + var.color + "\n");
+
+	foreach(var ; g.getVertices())
+		var.state = "new";
+
+	v2.state = "closed";
+
+	echo("--- graph dump ---\n");
+	g.dumpGraph();
+}
+
+function dumpGraph(g)
+{
+	echo("" + g + "\n");
+	foreach(vertex ; g.getVertices())
+	{
+		echo("\t" + vertex + "\n");
+		foreach(item ; vertex)
+			echo("\t\t" + item + "\n");
+	}
+
+	foreach(edge ; g.getEdges())
+	{
+		echo("\t" + edge + "\n");
+		foreach(item ; edge)
+			echo("\t\t" + item + "\n");
+	}
 }

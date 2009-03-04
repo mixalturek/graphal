@@ -29,7 +29,6 @@ unit tests
 	add new for basic things
 	split to several files by groups (values, nodes, builtins ...)
 	resolve ?gcc bug? - Tests::testValueArray()
-add iterator tests for ValueVertexSet and ValueEdgeSet
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -590,6 +590,52 @@ genBFClass('getNumEdges', 'NodeBuiltinGetNumEdges', 1, $code, $include);
 #############################################################################
 ####
 
+$funcdecl = 'getVertices(graph)';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL)
+		return g->getVertices();
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('getVertices', 'NodeBuiltinGetVertices', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'getEdges(graph)';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL)
+		return g->getEdges();
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('getEdges', 'NodeBuiltinGetEdges', 1, $code, $include);
+
+
+#############################################################################
+####
+
 $funcdecl = 'getDegree(vertex)';
 
 $include = <<END_OF_CODE;

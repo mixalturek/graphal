@@ -31,11 +31,19 @@ ValueEdgeSet::ValueEdgeSet(ValueGraph* graph)
 	: Value(),
 	m_graph(graph),
 	m_edges(),
-	m_it()
+	m_it(m_edges.begin())
 {
 
 }
 
+ValueEdgeSet::ValueEdgeSet(ValueGraph* graph, const set<ValueEdge*>& edges)
+	: Value(),
+	m_graph(graph),
+	m_edges(edges),
+	m_it(m_edges.begin())
+{
+
+}
 
 ValueEdgeSet::~ValueEdgeSet()
 {
@@ -97,7 +105,14 @@ void ValueEdgeSet::resetIterator(void)
 void ValueEdgeSet::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<ValueEdgeSet />" << endl;// TODO:
+	os << "<ValueEdgeSet>" << endl;
+
+	set<ValueEdge*>::const_iterator it;
+	for(it = m_edges.begin(); it != m_edges.end(); it++)
+		(*it)->dump(os, indent+1);
+
+	dumpIndent(os, indent);
+	os << "</ValueEdgeSet>" << endl;
 }
 
 ostream& operator<<(ostream& os, const ValueEdgeSet& node)

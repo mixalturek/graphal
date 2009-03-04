@@ -32,6 +32,7 @@ class ValueVertexSet : public Value
 {
 public:
 	ValueVertexSet(ValueGraph* graph);
+	ValueVertexSet(ValueGraph* graph, const set<ValueVertex*>& vertices);
 	virtual ~ValueVertexSet();
 
 	virtual bool     toBool(void) const { return !m_vertices.empty(); }

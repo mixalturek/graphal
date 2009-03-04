@@ -31,6 +31,7 @@ class ValueEdgeSet : public Value
 {
 public:
 	ValueEdgeSet(ValueGraph* graph);
+	ValueEdgeSet(ValueGraph* graph, const set<ValueEdge*>& edges);
 	virtual ~ValueEdgeSet();
 
 	virtual ValueEdgeSet*     toValueEdgeSet(void) { return this; }

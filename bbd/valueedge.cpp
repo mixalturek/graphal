@@ -59,7 +59,10 @@ void ValueEdge::invertOrientation(void)
 void ValueEdge::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<ValueEdge />" << endl;// TODO:
+	os << "<ValueEdge>" << endl;
+	m_properties->dump(os, indent+1);
+	dumpIndent(os, indent);
+	os << "</ValueEdge>" << endl;
 }
 
 ostream& operator<<(ostream& os, const ValueEdge& node)

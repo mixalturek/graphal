@@ -23,6 +23,8 @@
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
+#include "valuevertexset.hpp"
+#include "valueedgeset.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -119,10 +121,47 @@ void ValueGraph::invertEdgesOrientation(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+CountPtr<Value> ValueGraph::getVertices(void) const
+{
+	return CountPtr<Value>(new ValueVertexSet(const_cast<ValueGraph*>(this), m_vertices));
+}
+
+CountPtr<Value> ValueGraph::getEdges(void) const
+{
+	return CountPtr<Value>(new ValueEdgeSet(const_cast<ValueGraph*>(this), m_edges));
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueGraph::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<ValueGraph />" << endl;// TODO:
+	os << "<Graph>" << endl;
+
+	dumpIndent(os, indent+1);
+	os << "<Vertices>" << endl;
+
+	set<ValueVertex*>::const_iterator itv;
+	for(itv = m_vertices.begin(); itv != m_vertices.end(); itv++)
+		(*itv)->dump(os, indent+2);
+
+	dumpIndent(os, indent+1);
+	os << "</Vertices>" << endl;
+
+	dumpIndent(os, indent+1);
+	os << "<Edges>" << endl;
+
+	set<ValueEdge*>::const_iterator ite;
+	for(ite = m_edges.begin(); ite != m_edges.end(); ite++)
+		(*ite)->dump(os, indent+2);
+
+	dumpIndent(os, indent+1);
+	os << "</Edges>" << endl;
+
+	dumpIndent(os, indent);
+	os << "</Graph>" << endl;
 }
 
 ostream& operator<<(ostream& os, const ValueGraph& node)

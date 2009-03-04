@@ -95,7 +95,10 @@ ValueVertexSet* ValueVertex::getNeighbors(void)
 void ValueVertex::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<ValueVertex />" << endl;// TODO:
+	os << "<ValueVertex>" << endl;
+	m_properties->dump(os, indent+1);
+	dumpIndent(os, indent);
+	os << "</ValueVertex>" << endl;
 }
 
 ostream& operator<<(ostream& os, const ValueVertex& node)

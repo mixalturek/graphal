@@ -134,6 +134,8 @@
 		<Unit filename="nodebuiltingetbeginvertex.hpp" />
 		<Unit filename="nodebuiltingetdegree.cpp" />
 		<Unit filename="nodebuiltingetdegree.hpp" />
+		<Unit filename="nodebuiltingetedges.cpp" />
+		<Unit filename="nodebuiltingetedges.hpp" />
 		<Unit filename="nodebuiltingetendvertex.cpp" />
 		<Unit filename="nodebuiltingetendvertex.hpp" />
 		<Unit filename="nodebuiltingetneighbors.cpp" />
@@ -142,6 +144,8 @@
 		<Unit filename="nodebuiltingetnumedges.hpp" />
 		<Unit filename="nodebuiltingetnumvertices.cpp" />
 		<Unit filename="nodebuiltingetnumvertices.hpp" />
+		<Unit filename="nodebuiltingetvertices.cpp" />
+		<Unit filename="nodebuiltingetvertices.hpp" />
 		<Unit filename="nodebuiltingraph.cpp" />
 		<Unit filename="nodebuiltingraph.hpp" />
 		<Unit filename="nodebuiltininvertedgesorientation.cpp" />

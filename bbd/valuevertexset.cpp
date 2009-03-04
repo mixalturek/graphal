@@ -31,11 +31,19 @@ ValueVertexSet::ValueVertexSet(ValueGraph* graph)
 	: Value(),
 	m_graph(graph),
 	m_vertices(),
-	m_it()
+	m_it(m_vertices.begin())
 {
 
 }
 
+ValueVertexSet::ValueVertexSet(ValueGraph* graph, const set<ValueVertex*>& vertices)
+	: Value(),
+	m_graph(graph),
+	m_vertices(vertices),
+	m_it(m_vertices.begin())
+{
+
+}
 
 ValueVertexSet::~ValueVertexSet()
 {
@@ -97,7 +105,14 @@ void ValueVertexSet::resetIterator(void)
 void ValueVertexSet::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<ValueVertexSet />" << endl;// TODO:
+	os << "<ValueVertexSet>" << endl;
+
+	set<ValueVertex*>::const_iterator it;
+	for(it = m_vertices.begin(); it != m_vertices.end(); it++)
+		(*it)->dump(os, indent+1);
+
+	dumpIndent(os, indent);
+	os << "</ValueVertexSet>" << endl;
 }
 
 ostream& operator<<(ostream& os, const ValueVertexSet& node)
