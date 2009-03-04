@@ -31,7 +31,8 @@
 
 ValueStruct::ValueStruct()
 	: Value(),
-	m_val()
+	m_val(),
+	m_it()
 {
 
 }
@@ -102,6 +103,36 @@ CountPtr<Value> ValueStruct::getItem(identifier name)
 bool ValueStruct::isItemSet(identifier name)
 {
 	return m_val.count(name);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueStruct::iterator(void) const
+{
+	ValueStruct* tmp = new ValueStruct();
+	tmp->m_val = m_val;
+	tmp->resetIterator();
+
+	return CountPtr<Value>(tmp);
+}
+
+CountPtr<Value> ValueStruct::hasNext(void) const
+{
+	return (m_it == m_val.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
+}
+
+CountPtr<Value> ValueStruct::next(void)
+{
+	CountPtr<Value> ret(m_it->second);
+	m_it++;
+	return ret;
+}
+
+void ValueStruct::resetIterator(void)
+{
+	m_it = m_val.begin();
 }
 
 

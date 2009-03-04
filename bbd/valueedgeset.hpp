@@ -47,9 +47,15 @@ public:
 
 	ValueGraph* getGraph(void) { return m_graph; }
 
+	virtual CountPtr<Value> iterator(void) const;
+	virtual CountPtr<Value> hasNext(void) const;
+	virtual CountPtr<Value> next(void);
+	virtual void resetIterator(void);
+
 private:
 	ValueGraph* m_graph;
 	set<ValueEdge*> m_edges;
+	set<ValueEdge*>::iterator m_it;
 
 public:
 	virtual PTR_Value add(const Value&      right) const; // +

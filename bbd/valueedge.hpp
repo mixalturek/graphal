@@ -51,6 +51,11 @@ public:
 	CountPtr<Value> getItem(identifier name) { return m_properties->getItem(name); }
 	bool isItemSet(identifier name) { return m_properties->isItemSet(name); }
 
+	virtual CountPtr<Value> iterator(void) const { return m_properties->iterator(); }
+	virtual CountPtr<Value> hasNext(void) const { return m_properties->hasNext(); }
+	virtual CountPtr<Value> next(void) { return m_properties->next(); }
+	virtual void resetIterator(void) { m_properties->resetIterator(); }
+
 private:
 	friend void ValueGraph::invertEdgesOrientation(void);
 	void invertOrientation(void);

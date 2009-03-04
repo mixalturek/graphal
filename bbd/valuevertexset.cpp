@@ -30,7 +30,8 @@
 ValueVertexSet::ValueVertexSet(ValueGraph* graph)
 	: Value(),
 	m_graph(graph),
-	m_vertices()
+	m_vertices(),
+	m_it()
 {
 
 }
@@ -56,6 +57,37 @@ void ValueVertexSet::addVertex(ValueVertex* vertex)
 void ValueVertexSet::deleteVertex(ValueVertex* vertex)
 {
 	m_vertices.erase(vertex);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueVertexSet::iterator(void) const
+{
+	ValueVertexSet* tmp = new ValueVertexSet(m_graph);
+	tmp->m_vertices = m_vertices;
+	tmp->resetIterator();
+
+	return CountPtr<Value>(tmp);
+}
+
+CountPtr<Value> ValueVertexSet::hasNext(void) const
+{
+	return (m_it == m_vertices.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
+}
+
+CountPtr<Value> ValueVertexSet::next(void)
+{
+	CountPtr<Value> ret(*m_it);
+	ret.dontDeleteAutomatically();// TODO: is it needed?
+	m_it++;
+	return ret;
+}
+
+void ValueVertexSet::resetIterator(void)
+{
+	m_it = m_vertices.begin();
 }
 
 

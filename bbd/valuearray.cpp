@@ -127,7 +127,7 @@ CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 
 CountPtr<Value> ValueArray::iterator(void) const
 {
-	ValueArray* tmp = new ValueArray(m_val.size());
+	ValueArray* tmp = new ValueArray();
 	tmp->m_val = m_val;
 	tmp->resetIterator();
 

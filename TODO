@@ -29,9 +29,7 @@ unit tests
 	add new for basic things
 	split to several files by groups (values, nodes, builtins ...)
 	resolve ?gcc bug? - Tests::testValueArray()
-	why is cout << ""; needed on windows
-		ValueGraph::deleteVertex()
-		Tests::testGraph()
+add iterator tests for ValueVertexSet and ValueEdgeSet
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -41,6 +39,5 @@ rewrite parser to C++ (it is in documentation)
 function overloading (save names like "name<numberofparameters>")
 	array() - array0()
 	array(size) - array1()
-add foreach, iterators
 add "global variable;" statement
 add switch

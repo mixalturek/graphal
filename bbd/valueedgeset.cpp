@@ -30,7 +30,8 @@
 ValueEdgeSet::ValueEdgeSet(ValueGraph* graph)
 	: Value(),
 	m_graph(graph),
-	m_edges()
+	m_edges(),
+	m_it()
 {
 
 }
@@ -56,6 +57,37 @@ void ValueEdgeSet::addEdge(ValueEdge* edge)
 void ValueEdgeSet::deleteEdge(ValueEdge* edge)
 {
 	m_edges.erase(edge);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueEdgeSet::iterator(void) const
+{
+	ValueEdgeSet* tmp = new ValueEdgeSet(m_graph);
+	tmp->m_edges = m_edges;
+	tmp->resetIterator();
+
+	return CountPtr<Value>(tmp);
+}
+
+CountPtr<Value> ValueEdgeSet::hasNext(void) const
+{
+	return (m_it == m_edges.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
+}
+
+CountPtr<Value> ValueEdgeSet::next(void)
+{
+	CountPtr<Value> ret(*m_it);
+	ret.dontDeleteAutomatically();// TODO: is it needed?
+	m_it++;
+	return ret;
+}
+
+void ValueEdgeSet::resetIterator(void)
+{
+	m_it = m_edges.begin();
 }
 
 

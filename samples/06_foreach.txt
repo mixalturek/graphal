@@ -8,6 +8,18 @@ function main(argv)
 		var = i++;
 
 	// Display them
+	echo("--- array items ---\n");
 	foreach(var ; arr)
+		echo("" + var + "\n");
+
+	// Set the struct items
+	st = struct();
+	st.number = 42;
+	st.pi = 3.14;
+	st.str = "bagr";
+
+	// Display them
+	echo("--- struct items ---\n");
+	foreach(var ; st)
 		echo("" + var + "\n");
 }

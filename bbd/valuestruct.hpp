@@ -45,6 +45,11 @@ public:
 
 	virtual ValueStruct*       toValueStruct(void) { return this; }
 
+	virtual CountPtr<Value> iterator(void) const;
+	virtual CountPtr<Value> hasNext(void) const;
+	virtual CountPtr<Value> next(void);
+	virtual void resetIterator(void);
+
 	virtual void dump(ostream& os, uint indent) const;
 
 	virtual PTR_Value add(const Value&      right) const; // +
@@ -66,6 +71,7 @@ public:
 
 private:
 	map<identifier, CountPtr<Value> > m_val;
+	map<identifier, CountPtr<Value> >::iterator m_it;
 };
 
 ostream& operator<<(ostream& os, const ValueStruct& node);
