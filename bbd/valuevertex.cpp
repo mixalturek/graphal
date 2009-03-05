@@ -18,6 +18,7 @@
  */
 
 
+#include <cassert>
 #include "valuevertex.hpp"
 #include "valuebool.hpp"
 #include "valuegraph.hpp"
@@ -34,13 +35,15 @@ ValueVertex::ValueVertex(ValueGraph* graph)
 	m_edges(new set<ValueEdge*>()),
 	m_properties(new ValueStruct())
 {
-
+	assert(graph != NULL);
 }
 
 ValueVertex::~ValueVertex()
 {
 	delete m_edges;
+	m_edges = NULL;
 	delete m_properties;
+	m_properties = NULL;
 }
 
 
@@ -49,11 +52,13 @@ ValueVertex::~ValueVertex()
 
 void ValueVertex::addEdge(ValueEdge* edge)
 {
+	assert(edge != NULL);
 	m_edges->insert(edge);
 }
 
 void ValueVertex::deleteEdge(ValueEdge* edge)
 {
+	assert(edge != NULL);
 	m_edges->erase(edge);
 }
 

@@ -18,6 +18,7 @@
  */
 
 
+#include <cassert>
 #include "valueedge.hpp"
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
@@ -33,7 +34,9 @@ ValueEdge::ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end)
 	m_end(end),
 	m_properties(new ValueStruct())
 {
-
+	assert(graph != NULL);
+	assert(begin != NULL);
+	assert(end != NULL);
 }
 
 ValueEdge::~ValueEdge()

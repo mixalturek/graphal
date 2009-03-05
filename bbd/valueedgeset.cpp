@@ -18,6 +18,7 @@
  */
 
 
+#include <cassert>
 #include "valueedgeset.hpp"
 #include "logger.hpp"
 #include "valuebool.hpp"
@@ -33,7 +34,7 @@ ValueEdgeSet::ValueEdgeSet(ValueGraph* graph)
 	m_edges(),
 	m_it(m_edges.begin())
 {
-
+	assert(graph != NULL);
 }
 
 ValueEdgeSet::ValueEdgeSet(ValueGraph* graph, const set<ValueEdge*>& edges)
@@ -42,7 +43,7 @@ ValueEdgeSet::ValueEdgeSet(ValueGraph* graph, const set<ValueEdge*>& edges)
 	m_edges(edges),
 	m_it(m_edges.begin())
 {
-
+	assert(graph != NULL);
 }
 
 ValueEdgeSet::~ValueEdgeSet()
@@ -56,6 +57,8 @@ ValueEdgeSet::~ValueEdgeSet()
 
 void ValueEdgeSet::addEdge(ValueEdge* edge)
 {
+	assert(edge != NULL);
+
 	if(m_graph == edge->getGraph())
 		m_edges.insert(edge);
 	else
@@ -64,6 +67,7 @@ void ValueEdgeSet::addEdge(ValueEdge* edge)
 
 void ValueEdgeSet::deleteEdge(ValueEdge* edge)
 {
+	assert(edge != NULL);
 	m_edges.erase(edge);
 }
 

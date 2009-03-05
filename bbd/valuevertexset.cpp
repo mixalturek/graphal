@@ -18,6 +18,7 @@
  */
 
 
+#include <cassert>
 #include "valuevertexset.hpp"
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
@@ -33,7 +34,7 @@ ValueVertexSet::ValueVertexSet(ValueGraph* graph)
 	m_vertices(),
 	m_it(m_vertices.begin())
 {
-
+	assert(graph != NULL);
 }
 
 ValueVertexSet::ValueVertexSet(ValueGraph* graph, const set<ValueVertex*>& vertices)
@@ -42,7 +43,7 @@ ValueVertexSet::ValueVertexSet(ValueGraph* graph, const set<ValueVertex*>& verti
 	m_vertices(vertices),
 	m_it(m_vertices.begin())
 {
-
+	assert(graph != NULL);
 }
 
 ValueVertexSet::~ValueVertexSet()
@@ -56,6 +57,8 @@ ValueVertexSet::~ValueVertexSet()
 
 void ValueVertexSet::addVertex(ValueVertex* vertex)
 {
+	assert(vertex != NULL);
+
 	if(m_graph == vertex->getGraph())
 		m_vertices.insert(vertex);
 	else
@@ -64,6 +67,7 @@ void ValueVertexSet::addVertex(ValueVertex* vertex)
 
 void ValueVertexSet::deleteVertex(ValueVertex* vertex)
 {
+	assert(vertex != NULL);
 	m_vertices.erase(vertex);
 }
 
