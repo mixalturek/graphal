@@ -21,6 +21,11 @@ function main(argv)
 	foreach(var ; st)
 		echo("" + var + "\n");
 
+	echo("--- struct items using iterator ---\n");
+	it = st.iterator();
+	while(it.hasNext())
+		echo("" + it.next() + "\n");
+
 	// Graph
 	g = graph();
 

@@ -4,6 +4,7 @@
 add error and warning messages if ValueNull is returned
 resolve all TODOs
 add execution of scripts from external files to the unit tests
+add built-in functions for vertex/edge sets
 
 
 /////////////////////////////////////////////////////////////////////////////

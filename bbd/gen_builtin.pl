@@ -256,6 +256,63 @@ genBFClass('verify', 'NodeBuiltinVerify', 1, $code, $include);
 #############################################################################
 ####
 
+$funcdecl = 'iterator(object)';
+
+$include = <<END_OF_CODE;
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return par[0]->iterator();
+END_OF_CODE
+genBFClass('iterator', 'NodeBuiltinIterator', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'hasNext(object)';
+
+$include = <<END_OF_CODE;
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return par[0]->hasNext();
+END_OF_CODE
+genBFClass('hasNext', 'NodeBuiltinHasNext', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'next(object)';
+
+$include = <<END_OF_CODE;
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return par[0]->next();
+END_OF_CODE
+genBFClass('next', 'NodeBuiltinNext', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'resetIterator(object)';
+
+$include = <<END_OF_CODE;
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	par[0]->resetIterator();
+	return VALUENULL;
+END_OF_CODE
+genBFClass('resetIterator', 'NodeBuiltinResetIterator', 1, $code, $include);
+
+
+#############################################################################
+####
+
 $funcdecl = 'array(int|bool|float)';
 
 $include = <<END_OF_CODE;
