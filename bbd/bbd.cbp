@@ -112,10 +112,6 @@
 		<Unit filename="nodeblock.hpp" />
 		<Unit filename="nodebuiltin_inst.cpp" />
 		<Unit filename="nodebuiltin_inst.hpp" />
-		<Unit filename="nodebuiltinaddedge.cpp" />
-		<Unit filename="nodebuiltinaddedge.hpp" />
-		<Unit filename="nodebuiltinaddvertex.cpp" />
-		<Unit filename="nodebuiltinaddvertex.hpp" />
 		<Unit filename="nodebuiltinarray.cpp" />
 		<Unit filename="nodebuiltinarray.hpp" />
 		<Unit filename="nodebuiltinassert.cpp" />
@@ -130,6 +126,10 @@
 		<Unit filename="nodebuiltinecho.hpp" />
 		<Unit filename="nodebuiltinexit.cpp" />
 		<Unit filename="nodebuiltinexit.hpp" />
+		<Unit filename="nodebuiltingenerateedge.cpp" />
+		<Unit filename="nodebuiltingenerateedge.hpp" />
+		<Unit filename="nodebuiltingeneratevertex.cpp" />
+		<Unit filename="nodebuiltingeneratevertex.hpp" />
 		<Unit filename="nodebuiltingetbeginvertex.cpp" />
 		<Unit filename="nodebuiltingetbeginvertex.hpp" />
 		<Unit filename="nodebuiltingetdegree.cpp" />

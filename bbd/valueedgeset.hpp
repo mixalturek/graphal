@@ -44,7 +44,7 @@ public:
 	void addEdge(ValueEdge* edge);
 	void deleteEdge(ValueEdge* edge);
 	uint getNumEdges(void) const { return m_edges.size(); }
-	bool contains(ValueEdge* vertex) const { return m_edges.count(vertex); }
+	bool contains(ValueEdge* edge) const { return m_edges.count(edge); }
 
 	ValueGraph* getGraph(void) { return m_graph; }
 

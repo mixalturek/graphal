@@ -29,11 +29,11 @@ function main(argv)
 	// Graph
 	g = graph();
 
-	v1 = g.addVertex();
-	v2 = g.addVertex();
-	v3 = g.addVertex();
-	e1 = g.addEdge(v1, v2);
-	e2 = g.addEdge(v2, v3);
+	v1 = g.generateVertex();
+	v2 = g.generateVertex();
+	v3 = g.generateVertex();
+	e1 = g.generateEdge(v1, v2);
+	e2 = g.generateEdge(v2, v3);
 
 	v1.color = "red";
 	v2.color = "green";

@@ -476,7 +476,7 @@ genBFClass('invertEdgesOrientation', 'NodeBuiltinInvertEdgesOrientation', 1, $co
 #############################################################################
 ####
 
-$funcdecl = 'addVertex(graph)';
+$funcdecl = 'generateVertex(graph)';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -488,7 +488,7 @@ $code = <<END_OF_CODE;
 
 	if((g = par[0]->toValueGraph()) != NULL)
 	{
-		CountPtr<Value> ret(g->addVertex());
+		CountPtr<Value> ret(g->generateVertex());
 		ret.dontDeleteAutomatically();
 		return ret;
 	}
@@ -498,13 +498,13 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(VALUENULL);
 	}
 END_OF_CODE
-genBFClass('addVertex', 'NodeBuiltinAddVertex', 1, $code, $include);
+genBFClass('generateVertex', 'NodeBuiltinGenerateVertex', 1, $code, $include);
 
 
 #############################################################################
 ####
 
-$funcdecl = 'addEdge(graph, vertex, vertex)';
+$funcdecl = 'generateEdge(graph, vertex, vertex)';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -519,7 +519,7 @@ $code = <<END_OF_CODE;
 
 	if((g = par[0]->toValueGraph()) != NULL && (v1 = par[1]->toValueVertex()) != NULL && (v2 = par[2]->toValueVertex()) != NULL)
 	{
-		ValueEdge* tmp = g->addEdge(v1, v2);
+		ValueEdge* tmp = g->generateEdge(v1, v2);
 		if(tmp == NULL)
 			return CountPtr<Value>(VALUENULL);
 
@@ -533,7 +533,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(VALUENULL);
 	}
 END_OF_CODE
-genBFClass('addEdge', 'NodeBuiltinAddEdge', 3, $code, $include);
+genBFClass('generateEdge', 'NodeBuiltinGenerateEdge', 3, $code, $include);
 
 
 #############################################################################

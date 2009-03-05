@@ -4,17 +4,17 @@ function main(argv)
 	//     e1      e2      e3
 	g = graph();
 
-	v1 = g.addVertex();
-	v2 = g.addVertex();
-	v3 = g.addVertex();
-	v4 = g.addVertex();
+	v1 = g.generateVertex();
+	v2 = g.generateVertex();
+	v3 = g.generateVertex();
+	v4 = g.generateVertex();
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 0);
 
-	e1 = g.addEdge(v1, v2);
-	e2 = g.addEdge(v2, v3);
-	e3 = g.addEdge(v3, v4);
+	e1 = g.generateEdge(v1, v2);
+	e2 = g.generateEdge(v2, v3);
+	e3 = g.generateEdge(v3, v4);
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 3);

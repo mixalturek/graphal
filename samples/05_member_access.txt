@@ -8,9 +8,9 @@ function main(argv)
 	stru.blem = "blem";
 
 	g = graph();
-	v1 = g.addVertex();
-	v2 = g.addVertex();
-	e = g.addEdge(v1, v2);
+	v1 = g.generateVertex();
+	v2 = g.generateVertex();
+	e = g.generateEdge(v1, v2);
 
 	v1.prop = "bagr";
 	v1.smth = PI;

@@ -62,14 +62,14 @@ ValueGraph::~ValueGraph()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-ValueVertex* ValueGraph::addVertex(void)
+ValueVertex* ValueGraph::generateVertex(void)
 {
 	ValueVertex* vertex = new ValueVertex(this);
 	m_vertices.insert(vertex);
 	return vertex;
 }
 
-ValueEdge* ValueGraph::addEdge(ValueVertex* begin, ValueVertex* end)
+ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end)
 {
 	if(!(begin->getGraph() == this && end->getGraph() == this))
 	{

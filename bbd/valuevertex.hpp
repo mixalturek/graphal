@@ -62,7 +62,7 @@ public:
 	virtual void resetIterator(void) { m_properties->resetIterator(); }
 
 private:
-	friend ValueEdge* ValueGraph::addEdge(ValueVertex* begin, ValueVertex* end);
+	friend ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end);
 	void addEdge(ValueEdge* edge);
 
 	friend void ValueGraph::deleteEdge(ValueEdge* edge);

@@ -374,17 +374,17 @@ bool Tests::testGraph(void)
 	//     e1      e2      e3
 	ValueGraph g;
 
-	ValueVertex* v1 = g.addVertex();
-	ValueVertex* v2 = g.addVertex();
-	ValueVertex* v3 = g.addVertex();
-	ValueVertex* v4 = g.addVertex();
+	ValueVertex* v1 = g.generateVertex();
+	ValueVertex* v2 = g.generateVertex();
+	ValueVertex* v3 = g.generateVertex();
+	ValueVertex* v4 = g.generateVertex();
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 0);
 
-	ValueEdge* e1 = g.addEdge(v1, v2);
-	ValueEdge* e2 = g.addEdge(v2, v3);
-	ValueEdge* e3 = g.addEdge(v3, v4);
+	ValueEdge* e1 = g.generateEdge(v1, v2);
+	ValueEdge* e2 = g.generateEdge(v2, v3);
+	ValueEdge* e3 = g.generateEdge(v3, v4);
 
 	verify(e1->getBeginVertex() == v1);
 	verify(e1->getEndVertex() == v2);
@@ -433,13 +433,13 @@ bool Tests::testGraphSet(void)
 	//     e1      e2      e3
 	ValueGraph g(false);
 
-	ValueVertex* v1 = g.addVertex();
-	ValueVertex* v2 = g.addVertex();
-	ValueVertex* v3 = g.addVertex();
-	ValueVertex* v4 = g.addVertex();
-	ValueEdge* e1 = g.addEdge(v1, v2);
-	ValueEdge* e2 = g.addEdge(v2, v3);
-	ValueEdge* e3 = g.addEdge(v3, v4);
+	ValueVertex* v1 = g.generateVertex();
+	ValueVertex* v2 = g.generateVertex();
+	ValueVertex* v3 = g.generateVertex();
+	ValueVertex* v4 = g.generateVertex();
+	ValueEdge* e1 = g.generateEdge(v1, v2);
+	ValueEdge* e2 = g.generateEdge(v2, v3);
+	ValueEdge* e3 = g.generateEdge(v3, v4);
 
 
 	ValueVertexSet* vvs;
@@ -522,13 +522,13 @@ bool Tests::testGraphInvertEdgesOrientation(void)
 	//     e1       e2       e3
 	ValueGraph g(true);
 
-	ValueVertex* v1 = g.addVertex();
-	ValueVertex* v2 = g.addVertex();
-	ValueVertex* v3 = g.addVertex();
-	ValueVertex* v4 = g.addVertex();
-	ValueEdge* e1 = g.addEdge(v1, v2);
-	ValueEdge* e2 = g.addEdge(v2, v3);
-	ValueEdge* e3 = g.addEdge(v3, v4);
+	ValueVertex* v1 = g.generateVertex();
+	ValueVertex* v2 = g.generateVertex();
+	ValueVertex* v3 = g.generateVertex();
+	ValueVertex* v4 = g.generateVertex();
+	ValueEdge* e1 = g.generateEdge(v1, v2);
+	ValueEdge* e2 = g.generateEdge(v2, v3);
+	ValueEdge* e3 = g.generateEdge(v3, v4);
 
 	// v1 <---- v2 <---- v3 <---- v4
 	//      e1       e2       e3

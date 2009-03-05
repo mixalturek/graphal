@@ -45,14 +45,17 @@ public:
 	bool setOriented(bool oriented) { bool ret = m_oriented; m_oriented = oriented; return ret; }
 	void invertEdgesOrientation(void);
 
-	ValueVertex* addVertex(void);
-	ValueEdge* addEdge(ValueVertex* begin, ValueVertex* end);
+	ValueVertex* generateVertex(void);
+	ValueEdge* generateEdge(ValueVertex* begin, ValueVertex* end);
 
 	void deleteVertex(ValueVertex* vertex);
 	void deleteEdge(ValueEdge* edge);
 
 	uint getNumVertices(void) const { return m_vertices.size(); }
 	uint getNumEdges(void)    const { return m_edges.size(); }
+
+	bool contains(ValueVertex* vertex) const { return m_vertices.count(vertex); }
+	bool contains(ValueEdge* edge) const { return m_edges.count(edge); }
 
 	CountPtr<Value> getVertices(void) const;// Returns ValueVertexSet
 	CountPtr<Value> getEdges(void) const;// Returns ValueEdgeSet
