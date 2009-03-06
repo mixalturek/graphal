@@ -53,6 +53,7 @@ public:
 	CountPtr<Value> getLocalVariable(identifier name);
 	CountPtr<Value> setLocalVariable(identifier name, CountPtr<Value> val);
 	void deleteLocalVariable(identifier name);
+	CountPtr<Value> propagateGlobalVariable(identifier name);
 
 	void pushLocal(void);
 	void popLocal(void);
@@ -80,6 +81,7 @@ private:
 
 	map<identifier, NodeFunction*> m_functions;
 	deque< map<identifier, CountPtr<Value> > > m_local_variables;
+	map<identifier, CountPtr<Value> > m_global_variables;
 	CodePosition m_position;
 	StringTable m_stringtable;
 

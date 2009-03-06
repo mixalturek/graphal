@@ -64,6 +64,7 @@
 #include "nodevalue.hpp"
 #include "nodejumpbreak.hpp"
 #include "nodejumpcontinue.hpp"
+#include "nodeglobal.hpp"
 
 #include "valuebool.hpp"
 #include "valueedge.hpp"
@@ -112,6 +113,7 @@ void yyerror(char const *msg);
 %token LEX_FOREACH
 %token LEX_BREAK
 %token LEX_CONTINUE
+%token LEX_GLOBAL
 
 %right LEX_SUB_ASSIGN LEX_ADD_ASSIGN LEX_MUL_ASSIGN LEX_DIV_ASSIGN LEX_MOD_ASSIGN
 %token LEX_INC_OP LEX_DEC_OP
@@ -264,6 +266,7 @@ statement
 	| LEX_CONTINUE ';' { $$ = new NodePosition(new NodeJumpContinue(), CodePosition(@2.FILE, @2.LINE)); }
 	| LEX_RETURN ';' { $$ = new NodePosition(new NodeUnaryReturn(new NodeEmptyCommand()), CodePosition(@2.FILE, @2.LINE)); }
 	| LEX_RETURN expression ';' { $$ = new NodePosition(new NodeUnaryReturn($2), CodePosition(@3.FILE, @3.LINE)); }
+	| LEX_GLOBAL LEX_IDENTIFIER ';' { $$ = new NodePosition(new NodeGlobal($2), CodePosition(@3.FILE, @3.LINE)); }
 	;
 
 expression_statement

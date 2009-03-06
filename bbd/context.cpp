@@ -41,6 +41,7 @@ Context::Context()
 	: BaseObject(),
 	m_functions(),
 	m_local_variables(),
+	m_global_variables(),
 	m_position(STR2ID("nofile"), 0),
 	m_stringtable(),
 	m_include_dirs()
@@ -60,6 +61,8 @@ void Context::clear(void)
 {
 	while(!m_local_variables.empty())
 		popLocal();
+
+	m_global_variables.clear();
 
 	map<identifier, NodeFunction*>::iterator it;
 	for(it = m_functions.begin(); it != m_functions.end(); it++)
@@ -145,6 +148,27 @@ void Context::deleteLocalVariable(identifier name)
 {
 	assert(!m_local_variables.empty());
 	m_local_variables.back().erase(name);
+}
+
+CountPtr<Value> Context::propagateGlobalVariable(identifier name)
+{
+	map<identifier, CountPtr<Value> >::iterator it = m_global_variables.find(name);
+	if(it != m_global_variables.end())
+	{
+		assert(it->second->isLValue());
+		deleteLocalVariable(name);
+		setLocalVariable(name, it->second);
+		return it->second;
+	}
+	else
+	{
+		CountPtr<Value> tmp(new ValueReference(VALUENULL));
+		m_global_variables.insert(pair<identifier, CountPtr<Value> >(name, tmp));
+
+		deleteLocalVariable(name);
+		setLocalVariable(name, tmp);
+		return tmp;
+	}
 }
 
 

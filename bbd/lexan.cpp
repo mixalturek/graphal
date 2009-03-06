@@ -113,6 +113,8 @@ LEXTOKEN Lexan::checkKeyword(void)
 		return LEX_TRUE;
 	if(m_string == "false")
 		return LEX_FALSE;
+	if(m_string == "global")
+		return LEX_GLOBAL;
 
 	// Check include and define
 	if(m_string == "include")

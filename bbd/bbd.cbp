@@ -190,6 +190,8 @@
 		<Unit filename="nodefunctioncall.hpp" />
 		<Unit filename="nodefunctionscript.cpp" />
 		<Unit filename="nodefunctionscript.hpp" />
+		<Unit filename="nodeglobal.cpp" />
+		<Unit filename="nodeglobal.hpp" />
 		<Unit filename="nodejumpbreak.cpp" />
 		<Unit filename="nodejumpbreak.hpp" />
 		<Unit filename="nodejumpcontinue.cpp" />

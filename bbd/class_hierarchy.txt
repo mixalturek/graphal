@@ -47,6 +47,7 @@ BaseObject
 			NodeFunctionBuiltin (interface)
 				...
 		NodePosition
+		NodeGlobal
 	Value (interface)
 		ValueNull (singleton)
 		ValueString

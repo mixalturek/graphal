@@ -1,0 +1,22 @@
+function set(val)
+{
+	echo("Setting global variable: " + val + "\n");
+	global g_var;
+	g_var = val;
+}
+
+function display()
+{
+	echo("Before global: " + g_var + "\n");
+	global g_var;
+	echo("After global: " + g_var + "\n");
+}
+
+function main(argv)
+{
+	set("bagr");
+	display();
+
+	set(3.14);
+	display();
+}
