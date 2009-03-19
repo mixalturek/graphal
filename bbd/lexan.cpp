@@ -115,6 +115,16 @@ LEXTOKEN Lexan::checkKeyword(void)
 		return LEX_FALSE;
 	if(m_string == "global")
 		return LEX_GLOBAL;
+	if(m_string == "__FILE__")
+	{
+		m_string = ID2STR(m_source.top()->getFile());
+		return LEX_STRING;
+	}
+	if(m_string == "__LINE__")
+	{
+		m_int = m_source.top()->getLine();
+		return LEX_INT;
+	}
 
 	// Check include and define
 	if(m_string == "include")
@@ -144,9 +154,7 @@ bool Lexan::expandMacro(void)
 
     if(it != m_defines.end())
     {
-#ifdef DEBUG
-		DBG << POSITION << _("Expanding macro: ") << ID2STR(it->first) << endl;
-#endif // DEBUG
+//		DBG << POSITION << _("Expanding macro: ") << ID2STR(it->first) << endl;
 		m_source.push(new LexanIteratorString(getFile(), getLine(), it->first, it->second));
 		return true;// Macro expanded
     }
@@ -1042,9 +1050,7 @@ void Lexan::parseInclude(void)
 
 	string tmp = CONTEXT.getIncludeFullPath(filename);
 
-#ifdef DEBUG
-	DBG << POSITION << "Including " << tmp << endl;
-#endif // DEBUG
+//	DBG << POSITION << "Including " << tmp << endl;
 
 	m_source.push(new LexanIteratorFile(tmp));
 }
@@ -1100,9 +1106,7 @@ void Lexan::parseDefine(void)
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
-#ifdef DEBUG
-	DBG << POSITION << _("Defining macro: ") << name << endl;
-#endif // DEBUG
+//	DBG << POSITION << _("Defining macro: ") << name << endl;
 
 	pair< map<identifier, string>::iterator, bool > ret;
 

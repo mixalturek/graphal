@@ -164,6 +164,8 @@
 		<Unit filename="nodebuiltiniterator.hpp" />
 		<Unit filename="nodebuiltinnext.cpp" />
 		<Unit filename="nodebuiltinnext.hpp" />
+		<Unit filename="nodebuiltinprintstacktrace.cpp" />
+		<Unit filename="nodebuiltinprintstacktrace.hpp" />
 		<Unit filename="nodebuiltinresetiterator.cpp" />
 		<Unit filename="nodebuiltinresetiterator.hpp" />
 		<Unit filename="nodebuiltinsetoriented.cpp" />

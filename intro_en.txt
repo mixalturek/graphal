@@ -1,0 +1,18 @@
+Introduction
+============
+
+There are algorithms "diffuse" for image processing. Everybody knows, that they are working, but nobody knows, how they EXACTLY work. The output of this project will be an integrated development environment for writing, debugging and visualizations of these algorithms.
+
+The input for the diffuse algorithm is an image, the output is, for example, in which part of the image is an object situated, where is the background and similar. The algorithm transforms image to a special graph with several vertices for each pixel, the vertices are connected by evaluated edges. Diffuse algorithm works with local parts of the graph, iteratively updates edges evaluation and is stopped if global system condition is met.
+
+The task of this project can be generalized from manipulation with the images to graphs processing.
+
+The aim of this diploma thesis is to design and implement a special language based on C/C++, which will be used for the graph manipulations. Language has support for basic data types like numbers, floating point numbers, booleans, strings, arrays and structures. Variables can be both local and global, no declarations are needed. Control structures are if-else conditions, for, while and foreach loops, function declarations and calls. Include and define preprocessor directives are implemented at the lexical analyzer layer. The language does not contain support for pointers and references, object oriented features are not implemented too.
+
+Special data types includes graphs, vertices, edges, vertex sets and edge sets. Interpreter has built-in functions for creating and deleting of these variables, returning neighbors of the vertices and so on. Every vertex and edge can be evaluated by any number of properties of any type, the dot operator - object.property - can be used for this. Special control structures for processing complex variables are implemented using iterators which are internaly called by foreach loop.
+
+The graphic user interface consists of a text editor with syntax highlighting and a window for the graph visualization during execution of the algorithm. Actual state in the graph window is displayed after the command in the code is executed and graph view can be changed. The graph can be loaded by the code or by user in visualization window.
+
+Integrated development environment has also support for debugging which includes breakpoints, code stepping, displaying content of the variables and call stack.
+
+The command line interpreter is written in C++ language using Bison parser generator (LALR grammar). Graphic user interface is created in Qt library and graph visualizations in OpenGL library.

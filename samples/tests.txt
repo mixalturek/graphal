@@ -1,0 +1,50 @@
+define("tverify", "result = result && verify");
+
+function main(argv)
+{
+	echo("Executing unit tests...\n");
+
+	failed = 0;
+	failed += !testFactorial();
+
+	echo("Number of failed tests: " + failed + "\n");
+}
+
+function testResult(testName, result)
+{
+	if(result)
+		echo("[ OK ]     " + testName + "\n");
+	else
+		echo("[ FAILED ] " + testName + "\n");
+
+	return result;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function testFactorial()
+{
+	result = true;
+
+	tverify(factorial(1) == 1);
+	tverify(factorial(2) == 2);
+	tverify(factorial(3) == 6);
+	tverify(factorial(4) == 24);
+	tverify(factorial(5) == 120);
+
+	return testResult(__FUNCTION__, result);
+}
+
+function factorial(number)
+{
+	if(number < 2)
+		return 1;
+	else
+		return number * factorial(number - 1);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////

@@ -55,8 +55,10 @@ public:
 	void deleteLocalVariable(identifier name);
 	CountPtr<Value> propagateGlobalVariable(identifier name);
 
-	void pushLocal(void);
+	void pushLocal(identifier function_name);
 	void popLocal(void);
+	identifier getExecutedFunctionName(void) const { return m_call_stack.back(); }
+	void printStackTrace() const;
 
 	NodeFunction* getFunction(identifier name);
 	void addFunction(NodeFunction* function);
@@ -82,6 +84,7 @@ private:
 	map<identifier, NodeFunction*> m_functions;
 	deque< map<identifier, CountPtr<Value> > > m_local_variables;
 	map<identifier, CountPtr<Value> > m_global_variables;
+	deque<identifier> m_call_stack;
 	CodePosition m_position;
 	StringTable m_stringtable;
 

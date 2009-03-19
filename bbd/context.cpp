@@ -42,11 +42,12 @@ Context::Context()
 	m_functions(),
 	m_local_variables(),
 	m_global_variables(),
+	m_call_stack(),
 	m_position(STR2ID("nofile"), 0),
 	m_stringtable(),
 	m_include_dirs()
 {
-	pushLocal();
+	pushLocal(STR2ID("init_code"));
 	addIncludeDirectory("./");
 }
 
@@ -63,6 +64,7 @@ void Context::clear(void)
 		popLocal();
 
 	m_global_variables.clear();
+	m_call_stack.clear();
 
 	map<identifier, NodeFunction*>::iterator it;
 	for(it = m_functions.begin(); it != m_functions.end(); it++)
@@ -74,21 +76,31 @@ void Context::clear(void)
 	m_stringtable.clear();
 	m_functions.clear();
 
-	pushLocal();
+	pushLocal(STR2ID("init_code"));
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void Context::pushLocal(void)
+void Context::pushLocal(identifier function_name)
 {
 	m_local_variables.push_back(map<identifier, CountPtr<Value> >());
+	m_call_stack.push_back(function_name);
+	setLocalVariable(STR2ID("__FUNCTION__"), CountPtr<Value>(new ValueString(ID2STR(function_name))));
 }
 
 void Context::popLocal(void)
 {
 	m_local_variables.pop_back();
+	m_call_stack.pop_back();
+}
+
+void Context::printStackTrace() const
+{
+	deque<identifier>::const_iterator it;
+	for(it = m_call_stack.begin(); it != m_call_stack.end(); it++)
+		SCRIPT_STDOUT << ID2STR(*it) << "()" << endl;
 }
 
 

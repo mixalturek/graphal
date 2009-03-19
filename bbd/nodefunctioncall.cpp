@@ -80,7 +80,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 				values.push_back(tmp);
 		}
 
-		CONTEXT.pushLocal();
+		CONTEXT.pushLocal(m_name);
 			list<identifier>::const_iterator itn;
 			list< CountPtr<Value> >::iterator itv;
 

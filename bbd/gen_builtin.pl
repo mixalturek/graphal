@@ -240,17 +240,34 @@ genBFClass('assert', 'NodeBuiltinAssert', 1, $code, $include);
 $funcdecl = 'verify(object)';
 
 $include = <<END_OF_CODE;
-#include <stdexcept>
+#include "valuebool.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	if(!par[0]->toBool())
+	{
 		WARN << _("Verify: Operation was not successful") << endl;
+		return VALUEBOOL_FALSE;
+	}
 
-	// It will never be called
-	return VALUENULL;
+	return VALUEBOOL_TRUE;
 END_OF_CODE
 genBFClass('verify', 'NodeBuiltinVerify', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'printStackTrace()';
+
+$include = <<END_OF_CODE;
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	CONTEXT.printStackTrace();
+	return VALUENULL;
+END_OF_CODE
+genBFClass('printStackTrace', 'NodeBuiltinPrintStackTrace', 0, $code, $include);
 
 
 #############################################################################
