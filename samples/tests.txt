@@ -6,6 +6,12 @@ function main(argv)
 
 	failed = 0;
 	failed += !testFactorial();
+	failed += !testArray();
+	failed += !testStruct();
+	failed += !testGraph();
+	failed += !testMemberAccess();
+	failed += !testForeach();
+	failed += !testGlobal();
 
 	echo("Number of failed tests: " + failed + "\n");
 }
@@ -43,6 +49,331 @@ function factorial(number)
 		return 1;
 	else
 		return number * factorial(number - 1);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function testArray()
+{
+	result = true;
+
+	arr = array(5);
+	arr[0] = "bagr";
+	arr[1] = 5.5;
+	arr[4] = 3;
+
+	tverify(arr.size() == 5);
+	tverify(arr[0] != NULL);
+	tverify(arr[0] == "bagr");
+	tverify(arr[1] != NULL);
+	tverify(arr[1] == 5.5);
+	tverify(arr[2] == NULL);
+	tverify(arr[3] == NULL);
+	tverify(arr[4] != NULL);
+	tverify(arr[4] == 3);
+
+	arr[0] = 3.14;
+
+	tverify(arr[0] != NULL);
+	tverify(arr[0] == 3.14);
+
+	return testResult(__FUNCTION__, result);
+}
+
+function testStruct()
+{
+	result = true;
+
+	st = struct();
+	st.bagr = "bagr";
+	st.brm = true;
+
+	tverify(st.bagr != NULL);
+	tverify(st.bagr == "bagr");
+
+	tverify(st.brm != NULL);
+	tverify(st.brm == true);
+
+	tverify(st.notdefined == NULL);
+
+	st.brm = 3.14;
+	tverify(st.brm != NULL);
+	tverify(st.brm == 3.14);
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function testGraph()
+{
+	result = true;
+
+	// v1 ---- v2 ---- v3 ---- v4
+	//     e1      e2      e3
+	g = graph();
+
+	v1 = g.generateVertex();
+	v2 = g.generateVertex();
+	v3 = g.generateVertex();
+	v4 = g.generateVertex();
+
+	tverify(g.getNumVertices() == 4);
+	tverify(g.getNumEdges() == 0);
+
+	e1 = g.generateEdge(v1, v2);
+	e2 = g.generateEdge(v2, v3);
+	e3 = g.generateEdge(v3, v4);
+
+	tverify(g.getNumVertices() == 4);
+	tverify(g.getNumEdges() == 3);
+
+	tverify(e1.getBeginVertex() == v1);
+	tverify(e1.getEndVertex() == v2);
+	tverify(e2.getBeginVertex() == v2);
+	tverify(e2.getEndVertex() == v3);
+	tverify(e3.getBeginVertex() == v3);
+	tverify(e3.getEndVertex() == v4);
+
+	tverify(g.getNumVertices() == 4);
+	tverify(g.getNumEdges() == 3);
+	tverify(v1.getDegree() == 1);
+	tverify(v2.getDegree() == 2);
+	tverify(v3.getDegree() == 2);
+	tverify(v4.getDegree() == 1);
+
+	g.deleteEdge(e1);
+	e1 = NULL;
+
+	tverify(g.getNumVertices() == 4);
+	tverify(g.getNumEdges() == 2);
+	tverify(v1.getDegree() == 0);
+	tverify(v2.getDegree() == 1);
+	tverify(v3.getDegree() == 2);
+	tverify(v4.getDegree() == 1);
+
+	g.deleteVertex(v2);
+	// v2 = NULL; // Commented out to test that the segmentation fault will not occur
+
+	tverify(g.getNumVertices() == 3);
+	tverify(g.getNumEdges() == 1);
+	tverify(v1.getDegree() == 0);
+	tverify(v2.getDegree() == 0); // deleted
+	tverify(v3.getDegree() == 1);
+	tverify(v4.getDegree() == 1);
+
+
+	// VertexSet tests
+	vs = vertexset(g);
+	vs.add(v1);
+	vs.add(v4);
+
+	tverify(vs.getNumVertices() == 2);
+	tverify(vs.contains(v1));
+	tverify(!vs.contains(v3));
+	tverify(vs.contains(v4));
+
+	vs.deleteVertex(v1);
+	tverify(!vs.contains(v1));
+	tverify(vs.contains(v4));
+
+
+	// EdgeSet tests
+	es = edgeset(g);
+	es.add(e3);
+
+	tverify(es.getNumEdges() == 1);
+	tverify(es.contains(e3));
+
+	es.deleteEdge(e3);
+	tverify(!es.contains(e3));
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function testMemberAccess()
+{
+	result = true;
+
+	arr = array(4);
+	stru = struct();
+	a = arr[2] = stru.member = 5;
+	stru.blem = "blem";
+
+	g = graph();
+	v1 = g.generateVertex();
+	v2 = g.generateVertex();
+	e = g.generateEdge(v1, v2);
+
+	v1.prop = "bagr";
+	v1.smth = 3.14;
+	e.smth = 2.81;
+
+	tverify(arr.size() == 4);
+	tverify(size(arr) == 4);
+	tverify(arr[0] == NULL);
+	tverify(arr[1] == NULL);
+	tverify(arr[2] == 5);
+	tverify(arr[3] == NULL);
+
+	tverify(stru.member == 5);
+	tverify(stru.blem == "blem");
+
+	tverify(v1.prop == "bagr");
+	tverify(v1.smth == 3.14);
+	tverify(e.smth == 2.81);
+	tverify(v1.notdefined == NULL);
+	tverify(e.notdefined == NULL);
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function testForeach()
+{
+	result = true;
+
+	// Array
+	arr = array(5);
+
+	i = 0;
+	foreach(var ; arr)
+		var = i++;
+
+	tverify(arr[0] == 0);
+	tverify(arr[1] == 1);
+	tverify(arr[2] == 2);
+	tverify(arr[3] == 3);
+	tverify(arr[4] == 4);
+
+	// Struct
+	st = struct();
+	st.number = 42;
+	st.pi = 3.14;
+	st.str = "bagr";
+
+	tverify(st.number == 42);
+	tverify(st.pi == 3.14);
+	tverify(st.str == "bagr");
+
+	foreach(var ; st)
+		var = 5.5;
+
+	tverify(st.number == 5.5);
+	tverify(st.pi == 5.5);
+	tverify(st.str == 5.5);
+
+	it = st.iterator();
+	while(it.hasNext())
+		it.next() = 4;
+
+	tverify(st.number == 4);
+	tverify(st.pi == 4);
+	tverify(st.str == 4);
+
+	// Graph
+	g = graph();
+
+	v1 = g.generateVertex();
+	v2 = g.generateVertex();
+	v3 = g.generateVertex();
+	e1 = g.generateEdge(v1, v2);
+	e2 = g.generateEdge(v2, v3);
+
+	v1.color = "red";
+	v2.color = "green";
+	v3.color = "blue";
+	e1.value = 0.5;
+	e2.value = 0.4;
+
+	tverify(v1.color == "red");
+	tverify(v2.color == "green");
+	tverify(v3.color == "blue");
+	tverify(e1.value == 0.5);
+	tverify(e2.value == 0.4);
+
+	foreach(var ; g.getVertices())
+		var.color = "gold";
+
+	foreach(var ; g.getEdges())
+		var.value = 3;
+
+	tverify(v1.color == "gold");
+	tverify(v2.color == "gold");
+	tverify(v3.color == "gold");
+	tverify(e1.value == 3);
+	tverify(e2.value == 3);
+
+	foreach(var ; v2.getNeighbors())
+		var.color = "silver";
+
+	tverify(v1.color == "silver");
+	tverify(v2.color == "gold");
+	tverify(v3.color == "silver");
+
+	foreach(var ; g.getVertices())
+		var.state = "new";
+
+	tverify(v1.color == "silver");
+	tverify(v2.color == "gold");
+	tverify(v3.color == "silver");
+	tverify(v1.state == "new");
+	tverify(v2.state == "new");
+	tverify(v3.state == "new");
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function testGlobal()
+{
+	result = true;
+
+	tverify(g_pi == NULL);
+	tverify(g_bagr == NULL);
+	tverify(not_global == NULL);
+
+	testGlobalSet();
+
+	tverify(g_pi == NULL);
+	tverify(g_bagr == NULL);
+	tverify(not_global == NULL);
+
+	global g_pi;
+	global g_bagr;
+
+	tverify(g_pi == 3.14);
+	tverify(g_bagr == "bagr");
+	tverify(not_global == NULL);
+
+	global not_global;
+	tverify(not_global == NULL);
+
+	return testResult(__FUNCTION__, result);
+}
+
+function testGlobalSet()
+{
+	global g_pi;
+	global g_bagr;
+
+	g_pi = 3.14;
+	g_bagr = "bagr";
+	not_global = 1;
 }
 
 
