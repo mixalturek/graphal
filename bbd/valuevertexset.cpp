@@ -106,6 +106,71 @@ void ValueVertexSet::resetIterator(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+CountPtr<Value> ValueVertexSet::getUnion(const ValueVertexSet& vs) const
+{
+	if(m_graph != vs.m_graph)
+	{
+		WARN << _("VertexSet belong to the different graph");
+		return VALUENULL;
+	}
+
+	set<ValueVertex*>::iterator it;
+	ValueVertexSet* ret = new ValueVertexSet(m_graph);
+
+	for(it = m_vertices.begin(); it != m_vertices.end(); it++)
+		ret->addVertex(*it);
+
+	for(it = vs.m_vertices.begin(); it != vs.m_vertices.end(); it++)
+		ret->addVertex(*it);
+
+	return CountPtr<Value>(ret);
+}
+
+CountPtr<Value> ValueVertexSet::getIntersection(const ValueVertexSet& vs) const
+{
+	if(m_graph != vs.m_graph)
+	{
+		WARN << _("VertexSet belong to the different graph");
+		return VALUENULL;
+	}
+
+	set<ValueVertex*>::iterator it;
+	ValueVertexSet* ret = new ValueVertexSet(m_graph);
+
+	for(it = m_vertices.begin(); it != m_vertices.end(); it++)
+	{
+		if(vs.contains(*it))
+			ret->addVertex(*it);
+	}
+
+	return CountPtr<Value>(ret);
+}
+
+
+CountPtr<Value> ValueVertexSet::getDifference(const ValueVertexSet& vs) const
+{
+	if(m_graph != vs.m_graph)
+	{
+		WARN << _("VertexSet belong to the different graph");
+		return VALUENULL;
+	}
+
+	set<ValueVertex*>::iterator it;
+	ValueVertexSet* ret = new ValueVertexSet(m_graph);
+
+	for(it = m_vertices.begin(); it != m_vertices.end(); it++)
+	{
+		if(!vs.contains(*it))
+			ret->addVertex(*it);
+	}
+
+	return CountPtr<Value>(ret);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueVertexSet::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);

@@ -46,6 +46,10 @@ public:
 	uint getNumEdges(void) const { return m_edges.size(); }
 	bool contains(ValueEdge* edge) const { return m_edges.count(edge); }
 
+	CountPtr<Value> getUnion(const ValueEdgeSet& es) const;
+	CountPtr<Value> getIntersection(const ValueEdgeSet& es) const;
+	CountPtr<Value> getDifference(const ValueEdgeSet& es) const;
+
 	ValueGraph* getGraph(void) { return m_graph; }
 
 	virtual CountPtr<Value> iterator(void) const;

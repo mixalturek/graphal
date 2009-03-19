@@ -45,6 +45,10 @@
 */
 #define THROW(obj) { throw (obj); }
 
+// Trace macro
+#define TRACE(arg) cout << #arg << endl; arg
+#define D(arg) cout << #arg " = [" << arg << "]" << endl;
+
 
 /////////////////////////////////////////////////////////////////////////////
 //// Includes

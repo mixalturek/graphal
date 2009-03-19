@@ -965,6 +965,93 @@ genBFClass('contains', 'NodeBuiltinContains', 2, $code, $include);
 
 
 #############################################################################
+####
+
+$funcdecl = 'union(vertexset|edgeset, vertexset|edgeset)';
+
+$include = <<END_OF_CODE;
+#include "valuevertexset.hpp"
+#include "valueedgeset.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueVertexSet* vs1 = NULL;
+	ValueVertexSet* vs2 = NULL;
+	ValueEdgeSet* es1 = NULL;
+	ValueEdgeSet* es2 = NULL;
+
+	if((vs1 = par[0]->toValueVertexSet()) != NULL && (vs2 = par[1]->toValueVertexSet()) != NULL)
+		return vs1->getUnion(*vs2);
+	else if((es1 = par[0]->toValueEdgeSet()) != NULL && (es2 = par[1]->toValueEdgeSet()) != NULL)
+		return es1->getUnion(*es2);
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('union', 'NodeBuiltinUnion', 2, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'intersection(vertexset|edgeset, vertexset|edgeset)';
+
+$include = <<END_OF_CODE;
+#include "valuevertexset.hpp"
+#include "valueedgeset.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueVertexSet* vs1 = NULL;
+	ValueVertexSet* vs2 = NULL;
+	ValueEdgeSet* es1 = NULL;
+	ValueEdgeSet* es2 = NULL;
+
+	if((vs1 = par[0]->toValueVertexSet()) != NULL && (vs2 = par[1]->toValueVertexSet()) != NULL)
+		return vs1->getIntersection(*vs2);
+	else if((es1 = par[0]->toValueEdgeSet()) != NULL && (es2 = par[1]->toValueEdgeSet()) != NULL)
+		return es1->getIntersection(*es2);
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('intersection', 'NodeBuiltinIntersection', 2, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'difference(vertexset|edgeset, vertexset|edgeset)';
+
+$include = <<END_OF_CODE;
+#include "valuevertexset.hpp"
+#include "valueedgeset.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueVertexSet* vs1 = NULL;
+	ValueVertexSet* vs2 = NULL;
+	ValueEdgeSet* es1 = NULL;
+	ValueEdgeSet* es2 = NULL;
+
+	if((vs1 = par[0]->toValueVertexSet()) != NULL && (vs2 = par[1]->toValueVertexSet()) != NULL)
+		return vs1->getDifference(*vs2);
+	else if((es1 = par[0]->toValueEdgeSet()) != NULL && (es2 = par[1]->toValueEdgeSet()) != NULL)
+		return es1->getDifference(*es2);
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return CountPtr<Value>(VALUENULL);
+	}
+END_OF_CODE
+genBFClass('difference', 'NodeBuiltinDifference', 2, $code, $include);
+
+
+#############################################################################
 
 print "Generating generateBuiltinFunctions()\n";
 

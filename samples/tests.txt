@@ -12,6 +12,7 @@ function main(argv)
 	failed += !testMemberAccess();
 	failed += !testForeach();
 	failed += !testGlobal();
+	failed += !testUnionIntersectionDifference();
 
 	echo("Number of failed tests: " + failed + "\n");
 }
@@ -374,6 +375,60 @@ function testGlobalSet()
 	g_pi = 3.14;
 	g_bagr = "bagr";
 	not_global = 1;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function testUnionIntersectionDifference()
+{
+	result = true;
+
+	// v1 ---- v2 ---- v3 ---- v4 ---- v5
+	//     e1      e2      e3      e4
+	g = graph();
+
+	v1 = g.generateVertex();
+	v2 = g.generateVertex();
+	v3 = g.generateVertex();
+	v4 = g.generateVertex();
+	v5 = g.generateVertex();
+
+	e1 = g.generateEdge(v1, v2);
+	e2 = g.generateEdge(v2, v3);
+	e3 = g.generateEdge(v3, v4);
+	e4 = g.generateEdge(v4, v5);
+
+	v2n = v2.getNeighbors();
+	v4n = v4.getNeighbors();
+
+	tverify(v2n.getNumVertices() == 2);
+	tverify(v2n.contains(v1));
+	tverify(v2n.contains(v3));
+	tverify(v4n.getNumVertices() == 2);
+	tverify(v4n.contains(v3));
+	tverify(v4n.contains(v5));
+
+	un = union(v2n, v4n);
+	tverify(un.getNumVertices() == 3);
+	tverify(un.contains(v1));
+	tverify(un.contains(v3));
+	tverify(un.contains(v5));
+
+	in = intersection(v2n, v4n);
+	tverify(in.getNumVertices() == 1);
+	tverify(un.contains(v3));
+
+	di = difference(v2n, v4n);
+	tverify(di.getNumVertices() == 1);
+	tverify(un.contains(v1));
+
+	di = difference(v4n, v2n);
+	tverify(di.getNumVertices() == 1);
+	tverify(un.contains(v5));
+
+	return testResult(__FUNCTION__, result);
 }
 
 

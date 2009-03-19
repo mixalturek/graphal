@@ -11,6 +11,7 @@ orientované grafy
 proměnné
 	hierarchie tříd, ne jen jedna třída
 	double dispatch pattern - http://en.wikipedia.org/wiki/Double_dispatch
+	Bruce Eckel: Thinking in C++ 2, Multiple dispatching, str. 459
 
 ////////////////////////////////////////////////////////////////////////////
 //// Návrh gramatiky

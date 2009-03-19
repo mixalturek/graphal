@@ -4,7 +4,6 @@
 add error and warning messages if ValueNull is returned
 resolve all TODOs
 add execution of scripts from external files to the unit tests
-add functions for merging sets + other set operations (+, -, +=, -=, union, intersection)
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -47,6 +47,10 @@ public:
 	uint getNumVertices(void) const { return m_vertices.size(); }
 	bool contains(ValueVertex* vertex) const { return m_vertices.count(vertex); }
 
+	CountPtr<Value> getUnion(const ValueVertexSet& vs) const;
+	CountPtr<Value> getIntersection(const ValueVertexSet& vs) const;
+	CountPtr<Value> getDifference(const ValueVertexSet& vs) const;
+
 	ValueGraph* getGraph(void) { return m_graph; }
 
 	virtual CountPtr<Value> iterator(void) const;

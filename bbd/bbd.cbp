@@ -124,6 +124,8 @@
 		<Unit filename="nodebuiltindeleteedge.hpp" />
 		<Unit filename="nodebuiltindeletevertex.cpp" />
 		<Unit filename="nodebuiltindeletevertex.hpp" />
+		<Unit filename="nodebuiltindifference.cpp" />
+		<Unit filename="nodebuiltindifference.hpp" />
 		<Unit filename="nodebuiltindump.cpp" />
 		<Unit filename="nodebuiltindump.hpp" />
 		<Unit filename="nodebuiltinecho.cpp" />
@@ -156,6 +158,8 @@
 		<Unit filename="nodebuiltingraph.hpp" />
 		<Unit filename="nodebuiltinhasnext.cpp" />
 		<Unit filename="nodebuiltinhasnext.hpp" />
+		<Unit filename="nodebuiltinintersection.cpp" />
+		<Unit filename="nodebuiltinintersection.hpp" />
 		<Unit filename="nodebuiltininvertedgesorientation.cpp" />
 		<Unit filename="nodebuiltininvertedgesorientation.hpp" />
 		<Unit filename="nodebuiltinisoriented.cpp" />
@@ -174,6 +178,8 @@
 		<Unit filename="nodebuiltinsize.hpp" />
 		<Unit filename="nodebuiltinstruct.cpp" />
 		<Unit filename="nodebuiltinstruct.hpp" />
+		<Unit filename="nodebuiltinunion.cpp" />
+		<Unit filename="nodebuiltinunion.hpp" />
 		<Unit filename="nodebuiltinverify.cpp" />
 		<Unit filename="nodebuiltinverify.hpp" />
 		<Unit filename="nodebuiltinvertexset.cpp" />

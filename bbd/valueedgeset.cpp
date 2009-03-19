@@ -106,6 +106,72 @@ void ValueEdgeSet::resetIterator(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+CountPtr<Value> ValueEdgeSet::getUnion(const ValueEdgeSet& es) const
+{
+	if(m_graph != es.m_graph)
+	{
+		WARN << _("EdgeSet belong to the different graph");
+		return VALUENULL;
+	}
+
+	set<ValueEdge*>::iterator it;
+	ValueEdgeSet* ret = new ValueEdgeSet(m_graph);
+
+	for(it = m_edges.begin(); it != m_edges.end(); it++)
+		ret->addEdge(*it);
+
+	for(it = es.m_edges.begin(); it != es.m_edges.end(); it++)
+		ret->addEdge(*it);
+
+	return CountPtr<Value>(ret);
+}
+
+
+CountPtr<Value> ValueEdgeSet::getIntersection(const ValueEdgeSet& es) const
+{
+	if(m_graph != es.m_graph)
+	{
+		WARN << _("EdgeSet belong to the different graph");
+		return VALUENULL;
+	}
+
+	set<ValueEdge*>::iterator it;
+	ValueEdgeSet* ret = new ValueEdgeSet(m_graph);
+
+	for(it = m_edges.begin(); it != m_edges.end(); it++)
+	{
+		if(es.contains(*it))
+			ret->addEdge(*it);
+	}
+
+	return CountPtr<Value>(ret);
+}
+
+
+CountPtr<Value> ValueEdgeSet::getDifference(const ValueEdgeSet& es) const
+{
+	if(m_graph != es.m_graph)
+	{
+		WARN << _("EdgeSet belong to the different graph");
+		return VALUENULL;
+	}
+
+	set<ValueEdge*>::iterator it;
+	ValueEdgeSet* ret = new ValueEdgeSet(m_graph);
+
+	for(it = m_edges.begin(); it != m_edges.end(); it++)
+	{
+		if(!es.contains(*it))
+			ret->addEdge(*it);
+	}
+
+	return CountPtr<Value>(ret);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueEdgeSet::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);

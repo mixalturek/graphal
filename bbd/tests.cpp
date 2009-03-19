@@ -56,18 +56,10 @@
 ////
 
 // Verify macro, like assert but without exiting
-#ifdef _WIN32
 #define verify(expr)                                                          \
 	result = result && (expr);                                                \
 	if(!(expr))                                                               \
-		ERROR_S << __FILE__ << ":" << __LINE__ << endl
-#else
-// __STRING(expr), see /usr/include/assert.h
-#define verify(expr)                                                          \
-	result = result && (expr);                                                \
-	if(!(expr))                                                               \
-		ERROR_S << __FILE__ << ":" << __LINE__ << "   " << __STRING(expr) << endl
-#endif
+		ERROR_S << __FILE__ << ":" << __LINE__ << "   " << #expr << endl
 
 
 /////////////////////////////////////////////////////////////////////////////
