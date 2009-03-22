@@ -13,6 +13,7 @@ function main(argv)
 	failed += !testForeach();
 	failed += !testGlobal();
 	failed += !testUnionIntersectionDifference();
+	failed += !testTypeChecks();
 
 	echo("Number of failed tests: " + failed + "\n");
 }
@@ -66,18 +67,18 @@ function testArray()
 	arr[4] = 3;
 
 	tverify(arr.size() == 5);
-	tverify(arr[0] != NULL);
+	tverify(arr[0] != null);
 	tverify(arr[0] == "bagr");
-	tverify(arr[1] != NULL);
+	tverify(arr[1] != null);
 	tverify(arr[1] == 5.5);
-	tverify(arr[2] == NULL);
-	tverify(arr[3] == NULL);
-	tverify(arr[4] != NULL);
+	tverify(arr[2] == null);
+	tverify(arr[3] == null);
+	tverify(arr[4] != null);
 	tverify(arr[4] == 3);
 
 	arr[0] = 3.14;
 
-	tverify(arr[0] != NULL);
+	tverify(arr[0] != null);
 	tverify(arr[0] == 3.14);
 
 	return testResult(__FUNCTION__, result);
@@ -91,16 +92,16 @@ function testStruct()
 	st.bagr = "bagr";
 	st.brm = true;
 
-	tverify(st.bagr != NULL);
+	tverify(st.bagr != null);
 	tverify(st.bagr == "bagr");
 
-	tverify(st.brm != NULL);
+	tverify(st.brm != null);
 	tverify(st.brm == true);
 
-	tverify(st.notdefined == NULL);
+	tverify(st.notdefined == null);
 
 	st.brm = 3.14;
-	tverify(st.brm != NULL);
+	tverify(st.brm != null);
 	tverify(st.brm == 3.14);
 
 	return testResult(__FUNCTION__, result);
@@ -148,7 +149,7 @@ function testGraph()
 	tverify(v4.getDegree() == 1);
 
 	g.deleteEdge(e1);
-	e1 = NULL;
+	e1 = null;
 
 	tverify(g.getNumVertices() == 4);
 	tverify(g.getNumEdges() == 2);
@@ -158,7 +159,7 @@ function testGraph()
 	tverify(v4.getDegree() == 1);
 
 	g.deleteVertex(v2);
-	// v2 = NULL; // Commented out to test that the segmentation fault will not occur
+	// v2 = null; // Commented out to test that the segmentation fault will not occur
 
 	tverify(g.getNumVertices() == 3);
 	tverify(g.getNumEdges() == 1);
@@ -220,10 +221,10 @@ function testMemberAccess()
 
 	tverify(arr.size() == 4);
 	tverify(size(arr) == 4);
-	tverify(arr[0] == NULL);
-	tverify(arr[1] == NULL);
+	tverify(arr[0] == null);
+	tverify(arr[1] == null);
 	tverify(arr[2] == 5);
-	tverify(arr[3] == NULL);
+	tverify(arr[3] == null);
 
 	tverify(stru.member == 5);
 	tverify(stru.blem == "blem");
@@ -231,8 +232,8 @@ function testMemberAccess()
 	tverify(v1.prop == "bagr");
 	tverify(v1.smth == 3.14);
 	tverify(e.smth == 2.81);
-	tverify(v1.notdefined == NULL);
-	tverify(e.notdefined == NULL);
+	tverify(v1.notdefined == null);
+	tverify(e.notdefined == null);
 
 	return testResult(__FUNCTION__, result);
 }
@@ -344,25 +345,25 @@ function testGlobal()
 {
 	result = true;
 
-	tverify(g_pi == NULL);
-	tverify(g_bagr == NULL);
-	tverify(not_global == NULL);
+	tverify(g_pi == null);
+	tverify(g_bagr == null);
+	tverify(not_global == null);
 
 	testGlobalSet();
 
-	tverify(g_pi == NULL);
-	tverify(g_bagr == NULL);
-	tverify(not_global == NULL);
+	tverify(g_pi == null);
+	tverify(g_bagr == null);
+	tverify(not_global == null);
 
 	global g_pi;
 	global g_bagr;
 
 	tverify(g_pi == 3.14);
 	tverify(g_bagr == "bagr");
-	tverify(not_global == NULL);
+	tverify(not_global == null);
 
 	global not_global;
-	tverify(not_global == NULL);
+	tverify(not_global == null);
 
 	return testResult(__FUNCTION__, result);
 }
@@ -434,3 +435,65 @@ function testUnionIntersectionDifference()
 
 /////////////////////////////////////////////////////////////////////////////
 ////
+
+function testTypeChecks()
+{
+	result = true;
+
+	var = null;
+	othertype = 4.4;
+
+	tverify(var == null);
+	tverify(var.isNull());
+	tverify(othertype != null);
+	tverify(!othertype.isNull());
+
+	var = true;
+	tverify(var.isBool());
+	tverify(!othertype.isBool());
+
+	var = 1;
+	tverify(var.isInt());
+	tverify(!othertype.isInt());
+
+	var = 1.5;
+	tverify(var.isFloat());
+	othertype = 1;
+	tverify(!othertype.isFloat());
+	othertype = 4.4;
+
+	var = "bagr";
+	tverify(var.isString());
+	tverify(!othertype.isString());
+
+	var = struct();
+	tverify(var.isStruct());
+	tverify(!othertype.isStruct());
+
+	var = array(2);
+	tverify(var.isArray());
+	tverify(!othertype.isArray());
+
+	var = graph();
+	g = var;
+	tverify(var.isGraph());
+	tverify(!othertype.isGraph());
+
+	var = g.generateVertex();
+	tverify(var.isVertex());
+	tverify(!othertype.isVertex());
+
+	var = g.generateEdge(var, var);
+	tverify(var.isEdge());
+	tverify(!othertype.isEdge());
+
+	var = g.getVertices();
+	tverify(var.isVertexSet());
+	tverify(!othertype.isVertexSet());
+
+	var = g.getEdges();
+	tverify(var.isEdgeSet());
+	tverify(!othertype.isEdgeSet());
+
+	return testResult(__FUNCTION__, result);
+}

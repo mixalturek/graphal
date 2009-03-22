@@ -52,6 +52,7 @@ public:
 	bool isVariableSet(identifier name);
 	CountPtr<Value> getLocalVariable(identifier name);
 	CountPtr<Value> setLocalVariable(identifier name, CountPtr<Value> val);
+	CountPtr<Value> setLocalVariableAllowRef(identifier name, CountPtr<Value> val);
 	void deleteLocalVariable(identifier name);
 	CountPtr<Value> propagateGlobalVariable(identifier name);
 

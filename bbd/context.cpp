@@ -126,7 +126,8 @@ CountPtr<Value> Context::getLocalVariable(identifier name)
 	{
 		// WARN << _("Variable has not been initialized: ") << ID2STR(name) << endl;
 		// Variable have to be created because of assigning
-		return m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(VALUENULL)))).first->second;
+		return m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name,
+				CountPtr<Value>(new ValueReference(VALUENULL)))).first->second;
 	}
 }
 
@@ -148,9 +149,37 @@ CountPtr<Value> Context::setLocalVariable(identifier name, CountPtr<Value> val)
 	else
 	{
 		if(val->isLValue())
+			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name,
+					CountPtr<Value>(new ValueReference(val->getReferredValue()))));
+		else
+			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name,
+					CountPtr<Value>(new ValueReference(val))));
+	}
+
+	return val;
+}
+
+CountPtr<Value> Context::setLocalVariableAllowRef(identifier name, CountPtr<Value> val)
+{
+	assert(!m_local_variables.empty());
+
+	map<identifier, CountPtr<Value> >::iterator it = m_local_variables.back().find(name);
+	if(it != m_local_variables.back().end())
+	{
+		assert((*it).second->toValueReference() != NULL);
+
+		if(val->isLValue())
+			(*it).second->toValueReference()->assign(val->getReferredValue());
+		else
+			(*it).second->toValueReference()->assign(val);
+	}
+	else
+	{
+		if(val->isLValue())
 			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, val));
 		else
-			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(val))));
+			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name,
+					CountPtr<Value>(new ValueReference(val))));
 	}
 
 	return val;
@@ -169,7 +198,7 @@ CountPtr<Value> Context::propagateGlobalVariable(identifier name)
 	{
 		assert(it->second->isLValue());
 		deleteLocalVariable(name);
-		setLocalVariable(name, it->second);
+		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, it->second));
 		return it->second;
 	}
 	else
@@ -178,7 +207,7 @@ CountPtr<Value> Context::propagateGlobalVariable(identifier name)
 		m_global_variables.insert(pair<identifier, CountPtr<Value> >(name, tmp));
 
 		deleteLocalVariable(name);
-		setLocalVariable(name, tmp);
+		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, tmp));
 		return tmp;
 	}
 }

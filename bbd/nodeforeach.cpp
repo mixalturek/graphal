@@ -63,7 +63,7 @@ CountPtr<Value> NodeForeach::execute(void)
 			try
 			{
 				CONTEXT.deleteLocalVariable(m_var_name);
-				CONTEXT.setLocalVariable(m_var_name, it->next());
+				CONTEXT.setLocalVariableAllowRef(m_var_name, it->next());
 				m_body->execute();
 			}
 			catch(NodeJumpContinue* ex)

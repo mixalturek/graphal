@@ -3,7 +3,9 @@
 
 add error and warning messages if ValueNull is returned
 resolve all TODOs
-add execution of scripts from external files to the unit tests
+Implement __FUNCTION__ using bison
+Context::isVariableSet() -> builtin
+return values in built-in functions specification
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -13,13 +15,6 @@ type casting
 	toInt()
 	toBool()
 	...
-type checking
-	isInt()
-	isGraph()
-	isIterable()
-	...
-breakpoint(condition)
-	add command line option --breakpoints to enable/disable
 
 
 /////////////////////////////////////////////////////////////////////////////

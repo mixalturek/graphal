@@ -34,7 +34,7 @@ function main(argv)
 	verify(v4.getDegree() == 1);
 
 	g.deleteEdge(e1);
-	e1 = NULL;
+	e1 = null;
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 2);
@@ -44,7 +44,7 @@ function main(argv)
 	verify(v4.getDegree() == 1);
 
 	g.deleteVertex(v2);
-	// v2 = NULL; // Commented out to test that the segmentation fault will not occur
+	// v2 = null; // Commented out to test that the segmentation fault will not occur
 
 	verify(g.getNumVertices() == 3);
 	verify(g.getNumEdges() == 1);

@@ -26,7 +26,7 @@
 #include "value.hpp"
 #include "countptr.hpp"
 
-class ValueReference: public Value
+class ValueReference : public Value
 {
 public:
 	ValueReference(CountPtr<Value> val);
@@ -35,6 +35,7 @@ public:
 public:
 	CountPtr<Value>   getVal(void) const { return m_val; }
 	virtual bool      toBool(void) const { return m_val->toBool(); }
+	virtual bool      isNull(void) const { return m_val->isNull(); }
 	virtual bool    isLValue(void) const { return true; }
 	virtual string  toString(void) const { return m_val->toString(); }
 

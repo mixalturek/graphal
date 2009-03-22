@@ -258,6 +258,207 @@ genBFClass('verify', 'NodeBuiltinVerify', 1, $code, $include);
 #############################################################################
 ####
 
+$funcdecl = 'breakpoint(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	if(par[0]->toBool())
+	{
+		WARN << "Breakpoint, press any key... ";
+		getchar();
+	}
+
+	return VALUENULL;
+END_OF_CODE
+genBFClass('breakpoint', 'NodeBuiltinBreakpoint', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isNull(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->isNull()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isNull', 'NodeBuiltinIsNull', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isBool(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueBool() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isBool', 'NodeBuiltinIsBool', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isInt(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueInt() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isInt', 'NodeBuiltinIsInt', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isFloat(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueFloat() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isFloat', 'NodeBuiltinIsFloat', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isString(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueString() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isString', 'NodeBuiltinIsString', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isStruct(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueStruct() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isStruct', 'NodeBuiltinIsStruct', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isArray(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueArray() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isArray', 'NodeBuiltinIsArray', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isGraph(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueGraph() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isGraph', 'NodeBuiltinIsGraph', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isVertex(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueVertex() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isVertex', 'NodeBuiltinIsVertex', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isEdge(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueEdge() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isEdge', 'NodeBuiltinIsEdge', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isVertexSet(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueVertexSet() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isVertexSet', 'NodeBuiltinIsVertexSet', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'isEdgeSet(object)';
+
+$include = <<END_OF_CODE;
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return (par[0]->toValueEdgeSet() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+END_OF_CODE
+genBFClass('isEdgeSet', 'NodeBuiltinIsEdgeSet', 1, $code, $include);
+
+
+#############################################################################
+####
+
 $funcdecl = 'printStackTrace()';
 
 $include = <<END_OF_CODE;

@@ -11,7 +11,7 @@
 				<Option object_output="obj/debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-I../samples --unit-tests ../samples/01_factorial.txt" />
+				<Option parameters="-I../samples --unit-tests ../samples/tests.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,7 +21,7 @@
 				<Option object_output="obj/release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-I../samples --unit-tests ../samples/01_factorial.txt" />
+				<Option parameters="-I../samples --unit-tests ../samples/tests.txt" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -118,6 +118,8 @@
 		<Unit filename="nodebuiltinarray.hpp" />
 		<Unit filename="nodebuiltinassert.cpp" />
 		<Unit filename="nodebuiltinassert.hpp" />
+		<Unit filename="nodebuiltinbreakpoint.cpp" />
+		<Unit filename="nodebuiltinbreakpoint.hpp" />
 		<Unit filename="nodebuiltincontains.cpp" />
 		<Unit filename="nodebuiltincontains.hpp" />
 		<Unit filename="nodebuiltindeleteedge.cpp" />
@@ -162,8 +164,32 @@
 		<Unit filename="nodebuiltinintersection.hpp" />
 		<Unit filename="nodebuiltininvertedgesorientation.cpp" />
 		<Unit filename="nodebuiltininvertedgesorientation.hpp" />
+		<Unit filename="nodebuiltinisarray.cpp" />
+		<Unit filename="nodebuiltinisarray.hpp" />
+		<Unit filename="nodebuiltinisbool.cpp" />
+		<Unit filename="nodebuiltinisbool.hpp" />
+		<Unit filename="nodebuiltinisedge.cpp" />
+		<Unit filename="nodebuiltinisedge.hpp" />
+		<Unit filename="nodebuiltinisedgeset.cpp" />
+		<Unit filename="nodebuiltinisedgeset.hpp" />
+		<Unit filename="nodebuiltinisfloat.cpp" />
+		<Unit filename="nodebuiltinisfloat.hpp" />
+		<Unit filename="nodebuiltinisgraph.cpp" />
+		<Unit filename="nodebuiltinisgraph.hpp" />
+		<Unit filename="nodebuiltinisint.cpp" />
+		<Unit filename="nodebuiltinisint.hpp" />
+		<Unit filename="nodebuiltinisnull.cpp" />
+		<Unit filename="nodebuiltinisnull.hpp" />
 		<Unit filename="nodebuiltinisoriented.cpp" />
 		<Unit filename="nodebuiltinisoriented.hpp" />
+		<Unit filename="nodebuiltinisstring.cpp" />
+		<Unit filename="nodebuiltinisstring.hpp" />
+		<Unit filename="nodebuiltinisstruct.cpp" />
+		<Unit filename="nodebuiltinisstruct.hpp" />
+		<Unit filename="nodebuiltinisvertex.cpp" />
+		<Unit filename="nodebuiltinisvertex.hpp" />
+		<Unit filename="nodebuiltinisvertexset.cpp" />
+		<Unit filename="nodebuiltinisvertexset.hpp" />
 		<Unit filename="nodebuiltiniterator.cpp" />
 		<Unit filename="nodebuiltiniterator.hpp" />
 		<Unit filename="nodebuiltinnext.cpp" />

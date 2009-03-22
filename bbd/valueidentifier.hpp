@@ -36,6 +36,7 @@ public:
 	identifier       getName(void) const { return m_val; }
 	CountPtr<Value>   getVal(void) const { return CONTEXT.getLocalVariable(m_val); }
 	virtual bool      toBool(void) const { return CONTEXT.getLocalVariable(m_val)->toBool(); }
+	virtual bool      isNull(void) const { return CONTEXT.getLocalVariable(m_val)->isNull(); }
 	virtual bool    isLValue(void) const { return true; }
 	virtual string  toString(void) const { return CONTEXT.getLocalVariable(m_val)->toString(); }
 
