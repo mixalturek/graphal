@@ -39,7 +39,8 @@ Lexan::Lexan(identifier filename)
 	m_int(0),
 	m_float(0.0f),
 	m_string(""),
-	m_identifier(0)
+	m_identifier(0),
+	m_currently_processed_function(STR2ID("none"))
 {
 	m_source.push(new LexanIteratorFile(ID2STR(filename)));
 }
@@ -124,6 +125,11 @@ LEXTOKEN Lexan::checkKeyword(void)
 	{
 		m_int = m_source.top()->getLine();
 		return LEX_INT;
+	}
+	if(m_string == "__FUNCTION__")
+	{
+		m_string = ID2STR(m_currently_processed_function);
+		return LEX_STRING;
 	}
 
 	// Check include and define

@@ -135,6 +135,7 @@ void yyerror(char const *msg);
 %type <node> statement expression_statement compound_statement
 %type <nodeblock> argument_expression_list block_item_list
 %type <list_ids> parameter_list
+%type <int_val> function_and_name
 
 %destructor { delete ($$); } primary_expression postfix_expression unary_expression
 %destructor { delete ($$); } multiplicative_expression additive_expression expression
@@ -285,8 +286,12 @@ block_item_list
 	;
 
 function_definition
-	: LEX_FUNCTION LEX_IDENTIFIER '(' parameter_list ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($2, $4, $6, CodePosition(@2.FILE, @2.LINE))); }
-	| LEX_FUNCTION LEX_IDENTIFIER '(' ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($2, new list<identifier>(), $5, CodePosition(@2.FILE, @2.LINE))); }
+	: function_and_name '(' parameter_list ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($1, $3, $5, CodePosition(@1.FILE, @1.LINE))); }
+	| function_and_name '(' ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($1, new list<identifier>(), $4, CodePosition(@1.FILE, @1.LINE))); }
+	;
+
+function_and_name
+	: LEX_FUNCTION LEX_IDENTIFIER { g_lexan->setCurrentlyProcessedFunction($2); $$ = $2; }
 	;
 
 parameter_list

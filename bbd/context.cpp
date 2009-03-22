@@ -87,7 +87,6 @@ void Context::pushLocal(identifier function_name)
 {
 	m_local_variables.push_back(map<identifier, CountPtr<Value> >());
 	m_call_stack.push_back(function_name);
-	setLocalVariable(STR2ID("__FUNCTION__"), CountPtr<Value>(new ValueString(ID2STR(function_name))));
 }
 
 void Context::popLocal(void)

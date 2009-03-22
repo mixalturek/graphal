@@ -47,6 +47,8 @@ public:
 	inline identifier getFile(void) const { return m_source.empty() ? 0 : m_source.top()->getFile(); }
 	inline uint getLine(void) const { return m_source.empty() ? 0 : m_source.top()->getLine(); }
 
+	void setCurrentlyProcessedFunction(identifier name) { m_currently_processed_function = name; }
+
 private:
 	LEXTOKEN checkKeyword(void);
 	bool expandMacro(void);
@@ -62,6 +64,8 @@ private:
 	float m_float;
 	string m_string;
 	identifier m_identifier;
+
+	identifier m_currently_processed_function;
 };
 
 ostream& operator<<(ostream& os, const Lexan& node);

@@ -3,9 +3,7 @@
 
 add error and warning messages if ValueNull is returned
 resolve all TODOs
-Implement __FUNCTION__ using bison
 Context::isVariableSet() -> builtin
-return values in built-in functions specification
 
 
 /////////////////////////////////////////////////////////////////////////////

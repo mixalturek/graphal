@@ -176,7 +176,7 @@ my $funcdecl;
 #############################################################################
 ####
 
-$funcdecl = 'echo(object)';
+$funcdecl = 'echo(object) : object';
 
 $code = <<END_OF_CODE;
 	SCRIPT_STDOUT << par[0]->toString();
@@ -188,7 +188,7 @@ genBFClass('echo', 'NodeBuiltinEcho', 1, $code);
 #############################################################################
 ####
 
-$funcdecl = 'dump(object)';
+$funcdecl = 'dump(object) : object';
 
 $code = <<END_OF_CODE;
 	par[0]->dump(SCRIPT_STDOUT, 0);
@@ -200,7 +200,7 @@ genBFClass('dump', 'NodeBuiltinDump', 1, $code);
 #############################################################################
 ####
 
-$funcdecl = 'exit(object)';
+$funcdecl = 'exit(object) : null';
 
 $include = <<END_OF_CODE;
 #include "exitvalue.hpp"
@@ -218,7 +218,7 @@ genBFClass('exit', 'NodeBuiltinExit', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'assert(object)';
+$funcdecl = 'assert(object) : object';
 
 $include = <<END_OF_CODE;
 #include <stdexcept>
@@ -228,8 +228,7 @@ $code = <<END_OF_CODE;
 	if(!par[0]->toBool())
 		throw runtime_error(_("Assertion failed"));
 
-	// It will never be called
-	return VALUENULL;
+	return par[0];
 END_OF_CODE
 genBFClass('assert', 'NodeBuiltinAssert', 1, $code, $include);
 
@@ -237,7 +236,7 @@ genBFClass('assert', 'NodeBuiltinAssert', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'verify(object)';
+$funcdecl = 'verify(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -258,7 +257,7 @@ genBFClass('verify', 'NodeBuiltinVerify', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'breakpoint(object)';
+$funcdecl = 'breakpoint(object) : null';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -279,7 +278,7 @@ genBFClass('breakpoint', 'NodeBuiltinBreakpoint', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isNull(object)';
+$funcdecl = 'isNull(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -294,7 +293,7 @@ genBFClass('isNull', 'NodeBuiltinIsNull', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isBool(object)';
+$funcdecl = 'isBool(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -309,7 +308,7 @@ genBFClass('isBool', 'NodeBuiltinIsBool', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isInt(object)';
+$funcdecl = 'isInt(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -324,7 +323,7 @@ genBFClass('isInt', 'NodeBuiltinIsInt', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isFloat(object)';
+$funcdecl = 'isFloat(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -339,7 +338,7 @@ genBFClass('isFloat', 'NodeBuiltinIsFloat', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isString(object)';
+$funcdecl = 'isString(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -354,7 +353,7 @@ genBFClass('isString', 'NodeBuiltinIsString', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isStruct(object)';
+$funcdecl = 'isStruct(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -369,7 +368,7 @@ genBFClass('isStruct', 'NodeBuiltinIsStruct', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isArray(object)';
+$funcdecl = 'isArray(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -384,7 +383,7 @@ genBFClass('isArray', 'NodeBuiltinIsArray', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isGraph(object)';
+$funcdecl = 'isGraph(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -399,7 +398,7 @@ genBFClass('isGraph', 'NodeBuiltinIsGraph', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isVertex(object)';
+$funcdecl = 'isVertex(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -414,7 +413,7 @@ genBFClass('isVertex', 'NodeBuiltinIsVertex', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isEdge(object)';
+$funcdecl = 'isEdge(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -429,7 +428,7 @@ genBFClass('isEdge', 'NodeBuiltinIsEdge', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isVertexSet(object)';
+$funcdecl = 'isVertexSet(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -444,7 +443,7 @@ genBFClass('isVertexSet', 'NodeBuiltinIsVertexSet', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isEdgeSet(object)';
+$funcdecl = 'isEdgeSet(object) : bool';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -459,7 +458,7 @@ genBFClass('isEdgeSet', 'NodeBuiltinIsEdgeSet', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'printStackTrace()';
+$funcdecl = 'printStackTrace() : null';
 
 $include = <<END_OF_CODE;
 END_OF_CODE
@@ -474,7 +473,7 @@ genBFClass('printStackTrace', 'NodeBuiltinPrintStackTrace', 0, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'iterator(object)';
+$funcdecl = 'iterator(object) : object';
 
 $include = <<END_OF_CODE;
 END_OF_CODE
@@ -488,7 +487,7 @@ genBFClass('iterator', 'NodeBuiltinIterator', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'hasNext(object)';
+$funcdecl = 'hasNext(object) : bool';
 
 $include = <<END_OF_CODE;
 END_OF_CODE
@@ -502,7 +501,7 @@ genBFClass('hasNext', 'NodeBuiltinHasNext', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'next(object)';
+$funcdecl = 'next(object) : object';
 
 $include = <<END_OF_CODE;
 END_OF_CODE
@@ -516,14 +515,14 @@ genBFClass('next', 'NodeBuiltinNext', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'resetIterator(object)';
+$funcdecl = 'resetIterator(object) : object';
 
 $include = <<END_OF_CODE;
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	par[0]->resetIterator();
-	return VALUENULL;
+	return par[0];
 END_OF_CODE
 genBFClass('resetIterator', 'NodeBuiltinResetIterator', 1, $code, $include);
 
@@ -531,7 +530,7 @@ genBFClass('resetIterator', 'NodeBuiltinResetIterator', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'array(int|bool|float)';
+$funcdecl = 'array(int|bool|float) : array|null';
 
 $include = <<END_OF_CODE;
 #include "valuearray.hpp"
@@ -563,7 +562,7 @@ genBFClass('array', 'NodeBuiltinArray', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'struct()';
+$funcdecl = 'struct() : struct';
 
 genBFClass('struct', 'NodeBuiltinStruct', 0, "\treturn CountPtr<Value>(new ValueStruct());", "#include \"valuestruct.hpp\"");
 
@@ -571,7 +570,7 @@ genBFClass('struct', 'NodeBuiltinStruct', 0, "\treturn CountPtr<Value>(new Value
 #############################################################################
 ####
 
-$funcdecl = 'size(array|string)';
+$funcdecl = 'size(array|string) : int|null';
 
 $include = <<END_OF_CODE;
 #include "valuearray.hpp"
@@ -590,7 +589,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('size', 'NodeBuiltinSize', 1, $code, $include);
@@ -599,7 +598,7 @@ genBFClass('size', 'NodeBuiltinSize', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'graph()';
+$funcdecl = 'graph() : graph';
 
 genBFClass('graph', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");
 
@@ -607,7 +606,7 @@ genBFClass('graph', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGr
 #############################################################################
 ####
 
-$funcdecl = 'vertexset(graph)';
+$funcdecl = 'vertexset(graph) : vertexset|null';
 
 $include = <<END_OF_CODE;
 #include "valuevertexset.hpp"
@@ -622,7 +621,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('vertexset', 'NodeBuiltinVertexSet', 1, $code, $include);
@@ -631,7 +630,7 @@ genBFClass('vertexset', 'NodeBuiltinVertexSet', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'edgeset(graph)';
+$funcdecl = 'edgeset(graph) : edgeset|null';
 
 $include = <<END_OF_CODE;
 #include "valueedgeset.hpp"
@@ -646,7 +645,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('edgeset', 'NodeBuiltinEdgeSet', 1, $code, $include);
@@ -655,7 +654,7 @@ genBFClass('edgeset', 'NodeBuiltinEdgeSet', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isOriented(graph)';
+$funcdecl = 'isOriented(graph) : bool|null';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -670,7 +669,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('isOriented', 'NodeBuiltinIsOriented', 1, $code, $include);
@@ -679,7 +678,7 @@ genBFClass('isOriented', 'NodeBuiltinIsOriented', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'setOriented(graph, bool|int)';
+$funcdecl = 'setOriented(graph, bool|int) : bool|null';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -701,13 +700,13 @@ $code = <<END_OF_CODE;
 		else
 		{
 			WARN << _("Bad parameters type: $funcdecl") << endl;
-			return CountPtr<Value>(VALUENULL);
+			return VALUENULL;
 		}
 	}
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('setOriented', 'NodeBuiltinSetOriented', 2, $code, $include);
@@ -716,7 +715,7 @@ genBFClass('setOriented', 'NodeBuiltinSetOriented', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'invertEdgesOrientation(graph)';
+$funcdecl = 'invertEdgesOrientation(graph) : null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -728,12 +727,12 @@ $code = <<END_OF_CODE;
 	if((g = par[0]->toValueGraph()) != NULL)
 	{
 		g->invertEdgesOrientation();
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('invertEdgesOrientation', 'NodeBuiltinInvertEdgesOrientation', 1, $code, $include);
@@ -742,7 +741,7 @@ genBFClass('invertEdgesOrientation', 'NodeBuiltinInvertEdgesOrientation', 1, $co
 #############################################################################
 ####
 
-$funcdecl = 'generateVertex(graph)';
+$funcdecl = 'generateVertex(graph) : vertex|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -761,7 +760,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('generateVertex', 'NodeBuiltinGenerateVertex', 1, $code, $include);
@@ -770,7 +769,7 @@ genBFClass('generateVertex', 'NodeBuiltinGenerateVertex', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'generateEdge(graph, vertex, vertex)';
+$funcdecl = 'generateEdge(graph, vertex, vertex) : edge|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -787,7 +786,7 @@ $code = <<END_OF_CODE;
 	{
 		ValueEdge* tmp = g->generateEdge(v1, v2);
 		if(tmp == NULL)
-			return CountPtr<Value>(VALUENULL);
+			return VALUENULL;
 
 		CountPtr<Value> ret(tmp);
 		ret.dontDeleteAutomatically();
@@ -796,7 +795,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('generateEdge', 'NodeBuiltinGenerateEdge', 3, $code, $include);
@@ -805,7 +804,7 @@ genBFClass('generateEdge', 'NodeBuiltinGenerateEdge', 3, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'deleteVertex(graph|vertexset, vertex)';
+$funcdecl = 'deleteVertex(graph|vertexset, vertex) : null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -821,17 +820,17 @@ $code = <<END_OF_CODE;
 	if((g = par[0]->toValueGraph()) != NULL && (v = par[1]->toValueVertex()) != NULL)
 	{
 		g->deleteVertex(v);
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 	else if((vs = par[0]->toValueVertexSet()) != NULL && (v = par[1]->toValueVertex()) != NULL)
 	{
 		vs->deleteVertex(v);
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('deleteVertex', 'NodeBuiltinDeleteVertex', 2, $code, $include);
@@ -840,7 +839,7 @@ genBFClass('deleteVertex', 'NodeBuiltinDeleteVertex', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'deleteEdge(graph|edgeset, edge)';
+$funcdecl = 'deleteEdge(graph|edgeset, edge) : null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -856,17 +855,17 @@ $code = <<END_OF_CODE;
 	if((g = par[0]->toValueGraph()) != NULL && (e = par[1]->toValueEdge()) != NULL)
 	{
 		g->deleteEdge(e);
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 	else if((es = par[0]->toValueEdgeSet()) != NULL && (e = par[1]->toValueEdge()) != NULL)
 	{
 		es->deleteEdge(e);
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('deleteEdge', 'NodeBuiltinDeleteEdge', 2, $code, $include);
@@ -875,7 +874,7 @@ genBFClass('deleteEdge', 'NodeBuiltinDeleteEdge', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getNumVertices(graph|vertexset)';
+$funcdecl = 'getNumVertices(graph|vertexset) : int|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -894,7 +893,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('getNumVertices', 'NodeBuiltinGetNumVertices', 1, $code, $include);
@@ -903,7 +902,7 @@ genBFClass('getNumVertices', 'NodeBuiltinGetNumVertices', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getNumEdges(graph|edgeset)';
+$funcdecl = 'getNumEdges(graph|edgeset) : int|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -922,7 +921,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('getNumEdges', 'NodeBuiltinGetNumEdges', 1, $code, $include);
@@ -931,7 +930,7 @@ genBFClass('getNumEdges', 'NodeBuiltinGetNumEdges', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getVertices(graph)';
+$funcdecl = 'getVertices(graph) : vertexset|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -945,7 +944,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('getVertices', 'NodeBuiltinGetVertices', 1, $code, $include);
@@ -954,7 +953,7 @@ genBFClass('getVertices', 'NodeBuiltinGetVertices', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getEdges(graph)';
+$funcdecl = 'getEdges(graph) : edgeset|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -968,7 +967,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('getEdges', 'NodeBuiltinGetEdges', 1, $code, $include);
@@ -977,7 +976,7 @@ genBFClass('getEdges', 'NodeBuiltinGetEdges', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getDegree(vertex)';
+$funcdecl = 'getDegree(vertex) : int|null';
 
 $include = <<END_OF_CODE;
 #include "valuevertex.hpp"
@@ -988,13 +987,11 @@ $code = <<END_OF_CODE;
 	ValueVertex* v = NULL;
 
 	if((v = par[0]->toValueVertex()) != NULL)
-	{
 		return CountPtr<Value>(new ValueInt(v->getDegree()));
-	}
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('getDegree', 'NodeBuiltinGetDegree', 1, $code, $include);
@@ -1003,7 +1000,7 @@ genBFClass('getDegree', 'NodeBuiltinGetDegree', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getNeighbors(vertex)';
+$funcdecl = 'getNeighbors(vertex) : vertexset|null';
 
 $include = <<END_OF_CODE;
 #include "valuevertex.hpp"
@@ -1014,13 +1011,11 @@ $code = <<END_OF_CODE;
 	ValueVertex* v = NULL;
 
 	if((v = par[0]->toValueVertex()) != NULL)
-	{
 		return CountPtr<Value>(v->getNeighbors());
-	}
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('getNeighbors', 'NodeBuiltinGetNeighbors', 1, $code, $include);
@@ -1029,7 +1024,7 @@ genBFClass('getNeighbors', 'NodeBuiltinGetNeighbors', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getBeginVertex(edge)';
+$funcdecl = 'getBeginVertex(edge) : vertex|null';
 
 $include = <<END_OF_CODE;
 #include "valueedge.hpp"
@@ -1048,7 +1043,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('getBeginVertex', 'NodeBuiltinGetBeginVertex', 1, $code, $include);
@@ -1057,7 +1052,7 @@ genBFClass('getBeginVertex', 'NodeBuiltinGetBeginVertex', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getEndVertex(edge)';
+$funcdecl = 'getEndVertex(edge) : vertex|null';
 
 $include = <<END_OF_CODE;
 #include "valueedge.hpp"
@@ -1076,7 +1071,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('getEndVertex', 'NodeBuiltinGetEndVertex', 1, $code, $include);
@@ -1085,7 +1080,7 @@ genBFClass('getEndVertex', 'NodeBuiltinGetEndVertex', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'add(vertexset|edgeset, vertex|edge)';
+$funcdecl = 'add(vertexset|edgeset, vertex|edge) : null';
 
 $include = <<END_OF_CODE;
 #include "valuevertexset.hpp"
@@ -1103,17 +1098,17 @@ $code = <<END_OF_CODE;
 	if((vs = par[0]->toValueVertexSet()) != NULL && (v = par[1]->toValueVertex()) != NULL)
 	{
 		vs->addVertex(v);
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 	else if((es = par[0]->toValueEdgeSet()) != NULL && (e = par[1]->toValueEdge()) != NULL)
 	{
 		es->addEdge(e);
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('add', 'NodeBuiltinAdd', 2, $code, $include);
@@ -1122,7 +1117,7 @@ genBFClass('add', 'NodeBuiltinAdd', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'contains(graph|vertexset|edgeset, vertex|edge)';
+$funcdecl = 'contains(graph|vertexset|edgeset, vertex|edge) : bool|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -1149,7 +1144,7 @@ $code = <<END_OF_CODE;
 		else
 		{
 			WARN << _("Bad parameters type: $funcdecl") << endl;
-			return CountPtr<Value>(VALUENULL);
+			return VALUENULL;
 		}
 	}
 	else if((vs = par[0]->toValueVertexSet()) != NULL && (v = par[1]->toValueVertex()) != NULL)
@@ -1159,7 +1154,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('contains', 'NodeBuiltinContains', 2, $code, $include);
@@ -1168,7 +1163,7 @@ genBFClass('contains', 'NodeBuiltinContains', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'union(vertexset|edgeset, vertexset|edgeset)';
+$funcdecl = 'union(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null';
 
 $include = <<END_OF_CODE;
 #include "valuevertexset.hpp"
@@ -1188,7 +1183,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('union', 'NodeBuiltinUnion', 2, $code, $include);
@@ -1197,7 +1192,7 @@ genBFClass('union', 'NodeBuiltinUnion', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'intersection(vertexset|edgeset, vertexset|edgeset)';
+$funcdecl = 'intersection(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null';
 
 $include = <<END_OF_CODE;
 #include "valuevertexset.hpp"
@@ -1217,7 +1212,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('intersection', 'NodeBuiltinIntersection', 2, $code, $include);
@@ -1226,7 +1221,7 @@ genBFClass('intersection', 'NodeBuiltinIntersection', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'difference(vertexset|edgeset, vertexset|edgeset)';
+$funcdecl = 'difference(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null';
 
 $include = <<END_OF_CODE;
 #include "valuevertexset.hpp"
@@ -1246,7 +1241,7 @@ $code = <<END_OF_CODE;
 	else
 	{
 		WARN << _("Bad parameters type: $funcdecl") << endl;
-		return CountPtr<Value>(VALUENULL);
+		return VALUENULL;
 	}
 END_OF_CODE
 genBFClass('difference', 'NodeBuiltinDifference', 2, $code, $include);
