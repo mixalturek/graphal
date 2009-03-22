@@ -65,6 +65,7 @@ body		{ margin: 0%; }
 <p>ChangeLog a TODO soubory jsou uloženy v archivech.</p>
 
 <ul>
+<li><a href="down/bbd_svn119.tar.gz">Sun, 22 Mar 09 21:46:08 +0700, svn v119</a></li>
 <li><a href="down/bbd_svn99.tar.gz">Tue, 24 Feb 09 20:13:30 +0700, svn v99</a></li>
 <li><a href="down/bbd_svn84.tar.gz">Fri, 30 Jan 09 13:31:09 +0100, svn v84</a></li>
 </ul>
@@ -579,33 +580,107 @@ Factorial of 9 is 362880
 <a id="gramatika" href="#"></a>
 <h2>Gramatika, syntaxe, built-in funkce</h2>
 
-<p>Gramatika viz soubor <em>parser.y</em></p>
+<p>Gramatika viz soubor <em>parser.y</em>. Preprocesor má zabudované konstanty pro určení pozice v kódu, umí inkludovat soubory a definovat jednoduchá makra. Tyto programové konstrukce jsou zpracovávány v době překladu.</p>
+
+<pre>
+__FILE__
+__LINE__
+__FUNCTION__
+
+include("filename");
+define("name", "value");
+
+
+// Příklad použití ze samples/tests.txt
+define("tverify", "result = result &amp;&amp; verify");
+
+function testFactorial()
+{
+	result = true;
+
+	tverify(factorial(1) == 1);
+	tverify(factorial(2) == 2);
+	tverify(factorial(3) == 6);
+	tverify(factorial(4) == 24);
+	tverify(factorial(5) == 120);
+
+	return testResult(__FUNCTION__, result);
+}
+</pre>
+
+
+<p>Existují dva možné, ekvivalentní, způsoby volání funkcí. Pokud je funkce volána nad objektem pomocí tečkové notace, objekt se automaticky předává do prvního parametru.</p>
+
+<pre>
+function fce(self, p2, p3)
+{
+	// Code
+}
+
+fce(obj, p2, p3);
+obj.fce(p2, p3);
+
+
+g = graph();
+v1 = generateVertex(g);
+v2 = g.generateVertex();
+</pre>
+
+
+<p>Seznam built-in funkcí, jejich parametrů a návratových hodnot.</p>
 
 <pre>
 [woq@evm bbd]$ <strong>make listbuiltin</strong>
 grep '\uncdecl =' gen_builtin.pl | sed "s/.*'\(.*\)'.*/\1/"
-echo(object)
-dump(object)
-exit(object)
-assert(object)
-verify(object)
-array(int|bool|float)
-struct()
-size(array|string)
-graph()
-isOriented(graph)
-setOriented(graph, bool|int)
-invertEdgesOrientation(graph)
-addVertex(graph)
-addEdge(graph, vertex, vertex)
-deleteVertex(graph, vertex)
-deleteEdge(graph, edge)
-getNumVertices(graph)
-getNumEdges(graph)
-getDegree(vertex)
-getNeighbors(vertex)
-getBeginVertex(edge)
-getEndVertex(edge)
+echo(object) : object
+dump(object) : object
+exit(object) : null
+assert(object) : object
+verify(object) : bool
+breakpoint(object) : null
+isNull(object) : bool
+isBool(object) : bool
+isInt(object) : bool
+isFloat(object) : bool
+isString(object) : bool
+isStruct(object) : bool
+isArray(object) : bool
+isGraph(object) : bool
+isVertex(object) : bool
+isEdge(object) : bool
+isVertexSet(object) : bool
+isEdgeSet(object) : bool
+printStackTrace() : null
+iterator(object) : object
+hasNext(object) : bool
+next(object) : object
+resetIterator(object) : object
+array(int|bool|float) : array|null
+struct() : struct
+size(array|string) : int|null
+graph() : graph
+vertexset(graph) : vertexset|null
+edgeset(graph) : edgeset|null
+isOriented(graph) : bool|null
+setOriented(graph, bool|int) : bool|null
+invertEdgesOrientation(graph) : null
+generateVertex(graph) : vertex|null
+generateEdge(graph, vertex, vertex) : edge|null
+deleteVertex(graph|vertexset, vertex) : null
+deleteEdge(graph|edgeset, edge) : null
+getNumVertices(graph|vertexset) : int|null
+getNumEdges(graph|edgeset) : int|null
+getVertices(graph) : vertexset|null
+getEdges(graph) : edgeset|null
+getDegree(vertex) : int|null
+getNeighbors(vertex) : vertexset|null
+getBeginVertex(edge) : vertex|null
+getEndVertex(edge) : vertex|null
+add(vertexset|edgeset, vertex|edge) : null
+contains(graph|vertexset|edgeset, vertex|edge) : bool|null
+union(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
+intersection(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
+difference(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
 [woq@evm bbd]$
 </pre>
 

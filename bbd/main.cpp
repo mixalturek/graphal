@@ -61,7 +61,7 @@ void usage(int /* argc */, char** argv)
 
 int main(int argc, char** argv)
 {
-	INFO << "bbd [svn version 99]" << endl;
+	INFO << "bbd [svn version 119]" << endl;
 
 	if(argc < 2)
 	{
