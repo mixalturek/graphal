@@ -1,0 +1,55 @@
+define("NUM_VERTICES", "10"); // In one layer
+define("NEW", "0");
+define("CLOSED", "1");
+
+// Recursive depth first search
+function dfs(v)
+{
+	if(v.state == CLOSED)
+		return;
+
+	echo("Closing vertex: " + v.num + "\n");
+	v.state = CLOSED;
+
+	foreach(neighbor; v.getNeighbors())
+		dfs(neighbor);
+}
+
+
+function main(argv)
+{
+//	o ----- o ----- o ----- ...
+//	|       |       |
+//	|       |       |
+//	o       o       o
+
+	g = graph();
+	v1 = g.generateVertex();
+	v1.num = 0;
+	first = v1;
+
+	// Generate first layer
+	for(i = 1; i < NUM_VERTICES; i++)
+	{
+		v2 = g.generateVertex();
+		v2.num = i;
+
+		g.generateEdge(v1, v2);
+		v1 = v2;
+	}
+
+	// Generate second layer
+	foreach(v1; g.getVertices())
+	{
+		v2 = g.generateVertex();
+		v2.num = i++;
+		g.generateEdge(v1, v2);
+	}
+
+	// Initialize states
+	foreach(v; g.getVertices())
+		v.state = NEW;
+
+	// Run (any vertex first)
+	dfs(first);
+}

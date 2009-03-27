@@ -1,0 +1,32 @@
+define("NUM_VERTICES", "10");
+
+function main(argv)
+{
+//	o ----- o ----- o ----- o ...
+
+	g = graph();
+
+	v1 = g.generateVertex();
+	v1.num = 0;
+
+	// Generate vertices and edges
+	for(i = 1; i < NUM_VERTICES; i++)
+	{
+		v2 = g.generateVertex();
+		v2.num = i;
+
+		g.generateEdge(v1, v2);
+		v1 = v2;
+	}
+
+	echo("Processing vertices\n");
+	foreach(v; g.getVertices())
+		echo("Vertex: " + v.num + "\n");
+
+	echo("Processing edges\n");
+	foreach(e; g.getEdges())
+	{
+		echo("Edge: between " + e.getBeginVertex().num
+			+ " and " + e.getEndVertex().num + "\n");
+	}
+}
