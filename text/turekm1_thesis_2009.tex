@@ -1,0 +1,646 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+%% History:
+% Pavel Tvrdik (26.12.2004)
+%  + initial version for PhD Report
+%
+% Daniel Sykora (27.01.2005)
+%
+% Michal Valenta (3.12.2008)
+% rada zmen ve formatovani (diky M. Duškovi, J. Holubovi a J. Žďárkovi)
+% sjednoceni zdrojoveho kodu pro anglickou, ceskou, bakalarskou a diplomovou praci
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\documentclass[11pt,twoside,a4paper]{book}
+\usepackage[czech, english]{babel}
+
+%\usepackage[T1]{fontenc} % pouzije EC fonty
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+%\usepackage{indentfirst} %1. odstavec jako v cestine.
+
+\usepackage{k336_thesis_macros}
+
+
+% \newcommand\TypeOfWork{Diplomová práce} \typeout{Diplomova prace}
+\newcommand\TypeOfWork{Master's Thesis}   \typeout{Master's Thesis}
+
+
+% http://www.fel.cvut.cz/cz/education/bk/prehled.html
+
+% \newcommand\StudProgram{Elektrotechnika a informatika, strukturovaný, Navazující magisterský}
+\newcommand\StudProgram{Electrical Engineering and Information Technology}  % master program
+
+%\newcommand\StudBranch{Výpočetní technika}   % pro program EaI bak. (dobihajici i strukt.)
+%\newcommand\StudBranch{Výpočetní technika}   % pro prgoram EaI mag. (dobihajici i strukt.)
+%\newcommand\StudBranch{Computer Engineering}             % bachelor programe
+\newcommand\StudBranch{Computer Science and Engineering}  % master programe
+
+
+\newcommand\WorkTitle{Graph algorithms interpreter}
+\newcommand\FirstandFamilyName{Bc. Michal Turek}
+\newcommand\Supervisor{RNDr. Marko Genyk-Berezovskyj}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\usepackage[
+pdftitle={\WorkTitle},
+pdfauthor={\FirstandFamilyName},
+bookmarks=true,
+colorlinks=true,
+breaklinks=true,
+urlcolor=red,
+citecolor=blue,
+linkcolor=blue,
+unicode=true,
+]
+{hyperref}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\begin{document}
+
+%\selectlanguage{czech}
+\selectlanguage{english}
+
+\iflanguage{czech}{
+	 \typeout{************************************************}
+	 \typeout{Zvoleny jazyk: cestina}
+	 \typeout{Typ prace: \TypeOfWork}
+	 \typeout{Studijni program: \StudProgram}
+	 \typeout{Obor: \StudBranch}
+	 \typeout{Jmeno: \FirstandFamilyName}
+	 \typeout{Nazev prace: \WorkTitle}
+	 \typeout{Vedouci prace: \Supervisor}
+	 \typeout{***************************************************}
+	 \newcommand\Department{Katedra počítačů}
+	 \newcommand\Faculty{Fakulta elektrotechnická}
+	 \newcommand\University{České vysoké učení technické v Praze}
+	 \newcommand\labelSupervisor{Vedoucí práce}
+	 \newcommand\labelStudProgram{Studijní program}
+	 \newcommand\labelStudBranch{Obor}
+}{
+	 \typeout{************************************************}
+	 \typeout{Language: english}
+	 \typeout{Type of Work: \TypeOfWork}
+	 \typeout{Study Program: \StudProgram}
+	 \typeout{Study Branch: \StudBranch}
+	 \typeout{Author: \FirstandFamilyName}
+	 \typeout{Title: \WorkTitle}
+	 \typeout{Supervisor: \Supervisor}
+	 \typeout{***************************************************}
+	 \newcommand\Department{Department of Computer Science and Engineering}
+	 \newcommand\Faculty{Faculty of Electrical Engineering}
+	 \newcommand\University{Czech Technical University in Prague}
+	 \newcommand\labelSupervisor{Supervisor}
+	 \newcommand\labelStudProgram{Study Programme}
+	 \newcommand\labelStudBranch{Field of Study}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\coverpagestarts
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\acknowledgements
+\noindent
+
+\noindent I would like to thank to RNDr. Marko Genyk-Berezovskyj for his valuable advices.
+% TODO: The second person I want to thank to is Ренат Рафисович Кагиров, he make me write this thesis in English during my stay in Красноярск.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+% TODO: update information
+%\declaration{V Kořenovicích nad Bečvárkou dne 15.\,5.\,2008}
+\declaration{In Krasnoyarsk on March 27, 2008}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\abstractpage
+
+Translation of Czech abstract into English.
+
+\vglue60mm
+
+\noindent{\Huge \textbf{Abstrakt}}
+\vspace{8ex}
+
+\noindent
+Abstrakt práce by měl velmi stručně vystihovat její podstatu. Tedy čím se práce zabývá a co je jejím výsledkem/přínosem.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\mainbodystarts
+
+\parskip=5pt plus 4pt minus 4pt
+\parindent=1.5em
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Introduction}
+
+There are algorithms \textit{diffuse} for image processing. Everybody knows, that they work, but nobody knows, how they EXACTLY work. The output of this project will be an integrated development environment for writing, debugging and visualizations of these algorithms.
+
+The input for the diffuse algorithm is an image, the output is, for example, in which part of the image is an object situated, where is the background and similar. The algorithm transforms image to a special graph with several vertices for each pixel, the vertices are connected by evaluated edges. Diffuse algorithm works with local parts of the graph, iteratively updates edges evaluation and is stopped if global system condition is met.
+
+The task of this project can be generalized from manipulation with the images to graphs processing.
+
+The aim of this diploma thesis is to design and implement a special language based on C/C++, which will be used for the graph manipulations. The language has support for basic data types like numbers, floating point numbers, booleans, strings, arrays and structures. Variables can be both local and global, no declarations are needed. Control structures are if-else conditions, for, while and foreach loops, function declarations and calls. Include and define preprocessor directives are implemented at the lexical analyzer layer. The language does not contain support for pointers and references, object oriented features are not implemented too.
+
+Special data types includes graphs, vertices, edges, vertex sets and edge sets. Interpreter has built-in functions for creating and deleting of these variables, returning neighbors of the vertices and so on. Every vertex and edge can be evaluated by any number of properties of any type, the dot operator \texttt{object.property} can be used for this. Special control structures for processing complex variables are implemented using iterators which are internaly called by foreach loop.
+
+The graphic user interface consists of a text editor with syntax highlighting and a window for the graph visualization during execution of the algorithm. Actual state in the graph window is displayed after the command in the code is executed and graph view can be changed. The graph can be loaded by the code or by the user in the visualization window.
+
+Integrated development environment has also support for debugging which includes breakpoints, code stepping, displaying content of the variables and the call stack.
+
+The command line interpreter is written in C++ language using Bison parser generator (LALR grammar). Graphic user interface is created in Qt library and graph visualizations in OpenGL library.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Problem description and aim specification}
+
+% TODO: delete
+\begin{itemize}
+\item Popis řešeného problému, vymezení cílů DP/BP a požadavků na implementovaný systém.
+\item Popis struktury DP/BP ve vztahu k vytyčeným cílům.
+\item Rešeršní zpracování existujících implementací, pokud jsou známy.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Analysis and solution suggestions}
+
+% TODO: delete
+Analýza a návrh implementace (včetně diskuse různých alternativ a volby implementačního prostředí).
+
+\section{Language and libraries for interpreter implementation}
+
+C++ vs. Java, STL, OpenGL, Qt
+
+Python
+	naprogramovat grafové třídy v Pythonu a zkusit použít
+	http://www.python.org/doc/ext/embedding.html
+	http://docs.python.org/lib/module-pdb.html
+	jednoduché na implementaci, ale vlastní interpret jednodušší na použití
+
+\section{Language specifications}
+
+email/01_zadani_en.txt
+
+Preprocesor
+include("filename");
+define("name", "value");
+
+
+without switch, use if-else instead
+without comma operator, i.e. for(a = 0, b = 0; a < 5; a++)
+without bit operators
+without references
+
+// Function calls
+function someFunc(self, parameter)
+{
+
+}
+
+someFunc(object, parameter);
+object.someFunc(parameter);
+
+Je třeba předávání parametrů odkazem?
+	ne, možné uložit data do struktury a vrátit ji
+
+Deklarace proměnných
+	jako v C, povinná - hodilo by se při automatickém generování C kódu
+	jako v C, nepovinná - tohle asi ne
+	nepovinná jako v Javascriptu (var jmeno) - asi zbytečné
+
+Viditelnost proměnných
+	neomezovat na úroveň bloků
+	viditelnost pouze na úrovni funkce
+	globální proměnné pomocí buildin funkcí
+
+Data types (internal)
+	no declarations
+	no "const" modifier
+	null
+	bool
+	int
+	float
+	string
+	array, struct
+		graph
+		vertex, vertex iterator
+		edge, edge iterator
+
+Conditions, loops, etc. (c-style)
+	if
+	if-else
+	for
+	while
+	switch
+	foreach(value; iterableObject) doSomething(value);
+
+Structured jumps (c-style)
+	return
+	break
+	continue
+
+Buildin functions
+	isDefined()
+	isVARIABLETYPE() query
+	toVARIABLETYPE() casts
+	setGlobal('variable name', variable)
+	getGlobal('variable name')
+	echo()/print()
+	exit()
+	rand()
+	math, string, file, etc.
+
+Rozhodl jsem se, ze switch nakonec nebudu implementovat. Standardni z C++ je kvuli breakum relativne slozity na vytvoreni, a proto jsem uvazoval o nejakem zjednodusenem ve stylu
+
+switch(E)
+{
+	case(num|str)
+		cmd();
+
+	case(num|str)
+	{
+		cmd();
+		cmd();
+	}
+
+	default
+		cmd();
+}
+
+Potom jsem si rekl, ze by se case mohlo prejmenovat na if a default na else (aby bylo mene klicovych slov), napsal si to a dosel k nazoru, ze to na prvni pohled vypada uplne stejne jako nekolik obycejnych if-else za sebou akorat navic zanorene v sekci swich :-)
+
+\subsection{Basic idea}
+
+\subsection{Standard constructs}
+
+\subsection{Data containers}
+
+// Array, stack, queue, map
+
+a = new array();
+
+a[0] = 10;
+a['name'] = 'value';
+a.lenght();
+
+a.pushBack(item);
+a.getBack();
+a.popBack();
+
+a.pushFront(item);
+a.getFront();
+a.popFront();
+
+a.push(position, item);
+a.get(position);
+a.pop(position);
+
+\subsection{Special constructs, graphs support}
+
+TODO: X36ASS
+
+Množina vrcholů, množina hran
+	TODO: jsou na to použitelné iterátory + vlastnosti?
+
+//---------------- Color all vertex neighbors to red
+vi = v.getNeighbors();
+while(vi.hasNext())
+{
+	tmp = vi.getNext();
+	tmp.setProperty('color', 'red');
+}
+
+// ...or using foreach
+foreach(neighbor; v.getNeighbors())
+	neighbor.setProperty('color', 'red');
+
+
+
+//---------------- Recursive depth first search
+function dfs(v)
+{
+	v.setProperty('visited', true);
+
+	foreach(i; v.getNeighbors())
+	{
+		DOBEFORE(i);
+		if(i.getProperty('visited') == false)
+			dfs(i);
+		DOAFTER(i);
+	}
+}
+
+\subsection{Code examples}
+
+Ukázka existujících algoritmů (zkusit si je přepsat do navrženého jazyka)
+
+\section{Graph representation analysis}
+
+Uvažovat paralelní hrany???!!!
+	trojrozměrné pole hran u matice sousednosti
+	jak označovat hrany? [počátek][konec] už není jednoznačné
+	TODO: nahradit matici sousednosti za nějaký druh spojové reprezentace? Množiny hran apod. by se takhle implementovaly asi líp...
+
+Reprezentace grafu
+	maticová reprezentace není možná kvůli paralelním hranám, počáteční a koncový vrchol by neurčoval hranu jednoznačně, další problémy, preferovaná univerzálnost
+	pole vrcholů a pole hran
+	jednoduché na implementaci
+	jednoduché vracení množin vrcholů a hranám
+	pomalé? nepředpokládají se extrémně velké grafy
+
+\subsection{Standard representations}
+
+\subsection{Own representation}
+
+\subsubsection{Memory management}
+
+\subsection{Summary}
+
+
+\section{Variables in the script, types and operations}
+
+proměnné
+	hierarchie tříd, ne jen jedna třída
+	double dispatch pattern - http://en.wikipedia.org/wiki/Double\_dispatch
+	Bruce Eckel: Thinking in C++ 2, Multiple dispatching, str. 459
+
+\subsection{Class hierarchy}
+
+\subsection{Multiple dispatching pattern}
+
+
+\section{Script representation and execution}
+
+\subsection{AST traversion}
+
+Jak uložit pozici ve zdrojových kódech?
+	zaznamenat si pozici příkazu, bloku, funkce a ukládat to do těchto tříd ve stromě
+	lexan vrací změnu pozice jako token, virtuální instrukce, problémy s gramatikou?
+
+\subsection{Virtual machines}
+
+\subsection{Script debugging support}
+
+Implementace krokování
+	rekurzivní volání execute() na stromovou strukturu, krokování pomocí synchronizace vláken
+	lineární pole instrukcí, virtuální procesor
+
+breakpoint(bool);
+
+
+\section{Memory leaks, memory manager}
+
+\subsection{Garbage collector}
+
+\subsection{Smart pointers}
+
+auto\_ptr ze STL nelze použít, protože...
+http://www.davethehat.com/articles/smartp.htm
+http://ootips.org/yonat/4dev/smart-pointers.html
+http://www.josuttis.com/libbook/cont/countptr.hpp.html
+
+
+\section{Graphic user interface}
+
+
+\section{Code generation}
+
+Automatické generování C/Java zdrojových kódů?
+	aneb po zkušenostech s GWT proč ne? :-)
+	komentáře asi ignorovat
+
+
+\section{Summary}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Realization}
+
+% TODO: delete
+Popis implementace / realizace se zaměřením na nestandardní části řešení.
+
+\section{Base code and command line interpreter}
+
+\subsection{Static object initialization and memory leaks}
+
+init\_static\_objects.cpp
+BaseObject
+general.hpp ???
+
+\subsection{Lexical analyzer}
+
+Z větší části převzatý Borsch a rozšířený
+http://woq.nipax.cz/borsch/devel.php
+
+// Identifikatory, retezec -> id
+// Slozitost: generovani, pouziti id, zpetne dotazovani na retezce
+http://zdrojak.root.cz/clanky/javascript-implementace-v-prohlizecich/
+http://links.twibright.com/doc/projektova.pdf - links projektová dokumentace
+http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
+
+
+\subsection{Grammar, Bison}
+
+\subsubsection{Positions in the script and AST}
+
+
+\subsection{Script variables, Value* class hiearchy}
+
+\subsection{Abstract syntax tree, Node* class hierarchy}
+
+
+\subsection{Functions}
+
+\subsubsection{Functions written in the script}
+
+\subsubsection{Built-in functions}
+
+
+\subsection{Code generators}
+
+\subsubsection{Operators, built-in functions}
+
+\subsubsection{C/C++ macros}
+Great problems with debugging
+
+\subsubsection{Source code generators}
+
+
+\subsection{Script debugging}
+
+\subsubsection{Code execution}
+Recursive traversion of AST, mutexes
+
+
+\subsubsection{Breakpoint() built-in function}
+
+\subsubsection{Script variables}
+
+\subsubsection{Call stack}
+
+
+\subsection{Summary}
+
+
+
+\section{Graphic user interface}
+
+\subsection{Main application}
+
+\subsection{Debugging}
+
+\subsection{Graph visualization}
+
+\subsection{Summary}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Testing}
+
+% TODO: delete
+\begin{itemize}
+ \item Způsob, průběh a výsledky testování.
+ \item Srovnání s existujícími řešeními, pokud jsou známy.
+\end{itemize}
+
+\section{Unit tests}
+
+\section{Script unit tests}
+
+\section{Benchmarks}
+
+\section{Usability}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Conclusion}
+
+% TODO: delete
+\begin{itemize}
+\item Zhodnocení splnění cílů DP/BP a  vlastního přínosu práce (při formulaci je třeba vzít v potaz zadání práce).
+\item Diskuse dalšího možného pokračování práce.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+%\bibliographystyle{abbrv}
+%bibliographystyle{plain}
+%\bibliographystyle{psc}
+%\bibliographystyle{alpha} % [AutorRok]
+%{
+%\def\CS{$\cal C\kern-0.1667em\lower.5ex\hbox{$\cal S$}\kern-0.075em $}
+%\bibliography{reference}
+%}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\appendix
+
+
+\chapter{Language gammar}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Class hierarchy}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Build environment}
+
+\section{Development tools, versions}
+\section{Compiling}
+\section{Execution, command line parameters}
+\section{Graphic user interface}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{List of abbreviations}
+\begin{description}
+\setlength{\labelwidth}{2.5cm}
+\setlength{\itemindent}{1.5cm}
+\item[LALR] One of the grammar types that is used in Bison parser generator
+\item[AST] Abstract Syntax Tree
+\item[OpenGL] Open Graphics Library
+\end{description}
+\vdots
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{UML diagrams}
+
+TODO: X36ASS
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Install and user guide}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Content of the attached CD}
+
+
+\end{document}
