@@ -6,6 +6,21 @@ resolve all TODOs
 Context::isVariableSet() -> builtin
 
 
+// Recursive depth first search
+function dfs(v)
+{
+	v.setProperty('visited', true);
+
+	foreach(i; v.getNeighbors())
+	{
+		DOBEFORE(i);
+		if(i.getProperty('visited') == false)
+			dfs(i);
+		DOAFTER(i);
+	}
+}
+
+
 /////////////////////////////////////////////////////////////////////////////
 //// Built-in functions
 

@@ -118,6 +118,8 @@
 		<Unit filename="nodebuiltinarray.hpp" />
 		<Unit filename="nodebuiltinassert.cpp" />
 		<Unit filename="nodebuiltinassert.hpp" />
+		<Unit filename="nodebuiltinback.cpp" />
+		<Unit filename="nodebuiltinback.hpp" />
 		<Unit filename="nodebuiltinbreakpoint.cpp" />
 		<Unit filename="nodebuiltinbreakpoint.hpp" />
 		<Unit filename="nodebuiltincontains.cpp" />
@@ -136,6 +138,8 @@
 		<Unit filename="nodebuiltinedgeset.hpp" />
 		<Unit filename="nodebuiltinexit.cpp" />
 		<Unit filename="nodebuiltinexit.hpp" />
+		<Unit filename="nodebuiltinfront.cpp" />
+		<Unit filename="nodebuiltinfront.hpp" />
 		<Unit filename="nodebuiltingenerateedge.cpp" />
 		<Unit filename="nodebuiltingenerateedge.hpp" />
 		<Unit filename="nodebuiltingeneratevertex.cpp" />
@@ -194,8 +198,16 @@
 		<Unit filename="nodebuiltiniterator.hpp" />
 		<Unit filename="nodebuiltinnext.cpp" />
 		<Unit filename="nodebuiltinnext.hpp" />
+		<Unit filename="nodebuiltinpopback.cpp" />
+		<Unit filename="nodebuiltinpopback.hpp" />
+		<Unit filename="nodebuiltinpopfront.cpp" />
+		<Unit filename="nodebuiltinpopfront.hpp" />
 		<Unit filename="nodebuiltinprintstacktrace.cpp" />
 		<Unit filename="nodebuiltinprintstacktrace.hpp" />
+		<Unit filename="nodebuiltinpushback.cpp" />
+		<Unit filename="nodebuiltinpushback.hpp" />
+		<Unit filename="nodebuiltinpushfront.cpp" />
+		<Unit filename="nodebuiltinpushfront.hpp" />
 		<Unit filename="nodebuiltinresetiterator.cpp" />
 		<Unit filename="nodebuiltinresetiterator.hpp" />
 		<Unit filename="nodebuiltinsetoriented.cpp" />

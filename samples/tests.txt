@@ -14,6 +14,8 @@ function main(argv)
 	failed += !testGlobal();
 	failed += !testUnionIntersectionDifference();
 	failed += !testTypeChecks();
+	failed += !testStackQueue();
+	failed += !testReferences();
 
 	echo("Number of failed tests: " + failed + "\n");
 }
@@ -494,6 +496,111 @@ function testTypeChecks()
 	var = g.getEdges();
 	tverify(var.isEdgeSet());
 	tverify(!othertype.isEdgeSet());
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function testStackQueue()
+{
+	result = true;
+
+	a = array(5);
+	tverify(a.size() == 5);
+
+	a.pushBack(3.14);
+	tverify(a.size() == 6);
+	tverify(a.back() == 3.14);
+
+	a.pushFront("bagr");
+	tverify(a.size() == 7);
+	tverify(a.front() == "bagr");
+
+	a.popBack();
+	tverify(a.size() == 6);
+	tverify(a.back() == NULL);
+
+	a.popFront();
+	tverify(a.size() == 5);
+	tverify(a.front() == NULL);
+
+	// Empty array
+	a_empty = array(0);
+	tverify(a_empty.size() == 0);
+	tverify(a_empty.back() == NULL);
+	tverify(a_empty.front() == NULL);
+
+	a_empty.popFront();
+	a_empty.popBack();
+	tverify(a_empty.size() == 0);
+
+	a_empty.pushBack(5.5);
+	tverify(a_empty.size() == 1);
+	tverify(a_empty.front() == 5.5);
+	tverify(a_empty.back() == 5.5);
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function testReferences()
+{
+	result = true;
+
+	// Variables
+	var = 1;
+
+	another = var;
+	tverify(var == 1);
+	tverify(another == 1);
+
+	var = 2;
+	tverify(var == 2);
+	tverify(another == 1);
+
+	another = 3;
+	tverify(var == 2);
+	tverify(another == 3);
+
+
+	// Array
+	var = 1;
+	a = array(2);
+
+	a[0] = var;// TODO
+	tverify(var == 1);
+	tverify(a[0] == 1);
+
+	var = 2;
+	tverify(var == 2);
+	tverify(a[0] == 1);
+
+	a[0] = 3;
+	tverify(var == 2);
+	tverify(a[0] == 3);
+
+
+	// Struct
+	var = 1;
+	s = struct();
+
+	s.member = var;
+	tverify(var == 1);
+	tverify(s.member == 1);
+
+	var = 2;
+	tverify(var == 2);
+	tverify(s.member == 1);
+
+	s.member = 3;
+	tverify(var == 2);
+	tverify(s.member == 3);
 
 	return testResult(__FUNCTION__, result);
 }

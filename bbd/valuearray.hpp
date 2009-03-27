@@ -20,9 +20,10 @@
 #ifndef VALUEARRAY_HPP
 #define VALUEARRAY_HPP
 
-#include <vector>
+#include <deque>
 #include "general.hpp"
 #include "value.hpp"
+#include "valuenull.hpp"
 
 class ValueReference;
 
@@ -34,7 +35,7 @@ public:
 	virtual ~ValueArray();
 
 public:
-	vector< CountPtr<Value> >   getVal(void) const { return m_val; }
+	deque< CountPtr<Value> >   getVal(void) const { return m_val; }
 	virtual bool     toBool(void) const { return !m_val.empty(); }
 	virtual string toString(void) const;
 
@@ -46,6 +47,13 @@ public:
 	void resize(uint newsize);
 	CountPtr<Value> getItem(uint pos) const;
 	CountPtr<Value> setItem(uint pos, CountPtr<Value> val);
+
+	void pushFront(CountPtr<Value>& val);
+	void pushBack(CountPtr<Value>& val);
+	void popFront(void) { if(m_val.size() != 0) m_val.pop_front(); }
+	void popBack(void) { if(m_val.size() != 0) m_val.pop_back(); }
+	CountPtr<Value> front(void) { return (m_val.size() == 0) ? VALUENULL : m_val.front(); }
+	CountPtr<Value> back(void) { return (m_val.size() == 0) ? VALUENULL : m_val.back(); }
 
 	virtual CountPtr<Value> iterator(void) const;
 	virtual CountPtr<Value> hasNext(void) const;
@@ -70,8 +78,8 @@ public:
 	virtual PTR_Value logNOT(void)                const; // !
 
 private:
-	vector< CountPtr<Value> > m_val;
-	vector< CountPtr<Value> >::iterator m_it;
+	deque< CountPtr<Value> > m_val;
+	deque< CountPtr<Value> >::iterator m_it;
 };
 
 ostream& operator<<(ostream& os, const ValueArray& node);

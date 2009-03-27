@@ -79,7 +79,7 @@ CountPtr<Value> ValueStruct::setItem(identifier name, CountPtr<Value> val)
 
 	if(val->isLValue())
 	{
-		m_val.insert(pair<identifier, CountPtr<Value> >(name, val));
+		m_val.insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(val->getReferredValue()))));
 		return val;
 	}
 	else

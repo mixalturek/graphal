@@ -1,7 +1,7 @@
 Introduction
 ============
 
-There are algorithms "diffuse" for image processing. Everybody knows, that they are working, but nobody knows, how they EXACTLY work. The output of this project will be an integrated development environment for writing, debugging and visualizations of these algorithms.
+There are algorithms "diffuse" for image processing. Everybody knows, that they work, but nobody knows, how they EXACTLY work. The output of this project will be an integrated development environment for writing, debugging and visualizations of these algorithms.
 
 The input for the diffuse algorithm is an image, the output is, for example, in which part of the image is an object situated, where is the background and similar. The algorithm transforms image to a special graph with several vertices for each pixel, the vertices are connected by evaluated edges. Diffuse algorithm works with local parts of the graph, iteratively updates edges evaluation and is stopped if global system condition is met.
 

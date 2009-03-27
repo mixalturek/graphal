@@ -62,6 +62,14 @@ CountPtr<Value> ValueReference::getReferredValue(void) const
 	return tmp;
 }
 
+CountPtr<Value> ValueReference::assign(CountPtr<Value> val)
+{
+	if(val->isLValue())
+		return m_val = val->getReferredValue();
+	else
+		return m_val = val;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////

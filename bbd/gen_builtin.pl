@@ -598,6 +598,156 @@ genBFClass('size', 'NodeBuiltinSize', 1, $code, $include);
 #############################################################################
 ####
 
+$funcdecl = 'pushFront(array, object) : null';
+
+$include = <<END_OF_CODE;
+#include "valuearray.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueArray* a = NULL;
+
+	if((a = par[0]->toValueArray()) != NULL)
+	{
+		a->pushFront(par[1]);
+		return VALUENULL;
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return VALUENULL;
+	}
+END_OF_CODE
+genBFClass('pushFront', 'NodeBuiltinPushFront', 2, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'pushBack(array, object) : null';
+
+$include = <<END_OF_CODE;
+#include "valuearray.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueArray* a = NULL;
+
+	if((a = par[0]->toValueArray()) != NULL)
+	{
+		a->pushBack(par[1]);
+		return VALUENULL;
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return VALUENULL;
+	}
+END_OF_CODE
+genBFClass('pushBack', 'NodeBuiltinPushBack', 2, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'popFront(array) : null';
+
+$include = <<END_OF_CODE;
+#include "valuearray.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueArray* a = NULL;
+
+	if((a = par[0]->toValueArray()) != NULL)
+	{
+		a->popFront();
+		return VALUENULL;
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return VALUENULL;
+	}
+END_OF_CODE
+genBFClass('popFront', 'NodeBuiltinPopFront', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'popBack(array) : null';
+
+$include = <<END_OF_CODE;
+#include "valuearray.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueArray* a = NULL;
+
+	if((a = par[0]->toValueArray()) != NULL)
+	{
+		a->popBack();
+		return VALUENULL;
+	}
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return VALUENULL;
+	}
+END_OF_CODE
+genBFClass('popBack', 'NodeBuiltinPopBack', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'back(array) : object|null';
+
+$include = <<END_OF_CODE;
+#include "valuearray.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueArray* a = NULL;
+
+	if((a = par[0]->toValueArray()) != NULL)
+		return a->back();
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return VALUENULL;
+	}
+END_OF_CODE
+genBFClass('back', 'NodeBuiltinBack', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'front(array) : object|null';
+
+$include = <<END_OF_CODE;
+#include "valuearray.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueArray* a = NULL;
+
+	if((a = par[0]->toValueArray()) != NULL)
+		return a->front();
+	else
+	{
+		WARN << _("Bad parameters type: $funcdecl") << endl;
+		return VALUENULL;
+	}
+END_OF_CODE
+genBFClass('front', 'NodeBuiltinFront', 1, $code, $include);
+
+
+#############################################################################
+####
+
 $funcdecl = 'graph() : graph';
 
 genBFClass('graph', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");

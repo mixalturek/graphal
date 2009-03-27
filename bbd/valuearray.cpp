@@ -58,7 +58,7 @@ ValueArray::~ValueArray()
 string ValueArray::toString(void) const
 {
 	ostringstream os;
-	vector< CountPtr<Value> >::const_iterator it;
+	deque< CountPtr<Value> >::const_iterator it;
 
 	for(it = m_val.begin(); it != m_val.end(); it++)
 		os << (*it)->toString() << ",";
@@ -82,7 +82,8 @@ void ValueArray::resize(uint newsize)
 	if(newsize <= m_val.size())
 		return;
 
-	m_val.reserve(newsize);
+	// old vector code, deque does not have this method
+//	m_val.reserve(newsize);
 
 	for(uint i = m_val.size(); i < newsize; i++)
 		m_val.push_back(CountPtr<Value>(new ValueReference(VALUENULL)));
@@ -111,14 +112,35 @@ CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 	}
 
 	if(val->isLValue())
-		return m_val[pos] = val;
+	{
+		m_val[pos]->toValueReference()->assign(val->getReferredValue());
+		return val;
+	}
 	else
 	{
-		// Problem with assigning to the iterator
-//		m_val[pos] = CountPtr<Value>(new ValueReference(val));
 		m_val[pos]->toValueReference()->assign(val);
 		return val;
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueArray::pushFront(CountPtr<Value>& val)
+{
+	if(val->isLValue())
+		m_val.push_front(CountPtr<Value>(new ValueReference(val->getReferredValue())));
+	else
+		m_val.push_front(CountPtr<Value>(new ValueReference(val)));
+}
+
+void ValueArray::pushBack(CountPtr<Value>& val)
+{
+	if(val->isLValue())
+		m_val.push_back(CountPtr<Value>(new ValueReference(val->getReferredValue())));
+	else
+		m_val.push_back(CountPtr<Value>(new ValueReference(val)));
 }
 
 
@@ -160,7 +182,7 @@ void ValueArray::dump(ostream& os, uint indent) const
 	dumpIndent(os, indent);
 	os << "<ValueArray>" << endl;
 
-	vector< CountPtr<Value> >::const_iterator it;
+	deque< CountPtr<Value> >::const_iterator it;
 	for(it = m_val.begin(); it != m_val.end(); it++)
 		(*it)->dump(os, indent+1);
 
