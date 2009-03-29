@@ -51,8 +51,12 @@ public:
 	virtual ValueEdge*           toValueEdge(void) { return CONTEXT.getLocalVariable(m_val)->toValueEdge(); }
 	virtual ValueVertexSet* toValueVertexSet(void) { return CONTEXT.getLocalVariable(m_val)->toValueVertexSet(); }
 	virtual ValueEdgeSet*     toValueEdgeSet(void) { return CONTEXT.getLocalVariable(m_val)->toValueEdgeSet(); }
+	virtual ValueIdentifier* toValueIdentifier(void) { return this; }
 
+	// TODO: what is better? Error message if variable is not defined?
 	virtual CountPtr<Value> assign(CountPtr<Value> val) { return CONTEXT.setLocalVariable(m_val, val); }
+//	virtual CountPtr<Value> assign(CountPtr<Value> val) { return CONTEXT.getLocalVariable(m_val)->assign(val); }
+	virtual CountPtr<Value> assignRef(CountPtr<Value> val) { return CONTEXT.setLocalVariableAllowRef(m_val, val); }
 	virtual CountPtr<Value> getReferredValue(void) const;
 
 	virtual CountPtr<Value> iterator(void) const;

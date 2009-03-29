@@ -34,6 +34,7 @@
 #include "nodebinaryassmult.hpp"
 #include "nodebinaryassdiv.hpp"
 #include "nodebinaryassmod.hpp"
+#include "nodebinaryassref.hpp"
 #include "nodebinarydiv.hpp"
 #include "nodebinaryeq.hpp"
 #include "nodebinaryge.hpp"
@@ -119,6 +120,7 @@ void yyerror(char const *msg);
 %token LEX_INC_OP LEX_DEC_OP
 %token LEX_EQ_OP LEX_NE_OP LEX_LE_OP LEX_GE_OP
 %token LEX_OR_OP LEX_AND_OP
+%token LEX_REF_ASSIGN
 
 %token LEX_NULL
 %token LEX_TRUE
@@ -247,6 +249,7 @@ assignment_expression
 	| unary_expression LEX_MOD_ASSIGN assignment_expression { $$ = new NodeBinaryAssMod($1, $3); }
 	| unary_expression LEX_ADD_ASSIGN assignment_expression { $$ = new NodeBinaryAssAdd($1, $3); }
 	| unary_expression LEX_SUB_ASSIGN assignment_expression { $$ = new NodeBinaryAssSub($1, $3); }
+	| unary_expression LEX_REF_ASSIGN assignment_expression { $$ = new NodeBinaryAssRef($1, $3); }
 	;
 
 expression

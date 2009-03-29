@@ -7,6 +7,8 @@ built-in function for loading/dumping graph from/to a file
 g.setPropertyToAllVertices();
 g.setPropertyForAllEdges();
 
+error message "variable not defined" if not assigning
+
 Bison
 	rewrite parser to C++ (it is in documentation)
 	function overloading (save names like "name<numberofparameters>")
@@ -19,3 +21,32 @@ unit tests
 	split to several files by groups (values, nodes, builtins ...)
 	resolve ?gcc bug? - Tests::testValueArray()
 
+
+////////////////////////////////////////////////////////////////////////////
+////
+
+Kdyz napisu funkci, ktera ma vstupu graf a napr. pocita, jaky je soucet
+vah vsech hran,
+tak tato funkce musi vedet v jake promenne (slozce hrany) jsou ty vahy ulozeny.
+(napr. e1.mojevaha == 23.2).
+Pokud bych pak teto funkci predlozil opet vazeny graf, ktery by ale mel
+vahy ulozeny v jineak nazvane promenne (e1.tanasevaha = 23.199),
+doslo by uz k nejake kolizi, totiz k syntakticke chybe?
+Prosim o vysvetleni teto zalezitosti.
+
+>> Samozrejme, ze ano. Kdyz je v C/C++ struktura, ktera ma member
+>> promennou urciteho jmena a druha struktura ma jine jmeno, tak
+>> prejmenovani datovyho typu take nebude fungovat a musi se to
+>> sjednotit. Je mozne si napsat mapovaci funkci, ktera si overi, jakeho
+>> typu je promenna a podle ni vratit hodnotu, ale primo do jazyka (ve
+>> stylu u vsech hran tohoto grafu prejmenuj tuto member promennou) bych
+>> tyto veci zabudovavat nechtel. Tohle uz by byl spis "problem" cloveka,
+>> co pise skript, nez muj...
+>
+> Souhlas.
+>
+>> Zkusim se zamyslet, jak by to premapovani slo zaridit jednoduse, aby
+>> se napriklad te funkci mohl predat dalsi parametr, ve kterem bude
+>> jmeno member promenne.
+>
+> Dobra, ale je to nepovinny pozadavek.

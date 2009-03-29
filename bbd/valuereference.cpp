@@ -64,10 +64,21 @@ CountPtr<Value> ValueReference::getReferredValue(void) const
 
 CountPtr<Value> ValueReference::assign(CountPtr<Value> val)
 {
+	// Pointers support; array and struct items can have two references inside
+	ValueReference* assign_to = m_val->toValueReference();
+	if(assign_to == NULL)
+		assign_to = this;
+
 	if(val->isLValue())
-		return m_val = val->getReferredValue();
+		return assign_to->m_val = val->getReferredValue();
 	else
-		return m_val = val;
+		return assign_to->m_val = val;
+}
+
+CountPtr<Value> ValueReference::assignRef(CountPtr<Value> val)
+{
+	assert("ValueReference::assignRef() should not be called!" != NULL);
+	return m_val = val;
 }
 
 
@@ -101,6 +112,9 @@ void ValueReference::resetIterator(void)
 void ValueReference::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
+
+	// Debug
+//	os << "<ValueReference refobjaddr=\"" << m_val.getPtr() << "\">" << endl;
 	os << "<ValueReference>" << endl;
 
 	m_val->dump(os, indent+1);

@@ -69,8 +69,10 @@ public:
 	virtual ValueVertexSet* toValueVertexSet(void) { return NULL; }
 	virtual ValueEdgeSet*     toValueEdgeSet(void) { return NULL; }
 	virtual ValueReference* toValueReference(void) { return NULL; }
+	virtual ValueIdentifier* toValueIdentifier(void) { return NULL; }
 
 	virtual CountPtr<Value> assign(CountPtr<Value> val);
+	virtual CountPtr<Value> assignRef(CountPtr<Value> val);
 	virtual CountPtr<Value> getReferredValue(void) const;
 
 	virtual CountPtr<Value> iterator(void) const;

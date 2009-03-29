@@ -346,4 +346,11 @@ generateBinaryOperatorClass('NodeBinaryAssMult', "CountPtr<Value> tmp(m_left->ex
 generateBinaryOperatorClass('NodeBinaryAssDiv', "CountPtr<Value> tmp(m_left->execute());\n\treturn tmp->assign(tmp->div(*(m_right->execute())));");
 generateBinaryOperatorClass('NodeBinaryAssMod', "CountPtr<Value> tmp(m_left->execute());\n\treturn tmp->assign(tmp->mod(*(m_right->execute())));");
 
+$code = <<END_OF_CODE;
+	CountPtr<Value> tmp(m_right->execute());
+	ValueIdentifier* ident = tmp->toValueIdentifier();
+	return m_left->execute()->assignRef((ident == NULL) ? tmp : ident->getVal());
+END_OF_CODE
+generateBinaryOperatorClass('NodeBinaryAssRef', $code, "\n#include \"valueidentifier.hpp\"");
+
 0;

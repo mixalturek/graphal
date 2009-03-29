@@ -34,6 +34,7 @@ public:
 
 	identifier getName(void) const { return m_name; }
 	const list<identifier>& getParameterNames(void) const { return *m_parameters; }
+	uint getNumberOfParameters(void) const { return m_parameters->size(); }
 
 	virtual string declarationPos(void) const = 0;
 

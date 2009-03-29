@@ -162,24 +162,13 @@ CountPtr<Value> Context::setLocalVariableAllowRef(identifier name, CountPtr<Valu
 {
 	assert(!m_local_variables.empty());
 
-	map<identifier, CountPtr<Value> >::iterator it = m_local_variables.back().find(name);
-	if(it != m_local_variables.back().end())
-	{
-		assert((*it).second->toValueReference() != NULL);
+	deleteLocalVariable(name);
 
-		if(val->isLValue())
-			(*it).second->toValueReference()->assign(val->getReferredValue());
-		else
-			(*it).second->toValueReference()->assign(val);
-	}
+	if(val->isLValue())
+		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, val));
 	else
-	{
-		if(val->isLValue())
-			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, val));
-		else
-			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name,
-					CountPtr<Value>(new ValueReference(val))));
-	}
+		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name,
+				CountPtr<Value>(new ValueReference(val))));
 
 	return val;
 }
@@ -273,6 +262,18 @@ ostream& operator<<(ostream& os, const Context& node)
 
 int Context::executeScriptMain(int argc, char** argv)
 {
+	NodeFunction* maintest = getFunction(getStringTable()->getID("main"));
+	if(maintest == NULL)
+	{
+		ERROR_S << _("Function main(argv) has not been defined in the script, exiting") << endl;
+		return 1;
+	}
+	else if(maintest->getNumberOfParameters() != 1)
+	{
+		ERROR_S << maintest->declarationPos() << _(": Function main(argv) expects one parameter, exiting") << endl;
+		return 1;
+	}
+
 	ValueArray* argv_array = new ValueArray();
 	argv_array->resize(argc);
 
@@ -299,10 +300,12 @@ int Context::executeScriptMain(int argc, char** argv)
 	catch(runtime_error& ex)
 	{
 		WARN << "Runtime error: " << ex.what() << endl;
+		return 1;
 	}
 	catch(...)
 	{
 		WARN << "Unexpected exception was thrown from the script!" << endl;
+		return 1;
 	}
 
 	return 0;

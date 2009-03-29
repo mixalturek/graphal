@@ -15,6 +15,7 @@ function main(argv)
 	failed += !testUnionIntersectionDifference();
 	failed += !testTypeChecks();
 	failed += !testStackQueue();
+	failed += !testNotReferences();
 	failed += !testReferences();
 
 	echo("Number of failed tests: " + failed + "\n");
@@ -549,7 +550,7 @@ function testStackQueue()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-function testReferences()
+function testNotReferences()
 {
 	result = true;
 
@@ -604,3 +605,102 @@ function testReferences()
 
 	return testResult(__FUNCTION__, result);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function testReferences()
+{
+	result = true;
+
+	// Variable -> constant (no error should occur)
+	var &= 1;
+	tverify(var == 1);
+
+	// Variable -> variable
+	var = 1;
+
+	another &= var;
+	tverify(var == 1);
+	tverify(another == 1);
+
+	var = 2;
+	tverify(var == 2);
+	tverify(another == 2);
+
+	another = 3;// Error
+	tverify(var == 3);
+	tverify(another == 3);
+
+
+	// Array -> variable
+	var = 1;
+	a = array(2);
+
+	a[0] &= var;
+	tverify(var == 1);
+	tverify(a[0] == 1);
+
+	var = 2;
+	tverify(var == 2);
+	tverify(a[0] == 2);
+
+	a[0] = 3;
+	tverify(var == 3);
+	tverify(a[0] == 3);
+
+
+	// Struct -> variable
+	var = 1;
+	s = struct();
+
+	s.member &= var;
+	tverify(var == 1);
+	tverify(s.member == 1);
+
+	var = 2;
+	tverify(var == 2);
+	tverify(s.member == 2);
+
+	s.member = 3;
+	tverify(var == 3);
+	tverify(s.member == 3);
+
+
+	// Variable -> array
+	a = array(2);
+	a[0] = 1;
+
+	var &= a[0];
+	tverify(var == 1);
+	tverify(a[0] == 1);
+
+	var = 2;
+	tverify(var == 2);
+	tverify(a[0] == 2);
+
+	a[0] = 3;
+	tverify(var == 3);
+	tverify(a[0] == 3);
+
+
+	// Variable -> struct
+	s = struct();
+	s.member = 5;
+
+	var &= s.member;
+	tverify(var == 5);
+	tverify(s.member == 5);
+
+	var = 6;
+	tverify(var == 6);
+	tverify(s.member == 6);
+
+	s.member = 7;
+	tverify(var == 7);
+	tverify(s.member == 7);
+
+	return testResult(__FUNCTION__, result);
+}
+

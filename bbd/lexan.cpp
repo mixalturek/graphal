@@ -989,10 +989,12 @@ LEXTOKEN Lexan::nextToken(void)
 		case ST_OP_AND:
 			if(c == '&')
 				return LEX_AND_OP;
+			if(c == '=')
+				return LEX_REF_ASSIGN;
 
 			unget();
 			ERROR_S << POSITION
-				<< _("Unexpected character, this is not operator &&: '")
+				<< _("Unexpected character, this is not operator && nor &=: '")
 				<< (char)c << "' (ascii " << c << ")" << endl;
 			return LEX_ERROR;
 

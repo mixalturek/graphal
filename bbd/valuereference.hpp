@@ -53,6 +53,7 @@ public:
 	virtual ValueReference* toValueReference(void) { return this; }
 
 	virtual CountPtr<Value> assign(CountPtr<Value> val);
+	virtual CountPtr<Value> assignRef(CountPtr<Value> val);
 	virtual CountPtr<Value> getReferredValue(void) const;
 
 	virtual CountPtr<Value> iterator(void) const;
