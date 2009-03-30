@@ -21,6 +21,7 @@
 #ifndef VALUEEDGESET_HPP
 #define VALUEEDGESET_HPP
 
+#include <set>
 #include "general.hpp"
 #include "value.hpp"
 

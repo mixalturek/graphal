@@ -111,7 +111,9 @@ bool Tests::testResult(const string& testName, bool result)
 void Tests::run(void)
 {
 	uint failed = 0;
+#ifdef CHECK_MEMORY_LEAKS
 	failed += !testMemoryLeaks();
+#endif // CHECK_MEMORY_LEAKS
 	failed += !testDoubleDispatching();
 	failed += !testValueStruct();
 	failed += !testValueString();

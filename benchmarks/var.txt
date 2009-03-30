@@ -1,0 +1,15 @@
+define("NUM", "10000000");
+define("DISP", "100000");
+
+function main(argv)
+{
+	for(i = 0; i < NUM; i++)
+	{
+		tmp = i * 2;
+
+		if(i % DISP == 0)
+			echo("debug: " + i + "\n");
+	}
+
+	return 0;
+}

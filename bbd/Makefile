@@ -1,8 +1,9 @@
-TARGET		= bbd
-CC			= g++
-CFLAGS		= -std=c++98 -pedantic -Wall
-LDFLAGS		=
-OBJECTS		= $(shell ls *.cpp | sed 's/.cpp/.o/')
+TARGET  = bbd
+CC      = g++
+CFLAGS  = -std=c++98 -pedantic -Wall
+# CFLAGS  = -std=c++98 -pedantic -Wall -O2 -s -DNDEBUG
+LDFLAGS =
+OBJECTS = $(shell ls *.cpp | sed 's/.cpp/.o/')
 
 .PHONY: build
 .PHONY: rebuild

@@ -23,6 +23,7 @@
 
 #include <deque>
 #include <map>
+#include <set>
 #include "general.hpp"
 #include "baseobject.hpp"
 #include "countptr.hpp"

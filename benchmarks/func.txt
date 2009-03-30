@@ -1,0 +1,22 @@
+define("NUM", "10000000");
+define("DISP", "100000");
+define("SIZE", "5");
+
+
+function fce(val)
+{
+	return val * 2;
+}
+
+function main(argv)
+{
+	for(i = 0; i < NUM; i++)
+	{
+		tmp = fce(i);
+
+		if(i % DISP == 0)
+			echo("debug: " + i + "\n");
+	}
+
+	return 0;
+}

@@ -70,7 +70,10 @@ int main(int argc, char** argv)
 	}
 
 	bool error_occured = false;
+
+#ifdef CHECK_MEMORY_LEAKS
 	uint number_of_static_objects = BaseObject::getNumberOfLeaks();
+#endif // CHECK_MEMORY_LEAKS
 
 	try
 	{
