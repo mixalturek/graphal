@@ -18,13 +18,14 @@ OBJECTS = $(shell ls *.cpp | sed 's/.cpp/.o/')
 .PHONY: builtin
 .PHONY: svnlog
 .PHONY: listbuiltin
+.PHONY: version
 #.PHONY: install
 
 build: $(TARGET)
 
 rebuild: clean all
 
-all: bison operators builtin depend $(TARGET)
+all: version bison operators builtin depend $(TARGET)
 
 %.o: %.cpp
 	$(CC) -c $< $(CFLAGS)
@@ -40,6 +41,9 @@ operators: gen_operators.pl
 
 builtin: gen_builtin.pl
 	perl gen_builtin.pl
+
+version:
+	echo '#define SVN_VERSION' $(shell svnversion | tr 'A-Z' ' ') > version.hpp
 
 depend:
 	makedepend -Y -m $(shell ls *.cpp) 2>&1 | grep -v '\(cassert\|algorithm\|set\|stream\|fstream\|iostream\|map\|deque\|vector\|stack\|list\|typeinfo\|stdexcept\|cmath\)'

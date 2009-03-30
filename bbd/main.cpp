@@ -25,6 +25,7 @@
 #include "tests.hpp"
 #include "context.hpp"
 #include "nodebuiltin_inst.hpp"
+#include "version.hpp"
 
 int parseCode(const string& str);
 
@@ -61,7 +62,7 @@ void usage(int /* argc */, char** argv)
 
 int main(int argc, char** argv)
 {
-	INFO << "bbd [svn version 121]" << endl;
+	INFO << "bbd [svn version " << SVN_VERSION << "]" << endl;
 
 	if(argc < 2)
 	{

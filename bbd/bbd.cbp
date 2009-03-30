@@ -24,6 +24,7 @@
 				<Option parameters="-I../samples --unit-tests ../samples/tests.txt" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-DNDEBUG" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -303,6 +304,7 @@
 		<Unit filename="valuevertex.hpp" />
 		<Unit filename="valuevertexset.cpp" />
 		<Unit filename="valuevertexset.hpp" />
+		<Unit filename="version.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
