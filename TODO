@@ -20,6 +20,9 @@ unit tests
 	split to several files by groups (values, nodes, builtins ...)
 	resolve ?gcc bug? - Tests::testValueArray()
 
+gui
+	qtdemo - MainWindow
+
 
 ////////////////////////////////////////////////////////////////////////////
 ////

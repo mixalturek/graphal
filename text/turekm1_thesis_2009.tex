@@ -205,23 +205,32 @@ The command line interpreter is written in C++ language using Bison parser gener
 \chapter{Analysis and solution suggestions}
 
 % TODO: delete
-Analýza a návrh implementace (včetně diskuse různých alternativ a volby implementačního prostředí).
+Analýza a návrh implementace (včetně diskuse různých alternativ a volby im\-ple\-men\-tač\-ní\-ho prostředí).
 
-\section{Language and libraries for interpreter implementation}
+\section{Language and libraries for implementation}
 
-C++ vs. Java, STL, OpenGL, Qt
+There are three commonly used languages for the application implementation - C++, Java and C\#. The third one can be automatically deleted, because of the multiplatform requirement and antipathy of the project author. C++ language is portable at the source code layer and Java programs at the byte code layer so both can be used.
+
+Great advantages of Java are its memory management and lots of existing libraries and frameworks. On the other hand most of compilers and iterpreters are written in C or C++ because of compilation to the machine code and the resulting quickness.
+
+The author has a lot of experiences with C++, so it and STL library have been choosen for the implementation of the basic interpreter code. Graphic user interface will be created using Qt library. It is one the best C++ library for GUI programming, multiplatform and free for noncommercial use. The graph visualizations will be done of course in OpenGL which is standard for 3D graphics. Second possible choice, Direct 3D, is not portable to non-Microsoft platforms.
+
+\begin{verbatim}
+C++ vs. Java, STL, OpenGL, Qt, bison
 
 Python
 	naprogramovat grafové třídy v Pythonu a zkusit použít
 	http://www.python.org/doc/ext/embedding.html
 	http://docs.python.org/lib/module-pdb.html
 	jednoduché na implementaci, ale vlastní interpret jednodušší na použití
+\end{verbatim}
+
 
 \section{Language specifications}
 
 email/01\_zadani\_en.txt
 
-Preprocesor
+\begin{verbatim}
 include("filename");
 define("name", "value");
 
@@ -289,9 +298,11 @@ Buildin functions
 	exit()
 	rand()
 	math, string, file, etc.
+\end{verbatim}
 
-Rozhodl jsem se, ze switch nakonec nebudu implementovat. Standardni z C++ je kvuli breakum relativne slozity na vytvoreni, a proto jsem uvazoval o nejakem zjednodusenem ve stylu
+Rozhodl jsem se, ze switch nakonec nebudu implementovat. Standardni z C++ je kvuli breakum relativne slozity na vytvoreni, a proto jsem uvazoval o nejakem zjed\-no\-du\-se\-nem ve stylu
 
+\begin{verbatim}
 switch(E)
 {
 	case(num|str)
@@ -306,6 +317,7 @@ switch(E)
 	default
 		cmd();
 }
+\end{verbatim}
 
 Potom jsem si rekl, ze by se case mohlo prejmenovat na if a default na else (aby bylo mene klicovych slov), napsal si to a dosel k nazoru, ze to na prvni pohled vypada uplne stejne jako nekolik obycejnych if-else za sebou akorat navic zanorene v sekci swich :-)
 
@@ -313,8 +325,10 @@ Potom jsem si rekl, ze by se case mohlo prejmenovat na if a default na else (aby
 
 \subsection{Standard constructs}
 
+
 \subsection{Data containers}
 
+\begin{verbatim}
 // Array, stack, queue, map
 
 a = new array();
@@ -369,6 +383,8 @@ function dfs(v)
 		DOAFTER(i);
 	}
 }
+\end{verbatim}
+
 
 \subsection{Code examples}
 
@@ -376,17 +392,24 @@ Ukázka existujících algoritmů (zkusit si je přepsat do navrženého jazyka)
 
 \section{Graph representation analysis}
 
+\begin{verbatim}
 Uvažovat paralelní hrany???!!!
 	trojrozměrné pole hran u matice sousednosti
 	jak označovat hrany? [počátek][konec] už není jednoznačné
-	TODO: nahradit matici sousednosti za nějaký druh spojové reprezentace? Množiny hran apod. by se takhle implementovaly asi líp...
+	TODO: nahradit matici sousednosti za nějaký druh spojové
+		reprezentace? Množiny hran apod. by se takhle
+		implementovaly asi líp...
 
 Reprezentace grafu
-	maticová reprezentace není možná kvůli paralelním hranám, počáteční a koncový vrchol by neurčoval hranu jednoznačně, další problémy, preferovaná univerzálnost
+	maticová reprezentace není možná kvůli paralelním hranám,
+		počáteční a koncový vrchol by neurčoval hranu
+		jednoznačně, další problémy, preferovaná univerzálnost
 	pole vrcholů a pole hran
 	jednoduché na implementaci
 	jednoduché vracení množin vrcholů a hranám
 	pomalé? nepředpokládají se extrémně velké grafy
+\end{verbatim}
+
 
 \subsection{Standard representations}
 
@@ -399,10 +422,12 @@ Reprezentace grafu
 
 \section{Variables in the script, types and operations}
 
+\begin{verbatim}
 proměnné
 	hierarchie tříd, ne jen jedna třída
 	double dispatch pattern - http://en.wikipedia.org/wiki/Double\_dispatch
 	Bruce Eckel: Thinking in C++ 2, Multiple dispatching, str. 459
+\end{verbatim}
 
 \subsection{Class hierarchy}
 
@@ -411,21 +436,28 @@ proměnné
 
 \section{Script representation and execution}
 
+
 \subsection{AST traversion}
 
+\begin{verbatim}
 Jak uložit pozici ve zdrojových kódech?
-	zaznamenat si pozici příkazu, bloku, funkce a ukládat to do těchto tříd ve stromě
-	lexan vrací změnu pozice jako token, virtuální instrukce, problémy s gramatikou?
+	zaznamenat si pozici příkazu, bloku, funkce a ukládat to do
+	těchto tříd ve stromě lexan vrací změnu pozice jako token,
+	virtuální instrukce, problémy s gramatikou?
+\end{verbatim}
+
 
 \subsection{Virtual machines}
 
 \subsection{Script debugging support}
 
+\begin{verbatim}
 Implementace krokování
-	rekurzivní volání execute() na stromovou strukturu, krokování pomocí synchronizace vláken
-	lineární pole instrukcí, virtuální procesor
+	rekurzivní volání execute() na stromovou strukturu, krokování pomocí
+	synchronizace vláken lineární pole instrukcí, virtuální procesor
 
 breakpoint(bool);
+\end{verbatim}
 
 
 \section{Memory leaks, memory manager}
@@ -434,20 +466,23 @@ breakpoint(bool);
 
 \subsection{Smart pointers}
 
+\begin{verbatim}
 auto\_ptr ze STL nelze použít, protože...
 http://www.davethehat.com/articles/smartp.htm
 http://ootips.org/yonat/4dev/smart-pointers.html
 http://www.josuttis.com/libbook/cont/countptr.hpp.html
-
+\end{verbatim}
 
 \section{Graphic user interface}
 
 
 \section{Code generation}
 
+\begin{verbatim}
 Automatické generování C/Java zdrojových kódů?
 	aneb po zkušenostech s GWT proč ne? :-)
 	komentáře asi ignorovat
+\end{verbatim}
 
 
 \section{Summary}
@@ -466,20 +501,28 @@ Popis implementace / realizace se zaměřením na nestandardní části řešen�
 
 \subsection{Static object initialization and memory leaks}
 
+\begin{verbatim}
 init\_static\_objects.cpp
 BaseObject
 general.hpp ???
+\end{verbatim}
+
+
+\subsection{BaseObject::dump()}
 
 \subsection{Lexical analyzer}
 
 Z větší části převzatý Borsch a rozšířený
 http://woq.nipax.cz/borsch/devel.php
 
+\begin{verbatim}
 // Identifikatory, retezec -> id
 // Slozitost: generovani, pouziti id, zpetne dotazovani na retezce
 http://zdrojak.root.cz/clanky/javascript-implementace-v-prohlizecich/
-http://links.twibright.com/doc/projektova.pdf - links projektová dokumentace
+http://links.twibright.com/doc/projektova.pdf - links projektová
+	dokumentace
 http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
+\end{verbatim}
 
 
 \subsection{Grammar, Bison}
@@ -512,6 +555,7 @@ Great problems with debugging
 \subsection{Script debugging}
 
 \subsubsection{Code execution}
+
 Recursive traversion of AST, mutexes
 
 
@@ -529,6 +573,8 @@ Recursive traversion of AST, mutexes
 \section{Graphic user interface}
 
 \subsection{Main application}
+
+\subsection{Editor}
 
 \subsection{Debugging}
 
@@ -608,6 +654,8 @@ Recursive traversion of AST, mutexes
 \section{Execution, command line parameters}
 \section{Graphic user interface}
 
+base code for the application qt4/examples/mainwindows/mdi
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
@@ -616,7 +664,7 @@ Recursive traversion of AST, mutexes
 \begin{description}
 \setlength{\labelwidth}{2.5cm}
 \setlength{\itemindent}{1.5cm}
-\item[LALR] One of the grammar types that is used in Bison parser generator
+\item[LALR] Grammar type used in Bison parser generator
 \item[AST] Abstract Syntax Tree
 \item[OpenGL] Open Graphics Library
 \end{description}

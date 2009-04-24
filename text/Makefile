@@ -18,6 +18,7 @@ bib:
 
 $(PROJECT).pdf: *.tex
 	$(PDFLATEX) $<
+	$(PDFLATEX) $<
 
 #$(PROJECT).pdf: *.ps
 #	ps2pdf -s PAPERSIZE=a4 $<
