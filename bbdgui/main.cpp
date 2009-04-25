@@ -30,6 +30,10 @@ int main(int argc, char *argv[])
 	Q_INIT_RESOURCE(resources);
 
 	QApplication app(argc, argv);
+	app.setOrganizationName("Michal Turek");
+	app.setOrganizationDomain("woq.nipax.cz");
+	app.setApplicationName("bbdgui");
+
 	MainWindow mainWin;
 	mainWin.show();
 	return app.exec();

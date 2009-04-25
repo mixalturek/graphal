@@ -39,6 +39,7 @@ MainWindow::MainWindow()
 			this, SLOT(setActiveSubWindow(QWidget *)));
 
 	createActions();
+	createDocks();
 	createMenus();
 	createToolBars();
 	createStatusBar();
@@ -281,7 +282,15 @@ void MainWindow::createActions()
 	m_closeAllAct->setStatusTip(tr("Close all the windows"));
 	connect(m_closeAllAct, SIGNAL(triggered()), m_mdiArea, SLOT(closeAllSubWindows()));
 
-	m_exitAct = new QAction(tr("E&xit"), this);
+	m_saveLayoutAct = new QAction(tr("Save layout"), this);
+	m_saveLayoutAct->setStatusTip(tr("Save the application layout to disk"));
+	connect(m_saveLayoutAct, SIGNAL(triggered()), this, SLOT(saveLayout()));
+
+	m_loadLayoutAct = new QAction(tr("Load layout"), this);
+	m_loadLayoutAct->setStatusTip(tr("Load the application layout"));
+	connect(m_loadLayoutAct, SIGNAL(triggered()), this, SLOT(loadLayout()));
+
+	m_exitAct = new QAction(QIcon(":/images/exit.png"), tr("E&xit"), this);
 	m_exitAct->setShortcut(tr("Ctrl+Q"));
 	m_exitAct->setStatusTip(tr("Exit the application"));
 	connect(m_exitAct, SIGNAL(triggered()), qApp, SLOT(closeAllWindows()));
@@ -345,12 +354,19 @@ void MainWindow::createMenus()
 	m_fileMenu->addAction(m_closeAct);
 	m_fileMenu->addAction(m_closeAllAct);
 	m_fileMenu->addSeparator();
+	m_fileMenu->addAction(m_loadLayoutAct);
+	m_fileMenu->addAction(m_saveLayoutAct);
+	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_exitAct);
 
 	m_editMenu = menuBar()->addMenu(tr("&Edit"));
 	m_editMenu->addAction(m_cutAct);
 	m_editMenu->addAction(m_copyAct);
 	m_editMenu->addAction(m_pasteAct);
+
+	m_viewMenu = menuBar()->addMenu(tr("&View"));
+//	QMenu* docks = m_viewMenu->addMenu(tr("&Docks"));
+	m_viewMenu->addAction(m_filesDock->toggleViewAction());
 
 	m_windowMenu = menuBar()->addMenu(tr("&Window"));
 	updateWindowMenu();
@@ -370,6 +386,7 @@ void MainWindow::createMenus()
 void MainWindow::createToolBars()
 {
 	m_fileToolBar = addToolBar(tr("File"));
+	m_fileToolBar->setObjectName("File");// TODO: Why is it needed by saveState()?
 	m_fileToolBar->addAction(m_newAct);
 	m_fileToolBar->addAction(m_openAct);
 	m_fileToolBar->addAction(m_saveAct);
@@ -377,6 +394,7 @@ void MainWindow::createToolBars()
 	m_fileToolBar->addAction(m_closeAct);
 
 	m_editToolBar = addToolBar(tr("Edit"));
+	m_editToolBar->setObjectName("Edit");// TODO: Why is it needed by saveState()?
 	m_editToolBar->addAction(m_cutAct);
 	m_editToolBar->addAction(m_copyAct);
 	m_editToolBar->addAction(m_pasteAct);
@@ -395,20 +413,35 @@ void MainWindow::createStatusBar()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+void MainWindow::createDocks()
+{
+	m_filesDock = new QDockWidget(tr("Files"), this);
+	m_filesDock->setObjectName("Files");// TODO: Why is it needed by saveState()?
+	m_filesDock->setWidget(new QTextEdit);
+	this->addDockWidget(Qt::LeftDockWidgetArea, m_filesDock);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void MainWindow::readSettings()
 {
-	QSettings settings("bbdgui");
+	QSettings settings;
 
-	move(settings.value("pos", QPoint(200, 200)).toPoint());
-	resize(settings.value("size", QSize(400, 400)).toSize());
+	QByteArray geometry = settings.value("geometry", QByteArray()).toByteArray();
+	QByteArray state = settings.value("state", QByteArray()).toByteArray();
+
+	restoreGeometry(geometry);
+	restoreState(state);
 }
 
 void MainWindow::writeSettings()
 {
-	QSettings settings("bbdgui");
+	QSettings settings;
 
-	settings.setValue("pos", pos());
-	settings.setValue("size", size());
+	settings.setValue("geometry", saveGeometry());
+	settings.setValue("state", saveState());
 }
 
 
@@ -448,4 +481,87 @@ void MainWindow::setActiveSubWindow(QWidget* window)
 		return;
 
 	m_mdiArea->setActiveSubWindow(qobject_cast<QMdiSubWindow*>(window));
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::saveLayout()
+{
+	QString fileName = QFileDialog::getSaveFileName(this, tr("Save layout"));
+	if(fileName.isEmpty())
+		return;
+
+	QFile file(fileName);
+	if(!file.open(QFile::WriteOnly))
+	{
+		QString msg = tr("Failed to open %1\n%2")
+			.arg(fileName)
+			.arg(file.errorString());
+		QMessageBox::warning(this, tr("Error"), msg);
+		return;
+	}
+
+	QByteArray geo_data = saveGeometry();
+	QByteArray layout_data = saveState();
+
+	bool ok = file.putChar((uchar)geo_data.size());
+	if(ok)
+		ok = file.write(geo_data) == geo_data.size();
+	if(ok)
+		ok = file.write(layout_data) == layout_data.size();
+
+	if(!ok)
+	{
+		QString msg = tr("Error writing to %1\n%2")
+			.arg(fileName)
+			.arg(file.errorString());
+		QMessageBox::warning(this, tr("Error"), msg);
+		return;
+	}
+}
+
+void MainWindow::loadLayout()
+{
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Load layout"));
+	if(fileName.isEmpty())
+		return;
+	QFile file(fileName);
+	if(!file.open(QFile::ReadOnly))
+	{
+		QString msg = tr("Failed to open %1\n%2")
+			.arg(fileName)
+			.arg(file.errorString());
+		QMessageBox::warning(this, tr("Error"), msg);
+		return;
+	}
+
+	uchar geo_size;
+	QByteArray geo_data;
+	QByteArray layout_data;
+
+	bool ok = file.getChar((char*)&geo_size);
+	if(ok)
+	{
+		geo_data = file.read(geo_size);
+		ok = geo_data.size() == geo_size;
+	}
+	if(ok)
+	{
+		layout_data = file.readAll();
+		ok = layout_data.size() > 0;
+	}
+
+	if(ok)
+		ok = restoreGeometry(geo_data);
+	if(ok)
+		ok = restoreState(layout_data);
+
+	if(!ok)
+	{
+		QString msg = tr("Error reading %1").arg(fileName);
+		QMessageBox::warning(this, tr("Error"), msg);
+		return;
+	}
 }

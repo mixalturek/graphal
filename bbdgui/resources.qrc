@@ -9,5 +9,6 @@
         <file>images/editcopy.png</file>
         <file>images/editcut.png</file>
         <file>images/editpaste.png</file>
+        <file>images/exit.png</file>
     </qresource>
 </RCC>

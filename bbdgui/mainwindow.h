@@ -54,6 +54,9 @@ private slots:
 	void updateMenus();
 	void updateWindowMenu();
 
+	void saveLayout();
+	void loadLayout();
+
 	TextEditor* createTextEditor();
 	void setActiveSubWindow(QWidget* window);
 
@@ -62,6 +65,7 @@ private:
 	void createMenus();
 	void createToolBars();
 	void createStatusBar();
+	void createDocks();
 	void readSettings();
 	void writeSettings();
 
@@ -73,15 +77,20 @@ private:
 	QSignalMapper* m_windowMapper;
 	QMenu* m_fileMenu;
 	QMenu* m_editMenu;
+	QMenu* m_viewMenu;
 	QMenu* m_windowMenu;
 	QMenu* m_helpMenu;
 	QToolBar* m_fileToolBar;
 	QToolBar* m_editToolBar;
+	QDockWidget* m_filesDock;
+
 	QAction* m_newAct;
 	QAction* m_openAct;
 	QAction* m_saveAct;
 	QAction* m_saveAsAct;
 	QAction* m_saveAllAct;
+	QAction* m_saveLayoutAct;
+	QAction* m_loadLayoutAct;
 	QAction* m_exitAct;
 	QAction* m_cutAct;
 	QAction* m_copyAct;
