@@ -17,8 +17,8 @@ Language contains basic data types, data and control structures
 	#include directive in simple version (not headers but whole files)
 
 	Consider
-		pointers and structures like in C?
-		OOP is probably not needed
+		pointers and structures like in C language
+		OOP is not probably needed
 		simple I/O, mainly reading/writing of the graphs from/to text files
 		boolean type, maybe not needed
 		simple strings and characters, no difficult functions for manipulation with them
@@ -48,9 +48,10 @@ Display unit, visualization
 	user can interactively translate, rotate and resize the graph
 	user can enable/disable displaying of specific parts of the graph
 	if language supports color/texture attributes of the vertices/edges/sets it should be displayed too
+	visualization window should have an option for loading of the graph, user can choose to use this graph or graph loaded by the code
 
 Manipulation
-Code interpretation can be stepped. Actual state in graph window will be displayed after command is executed and graph view can be changed now. Parameters of the graph during algorithm execution won't be changed, visualization parameters yes (colors, scale, etc.). There is no need to support debugging, console for debugging and trace outputs is enough. Visualization window should have option for loading of the graph, user can choose to use this graph or graph loaded by the code.
+Code interpretation can be stepped. Actual state in graph window will be displayed after command is executed and graph view can be changed now. Parameters of the graph during algorithm execution won't be changed, visualization parameters yes (colors, scale, etc.). There is no need to support classic debugging, console for debugging and trace outputs is enough.
 
 Minimal configuration
 	CLI version

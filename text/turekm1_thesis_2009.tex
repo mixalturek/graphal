@@ -161,7 +161,7 @@ Abstrakt práce by měl velmi stručně vystihovat její podstatu. Tedy čím se
 \mainbodystarts
 
 \parskip=5pt plus 4pt minus 4pt
-\parindent=1.5em
+\parindent=0em
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -169,13 +169,13 @@ Abstrakt práce by měl velmi stručně vystihovat její podstatu. Tedy čím se
 
 \chapter{Introduction}
 
-There are algorithms \textit{diffuse} for image processing. Everybody knows, that they work, but nobody knows, how they EXACTLY work. The output of this project will be an integrated development environment for writing, debugging and visualizations of these algorithms.
+There are algorithms \textit{diffuse} for image processing. Everybody knows, that they work, but nobody knows, how they \textit{exactly} work. The output of this project will be an integrated development environment for writing, debugging and visualizations of these algorithms.
 
-The input for the diffuse algorithm is an image, the output is, for example, in which part of the image is an object situated, where is the background and similar. The algorithm transforms image to a special graph with several vertices for each pixel, the vertices are connected by evaluated edges. Diffuse algorithm works with local parts of the graph, iteratively updates edges evaluation and is stopped if global system condition is met.
+The input for the diffuse algorithm is an image, the output is, for example, in which part of the image is an object situated, where is the background and similar. The algorithm transforms image to a special graph with several vertices for each pixel, the vertices are connected by evaluated edges. Diffuse algorithm works with the local parts of the graph, iteratively updates edges evaluation and is stopped if global system condition is met.
 
 The task of this project can be generalized from manipulation with the images to graphs processing.
 
-The aim of this diploma thesis is to design and implement a special language based on C/C++, which will be used for the graph manipulations. The language has support for basic data types like numbers, floating point numbers, booleans, strings, arrays and structures. Variables can be both local and global, no declarations are needed. Control structures are if-else conditions, for, while and foreach loops, function declarations and calls. Include and define preprocessor directives are implemented at the lexical analyzer layer. The language does not contain support for pointers and references, object oriented features are not implemented too.
+The aim of this diploma thesis is to design and implement a special language based on C/C++, which will be used for the graph manipulations. The language has support for basic data types like numbers, floating point numbers, booleans, strings, arrays and structures. Variables can be both local and global, no declarations are needed. Control structures are if-else conditions, for, while and foreach loops, function declarations and calls. Include and define preprocessor directives are implemented at the lexical analyzer layer. The language does not contain support for pointers, object oriented features are not implemented too.
 
 Special data types includes graphs, vertices, edges, vertex sets and edge sets. Interpreter has built-in functions for creating and deleting of these variables, returning neighbors of the vertices and so on. Every vertex and edge can be evaluated by any number of properties of any type, the dot operator \texttt{object.property} can be used for this. Special control structures for processing complex variables are implemented using iterators which are internaly called by foreach loop.
 
@@ -192,10 +192,105 @@ The command line interpreter is written in C++ language using Bison parser gener
 \chapter{Problem description and aim specification}
 
 % TODO: delete
+%\begin{itemize}
+%\item Popis řešeného problému, vymezení cílů DP/BP a požadavků na implementovaný systém.
+%\item Popis struktury DP/BP ve vztahu k vytyčeným cílům.
+%\item Rešeršní zpracování existujících implementací, pokud jsou známy.
+%\end{itemize}
+
+
+\section{Application requirements}
+
+Design and implement language interpreter, which will be targeted to the graph manipulations. The language will contain basic data structures necessary for the graphs and will have support for effective writing of the graph algoritms. Interpreter will have graphic user interface consisting of a text editor for algorithms writing and a window for graph visualization during execution of the algorithm. Use OpenGL library for the graph visualization.
+
+Graphs without orientation are fundamental, oriented are not needed so much.
+
+\subsection{Language}
+
+The language contains basic data types, data and control structures
+
 \begin{itemize}
-\item Popis řešeného problému, vymezení cílů DP/BP a požadavků na implementovaný systém.
-\item Popis struktury DP/BP ve vztahu k vytyčeným cílům.
-\item Rešeršní zpracování existujících implementací, pokud jsou známy.
+\item numbers, floating point numbers, arrays
+\item conditions, loops, declarations and functions calling
+\item text output to the own console
+\item include directive in simple version (not headers but whole files)
+
+\item consider
+	\begin{itemize}
+	\item pointers and structures like in C language
+	\item OOP is not probably needed
+	\item simple I/O, mainly reading/writing of the graphs from/to text files
+	\item boolean type, maybe not needed
+	\item simple strings and characters, no difficult functions for manipulation
+	\end{itemize}
+
+\item specific language elements
+	\begin{itemize}
+	\item primitive types
+		\begin{itemize}
+		\item graph, vertex, edge, vertex set, edge set
+		\end{itemize}
+	\item basic functions
+		\begin{itemize}
+		\item create/delete graph/vertex/edge
+		\item evaluate vertex/edge
+		\item return all neighbors of the vertex
+		\item create/delete vertex/edge set, add/remove vertex/edge
+		\item return degree of vertex
+		\end{itemize}
+	\item control structures
+		\begin{itemize}
+		\item for all neighbors of vertex execute \texttt{command}
+		\item for all vertices/edges in the set execute \texttt{command}
+		\item for all verteces/edges in the graph execute \texttt{command}
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+
+\subsection{Editor}
+
+\begin{itemize}
+\item classic text editor for programmers
+\item syntax highlighting will be appreciated
+\item other features will be discussed
+\end{itemize}
+
+
+\subsection{Display unit, visualization}
+
+\begin{itemize}
+\item display actually processed graph in 3D
+\item it is not editor for graph editing
+\item user can interactively translate, rotate and resize the graph
+\item user can enable/disable displaying of specific parts of the graph
+\item if language supports color/texture attributes of the vertices/edges/sets it should be displayed too
+\item visualization window should have an option for loading of the graph, user can choose to use this graph or graph loaded by the code
+\end{itemize}
+
+
+\subsection{Graph manipulation, debugger}
+
+Code interpretation can be stepped. Actual state in graph window will be displayed after command is executed and graph view can be changed now. Parameters of the graph during algorithm execution won't be changed, visualization parameters yes (colors, scale, etc.). There is no need to support classic debugging, console for debugging and trace outputs is enough. Visualization window should have option for loading of the graph, user can choose to use this graph or graph loaded by the code.
+
+
+\subsection{Minimal system configuration}
+
+\begin{itemize}
+	\item CLI version
+		\begin{itemize}
+		\item i386 and amd64 platform, support for other will be appreciated
+		\item GNU/Linux, MS Windows (NT based) or MacOS operating systems, support for other will be appreciated
+		\item processor min. 1 GHz
+		\item memory min. 2 GB RAM (millions of vertices are expected)
+		\end{itemize}
+
+	\item GUI version
+		\begin{itemize}
+		\item graphic card with OpenGL support (ie. nVidia GeForce 2 and newer)
+		\item OpenGL drivers and Qt4 libraries
+		\item min. 1024x768 monitor resolution
+		\end{itemize}
 \end{itemize}
 
 
@@ -205,7 +300,19 @@ The command line interpreter is written in C++ language using Bison parser gener
 \chapter{Analysis and solution suggestions}
 
 % TODO: delete
-Analýza a návrh implementace (včetně diskuse různých alternativ a volby im\-ple\-men\-tač\-ní\-ho prostředí).
+% Analýza a návrh implementace (včetně diskuse různých alternativ a volby im\-ple\-men\-tač\-ní\-ho prostředí).
+
+\section{General steps}
+
+The general aim of this project is to develop integrated development environment for special programming language that is orientated to the graphs manipulations. This complex task can be divided to the several standalone parts which should be solved in the following order.
+
+\begin{enumerate}
+\item Suggest how the graphs will be saved and how will be accessed from the interpreter
+\item Design a language for graphs manipulations matching the requirements
+\item Implement lexical analyzer, parser and command line interpreter
+\item Design and implement graphic user interface for the IDE
+\end{enumerate}
+
 
 \section{Language and libraries for implementation}
 
@@ -213,7 +320,9 @@ There are three commonly used languages for the application implementation - C++
 
 Great advantages of Java are its memory management and lots of existing libraries and frameworks. On the other hand most of compilers and iterpreters are written in C or C++ because of compilation to the machine code and the resulting quickness.
 
-The author has a lot of experiences with C++, so it and STL library have been choosen for the implementation of the basic interpreter code. Graphic user interface will be created using Qt library. It is one the best C++ library for GUI programming, multiplatform and free for noncommercial use. The graph visualizations will be done of course in OpenGL which is standard for 3D graphics. Second possible choice, Direct 3D, is not portable to non-Microsoft platforms.
+The author has a lot of experiences with C++ so it and STL library have been choosen for the implementation of the interpreter code. No other library will be used for base code implementation, command line interpreter will have as less dependencies as possible. It will be portable to all platform for which C++ compiler exists.
+
+Graphic user interface will be created using Qt library. It is one the best C++ library for GUI programming, multiplatform and free for noncommercial use. The graph visualizations will be done of course in OpenGL which is standard for 3D graphics. Second possible choice, Direct 3D, is not portable to non-Microsoft platforms.
 
 \begin{verbatim}
 C++ vs. Java, STL, OpenGL, Qt, bison
@@ -391,6 +500,9 @@ function dfs(v)
 Ukázka existujících algoritmů (zkusit si je přepsat do navrženého jazyka)
 
 \section{Graph representation analysis}
+
+The assumed size of the stored graphs is millions vertices and edges. Each graph primitive will be a variable in the interpreter and may be referred from the several places so same kind of memory management should be propounded. The work with the whole graph and with its parts represented by sets should be similar.
+
 
 \begin{verbatim}
 Uvažovat paralelní hrany???!!!
@@ -664,8 +776,12 @@ base code for the application qt4/examples/mainwindows/mdi
 \begin{description}
 \setlength{\labelwidth}{2.5cm}
 \setlength{\itemindent}{1.5cm}
-\item[LALR] Grammar type used in Bison parser generator
+\item[LALR] Look Ahead Left to Right (grammar type)
 \item[AST] Abstract Syntax Tree
+\item[CLI] Command Line Interface
+\item[GUI] Graphics User Interface
+\item[OOP] Object Oriented Programming
+\item[I/O] Input/Output
 \item[OpenGL] Open Graphics Library
 \end{description}
 \vdots
