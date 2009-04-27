@@ -29,6 +29,7 @@ class QMenu;
 class QMdiArea;
 class QMdiSubWindow;
 class QSignalMapper;
+class QModelIndex;
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -44,6 +45,7 @@ protected:
 private slots:
 	void newFile();
 	void open();
+	void open(const QString& fileName);
 	void save();
 	void saveAs();
 	void saveAll();
@@ -57,6 +59,8 @@ private slots:
 	void saveLayout();
 	void loadLayout();
 
+	void fileSelected(const QModelIndex& index);
+
 	TextEditor* createTextEditor();
 	void setActiveSubWindow(QWidget* window);
 
@@ -65,7 +69,7 @@ private:
 	void createMenus();
 	void createToolBars();
 	void createStatusBar();
-	void createDocks();
+	void createDockFiles();
 	void readSettings();
 	void writeSettings();
 
@@ -82,7 +86,7 @@ private:
 	QMenu* m_helpMenu;
 	QToolBar* m_fileToolBar;
 	QToolBar* m_editToolBar;
-	QDockWidget* m_filesDock;
+	QDockWidget* m_dockFiles;
 
 	QAction* m_newAct;
 	QAction* m_openAct;

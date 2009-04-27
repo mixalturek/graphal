@@ -22,7 +22,12 @@ unit tests
 
 gui
 	qtdemo - MainWindow
-	open multiple files
+	qtdemo - Rich Text - Syntax highlighter
+	File - Open - open multiple files at once
+	settings
+		create configuration class
+		path in dockfiles
+		opened tabs
 
 
 ////////////////////////////////////////////////////////////////////////////

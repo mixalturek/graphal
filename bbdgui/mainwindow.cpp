@@ -17,6 +17,7 @@
  *      MA 02110-1301, USA.
  */
 
+#include <cassert>
 #include <QtGui>
 #include "mainwindow.h"
 #include "texteditor.h"
@@ -39,7 +40,7 @@ MainWindow::MainWindow()
 			this, SLOT(setActiveSubWindow(QWidget *)));
 
 	createActions();
-	createDocks();
+	createDockFiles();
 	createMenus();
 	createToolBars();
 	createStatusBar();
@@ -83,7 +84,11 @@ void MainWindow::newFile()
 void MainWindow::open()
 {
 	QString fileName = QFileDialog::getOpenFileName(this);
+	open(fileName);
+}
 
+void MainWindow::open(const QString& fileName)
+{
 	if(!fileName.isEmpty())
 	{
 		QMdiSubWindow* existing = findTextEditor(fileName);
@@ -102,9 +107,7 @@ void MainWindow::open()
 			child->show();
 		}
 		else
-		{
 			child->close();
-		}
 	}
 }
 
@@ -366,7 +369,7 @@ void MainWindow::createMenus()
 
 	m_viewMenu = menuBar()->addMenu(tr("&View"));
 //	QMenu* docks = m_viewMenu->addMenu(tr("&Docks"));
-	m_viewMenu->addAction(m_filesDock->toggleViewAction());
+	m_viewMenu->addAction(m_dockFiles->toggleViewAction());
 
 	m_windowMenu = menuBar()->addMenu(tr("&Window"));
 	updateWindowMenu();
@@ -413,12 +416,25 @@ void MainWindow::createStatusBar()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void MainWindow::createDocks()
+
+void MainWindow::createDockFiles()
 {
-	m_filesDock = new QDockWidget(tr("Files"), this);
-	m_filesDock->setObjectName("Files");// TODO: Why is it needed by saveState()?
-	m_filesDock->setWidget(new QTextEdit);
-	this->addDockWidget(Qt::LeftDockWidgetArea, m_filesDock);
+	m_dockFiles = new QDockWidget(tr("Files"), this);
+	m_dockFiles->setObjectName("Files");// TODO: Why is it needed by saveState()?
+
+	QListView* lview = new QListView(m_dockFiles);
+	QDirModel* model = new QDirModel(lview);
+
+	model->setFilter(QDir::AllEntries);
+	model->setSorting(QDir::DirsFirst);
+	lview->setModel(model);
+	lview->setRootIndex(model->index(QDir::currentPath()));// TODO: QSettings
+
+	connect(lview, SIGNAL(doubleClicked(const QModelIndex &)),
+			this, SLOT(fileSelected(const QModelIndex &)));
+
+	m_dockFiles->setWidget(lview);
+	addDockWidget(Qt::LeftDockWidgetArea, m_dockFiles);
 }
 
 
@@ -522,6 +538,10 @@ void MainWindow::saveLayout()
 	}
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void MainWindow::loadLayout()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Load layout"));
@@ -564,4 +584,21 @@ void MainWindow::loadLayout()
 		QMessageBox::warning(this, tr("Error"), msg);
 		return;
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::fileSelected(const QModelIndex& index)
+{
+	QListView* lview = qobject_cast<QListView*>(m_dockFiles->widget());
+	QDirModel* model = qobject_cast<QDirModel*>(lview->model());
+	assert(lview != NULL);
+	assert(model != NULL);
+
+	if(model->isDir(index))
+		lview->setRootIndex(index);
+	else
+		open(model->filePath(index));
 }
