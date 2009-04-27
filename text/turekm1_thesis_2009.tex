@@ -201,13 +201,13 @@ The command line interpreter is written in C++ language using Bison parser gener
 
 \section{Application requirements}
 
-Design and implement language interpreter, which will be targeted to the graph manipulations. The language will contain basic data structures necessary for the graphs and will have support for effective writing of the graph algoritms. Interpreter will have graphic user interface consisting of a text editor for algorithms writing and a window for graph visualization during execution of the algorithm. Use OpenGL library for the graph visualization.
+Design and implement language interpreter, which will be targeted to the graph manipulations. The language will contain basic data structures necessary for the graphs and will have support for effective writing of the graph algoritms. Interpreter will have graphic user interface consisting of a text editor and a window for graph visualization during execution of the algorithm. Use OpenGL library for the graph visualization.
 
 Graphs without orientation are fundamental, oriented are not needed so much.
 
 \subsection{Language}
 
-The language contains basic data types, data and control structures
+The language constructs should be similar to C language. They include basic data types, data and control structures.
 
 \begin{itemize}
 \item numbers, floating point numbers, arrays
@@ -248,30 +248,21 @@ The language contains basic data types, data and control structures
 \end{itemize}
 
 
-\subsection{Editor}
+\subsection{Text editor}
 
-\begin{itemize}
-\item classic text editor for programmers
-\item syntax highlighting will be appreciated
-\item other features will be discussed
-\end{itemize}
+The editor should be classic text editor for programmers with syntax highlighting. No other features are reguired now, they will be discussed.
 
 
 \subsection{Display unit, visualization}
 
-\begin{itemize}
-\item display actually processed graph in 3D
-\item it is not editor for graph editing
-\item user can interactively translate, rotate and resize the graph
-\item user can enable/disable displaying of specific parts of the graph
-\item if language supports color/texture attributes of the vertices/edges/sets it should be displayed too
-\item visualization window should have an option for loading of the graph, user can choose to use this graph or graph loaded by the code
-\end{itemize}
+The visualization window display actually processed graph in 3D, it is only graph viewer not editor. User can interactively translate, rotate and resize the graph. Displaying of specific parts of the graph can be enabled and disabled.
+
+If language supports color and/or texture attributes of the vertices/edges/sets, they should be displayed too. Visualization window should have an option for loading of the graph, user can choose to display this graph or graph loaded by the code
 
 
 \subsection{Graph manipulation, debugger}
 
-Code interpretation can be stepped. Actual state in graph window will be displayed after command is executed and graph view can be changed now. Parameters of the graph during algorithm execution won't be changed, visualization parameters yes (colors, scale, etc.). There is no need to support classic debugging, console for debugging and trace outputs is enough. Visualization window should have option for loading of the graph, user can choose to use this graph or graph loaded by the code.
+Code interpretation can be stepped. Actual state in graph window will be displayed after command is executed and graph view can be changed now. Parameters of the graph during algorithm execution won't be changed, visualization parameters yes (colors, scale, etc.). There is no need to support classic debugging, console for debugging and trace outputs is enough.
 
 
 \subsection{Minimal system configuration}
@@ -302,31 +293,32 @@ Code interpretation can be stepped. Actual state in graph window will be display
 % TODO: delete
 % Analýza a návrh implementace (včetně diskuse různých alternativ a volby im\-ple\-men\-tač\-ní\-ho prostředí).
 
-\section{General steps}
+\section{General approach}
 
 The general aim of this project is to develop integrated development environment for special programming language that is orientated to the graphs manipulations. This complex task can be divided to the several standalone parts which should be solved in the following order.
 
 \begin{enumerate}
 \item Suggest how the graphs will be saved and how will be accessed from the interpreter
-\item Design a language for graphs manipulations matching the requirements
+\item Design a language for graph manipulations matching the requirements
 \item Implement lexical analyzer, parser and command line interpreter
-\item Design and implement graphic user interface for the IDE
+\item Design and implement IDE graphic user interface
 \end{enumerate}
 
 
 \section{Language and libraries for implementation}
 
-There are three commonly used languages for the application implementation - C++, Java and C\#. The third one can be automatically deleted, because of the multiplatform requirement and antipathy of the project author. C++ language is portable at the source code layer and Java programs at the byte code layer so both can be used.
+There are three commonly used languages for the application implementation - C++, Java and C\#. The third one can be automatically deleted, because of the multiplatform requirement and antipathy of the project author. C++ language is portable at the source code layer and Java programs at the byte code layer so both can be used. No script language like Perl or Python is considered, they are not suitable for such big application.
 
-Great advantages of Java are its memory management and lots of existing libraries and frameworks. On the other hand most of compilers and iterpreters are written in C or C++ because of compilation to the machine code and the resulting quickness.
+Great advantages of Java are its memory management and lots of existing libraries. On the other hand most of compilers and iterpreters are written in C or C++ because of compilation to the machine code and the resulting quickness.
 
-The author has a lot of experiences with C++ so it and STL library have been choosen for the implementation of the interpreter code. No other library will be used for base code implementation, command line interpreter will have as less dependencies as possible. It will be portable to all platform for which C++ compiler exists.
+The author has a lot of experiences with C++ so it and STL library have been choosen for the implementation of the interpreter code. No other library will be used for base code implementation, command line interpreter will have as less dependencies as possible. It should be portable to all platforms for which C++ compiler exists.
 
 Graphic user interface will be created using Qt library. It is one the best C++ library for GUI programming, multiplatform and free for noncommercial use. The graph visualizations will be done of course in OpenGL which is standard for 3D graphics. Second possible choice, Direct 3D, is not portable to non-Microsoft platforms.
 
-\begin{verbatim}
-C++ vs. Java, STL, OpenGL, Qt, bison
 
+\section{Thoughts about embedded Python}
+
+\begin{verbatim}
 Python
 	naprogramovat grafové třídy v Pythonu a zkusit použít
 	http://www.python.org/doc/ext/embedding.html
