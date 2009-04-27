@@ -23,7 +23,6 @@ unit tests
 gui
 	qtdemo - MainWindow
 	qtdemo - Rich Text - Syntax highlighter
-	File - Open - open multiple files at once
 	settings
 		create configuration class
 		path in dockfiles

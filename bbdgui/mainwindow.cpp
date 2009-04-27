@@ -39,6 +39,12 @@ MainWindow::MainWindow()
 	connect(m_windowMapper, SIGNAL(mapped(QWidget *)),
 			this, SLOT(setActiveSubWindow(QWidget *)));
 
+	// TODO: add to the settings
+	setIconSize(QSize(22, 22));
+	setAnimated(false);
+	setDockNestingEnabled(true);
+//	setDocumentMode(true); // TODO: Qt 4.5
+
 	createActions();
 	createDockFiles();
 	createMenus();
@@ -83,8 +89,10 @@ void MainWindow::newFile()
 
 void MainWindow::open()
 {
-	QString fileName = QFileDialog::getOpenFileName(this);
-	open(fileName);
+	// TODO: save path to the settings
+	QStringList fileName = QFileDialog::getOpenFileNames(this);
+	foreach(QString str, fileName)
+		open(str);
 }
 
 void MainWindow::open(const QString& fileName)

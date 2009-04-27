@@ -31,6 +31,13 @@ TextEditor::TextEditor()
 	m_isUntitled(true)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
+
+	// TODO: add to the settings
+	QFont font;
+	font.setFamily("Courier");
+	font.setFixedPitch(true);
+	font.setPointSize(10);
+	setFont(font);
 }
 
 
@@ -39,10 +46,8 @@ TextEditor::TextEditor()
 
 void TextEditor::newFile()
 {
-	static int sequenceNumber = 1;
-
 	m_isUntitled = true;
-	m_curFile = tr("document%1.txt").arg(sequenceNumber++);
+	m_curFile = tr("unnamed");
 	setWindowTitle(m_curFile + "[*]");
 
 	connect(document(), SIGNAL(contentsChanged()), this, SLOT(documentWasModified()));
