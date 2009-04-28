@@ -17,27 +17,44 @@
  *      MA 02110-1301, USA.
  */
 
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
-#include <QApplication>
-#include "mainwindow.h"
-#include "settings.h"
+#define SETTINGS Settings::getInstance()
 
+class QSettings;
 
-/////////////////////////////////////////////////////////////////////////////
-////
-
-int main(int argc, char *argv[])
+// Singleton
+class Settings
 {
-	Q_INIT_RESOURCE(resources);
+public:
+	static inline Settings& getInstance(void)
+	{
+		return m_instance;
+	}
 
-	QApplication app(argc, argv);
-	app.setOrganizationName("Michal Turek");
-	app.setOrganizationDomain("woq.nipax.cz");
-	app.setApplicationName("bbdgui");
+	void initSingleton(void);
 
-	SETTINGS.initSingleton();
+	QByteArray getApplicationGeometry(void);
+	void setApplicationGeometry(const QByteArray& geometry);
 
-	MainWindow mainWin;
-	mainWin.show();
-	return app.exec();
-}
+	QByteArray getApplicationState(void);
+	void setApplicationState(const QByteArray& state);
+
+	QString getDockFilesPath(void);
+	void setDockFilesPath(const QString& path);
+
+
+private:
+	Settings(void);
+	~Settings(void);
+
+	Settings(const Settings& object);
+	Settings& operator=(const Settings& object);
+
+private:
+	static Settings m_instance;
+	QSettings* m_settings;
+};
+
+#endif // SETTINGS_H

@@ -5,8 +5,10 @@ TARGET = bbdgui
 TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
-    texteditor.cpp
+    texteditor.cpp \
+    settings.cpp
 HEADERS += mainwindow.h \
-    texteditor.h
+    texteditor.h \
+    settings.h
 RESOURCES += resources.qrc
 OTHER_FILES += 

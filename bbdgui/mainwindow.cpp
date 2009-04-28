@@ -21,6 +21,7 @@
 #include <QtGui>
 #include "mainwindow.h"
 #include "texteditor.h"
+#include "settings.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -379,6 +380,7 @@ void MainWindow::createMenus()
 //	QMenu* docks = m_viewMenu->addMenu(tr("&Docks"));
 	m_viewMenu->addAction(m_dockFiles->toggleViewAction());
 
+
 	m_windowMenu = menuBar()->addMenu(tr("&Window"));
 	updateWindowMenu();
 	connect(m_windowMenu, SIGNAL(aboutToShow()), this, SLOT(updateWindowMenu()));
@@ -436,7 +438,6 @@ void MainWindow::createDockFiles()
 	model->setFilter(QDir::AllEntries);
 	model->setSorting(QDir::DirsFirst);
 	lview->setModel(model);
-	lview->setRootIndex(model->index(QDir::currentPath()));// TODO: QSettings
 
 	connect(lview, SIGNAL(doubleClicked(const QModelIndex &)),
 			this, SLOT(fileSelected(const QModelIndex &)));
@@ -451,21 +452,26 @@ void MainWindow::createDockFiles()
 
 void MainWindow::readSettings()
 {
-	QSettings settings;
+	restoreGeometry(SETTINGS.getApplicationGeometry());
+	restoreState(SETTINGS.getApplicationState());
 
-	QByteArray geometry = settings.value("geometry", QByteArray()).toByteArray();
-	QByteArray state = settings.value("state", QByteArray()).toByteArray();
-
-	restoreGeometry(geometry);
-	restoreState(state);
+	QListView* lview = qobject_cast<QListView*>(m_dockFiles->widget());
+	QDirModel* model = qobject_cast<QDirModel*>(lview->model());
+	assert(lview != NULL);
+	assert(model != NULL);
+	lview->setRootIndex(model->index(SETTINGS.getDockFilesPath()));
 }
 
 void MainWindow::writeSettings()
 {
-	QSettings settings;
+	SETTINGS.setApplicationGeometry(saveGeometry());
+	SETTINGS.setApplicationState(saveState());
 
-	settings.setValue("geometry", saveGeometry());
-	settings.setValue("state", saveState());
+	QListView* lview = qobject_cast<QListView*>(m_dockFiles->widget());
+	QDirModel* model = qobject_cast<QDirModel*>(lview->model());
+	assert(lview != NULL);
+	assert(model != NULL);
+	SETTINGS.setDockFilesPath(model->filePath(lview->rootIndex()));
 }
 
 
@@ -606,7 +612,10 @@ void MainWindow::fileSelected(const QModelIndex& index)
 	assert(model != NULL);
 
 	if(model->isDir(index))
+	{
 		lview->setRootIndex(index);
+		statusBar()->showMessage(model->filePath(index), 2000);
+	}
 	else
 		open(model->filePath(index));
 }
