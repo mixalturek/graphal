@@ -44,6 +44,9 @@ public:
 	QString getDockFilesPath(void);
 	void setDockFilesPath(const QString& path);
 
+	QStringList getOpenedFiles(void);
+	void setOpenedFiles(const QStringList& files);
+
 
 private:
 	Settings(void);

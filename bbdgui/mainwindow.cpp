@@ -64,17 +64,13 @@ MainWindow::MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
+	writeSettings();
 	m_mdiArea->closeAllSubWindows();
 
 	if(activeTextEditor())
-	{
 		event->ignore();
-	}
 	else
-	{
-		writeSettings();
 		event->accept();
-	}
 }
 
 
@@ -93,10 +89,10 @@ void MainWindow::open()
 	// TODO: save path to the settings
 	QStringList fileName = QFileDialog::getOpenFileNames(this);
 	foreach(QString str, fileName)
-		open(str);
+		open(str, true);
 }
 
-void MainWindow::open(const QString& fileName)
+void MainWindow::open(const QString& fileName, bool warnIfNotFound)
 {
 	if(!fileName.isEmpty())
 	{
@@ -110,13 +106,13 @@ void MainWindow::open(const QString& fileName)
 
 		TextEditor* child = createTextEditor();
 
-		if(child->loadFile(fileName))
+		if(child->loadFile(fileName, warnIfNotFound))
 		{
 			statusBar()->showMessage(tr("File loaded"), 2000);
-			child->show();
+			child->showMaximized();
 		}
 		else
-			child->close();
+			findTextEditor(fileName)->close();
 	}
 }
 
@@ -245,8 +241,9 @@ void MainWindow::updateWindowMenu()
 
 TextEditor* MainWindow::createTextEditor()
 {
-	TextEditor* child = new TextEditor;
-	m_mdiArea->addSubWindow(child);
+	TextEditor* child = new TextEditor();
+	QMdiSubWindow* subWindow = m_mdiArea->addSubWindow(child);
+	subWindow->setAttribute(Qt::WA_DeleteOnClose);
 
 	connect(child, SIGNAL(copyAvailable(bool)), m_cutAct, SLOT(setEnabled(bool)));
 	connect(child, SIGNAL(copyAvailable(bool)),	m_copyAct, SLOT(setEnabled(bool)));
@@ -460,6 +457,9 @@ void MainWindow::readSettings()
 	assert(lview != NULL);
 	assert(model != NULL);
 	lview->setRootIndex(model->index(SETTINGS.getDockFilesPath()));
+
+	foreach(QString path, SETTINGS.getOpenedFiles())
+		open(path, false);
 }
 
 void MainWindow::writeSettings()
@@ -472,6 +472,20 @@ void MainWindow::writeSettings()
 	assert(lview != NULL);
 	assert(model != NULL);
 	SETTINGS.setDockFilesPath(model->filePath(lview->rootIndex()));
+
+	// Opened files
+	QStringList openedFiles;
+
+	foreach(QMdiSubWindow* wnd, m_mdiArea->subWindowList(QMdiArea::StackingOrder))
+	{
+		TextEditor* editor = qobject_cast<TextEditor *>(wnd->widget());
+		assert(editor != NULL);
+
+		if(!editor->isUntitled())
+			openedFiles << editor->currentFile();
+	}
+
+	SETTINGS.setOpenedFiles(openedFiles);
 }
 
 
@@ -617,5 +631,5 @@ void MainWindow::fileSelected(const QModelIndex& index)
 		statusBar()->showMessage(model->filePath(index), 2000);
 	}
 	else
-		open(model->filePath(index));
+		open(model->filePath(index), true);
 }

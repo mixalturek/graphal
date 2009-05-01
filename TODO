@@ -23,11 +23,7 @@ unit tests
 gui
 	qtdemo - MainWindow
 	qtdemo - Rich Text - Syntax highlighter
-	settings
-		create configuration class
-		path in dockfiles
-		opened tabs
-
+	memory leaks in the gui part, does qt offer some tools for detection?
 
 ////////////////////////////////////////////////////////////////////////////
 ////

@@ -30,13 +30,14 @@ public:
 	TextEditor();
 
 	void newFile();
-	bool loadFile(const QString& fileName);
+	bool loadFile(const QString& fileName, bool warnIfNotFound);
 	bool save();
 	bool saveAs();
 	bool saveFile(const QString& fileName);
 
-	QString userFriendlyCurrentFile();
-	QString currentFile() { return m_curFile; }
+	QString userFriendlyCurrentFile() const;
+	QString currentFile() const { return m_curFile; }
+	bool isUntitled() const { return m_isUntitled; }
 
 protected:
 	void closeEvent(QCloseEvent* event);
@@ -47,7 +48,7 @@ private slots:
 private:
 	bool maybeSave();
 	void setCurrentFile(const QString& fileName);
-	QString strippedName(const QString& fullFileName);
+	QString strippedName(const QString& fullFileName) const;
 
 private:
 	QString m_curFile;

@@ -45,7 +45,7 @@ protected:
 private slots:
 	void newFile();
 	void open();
-	void open(const QString& fileName);
+	void open(const QString& fileName, bool warnIfNotFound);
 	void save();
 	void saveAs();
 	void saveAll();

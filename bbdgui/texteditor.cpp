@@ -57,16 +57,19 @@ void TextEditor::newFile()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-bool TextEditor::loadFile(const QString& fileName)
+bool TextEditor::loadFile(const QString& fileName, bool warnIfNotFound)
 {
 	QFile file(fileName);
 
 	if(!file.open(QFile::ReadOnly | QFile::Text))
 	{
-		QMessageBox::warning(this, tr("bbdgui"),
-			tr("Cannot read file %1:\n%2.")
-				.arg(fileName)
-				.arg(file.errorString()));
+		if(warnIfNotFound)
+		{
+			QMessageBox::warning(this, tr("bbdgui"),
+				tr("Cannot read file %1:\n%2.")
+					.arg(fileName)
+					.arg(file.errorString()));
+		}
 
 		return false;
 	}
@@ -140,7 +143,7 @@ bool TextEditor::saveFile(const QString &fileName)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-QString TextEditor::userFriendlyCurrentFile()
+QString TextEditor::userFriendlyCurrentFile() const
 {
 	return strippedName(m_curFile);
 }
@@ -207,7 +210,7 @@ void TextEditor::setCurrentFile(const QString& fileName)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-QString TextEditor::strippedName(const QString &fullFileName)
+QString TextEditor::strippedName(const QString &fullFileName) const
 {
 	return QFileInfo(fullFileName).fileName();
 }

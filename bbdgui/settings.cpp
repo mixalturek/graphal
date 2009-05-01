@@ -94,3 +94,17 @@ void Settings::setDockFilesPath(const QString& path)
 {
 	m_settings->setValue("dockfilespath", path);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+QStringList Settings::getOpenedFiles(void)
+{
+	return m_settings->value("openedfiles", QStringList()).toStringList();
+}
+
+void Settings::setOpenedFiles(const QStringList& files)
+{
+	m_settings->setValue("openedfiles", files);
+}
