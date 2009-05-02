@@ -20,14 +20,14 @@
 #ifndef TEXTEDITOR_H
 #define TEXTEDITOR_H
 
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
-class TextEditor : public QTextEdit
+class TextEditor : public QPlainTextEdit
 {
 	Q_OBJECT
 
 public:
-	TextEditor();
+	TextEditor(QWidget* parent = 0);
 
 	void newFile();
 	bool loadFile(const QString& fileName, bool warnIfNotFound);

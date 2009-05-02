@@ -49,6 +49,8 @@ private slots:
 	void save();
 	void saveAs();
 	void saveAll();
+	void undo();
+	void redo();
 	void cut();
 	void copy();
 	void paste();
@@ -61,7 +63,7 @@ private slots:
 
 	void fileSelected(const QModelIndex& index);
 
-	TextEditor* createTextEditor();
+	QMdiSubWindow* createTextEditor();
 	void setActiveSubWindow(QWidget* window);
 
 private:
@@ -96,6 +98,8 @@ private:
 	QAction* m_saveLayoutAct;
 	QAction* m_loadLayoutAct;
 	QAction* m_exitAct;
+	QAction* m_undoAct;
+	QAction* m_redoAct;
 	QAction* m_cutAct;
 	QAction* m_copyAct;
 	QAction* m_pasteAct;

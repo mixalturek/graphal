@@ -5,8 +5,16 @@ handle break/continue in the parser to be only inside of a loop
 built-in function for loading/dumping graph from/to a file
 g.setPropertyToAllVertices();
 g.setPropertyForAllEdges();
-
 error message "variable not defined" if not assigning
+create bbd library
+
+
+valgrind --leak-check=yes ./bbd --unit-tests ../samples/01_factorial.txt
+	testGraph
+valgrind --leak-check=yes ./bbd ../samples/tests.txt
+	ValueGraph::deleteVertex()
+
+
 
 Bison
 	rewrite parser to C++ (it is in documentation)
@@ -24,6 +32,7 @@ gui
 	qtdemo - MainWindow
 	qtdemo - Rich Text - Syntax highlighter
 	memory leaks in the gui part, does qt offer some tools for detection?
+	font settings, zoom text
 
 ////////////////////////////////////////////////////////////////////////////
 ////

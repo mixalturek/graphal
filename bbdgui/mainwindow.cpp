@@ -30,7 +30,6 @@
 MainWindow::MainWindow()
 {
 	m_mdiArea = new QMdiArea;
-	m_mdiArea->setViewMode(QMdiArea::TabbedView);
 	setCentralWidget(m_mdiArea);
 
 	connect(m_mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow *)),
@@ -52,9 +51,9 @@ MainWindow::MainWindow()
 	createToolBars();
 	createStatusBar();
 	updateMenus();
-
 	readSettings();
 
+	m_mdiArea->setViewMode(QMdiArea::TabbedView);
 	setWindowTitle(tr("bbdgui"));
 }
 
@@ -79,9 +78,12 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::newFile()
 {
-	TextEditor* child = createTextEditor();
-	child->newFile();
-	child->show();
+	QMdiSubWindow* subWindow = createTextEditor();
+	TextEditor* editor = qobject_cast<TextEditor*>(subWindow->widget());
+	assert(editor != NULL);
+
+	editor->newFile();
+	subWindow->show();
 }
 
 void MainWindow::open()
@@ -104,15 +106,17 @@ void MainWindow::open(const QString& fileName, bool warnIfNotFound)
 			return;
 		}
 
-		TextEditor* child = createTextEditor();
+		QMdiSubWindow* subWindow = createTextEditor();
+		TextEditor* editor = qobject_cast<TextEditor*>(subWindow->widget());
+		assert(editor != NULL);
 
-		if(child->loadFile(fileName, warnIfNotFound))
+		if(editor->loadFile(fileName, warnIfNotFound))
 		{
 			statusBar()->showMessage(tr("File loaded"), 2000);
-			child->showMaximized();
+			subWindow->show();
 		}
 		else
-			findTextEditor(fileName)->close();
+			subWindow->close();
 	}
 }
 
@@ -144,6 +148,18 @@ void MainWindow::saveAll()
 
 /////////////////////////////////////////////////////////////////////////////
 ////
+
+void MainWindow::undo()
+{
+	if(activeTextEditor())
+		activeTextEditor()->undo();
+}
+
+void MainWindow::redo()
+{
+	if(activeTextEditor())
+		activeTextEditor()->redo();
+}
 
 void MainWindow::cut()
 {
@@ -180,23 +196,24 @@ void MainWindow::about()
 
 void MainWindow::updateMenus()
 {
-	bool hasTextEditor = (activeTextEditor() != 0);
+	TextEditor* editor = activeTextEditor();
 
-	m_saveAct->setEnabled(hasTextEditor);
-	m_saveAsAct->setEnabled(hasTextEditor);
-	m_saveAllAct->setEnabled(hasTextEditor);
-	m_pasteAct->setEnabled(hasTextEditor);
-	m_closeAct->setEnabled(hasTextEditor);
-	m_closeAllAct->setEnabled(hasTextEditor);
-	m_tileAct->setEnabled(hasTextEditor);
-	m_cascadeAct->setEnabled(hasTextEditor);
-	m_nextAct->setEnabled(hasTextEditor);
-	m_previousAct->setEnabled(hasTextEditor);
-	m_separatorAct->setVisible(hasTextEditor);
+	m_saveAct->setEnabled(editor != NULL);
+	m_saveAsAct->setEnabled(editor != NULL);
+	m_saveAllAct->setEnabled(editor != NULL);
+	m_pasteAct->setEnabled(editor != NULL);
+	m_closeAct->setEnabled(editor != NULL);
+	m_closeAllAct->setEnabled(editor != NULL);
+	m_tileAct->setEnabled(editor != NULL);
+	m_cascadeAct->setEnabled(editor != NULL);
+	m_nextAct->setEnabled(editor != NULL);
+	m_previousAct->setEnabled(editor != NULL);
+	m_separatorAct->setVisible(editor != NULL);
 
-	bool hasSelection = activeTextEditor()
-		&& activeTextEditor()->textCursor().hasSelection();
+	m_undoAct->setEnabled(editor != NULL && editor->document()->isUndoAvailable());
+	m_redoAct->setEnabled(editor != NULL && editor->document()->isRedoAvailable());
 
+	bool hasSelection = editor != NULL && editor->textCursor().hasSelection();
 	m_cutAct->setEnabled(hasSelection);
 	m_copyAct->setEnabled(hasSelection);
 }
@@ -239,16 +256,21 @@ void MainWindow::updateWindowMenu()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-TextEditor* MainWindow::createTextEditor()
+QMdiSubWindow* MainWindow::createTextEditor()
 {
-	TextEditor* child = new TextEditor();
-	QMdiSubWindow* subWindow = m_mdiArea->addSubWindow(child);
+	QMdiSubWindow* subWindow = new QMdiSubWindow(m_mdiArea);
+	TextEditor* editor = new TextEditor(subWindow);
+
 	subWindow->setAttribute(Qt::WA_DeleteOnClose);
+	subWindow->setWidget(editor);
 
-	connect(child, SIGNAL(copyAvailable(bool)), m_cutAct, SLOT(setEnabled(bool)));
-	connect(child, SIGNAL(copyAvailable(bool)),	m_copyAct, SLOT(setEnabled(bool)));
+	connect(editor, SIGNAL(copyAvailable(bool)), m_cutAct, SLOT(setEnabled(bool)));
+	connect(editor, SIGNAL(copyAvailable(bool)), m_copyAct, SLOT(setEnabled(bool)));
 
-	return child;
+	connect(editor, SIGNAL(undoAvailable(bool)), m_undoAct, SLOT(setEnabled(bool)));
+	connect(editor, SIGNAL(redoAvailable(bool)), m_redoAct, SLOT(setEnabled(bool)));
+
+	return m_mdiArea->addSubWindow(subWindow);
 }
 
 
@@ -291,11 +313,11 @@ void MainWindow::createActions()
 	m_closeAllAct->setStatusTip(tr("Close all the windows"));
 	connect(m_closeAllAct, SIGNAL(triggered()), m_mdiArea, SLOT(closeAllSubWindows()));
 
-	m_saveLayoutAct = new QAction(tr("Save layout"), this);
+	m_saveLayoutAct = new QAction(tr("Save application layout"), this);
 	m_saveLayoutAct->setStatusTip(tr("Save the application layout to disk"));
 	connect(m_saveLayoutAct, SIGNAL(triggered()), this, SLOT(saveLayout()));
 
-	m_loadLayoutAct = new QAction(tr("Load layout"), this);
+	m_loadLayoutAct = new QAction(tr("Load application layout"), this);
 	m_loadLayoutAct->setStatusTip(tr("Load the application layout"));
 	connect(m_loadLayoutAct, SIGNAL(triggered()), this, SLOT(loadLayout()));
 
@@ -303,6 +325,16 @@ void MainWindow::createActions()
 	m_exitAct->setShortcut(tr("Ctrl+Q"));
 	m_exitAct->setStatusTip(tr("Exit the application"));
 	connect(m_exitAct, SIGNAL(triggered()), qApp, SLOT(closeAllWindows()));
+
+	m_undoAct = new QAction(QIcon(":/images/undo.png"), tr("&Undo"), this);
+	m_undoAct->setShortcut(tr("Ctrl+Z"));
+	m_undoAct->setStatusTip(tr("Undo the last processed action"));
+	connect(m_undoAct, SIGNAL(triggered()), this, SLOT(undo()));
+
+	m_redoAct = new QAction(QIcon(":/images/redo.png"), tr("&Redo"), this);
+	m_redoAct->setShortcut(tr("Ctrl+Y"));
+	m_redoAct->setStatusTip(tr("Redo the action"));
+	connect(m_redoAct, SIGNAL(triggered()), this, SLOT(redo()));
 
 	m_cutAct = new QAction(QIcon(":/images/editcut.png"), tr("Cu&t"), this);
 	m_cutAct->setShortcut(tr("Ctrl+X"));
@@ -369,6 +401,9 @@ void MainWindow::createMenus()
 	m_fileMenu->addAction(m_exitAct);
 
 	m_editMenu = menuBar()->addMenu(tr("&Edit"));
+	m_editMenu->addAction(m_undoAct);
+	m_editMenu->addAction(m_redoAct);
+	m_editMenu->addSeparator();
 	m_editMenu->addAction(m_cutAct);
 	m_editMenu->addAction(m_copyAct);
 	m_editMenu->addAction(m_pasteAct);
@@ -401,10 +436,13 @@ void MainWindow::createToolBars()
 	m_fileToolBar->addAction(m_openAct);
 	m_fileToolBar->addAction(m_saveAct);
 	m_fileToolBar->addAction(m_saveAsAct);
+	m_fileToolBar->addAction(m_saveAllAct);
 	m_fileToolBar->addAction(m_closeAct);
 
 	m_editToolBar = addToolBar(tr("Edit"));
 	m_editToolBar->setObjectName("Edit");// TODO: Why is it needed by saveState()?
+	m_editToolBar->addAction(m_undoAct);
+	m_editToolBar->addAction(m_redoAct);
 	m_editToolBar->addAction(m_cutAct);
 	m_editToolBar->addAction(m_copyAct);
 	m_editToolBar->addAction(m_pasteAct);

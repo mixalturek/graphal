@@ -25,8 +25,8 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-TextEditor::TextEditor()
-	: QTextEdit(),
+TextEditor::TextEditor(QWidget* parent)
+	: QPlainTextEdit(parent),
 	m_curFile(""),
 	m_isUntitled(true)
 {
