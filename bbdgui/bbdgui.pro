@@ -3,6 +3,8 @@
 # -------------------------------------------------
 TARGET = bbdgui
 TEMPLATE = app
+RC_FILE = bbdgui.rc
+ICON = images/toast/toast.icns
 SOURCES += main.cpp \
     mainwindow.cpp \
     texteditor.cpp \
@@ -272,4 +274,4 @@ HEADERS += mainwindow.h \
     ../bbd/codeposition.hpp \
     ../bbd/baseobject.hpp
 RESOURCES += resources.qrc
-OTHER_FILES += 
+OTHER_FILES +=

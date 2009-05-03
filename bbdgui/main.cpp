@@ -19,6 +19,7 @@
 
 
 #include <QApplication>
+#include <QIcon>
 #include "mainwindow.h"
 #include "settings.h"
 
@@ -34,6 +35,7 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Michal Turek");
 	app.setOrganizationDomain("woq.nipax.cz");
 	app.setApplicationName("bbdgui");
+	app.setWindowIcon(QIcon(":/applogo.png"));
 
 	SETTINGS.initSingleton();
 

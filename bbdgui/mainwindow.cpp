@@ -29,6 +29,8 @@
 
 MainWindow::MainWindow()
 {
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	m_mdiArea = new QMdiArea;
 	setCentralWidget(m_mdiArea);
 
@@ -238,16 +240,15 @@ void MainWindow::updateWindowMenu()
 		TextEditor* child = qobject_cast<TextEditor*>(windows.at(i)->widget());
 
 		if(i < 9)
-			text = tr("&%1 %2").arg(i + 1).arg(child->userFriendlyCurrentFile());
+			text = QString("&%1 %2").arg(i + 1).arg(child->userFriendlyCurrentFile());
 		else
-			text = tr("%1 %2").arg(i + 1).arg(child->userFriendlyCurrentFile());
+			text = QString("%2").arg(child->userFriendlyCurrentFile());
 
 		QAction* action = m_windowMenu->addAction(text);
 		action->setCheckable(true);
 		action->setChecked(child == activeTextEditor());
 
 		connect(action, SIGNAL(triggered()), m_windowMapper, SLOT(map()));
-
 		m_windowMapper->setMapping(action, windows.at(i));
 	}
 }
