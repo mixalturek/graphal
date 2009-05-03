@@ -49,8 +49,8 @@ MainWindow::MainWindow()
 
 	createActions();
 	createDockFiles();
-	createMenus();
 	createToolBars();
+	createMenus();
 	createStatusBar();
 	updateMenus();
 	readSettings();
@@ -386,6 +386,9 @@ void MainWindow::createActions()
 
 void MainWindow::createMenus()
 {
+	QAction* tmp;
+
+	// File
 	m_fileMenu = menuBar()->addMenu(tr("&File"));
 	m_fileMenu->addAction(m_newAct);
 	m_fileMenu->addAction(m_openAct);
@@ -401,6 +404,8 @@ void MainWindow::createMenus()
 	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_exitAct);
 
+
+	// Edit
 	m_editMenu = menuBar()->addMenu(tr("&Edit"));
 	m_editMenu->addAction(m_undoAct);
 	m_editMenu->addAction(m_redoAct);
@@ -409,17 +414,34 @@ void MainWindow::createMenus()
 	m_editMenu->addAction(m_copyAct);
 	m_editMenu->addAction(m_pasteAct);
 
+
+	// View
 	m_viewMenu = menuBar()->addMenu(tr("&View"));
-//	QMenu* docks = m_viewMenu->addMenu(tr("&Docks"));
-	m_viewMenu->addAction(m_dockFiles->toggleViewAction());
+
+	tmp = m_dockFiles->toggleViewAction();
+	tmp->setText(tmp->text() + tr(" dock"));
+	m_viewMenu->addAction(tmp);
+
+	m_viewMenu->addSeparator();
+
+	tmp = m_fileToolBar->toggleViewAction();
+	tmp->setText(tmp->text() + tr(" toolbar"));
+	m_viewMenu->addAction(tmp);
+
+	tmp = m_editToolBar->toggleViewAction();
+	tmp->setText(tmp->text() + tr(" toolbar"));
+	m_viewMenu->addAction(tmp);
 
 
+	// Window
 	m_windowMenu = menuBar()->addMenu(tr("&Window"));
 	updateWindowMenu();
 	connect(m_windowMenu, SIGNAL(aboutToShow()), this, SLOT(updateWindowMenu()));
 
 	menuBar()->addSeparator();
 
+
+	// Help
 	m_helpMenu = menuBar()->addMenu(tr("&Help"));
 	m_helpMenu->addAction(m_aboutAct);
 	m_helpMenu->addAction(m_aboutQtAct);
