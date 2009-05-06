@@ -21,16 +21,17 @@
 #include <QtGui>
 #include "mainwindow.h"
 #include "texteditor.h"
+#include "scriptthread.h"
 #include "settings.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-MainWindow::MainWindow()
+MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
+	: QMainWindow(parent, flags),
+	m_scriptThread(new ScriptThread())
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-
 	m_mdiArea = new QMdiArea;
 	setCentralWidget(m_mdiArea);
 
@@ -48,7 +49,7 @@ MainWindow::MainWindow()
 //	setDocumentMode(true); // TODO: Qt 4.5
 
 	createActions();
-	createDockFiles();
+	createDocks();
 	createToolBars();
 	createMenus();
 	createStatusBar();
@@ -57,6 +58,17 @@ MainWindow::MainWindow()
 
 	m_mdiArea->setViewMode(QMdiArea::TabbedView);
 	setWindowTitle(tr("bbdgui"));
+
+	connect(m_scriptThread, SIGNAL(started()), this, SLOT(scriptStarted()));
+	connect(m_scriptThread, SIGNAL(finished()), this, SLOT(scriptFinished()));
+}
+
+
+MainWindow::~MainWindow()
+{
+	m_scriptThread->wait();// TODO: timeout and then terminate()?
+	delete m_scriptThread;
+	m_scriptThread = NULL;
 }
 
 
@@ -378,6 +390,11 @@ void MainWindow::createActions()
 	m_aboutQtAct = new QAction(tr("About &Qt"), this);
 	m_aboutQtAct->setStatusTip(tr("Show the Qt library's About box"));
 	connect(m_aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+
+	m_runScriptAct = new QAction(QIcon(":/images/run.png"), tr("&Run"), this);
+	m_runScriptAct->setShortcut(tr("Ctrl+R"));
+	m_runScriptAct->setStatusTip(tr("Execute the script"));
+	connect(m_runScriptAct, SIGNAL(triggered()), this, SLOT(runScript()));
 }
 
 
@@ -404,7 +421,6 @@ void MainWindow::createMenus()
 	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_exitAct);
 
-
 	// Edit
 	m_editMenu = menuBar()->addMenu(tr("&Edit"));
 	m_editMenu->addAction(m_undoAct);
@@ -422,6 +438,10 @@ void MainWindow::createMenus()
 	tmp->setText(tmp->text() + tr(" dock"));
 	m_viewMenu->addAction(tmp);
 
+	tmp = m_dockScriptOutput->toggleViewAction();
+	tmp->setText(tmp->text() + tr(" dock"));
+	m_viewMenu->addAction(tmp);
+
 	m_viewMenu->addSeparator();
 
 	tmp = m_fileToolBar->toggleViewAction();
@@ -431,6 +451,15 @@ void MainWindow::createMenus()
 	tmp = m_editToolBar->toggleViewAction();
 	tmp->setText(tmp->text() + tr(" toolbar"));
 	m_viewMenu->addAction(tmp);
+
+	tmp = m_scriptToolBar->toggleViewAction();
+	tmp->setText(tmp->text() + tr(" toolbar"));
+	m_viewMenu->addAction(tmp);
+
+
+	// Script
+	m_scriptMenu = menuBar()->addMenu(tr("&Script"));
+	m_scriptMenu->addAction(m_runScriptAct);
 
 
 	// Window
@@ -469,6 +498,10 @@ void MainWindow::createToolBars()
 	m_editToolBar->addAction(m_cutAct);
 	m_editToolBar->addAction(m_copyAct);
 	m_editToolBar->addAction(m_pasteAct);
+
+	m_scriptToolBar = addToolBar(tr("Script"));
+	m_scriptToolBar->setObjectName("Script");
+	m_scriptToolBar->addAction(m_runScriptAct);
 }
 
 
@@ -484,9 +517,9 @@ void MainWindow::createStatusBar()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-void MainWindow::createDockFiles()
+void MainWindow::createDocks()
 {
+	// Files
 	m_dockFiles = new QDockWidget(tr("Files"), this);
 	m_dockFiles->setObjectName("Files");// TODO: Why is it needed by saveState()?
 
@@ -502,6 +535,16 @@ void MainWindow::createDockFiles()
 
 	m_dockFiles->setWidget(lview);
 	addDockWidget(Qt::LeftDockWidgetArea, m_dockFiles);
+
+
+	// Script output
+	m_dockScriptOutput = new QDockWidget(tr("Script output"), this);
+	m_dockScriptOutput->setObjectName("ScriptOutput");// TODO: Why is it needed by saveState()?
+	QTextBrowser* textEdit = new QTextBrowser(m_dockScriptOutput);
+	textEdit->setUndoRedoEnabled(false);
+	textEdit->setReadOnly(true);
+	m_dockScriptOutput->setWidget(textEdit);
+	addDockWidget(Qt::BottomDockWidgetArea, m_dockScriptOutput);
 }
 
 
@@ -553,7 +596,7 @@ void MainWindow::writeSettings()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-TextEditor *MainWindow::activeTextEditor()
+TextEditor* MainWindow::activeTextEditor()
 {
 	if(QMdiSubWindow* activeSubWindow = m_mdiArea->activeSubWindow())
 		return qobject_cast<TextEditor *>(activeSubWindow->widget());
@@ -693,4 +736,62 @@ void MainWindow::fileSelected(const QModelIndex& index)
 	}
 	else
 		open(model->filePath(index), true);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::runScript()
+{
+	saveAll();
+
+	TextEditor* editor = activeTextEditor();
+	if(editor == NULL)
+	{
+		scriptStderr(tr("No text editor is active!"));
+		return;
+	}
+
+	if(!m_scriptThread->isRunning())
+	{
+		m_scriptThread->setScriptFilename(editor->currentFile());
+		m_scriptThread->start();
+	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::scriptStarted(void)
+{
+	m_runScriptAct->setEnabled(false);
+
+	QTextBrowser* outWidget = qobject_cast<QTextBrowser*>(m_dockScriptOutput->widget());
+	assert(outWidget != NULL);
+	outWidget->clear();
+}
+
+void MainWindow::scriptFinished(void)
+{
+	m_runScriptAct->setEnabled(true);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::scriptStdout(const QString& str)
+{
+	QTextBrowser* outWidget = qobject_cast<QTextBrowser*>(m_dockScriptOutput->widget());
+	assert(outWidget != NULL);
+	outWidget->append(str);
+}
+
+void MainWindow::scriptStderr(const QString& str)
+{
+	QTextBrowser* outWidget = qobject_cast<QTextBrowser*>(m_dockScriptOutput->widget());
+	assert(outWidget != NULL);
+	outWidget->append("<span style=\"color: red;\">" + str + "</span>");
 }

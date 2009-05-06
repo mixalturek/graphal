@@ -12,6 +12,7 @@
         <file>images/exit.png</file>
         <file>images/undo.png</file>
         <file>images/redo.png</file>
+        <file>images/run.png</file>
         <file alias="applogo.png">images/toast/toast_32.png</file>
     </qresource>
 </RCC>

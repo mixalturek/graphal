@@ -23,6 +23,8 @@
 #include <QMainWindow>
 
 class TextEditor;
+class ScriptThread;
+
 QT_BEGIN_NAMESPACE
 class QAction;
 class QMenu;
@@ -37,7 +39,8 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	MainWindow();
+	MainWindow(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+	~MainWindow(void);
 
 protected:
 	void closeEvent(QCloseEvent* event);
@@ -57,6 +60,7 @@ private slots:
 	void about();
 	void updateMenus();
 	void updateWindowMenu();
+	void runScript();
 
 	void saveLayout();
 	void loadLayout();
@@ -66,12 +70,17 @@ private slots:
 	QMdiSubWindow* createTextEditor();
 	void setActiveSubWindow(QWidget* window);
 
+	void scriptStarted(void);
+	void scriptFinished(void);
+	void scriptStdout(const QString& str);
+	void scriptStderr(const QString& str);
+
 private:
 	void createActions();
 	void createMenus();
 	void createToolBars();
 	void createStatusBar();
-	void createDockFiles();
+	void createDocks();
 	void readSettings();
 	void writeSettings();
 
@@ -84,11 +93,14 @@ private:
 	QMenu* m_fileMenu;
 	QMenu* m_editMenu;
 	QMenu* m_viewMenu;
+	QMenu* m_scriptMenu;
 	QMenu* m_windowMenu;
 	QMenu* m_helpMenu;
 	QToolBar* m_fileToolBar;
 	QToolBar* m_editToolBar;
+	QToolBar* m_scriptToolBar;
 	QDockWidget* m_dockFiles;
+	QDockWidget* m_dockScriptOutput;
 
 	QAction* m_newAct;
 	QAction* m_openAct;
@@ -112,6 +124,9 @@ private:
 	QAction* m_separatorAct;
 	QAction* m_aboutAct;
 	QAction* m_aboutQtAct;
+	QAction* m_runScriptAct;
+
+	ScriptThread* m_scriptThread;
 };
 
 #endif

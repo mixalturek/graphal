@@ -137,7 +137,8 @@ SOURCES += main.cpp \
     ../bbd/exitvalue.cpp \
     ../bbd/context.cpp \
     ../bbd/codeposition.cpp \
-    ../bbd/baseobject.cpp
+    ../bbd/baseobject.cpp \
+    scriptthread.cpp
 HEADERS += mainwindow.h \
     texteditor.h \
     settings.h \
@@ -272,6 +273,7 @@ HEADERS += mainwindow.h \
     ../bbd/countptr.hpp \
     ../bbd/context.hpp \
     ../bbd/codeposition.hpp \
-    ../bbd/baseobject.hpp
+    ../bbd/baseobject.hpp \
+    scriptthread.h
 RESOURCES += resources.qrc
-OTHER_FILES +=
+OTHER_FILES += 
