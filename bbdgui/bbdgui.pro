@@ -138,7 +138,9 @@ SOURCES += main.cpp \
     ../bbd/context.cpp \
     ../bbd/codeposition.cpp \
     ../bbd/baseobject.cpp \
-    scriptthread.cpp
+    scriptthread.cpp \
+    dockscriptoutput.cpp \
+    dockfiles.cpp
 HEADERS += mainwindow.h \
     texteditor.h \
     settings.h \
@@ -274,6 +276,8 @@ HEADERS += mainwindow.h \
     ../bbd/context.hpp \
     ../bbd/codeposition.hpp \
     ../bbd/baseobject.hpp \
-    scriptthread.h
+    scriptthread.h \
+    dockscriptoutput.h \
+    dockfiles.h
 RESOURCES += resources.qrc
 OTHER_FILES += 

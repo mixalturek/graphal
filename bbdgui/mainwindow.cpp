@@ -23,6 +23,8 @@
 #include "texteditor.h"
 #include "scriptthread.h"
 #include "settings.h"
+#include "dockscriptoutput.h"
+#include "dockfiles.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -52,7 +54,6 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 	createDocks();
 	createToolBars();
 	createMenus();
-	createStatusBar();
 	updateMenus();
 	readSettings();
 
@@ -61,6 +62,8 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 
 	connect(m_scriptThread, SIGNAL(started()), this, SLOT(scriptStarted()));
 	connect(m_scriptThread, SIGNAL(finished()), this, SLOT(scriptFinished()));
+
+	statusBarMessage(tr("Ready"));
 }
 
 
@@ -126,7 +129,7 @@ void MainWindow::open(const QString& fileName, bool warnIfNotFound)
 
 		if(editor->loadFile(fileName, warnIfNotFound))
 		{
-			statusBar()->showMessage(tr("File loaded"), 2000);
+			statusBarMessageWithTimeout(tr("File loaded"));
 			subWindow->show();
 		}
 		else
@@ -137,18 +140,18 @@ void MainWindow::open(const QString& fileName, bool warnIfNotFound)
 void MainWindow::save()
 {
 	if(activeTextEditor() && activeTextEditor()->save())
-		statusBar()->showMessage(tr("File saved"), 2000);
+		statusBarMessageWithTimeout(tr("File saved"));
 }
 
 void MainWindow::saveAs()
 {
 	if(activeTextEditor() && activeTextEditor()->saveAs())
-		statusBar()->showMessage(tr("File saved"), 2000);
+		statusBarMessageWithTimeout(tr("File saved"));
 }
 
 void MainWindow::saveAll()
 {
-	foreach(QMdiSubWindow *window, m_mdiArea->subWindowList())
+	foreach(QMdiSubWindow* window, m_mdiArea->subWindowList())
 	{
 		TextEditor* textEditor = qobject_cast<TextEditor*>(window->widget());
 
@@ -156,7 +159,7 @@ void MainWindow::saveAll()
 			textEditor->save();
 	}
 
-	statusBar()->showMessage(tr("Files saved"), 2000);
+	statusBarMessageWithTimeout(tr("Files saved"));
 }
 
 
@@ -250,6 +253,7 @@ void MainWindow::updateWindowMenu()
 	{
 		QString text;
 		TextEditor* child = qobject_cast<TextEditor*>(windows.at(i)->widget());
+		assert(child != NULL);
 
 		if(i < 9)
 			text = QString("&%1 %2").arg(i + 1).arg(child->userFriendlyCurrentFile());
@@ -508,9 +512,14 @@ void MainWindow::createToolBars()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void MainWindow::createStatusBar()
+void MainWindow::statusBarMessage(const QString& str)
 {
-	statusBar()->showMessage(tr("Ready"));
+	statusBar()->showMessage(str);
+}
+
+void MainWindow::statusBarMessageWithTimeout(const QString& str)
+{
+	statusBar()->showMessage(str, 2000);
 }
 
 
@@ -520,30 +529,17 @@ void MainWindow::createStatusBar()
 void MainWindow::createDocks()
 {
 	// Files
-	m_dockFiles = new QDockWidget(tr("Files"), this);
+	m_dockFiles = new DockFiles(this);
 	m_dockFiles->setObjectName("Files");// TODO: Why is it needed by saveState()?
-
-	QListView* lview = new QListView(m_dockFiles);
-	QDirModel* model = new QDirModel(lview);
-
-	model->setFilter(QDir::AllEntries);
-	model->setSorting(QDir::DirsFirst);
-	lview->setModel(model);
-
-	connect(lview, SIGNAL(doubleClicked(const QModelIndex &)),
-			this, SLOT(fileSelected(const QModelIndex &)));
-
-	m_dockFiles->setWidget(lview);
 	addDockWidget(Qt::LeftDockWidgetArea, m_dockFiles);
-
+	connect(m_dockFiles, SIGNAL(fileSelected(QString)),
+			this, SLOT(fileSelected(QString)));
+	connect(m_dockFiles, SIGNAL(directoryChanged(QString)),
+			this, SLOT(statusBarMessageWithTimeout(QString)));
 
 	// Script output
-	m_dockScriptOutput = new QDockWidget(tr("Script output"), this);
+	m_dockScriptOutput = new DockScriptOutput(this);
 	m_dockScriptOutput->setObjectName("ScriptOutput");// TODO: Why is it needed by saveState()?
-	QTextBrowser* textEdit = new QTextBrowser(m_dockScriptOutput);
-	textEdit->setUndoRedoEnabled(false);
-	textEdit->setReadOnly(true);
-	m_dockScriptOutput->setWidget(textEdit);
 	addDockWidget(Qt::BottomDockWidgetArea, m_dockScriptOutput);
 }
 
@@ -555,12 +551,7 @@ void MainWindow::readSettings()
 {
 	restoreGeometry(SETTINGS.getApplicationGeometry());
 	restoreState(SETTINGS.getApplicationState());
-
-	QListView* lview = qobject_cast<QListView*>(m_dockFiles->widget());
-	QDirModel* model = qobject_cast<QDirModel*>(lview->model());
-	assert(lview != NULL);
-	assert(model != NULL);
-	lview->setRootIndex(model->index(SETTINGS.getDockFilesPath()));
+	m_dockFiles->setRootIndex(SETTINGS.getDockFilesPath());
 
 	foreach(QString path, SETTINGS.getOpenedFiles())
 		open(path, false);
@@ -570,12 +561,7 @@ void MainWindow::writeSettings()
 {
 	SETTINGS.setApplicationGeometry(saveGeometry());
 	SETTINGS.setApplicationState(saveState());
-
-	QListView* lview = qobject_cast<QListView*>(m_dockFiles->widget());
-	QDirModel* model = qobject_cast<QDirModel*>(lview->model());
-	assert(lview != NULL);
-	assert(model != NULL);
-	SETTINGS.setDockFilesPath(model->filePath(lview->rootIndex()));
+	SETTINGS.setDockFilesPath(m_dockFiles->rootIndex());
 
 	// Opened files
 	QStringList openedFiles;
@@ -599,7 +585,7 @@ void MainWindow::writeSettings()
 TextEditor* MainWindow::activeTextEditor()
 {
 	if(QMdiSubWindow* activeSubWindow = m_mdiArea->activeSubWindow())
-		return qobject_cast<TextEditor *>(activeSubWindow->widget());
+		return qobject_cast<TextEditor*>(activeSubWindow->widget());
 
 	return 0;
 }
@@ -611,6 +597,7 @@ QMdiSubWindow *MainWindow::findTextEditor(const QString &fileName)
 	foreach(QMdiSubWindow *window, m_mdiArea->subWindowList())
 	{
 		TextEditor* textEditor = qobject_cast<TextEditor*>(window->widget());
+		assert(textEditor != NULL);
 
 		if(textEditor->currentFile() == canonicalFilePath)
 			return window;
@@ -722,20 +709,9 @@ void MainWindow::loadLayout()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void MainWindow::fileSelected(const QModelIndex& index)
+void MainWindow::fileSelected(const QString& path)
 {
-	QListView* lview = qobject_cast<QListView*>(m_dockFiles->widget());
-	QDirModel* model = qobject_cast<QDirModel*>(lview->model());
-	assert(lview != NULL);
-	assert(model != NULL);
-
-	if(model->isDir(index))
-	{
-		lview->setRootIndex(index);
-		statusBar()->showMessage(model->filePath(index), 2000);
-	}
-	else
-		open(model->filePath(index), true);
+	open(path, true);
 }
 
 
@@ -749,7 +725,7 @@ void MainWindow::runScript()
 	TextEditor* editor = activeTextEditor();
 	if(editor == NULL)
 	{
-		scriptStderr(tr("No text editor is active!"));
+		m_dockScriptOutput->scriptStderr(tr("No text editor is active!"));
 		return;
 	}
 
@@ -767,10 +743,7 @@ void MainWindow::runScript()
 void MainWindow::scriptStarted(void)
 {
 	m_runScriptAct->setEnabled(false);
-
-	QTextBrowser* outWidget = qobject_cast<QTextBrowser*>(m_dockScriptOutput->widget());
-	assert(outWidget != NULL);
-	outWidget->clear();
+	m_dockScriptOutput->clear();
 }
 
 void MainWindow::scriptFinished(void)
@@ -778,20 +751,3 @@ void MainWindow::scriptFinished(void)
 	m_runScriptAct->setEnabled(true);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void MainWindow::scriptStdout(const QString& str)
-{
-	QTextBrowser* outWidget = qobject_cast<QTextBrowser*>(m_dockScriptOutput->widget());
-	assert(outWidget != NULL);
-	outWidget->append(str);
-}
-
-void MainWindow::scriptStderr(const QString& str)
-{
-	QTextBrowser* outWidget = qobject_cast<QTextBrowser*>(m_dockScriptOutput->widget());
-	assert(outWidget != NULL);
-	outWidget->append("<span style=\"color: red;\">" + str + "</span>");
-}

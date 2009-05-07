@@ -24,6 +24,8 @@
 
 class TextEditor;
 class ScriptThread;
+class DockScriptOutput;
+class DockFiles;
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -65,21 +67,21 @@ private slots:
 	void saveLayout();
 	void loadLayout();
 
-	void fileSelected(const QModelIndex& index);
+	void fileSelected(const QString& path);
+
+	void statusBarMessage(const QString& str);
+	void statusBarMessageWithTimeout(const QString& str);
 
 	QMdiSubWindow* createTextEditor();
 	void setActiveSubWindow(QWidget* window);
 
 	void scriptStarted(void);
 	void scriptFinished(void);
-	void scriptStdout(const QString& str);
-	void scriptStderr(const QString& str);
 
 private:
 	void createActions();
 	void createMenus();
 	void createToolBars();
-	void createStatusBar();
 	void createDocks();
 	void readSettings();
 	void writeSettings();
@@ -99,8 +101,8 @@ private:
 	QToolBar* m_fileToolBar;
 	QToolBar* m_editToolBar;
 	QToolBar* m_scriptToolBar;
-	QDockWidget* m_dockFiles;
-	QDockWidget* m_dockScriptOutput;
+	DockFiles* m_dockFiles;
+	DockScriptOutput* m_dockScriptOutput;
 
 	QAction* m_newAct;
 	QAction* m_openAct;
