@@ -95,12 +95,12 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::newFile()
 {
-	QMdiSubWindow* subWindow = createTextEditor();
-	TextEditor* editor = qobject_cast<TextEditor*>(subWindow->widget());
+	QMdiSubWindow* window = createTextEditor();
+	TextEditor* editor = qobject_cast<TextEditor*>(window->widget());
 	assert(editor != NULL);
 
 	editor->newFile();
-	subWindow->show();
+	window->show();
 }
 
 void MainWindow::open()
@@ -115,25 +115,25 @@ void MainWindow::open(const QString& fileName, bool warnIfNotFound)
 {
 	if(!fileName.isEmpty())
 	{
-		QMdiSubWindow* existing = findTextEditor(fileName);
+		QMdiSubWindow* window = findTextEditor(fileName);
 
-		if(existing)
+		if(window)
 		{
-			m_mdiArea->setActiveSubWindow(existing);
+			m_mdiArea->setActiveSubWindow(window);
 			return;
 		}
 
-		QMdiSubWindow* subWindow = createTextEditor();
-		TextEditor* editor = qobject_cast<TextEditor*>(subWindow->widget());
+		window = createTextEditor();
+		TextEditor* editor = qobject_cast<TextEditor*>(window->widget());
 		assert(editor != NULL);
 
 		if(editor->loadFile(fileName, warnIfNotFound))
 		{
 			statusBarMessageWithTimeout(tr("File loaded"));
-			subWindow->show();
+			window->show();
 		}
 		else
-			subWindow->close();
+			window->close();
 	}
 }
 
@@ -153,10 +153,9 @@ void MainWindow::saveAll()
 {
 	foreach(QMdiSubWindow* window, m_mdiArea->subWindowList())
 	{
-		TextEditor* textEditor = qobject_cast<TextEditor*>(window->widget());
-
-		if(textEditor != 0)
-			textEditor->save();
+		TextEditor* editor = qobject_cast<TextEditor*>(window->widget());
+		assert(editor != NULL);
+		editor->save();
 	}
 
 	statusBarMessageWithTimeout(tr("Files saved"));
@@ -252,17 +251,17 @@ void MainWindow::updateWindowMenu()
 	for(int i = 0; i < windows.size(); ++i)
 	{
 		QString text;
-		TextEditor* child = qobject_cast<TextEditor*>(windows.at(i)->widget());
-		assert(child != NULL);
+		TextEditor* editor = qobject_cast<TextEditor*>(windows.at(i)->widget());
+		assert(editor != NULL);
 
 		if(i < 9)
-			text = QString("&%1 %2").arg(i + 1).arg(child->userFriendlyCurrentFile());
+			text = QString("&%1 %2").arg(i + 1).arg(editor->userFriendlyCurrentFile());
 		else
-			text = QString("%2").arg(child->userFriendlyCurrentFile());
+			text = QString("%2").arg(editor->userFriendlyCurrentFile());
 
 		QAction* action = m_windowMenu->addAction(text);
 		action->setCheckable(true);
-		action->setChecked(child == activeTextEditor());
+		action->setChecked(editor == activeTextEditor());
 
 		connect(action, SIGNAL(triggered()), m_windowMapper, SLOT(map()));
 		m_windowMapper->setMapping(action, windows.at(i));
@@ -275,11 +274,11 @@ void MainWindow::updateWindowMenu()
 
 QMdiSubWindow* MainWindow::createTextEditor()
 {
-	QMdiSubWindow* subWindow = new QMdiSubWindow(m_mdiArea);
-	TextEditor* editor = new TextEditor(subWindow);
+	QMdiSubWindow* window = new QMdiSubWindow(m_mdiArea);
+	TextEditor* editor = new TextEditor(window);
 
-	subWindow->setAttribute(Qt::WA_DeleteOnClose);
-	subWindow->setWidget(editor);
+	window->setAttribute(Qt::WA_DeleteOnClose);
+	window->setWidget(editor);
 
 	connect(editor, SIGNAL(copyAvailable(bool)), m_cutAct, SLOT(setEnabled(bool)));
 	connect(editor, SIGNAL(copyAvailable(bool)), m_copyAct, SLOT(setEnabled(bool)));
@@ -287,7 +286,7 @@ QMdiSubWindow* MainWindow::createTextEditor()
 	connect(editor, SIGNAL(undoAvailable(bool)), m_undoAct, SLOT(setEnabled(bool)));
 	connect(editor, SIGNAL(redoAvailable(bool)), m_redoAct, SLOT(setEnabled(bool)));
 
-	return m_mdiArea->addSubWindow(subWindow);
+	return m_mdiArea->addSubWindow(window);
 }
 
 
@@ -566,9 +565,9 @@ void MainWindow::writeSettings()
 	// Opened files
 	QStringList openedFiles;
 
-	foreach(QMdiSubWindow* wnd, m_mdiArea->subWindowList(QMdiArea::StackingOrder))
+	foreach(QMdiSubWindow* window, m_mdiArea->subWindowList(QMdiArea::StackingOrder))
 	{
-		TextEditor* editor = qobject_cast<TextEditor *>(wnd->widget());
+		TextEditor* editor = qobject_cast<TextEditor *>(window->widget());
 		assert(editor != NULL);
 
 		if(!editor->isUntitled())
@@ -584,22 +583,22 @@ void MainWindow::writeSettings()
 
 TextEditor* MainWindow::activeTextEditor()
 {
-	if(QMdiSubWindow* activeSubWindow = m_mdiArea->activeSubWindow())
-		return qobject_cast<TextEditor*>(activeSubWindow->widget());
+	if(QMdiSubWindow* window = m_mdiArea->activeSubWindow())
+		return qobject_cast<TextEditor*>(window->widget());
 
 	return 0;
 }
 
-QMdiSubWindow *MainWindow::findTextEditor(const QString &fileName)
+QMdiSubWindow* MainWindow::findTextEditor(const QString &fileName)
 {
 	QString canonicalFilePath = QFileInfo(fileName).canonicalFilePath();
 
-	foreach(QMdiSubWindow *window, m_mdiArea->subWindowList())
+	foreach(QMdiSubWindow* window, m_mdiArea->subWindowList())
 	{
-		TextEditor* textEditor = qobject_cast<TextEditor*>(window->widget());
-		assert(textEditor != NULL);
+		TextEditor* editor = qobject_cast<TextEditor*>(window->widget());
+		assert(editor != NULL);
 
-		if(textEditor->currentFile() == canonicalFilePath)
+		if(editor->currentFile() == canonicalFilePath)
 			return window;
 	}
 
