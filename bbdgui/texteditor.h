@@ -43,12 +43,11 @@ protected:
 	void closeEvent(QCloseEvent* event);
 
 private slots:
-	void documentWasModified();
+	void setWindowModifiedFlag();
 
 private:
 	bool maybeSave();
-	void setCurrentFile(const QString& fileName);
-	QString strippedName(const QString& fullFileName) const;
+	void initCurrentFile(const QString& fileName);
 
 private:
 	QString m_curFile;

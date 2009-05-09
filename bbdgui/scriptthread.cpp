@@ -22,6 +22,11 @@
 using namespace std;
 
 #include "scriptthread.h"
+#include "context.hpp"
+#include "nodebuiltin_inst.hpp"
+#include "logger.hpp"
+
+int parseCode(const string& str);
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -41,7 +46,11 @@ ScriptThread::~ScriptThread(void)
 
 void ScriptThread::run(void)
 {
-	cout << "executing " << m_scriptFilename.toStdString() << endl;
-	sleep(3);
-	cout << "thread finished" << endl;
+	CONTEXT.clear();
+	generateBuiltinFunctions();
+
+	if(parseCode(m_scriptFilename.toStdString()) == 0)
+		CONTEXT.executeScriptMain(0, NULL);
+	else
+		ERROR_S << _("Error while parsing") << endl;
 }

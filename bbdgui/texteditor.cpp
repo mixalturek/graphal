@@ -50,7 +50,7 @@ void TextEditor::newFile()
 	m_curFile = tr("unnamed");
 	setWindowTitle(m_curFile + "[*]");
 
-	connect(document(), SIGNAL(contentsChanged()), this, SLOT(documentWasModified()));
+	connect(document(), SIGNAL(contentsChanged()), this, SLOT(setWindowModifiedFlag()));
 }
 
 
@@ -79,9 +79,9 @@ bool TextEditor::loadFile(const QString& fileName, bool warnIfNotFound)
 	setPlainText(in.readAll());
 	QApplication::restoreOverrideCursor();
 
-	setCurrentFile(fileName);
+	initCurrentFile(fileName);
 
-	connect(document(), SIGNAL(contentsChanged()), this, SLOT(documentWasModified()));
+	connect(document(), SIGNAL(contentsChanged()), this, SLOT(setWindowModifiedFlag()));
 
 	return true;
 }
@@ -135,7 +135,7 @@ bool TextEditor::saveFile(const QString &fileName)
 	out << toPlainText();
 	QApplication::restoreOverrideCursor();
 
-	setCurrentFile(fileName);
+	initCurrentFile(fileName);
 	return true;
 }
 
@@ -145,7 +145,7 @@ bool TextEditor::saveFile(const QString &fileName)
 
 QString TextEditor::userFriendlyCurrentFile() const
 {
-	return strippedName(m_curFile);
+	return QFileInfo(m_curFile).fileName();
 }
 
 
@@ -164,7 +164,7 @@ void TextEditor::closeEvent(QCloseEvent* event)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void TextEditor::documentWasModified()
+void TextEditor::setWindowModifiedFlag()
 {
 	setWindowModified(document()->isModified());
 }
@@ -197,7 +197,7 @@ bool TextEditor::maybeSave()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void TextEditor::setCurrentFile(const QString& fileName)
+void TextEditor::initCurrentFile(const QString& fileName)
 {
 	m_curFile = QFileInfo(fileName).canonicalFilePath();
 	m_isUntitled = false;
@@ -206,11 +206,3 @@ void TextEditor::setCurrentFile(const QString& fileName)
 	setWindowTitle(userFriendlyCurrentFile() + "[*]");
 }
 
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-QString TextEditor::strippedName(const QString &fullFileName) const
-{
-	return QFileInfo(fullFileName).fileName();
-}

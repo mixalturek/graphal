@@ -3,6 +3,9 @@
 # -------------------------------------------------
 TARGET = bbdgui
 TEMPLATE = app
+INCLUDEPATH += ../bbd/
+CONFIG += qt thread warn_on
+DEFINES += QTGUI
 RC_FILE = bbdgui.rc
 ICON = images/toast/toast.icns
 SOURCES += main.cpp \
