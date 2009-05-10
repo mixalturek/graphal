@@ -1,5 +1,9 @@
 CountPtr<TYPE>
+ObjectCreator (singleton)
 BaseObject
+	ObjectFactory (interface)
+		CliFactory
+		GuiFactory
 	Context (singleton)
 	ExitValue
 	CodePosition

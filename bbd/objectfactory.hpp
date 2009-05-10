@@ -18,35 +18,22 @@
  */
 
 
-#include <QApplication>
-#include <QIcon>
-#include "mainwindow.h"
-#include "settings.h"
-#include "objectcreator.hpp"
-#include "guifactory.hpp"
+#ifndef OBJECTFACTORY_HPP
+#define OBJECTFACTORY_HPP
+
+#include "general.hpp"
+#include "baseobject.hpp"
 
 
-/////////////////////////////////////////////////////////////////////////////
-////
-
-int main(int argc, char *argv[])
+class ObjectFactory : public BaseObject
 {
-	CREATOR.init(new GuiFactory());
+public:
+	ObjectFactory(void);
+	virtual ~ObjectFactory(void);
 
-	Q_INIT_RESOURCE(resources);
+private:
+	ObjectFactory(const ObjectFactory& object);
+	ObjectFactory& operator=(const ObjectFactory& object);
+};
 
-	QApplication app(argc, argv);
-	app.setOrganizationName("Michal Turek");
-	app.setOrganizationDomain("woq.nipax.cz");
-	app.setApplicationName("bbdgui");
-	app.setWindowIcon(QIcon(":/applogo.png"));
-
-	SETTINGS.initSingleton();
-
-	MainWindow mainWin;
-	mainWin.show();
-	int ret = app.exec();
-
-	CREATOR.destroy();
-	return ret;
-}
+#endif // OBJECTFACTORY_HPP

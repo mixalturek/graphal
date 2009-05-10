@@ -18,35 +18,22 @@
  */
 
 
-#include <QApplication>
-#include <QIcon>
-#include "mainwindow.h"
-#include "settings.h"
-#include "objectcreator.hpp"
-#include "guifactory.hpp"
+#ifndef CLIFACTORY_HPP
+#define CLIFACTORY_HPP
+
+#include "general.hpp"
+#include "objectfactory.hpp"
 
 
-/////////////////////////////////////////////////////////////////////////////
-////
-
-int main(int argc, char *argv[])
+class CliFactory : public ObjectFactory
 {
-	CREATOR.init(new GuiFactory());
+public:
+	CliFactory(void);
+	virtual ~CliFactory(void);
 
-	Q_INIT_RESOURCE(resources);
+	void dump(ostream& os, uint indent) const;
 
-	QApplication app(argc, argv);
-	app.setOrganizationName("Michal Turek");
-	app.setOrganizationDomain("woq.nipax.cz");
-	app.setApplicationName("bbdgui");
-	app.setWindowIcon(QIcon(":/applogo.png"));
+private:
+};
 
-	SETTINGS.initSingleton();
-
-	MainWindow mainWin;
-	mainWin.show();
-	int ret = app.exec();
-
-	CREATOR.destroy();
-	return ret;
-}
+#endif // CLIFACTORY_HPP

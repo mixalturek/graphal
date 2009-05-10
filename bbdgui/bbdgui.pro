@@ -4,7 +4,9 @@
 TARGET = bbdgui
 TEMPLATE = app
 INCLUDEPATH += ../bbd/
-CONFIG += qt thread warn_on
+CONFIG += qt \
+    thread \
+    warn_on
 DEFINES += QTGUI
 RC_FILE = bbdgui.rc
 ICON = images/toast/toast.icns
@@ -12,6 +14,10 @@ SOURCES += main.cpp \
     mainwindow.cpp \
     texteditor.cpp \
     settings.cpp \
+    scriptthread.cpp \
+    dockscriptoutput.cpp \
+    dockfiles.cpp \
+    guifactory.cpp \
     ../bbd/logger.cpp \
     ../bbd/lexaniteratorstring.cpp \
     ../bbd/lexaniteratorfile.cpp \
@@ -141,12 +147,15 @@ SOURCES += main.cpp \
     ../bbd/context.cpp \
     ../bbd/codeposition.cpp \
     ../bbd/baseobject.cpp \
-    scriptthread.cpp \
-    dockscriptoutput.cpp \
-    dockfiles.cpp
+    ../bbd/objectfactory.cpp \
+    ../bbd/objectcreator.cpp
 HEADERS += mainwindow.h \
     texteditor.h \
     settings.h \
+    scriptthread.h \
+    dockscriptoutput.h \
+    dockfiles.h \
+    guifactory.hpp \
     ../bbd/logger.hpp \
     ../bbd/lexantokens.hpp \
     ../bbd/lexaniteratorstring.hpp \
@@ -279,8 +288,7 @@ HEADERS += mainwindow.h \
     ../bbd/context.hpp \
     ../bbd/codeposition.hpp \
     ../bbd/baseobject.hpp \
-    scriptthread.h \
-    dockscriptoutput.h \
-    dockfiles.h
+    ../bbd/objectfactory.hpp \
+    ../bbd/objectcreator.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 

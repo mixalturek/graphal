@@ -26,6 +26,8 @@
 #include "context.hpp"
 #include "nodebuiltin_inst.hpp"
 #include "version.hpp"
+#include "objectcreator.hpp"
+#include "clifactory.hpp"
 
 int parseCode(const string& str);
 
@@ -62,11 +64,14 @@ void usage(int /* argc */, char** argv)
 
 int main(int argc, char** argv)
 {
+	CREATOR.init(new CliFactory());
+
 	INFO << "bbd [svn version " << SVN_VERSION << "]" << endl;
 
 	if(argc < 2)
 	{
 		usage(argc, argv);
+		CREATOR.destroy();
 		return 1;
 	}
 
@@ -161,11 +166,13 @@ int main(int argc, char** argv)
 	if(error_occured)
 	{
 		INFO << "*** EXITING MAIN, FAILED ***" << endl;
+		CREATOR.destroy();
 		return 1;
 	}
 	else
 	{
 		INFO << "*** EXITING MAIN, OK ***" << endl;
+		CREATOR.destroy();
 		return 0;
 	}
 }

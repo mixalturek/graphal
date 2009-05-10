@@ -18,35 +18,38 @@
  */
 
 
-#include <QApplication>
-#include <QIcon>
-#include "mainwindow.h"
-#include "settings.h"
-#include "objectcreator.hpp"
-#include "guifactory.hpp"
+#ifndef OBJECTCREATOR_HPP
+#define OBJECTCREATOR_HPP
 
+#include "general.hpp"
 
-/////////////////////////////////////////////////////////////////////////////
-////
+#define CREATOR ObjectCreator::getInstance()
+#define FACTORY ObjectCreator::getInstance().getFactory()
 
-int main(int argc, char *argv[])
+class ObjectFactory;
+
+class ObjectCreator
 {
-	CREATOR.init(new GuiFactory());
+public:
+	static inline ObjectCreator& getInstance(void)
+	{
+		return m_instance;
+	}
 
-	Q_INIT_RESOURCE(resources);
+	void init(ObjectFactory* factory);
+	void destroy(void);
 
-	QApplication app(argc, argv);
-	app.setOrganizationName("Michal Turek");
-	app.setOrganizationDomain("woq.nipax.cz");
-	app.setApplicationName("bbdgui");
-	app.setWindowIcon(QIcon(":/applogo.png"));
+	ObjectFactory& getFactory(void) { return *m_factory; }
 
-	SETTINGS.initSingleton();
+private:
+	ObjectCreator(void);
+	virtual ~ObjectCreator(void);
+	ObjectCreator(const ObjectCreator& object);
+	ObjectCreator& operator=(const ObjectCreator& object);
 
-	MainWindow mainWin;
-	mainWin.show();
-	int ret = app.exec();
+private:
+	static ObjectCreator m_instance;
+	ObjectFactory* m_factory;
+};
 
-	CREATOR.destroy();
-	return ret;
-}
+#endif // OBJECTCREATOR_HPP

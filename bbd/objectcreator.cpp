@@ -18,35 +18,41 @@
  */
 
 
-#include <QApplication>
-#include <QIcon>
-#include "mainwindow.h"
-#include "settings.h"
+#include <cassert>
 #include "objectcreator.hpp"
-#include "guifactory.hpp"
+#include "objectfactory.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-int main(int argc, char *argv[])
+ObjectCreator::ObjectCreator(void)
+	: m_factory(NULL)
 {
-	CREATOR.init(new GuiFactory());
 
-	Q_INIT_RESOURCE(resources);
-
-	QApplication app(argc, argv);
-	app.setOrganizationName("Michal Turek");
-	app.setOrganizationDomain("woq.nipax.cz");
-	app.setApplicationName("bbdgui");
-	app.setWindowIcon(QIcon(":/applogo.png"));
-
-	SETTINGS.initSingleton();
-
-	MainWindow mainWin;
-	mainWin.show();
-	int ret = app.exec();
-
-	CREATOR.destroy();
-	return ret;
 }
+
+ObjectCreator::~ObjectCreator(void)
+{
+	destroy();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ObjectCreator::init(ObjectFactory* factory)
+{
+	assert(factory != NULL);
+	m_factory = factory;
+}
+
+void ObjectCreator::destroy(void)
+{
+	if(m_factory != NULL)
+	{
+		delete m_factory;
+		m_factory = NULL;
+	}
+}
+

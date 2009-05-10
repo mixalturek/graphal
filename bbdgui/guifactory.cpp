@@ -18,35 +18,29 @@
  */
 
 
-#include <QApplication>
-#include <QIcon>
-#include "mainwindow.h"
-#include "settings.h"
-#include "objectcreator.hpp"
 #include "guifactory.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-int main(int argc, char *argv[])
+GuiFactory::GuiFactory(void)
+	: ObjectFactory()
 {
-	CREATOR.init(new GuiFactory());
 
-	Q_INIT_RESOURCE(resources);
+}
 
-	QApplication app(argc, argv);
-	app.setOrganizationName("Michal Turek");
-	app.setOrganizationDomain("woq.nipax.cz");
-	app.setApplicationName("bbdgui");
-	app.setWindowIcon(QIcon(":/applogo.png"));
+GuiFactory::~GuiFactory(void)
+{
 
-	SETTINGS.initSingleton();
+}
 
-	MainWindow mainWin;
-	mainWin.show();
-	int ret = app.exec();
 
-	CREATOR.destroy();
-	return ret;
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void GuiFactory::dump(ostream& os, uint indent) const
+{
+	dumpIndent(os, indent);
+	os << "<GuiFactory />" << endl;
 }
