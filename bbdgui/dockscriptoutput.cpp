@@ -30,6 +30,7 @@ DockScriptOutput::DockScriptOutput(QWidget* parent, Qt::WindowFlags flags)
 {
 	m_textEdit->setUndoRedoEnabled(false);
 	m_textEdit->setReadOnly(true);
+	m_textEdit->setOpenLinks(false);// anchorClicked() -> MainWindow::open()
 	setWidget(m_textEdit);
 
 	// TODO: add to the settings
@@ -59,8 +60,9 @@ void DockScriptOutput::error(const QString& str)
 
 void DockScriptOutput::error(const QString& pos, const QString& str)
 {
+	m_textEdit->insertHtml("<a href=\"" + pos + "\">" + pos + "</a>: ");
 	m_textEdit->setTextColor(QColor(255, 0, 0));
-	m_textEdit->insertPlainText(pos + ": " + str);
+	m_textEdit->insertPlainText(str);
 	m_textEdit->insertPlainText("\n");
 	m_textEdit->ensureCursorVisible();
 }
@@ -78,8 +80,9 @@ void DockScriptOutput::warn(const QString& str)
 
 void DockScriptOutput::warn(const QString& pos, const QString& str)
 {
+	m_textEdit->insertHtml("<a href=\"" + pos + "\">" + pos + "</a>: ");
 	m_textEdit->setTextColor(QColor(255, 0, 0));
-	m_textEdit->insertPlainText(pos + ": " + str);
+	m_textEdit->insertPlainText(str);
 	m_textEdit->insertPlainText("\n");
 	m_textEdit->ensureCursorVisible();
 }

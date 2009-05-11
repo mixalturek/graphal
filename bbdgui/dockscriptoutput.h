@@ -33,6 +33,8 @@ public:
 	DockScriptOutput(QWidget* parent = 0, Qt::WindowFlags flags = 0);
 	~DockScriptOutput(void);
 
+	QTextBrowser* getTextBrowser(void) const { return m_textEdit; }
+
 public slots:
 	void clear(void) { m_textEdit->clear(); }
 

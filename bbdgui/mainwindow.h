@@ -34,6 +34,7 @@ class QMdiArea;
 class QMdiSubWindow;
 class QSignalMapper;
 class QModelIndex;
+class QUrl;
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -50,7 +51,8 @@ protected:
 private slots:
 	void newFile();
 	void open();
-	void open(const QString& fileName, bool warnIfNotFound);
+	bool open(const QString& fileName, bool warnIfNotFound);
+	void open(const QUrl& link);
 	void save();
 	void saveAs();
 	void saveAll();

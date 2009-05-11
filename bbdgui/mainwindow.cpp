@@ -27,6 +27,7 @@
 #include "dockfiles.h"
 #include "objectcreator.hpp"
 #include "logger.hpp"
+#include "version.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -64,6 +65,8 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 
 	connect(m_scriptThread, SIGNAL(started()), this, SLOT(scriptStarted()));
 	connect(m_scriptThread, SIGNAL(finished()), this, SLOT(scriptFinished()));
+	connect(m_dockScriptOutput->getTextBrowser(), SIGNAL(anchorClicked(QUrl)),
+			this, SLOT(open(QUrl)));
 
 	statusBarMessage(tr("Ready"));
 }
@@ -105,6 +108,10 @@ void MainWindow::newFile()
 	window->show();
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void MainWindow::open()
 {
 	// TODO: save path to the settings
@@ -113,7 +120,7 @@ void MainWindow::open()
 		open(str, true);
 }
 
-void MainWindow::open(const QString& fileName, bool warnIfNotFound)
+bool MainWindow::open(const QString& fileName, bool warnIfNotFound)
 {
 	if(!fileName.isEmpty())
 	{
@@ -122,7 +129,7 @@ void MainWindow::open(const QString& fileName, bool warnIfNotFound)
 		if(window)
 		{
 			m_mdiArea->setActiveSubWindow(window);
-			return;
+			return true;
 		}
 
 		window = createTextEditor();
@@ -133,11 +140,46 @@ void MainWindow::open(const QString& fileName, bool warnIfNotFound)
 		{
 			statusBarMessageWithTimeout(tr("File loaded"));
 			window->show();
+			return true;
 		}
 		else
 			window->close();
 	}
+
+	return false;
 }
+
+void MainWindow::open(const QUrl& link)
+{
+	// Links are expected in "filename:line" format
+	QStringList path(link.toString().split(':'));
+
+	if(path.size() == 2 && open(path.at(0), true))
+	{
+		bool ok;
+		int line = path.at(1).toInt(&ok);
+
+		TextEditor* editor = activeTextEditor();
+		assert(editor != NULL);
+
+		if(ok && line <= editor->blockCount())
+		{
+			// Three hours of my life to write the following line :-(
+			editor->setTextCursor(QTextCursor(editor->document()->findBlockByNumber(line-1)));
+			// editor->centerCursor();// TOOD: if it is not visible only
+		}
+
+		editor->setFocus();
+	}
+	else
+	{
+		assert("Should not be called" == NULL);
+	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
 
 void MainWindow::save()
 {
@@ -205,7 +247,8 @@ void MainWindow::about()
 {
 	// TODO: update text, version
 	QMessageBox::about(this, tr("About bbdgui"),
-		tr("Graphs algorithms interpreter"));
+		tr("Graphs algorithms interpreter<br />SVN version ")
+		+ QString::number(SVN_VERSION));
 }
 
 

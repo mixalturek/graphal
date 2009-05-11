@@ -36,6 +36,9 @@ gui
 	void QTextEdit::zoomIn ( int range = 1 )   [slot]
 	void QTextEdit::zoomOut ( int range = 1 )   [slot]
 	http://www.qtforum.org/article/11364/show-line-numbers-on-qtextedit.html
+	dock with predefined strings
+		QPlainTextEdit::insertPlainText ( const QString & text )
+		edit->textCursor().insertText(text);
 
 ////////////////////////////////////////////////////////////////////////////
 ////
