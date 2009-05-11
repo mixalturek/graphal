@@ -42,6 +42,8 @@
 		<Unit filename="class_hierarchy.txt" />
 		<Unit filename="clifactory.cpp" />
 		<Unit filename="clifactory.hpp" />
+		<Unit filename="clilogger.cpp" />
+		<Unit filename="clilogger.hpp" />
 		<Unit filename="codeposition.cpp" />
 		<Unit filename="codeposition.hpp" />
 		<Unit filename="context.cpp" />

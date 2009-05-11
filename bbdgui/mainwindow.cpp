@@ -25,6 +25,8 @@
 #include "settings.h"
 #include "dockscriptoutput.h"
 #include "dockfiles.h"
+#include "objectcreator.hpp"
+#include "logger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -536,10 +538,19 @@ void MainWindow::createDocks()
 	connect(m_dockFiles, SIGNAL(directoryChanged(QString)),
 			this, SLOT(statusBarMessageWithTimeout(QString)));
 
+
 	// Script output
 	m_dockScriptOutput = new DockScriptOutput(this);
 	m_dockScriptOutput->setObjectName("ScriptOutput");// TODO: Why is it needed by saveState()?
 	addDockWidget(Qt::BottomDockWidgetArea, m_dockScriptOutput);
+
+	Logger* logger = ObjectCreator::getInstance().getLogger();
+	connect(logger, SIGNAL(error(QString)), m_dockScriptOutput, SLOT(error(QString)));
+	connect(logger, SIGNAL(error(QString, QString)), m_dockScriptOutput, SLOT(error(QString, QString)));
+	connect(logger, SIGNAL(warn(QString)), m_dockScriptOutput, SLOT(warn(QString)));
+	connect(logger, SIGNAL(warn(QString, QString)), m_dockScriptOutput, SLOT(warn(QString, QString)));
+	connect(logger, SIGNAL(info(QString)), m_dockScriptOutput, SLOT(info(QString)));
+	connect(logger, SIGNAL(scriptStdout(QString)), m_dockScriptOutput, SLOT(scriptStdout(QString)));
 }
 
 
@@ -724,7 +735,7 @@ void MainWindow::runScript()
 	TextEditor* editor = activeTextEditor();
 	if(editor == NULL)
 	{
-		m_dockScriptOutput->scriptStderr(tr("No text editor is active!"));
+		m_dockScriptOutput->error(tr("No text editor is active!"));
 		return;
 	}
 

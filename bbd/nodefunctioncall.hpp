@@ -30,7 +30,7 @@ class NodeBlock;
 class NodeFunctionCall : public Node
 {
 public:
-	NodeFunctionCall(identifier name, NodeBlock* parameters, const CodePosition& pos);
+	NodeFunctionCall(identifier name, NodeBlock* parameters, CodePosition* pos);
 	virtual ~NodeFunctionCall();
 
 	virtual CountPtr<Value> execute(void);
@@ -39,7 +39,7 @@ public:
 private:
 	identifier m_name;
 	NodeBlock* m_parameters;
-	CodePosition m_position;// Position of the caller
+	CodePosition* m_position;// Position of the caller
 };
 
 ostream& operator<<(ostream& os, const NodeFunctionCall& node);

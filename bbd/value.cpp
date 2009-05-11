@@ -70,27 +70,24 @@ PTR_Value Value::logOR(const Value& right) const
 
 CountPtr<Value> Value::assign(CountPtr<Value> /* val */)
 {
-	ERROR << _("lvalue is required as left operand of assignment, attempt to assign to") << endl;
-	this->dump(SCRIPT_STDOUT, 1);
-	throw runtime_error(_("Operation not supported"));
+	ERROR_P(_("L-value is required as left operand of assignment: ") + toString());
+	// this->dump(SCRIPT_STDOUT, 1);// TODO: GUI???
 
 	return VALUENULL;
 }
 
 CountPtr<Value> Value::assignRef(CountPtr<Value> /* val */)
 {
-	ERROR << _("lvalue is required as left operand of reference assignment, attempt to assign to") << endl;
-	this->dump(SCRIPT_STDOUT, 1);
-	throw runtime_error(_("Operation not supported"));
+	ERROR_P(_("L-value is required as left operand of reference assignment: ") + toString());
+	// this->dump(SCRIPT_STDOUT, 1);// TODO: GUI???
 
 	return VALUENULL;
 }
 
 CountPtr<Value> Value::getReferredValue(void) const
 {
-	ERROR << _("Attemp to get referred value, but value is not reference") << endl;
-	this->dump(SCRIPT_STDOUT, 1);
-	throw runtime_error(_("Operation not supported"));
+	ERROR_P(_("Attemp to get referred value, but value is not reference: ") + toString());
+	// this->dump(SCRIPT_STDOUT, 1);// TODO: GUI???
 
 	return VALUENULL;
 }
@@ -101,25 +98,25 @@ CountPtr<Value> Value::getReferredValue(void) const
 
 CountPtr<Value> Value::iterator(void) const
 {
-	WARN << _("The value is not iterable") << endl;
+	WARN_P(_("The value is not iterable: ") + toString());
 	return VALUENULL;
 }
 
 CountPtr<Value> Value::hasNext(void) const
 {
-	WARN << _("The value is not iterable") << endl;
+	WARN_P(_("The value is not iterable: ") + toString());
 	return VALUEBOOL_FALSE;
 }
 
 CountPtr<Value> Value::next(void)
 {
-	WARN << _("The value is not iterable") << endl;
+	WARN_P(_("The value is not iterable: ") + toString());
 	return VALUENULL;
 }
 
 void Value::resetIterator(void)
 {
-	WARN << _("The value is not iterable") << endl;
+	WARN_P(_("The value is not iterable: ") + toString());
 }
 
 

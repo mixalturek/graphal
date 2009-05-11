@@ -21,6 +21,7 @@
 #include <cassert>
 #include "objectcreator.hpp"
 #include "objectfactory.hpp"
+#include "logger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -45,6 +46,8 @@ void ObjectCreator::init(ObjectFactory* factory)
 {
 	assert(factory != NULL);
 	m_factory = factory;
+
+	m_logger = m_factory->newLogger();
 }
 
 void ObjectCreator::destroy(void)
@@ -53,6 +56,12 @@ void ObjectCreator::destroy(void)
 	{
 		delete m_factory;
 		m_factory = NULL;
+	}
+
+	if(m_logger != NULL)
+	{
+		delete m_logger;
+		m_logger = NULL;
 	}
 }
 

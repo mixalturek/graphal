@@ -25,17 +25,22 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-NodePosition::NodePosition(Node* next, const CodePosition& pos)
+NodePosition::NodePosition(Node* next, CodePosition* pos)
 	: Node(),
 	m_next(next),
 	m_position(pos)
 {
 	assert(next != NULL);
+	assert(pos != NULL);
 }
 
 NodePosition::~NodePosition()
 {
 	delete m_next;
+	m_next = NULL;
+
+	delete m_position;
+	m_position = NULL;
 }
 
 

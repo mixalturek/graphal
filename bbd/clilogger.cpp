@@ -18,20 +18,20 @@
  */
 
 
-#include "guifactory.hpp"
-#include "guilogger.hpp"
+#include "clilogger.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-GuiFactory::GuiFactory(void)
-	: ObjectFactory()
+CliLogger::CliLogger(void)
+	: Logger()
 {
 
 }
 
-GuiFactory::~GuiFactory(void)
+CliLogger::~CliLogger(void)
 {
 
 }
@@ -40,17 +40,51 @@ GuiFactory::~GuiFactory(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void GuiFactory::dump(ostream& os, uint indent) const
+void CliLogger::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<GuiFactory />" << endl;
+	os << "<CliLogger />" << endl;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Logger* GuiFactory::newLogger(void) const
+void CliLogger::error(const string& str)
 {
-	return new GuiLogger();
+	cerr << _("[e] ") << str << endl;
+}
+
+void CliLogger::errorPos(const string& str)
+{
+	cerr << _("[e] ") << CONTEXT.getPosition()->toString() << ": " << str << endl;
+}
+
+void CliLogger::errorPos(const string& pos, const string& str)
+{
+	cerr << _("[e] ") << pos << ": " << str << endl;
+}
+
+void CliLogger::warn(const string& str)
+{
+	cerr << _("[w] ") << str << endl;
+}
+
+void CliLogger::warnPos(const string& str)
+{
+	cerr << _("[w] ") << CONTEXT.getPosition()->toString() << ": " << str << endl;
+}
+
+void CliLogger::warnPos(const string& pos, const string& str)
+{
+	cerr << _("[w] ") << pos << ": " << str << endl;
+}
+
+void CliLogger::info(const string& str)
+{
+	cout << _("[i] ") << str << endl;
+}
+
+void CliLogger::scriptStdout(const string& str)
+{
+	cout << str;
 }

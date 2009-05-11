@@ -33,6 +33,8 @@ public:
 
 	void dump(ostream& os, uint indent) const;
 
+	virtual Logger* newLogger(void) const;
+
 private:
 };
 

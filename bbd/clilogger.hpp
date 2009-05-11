@@ -18,26 +18,33 @@
  */
 
 
-#ifndef OBJECTFACTORY_HPP
-#define OBJECTFACTORY_HPP
+#ifndef CLILOGGER_HPP
+#define CLILOGGER_HPP
 
 #include "general.hpp"
-#include "baseobject.hpp"
-
-class Logger;
+#include "logger.hpp"
 
 
-class ObjectFactory : public BaseObject
+class CliLogger : public Logger
 {
 public:
-	ObjectFactory(void);
-	virtual ~ObjectFactory(void);
+	CliLogger(void);
+	virtual ~CliLogger(void);
 
-	virtual Logger* newLogger(void) const = 0;
+	virtual void dump(ostream& os, uint indent) const;
 
-private:
-	ObjectFactory(const ObjectFactory& object);
-	ObjectFactory& operator=(const ObjectFactory& object);
+public:
+	virtual void error(const string& str);
+	virtual void errorPos(const string& str);
+	virtual void errorPos(const string& pos, const string& str);
+
+	virtual void warn(const string& str);
+	virtual void warnPos(const string& str);
+	virtual void warnPos(const string& pos, const string& str);
+
+	virtual void info(const string& str);
+
+	virtual void scriptStdout(const string& str);
 };
 
-#endif // OBJECTFACTORY_HPP
+#endif // CLILOGGER_HPP

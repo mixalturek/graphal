@@ -96,8 +96,11 @@ CountPtr<Value> ValueArray::getItem(uint pos) const
 		return m_val[pos];
 	else
 	{
-		WARN << _("Index out of bounds (size: ") << m_val.size()
-			<< _(", index: ") << pos << ")" << endl;
+		stringstream ss;
+		ss << _("Index out of bounds (size: ") << m_val.size()
+			<< _(", index: ") << pos << _(")");
+		WARN_P(ss.str());
+
 		return VALUENULL;
 	}
 }
@@ -106,8 +109,11 @@ CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 {
 	if(pos >= m_val.size())
 	{
-		WARN << _("Index out of bounds (size: ") << m_val.size()
-			<< _(", index: ") << pos << _("), resizing array") << endl;
+		stringstream ss;
+		ss << _("Index out of bounds (size: ") << m_val.size()
+			<< _(", index: ") << pos << _("), resizing array");
+		WARN_P(ss.str());
+
 		resize(pos+1);
 	}
 

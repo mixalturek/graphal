@@ -31,6 +31,13 @@ DockScriptOutput::DockScriptOutput(QWidget* parent, Qt::WindowFlags flags)
 	m_textEdit->setUndoRedoEnabled(false);
 	m_textEdit->setReadOnly(true);
 	setWidget(m_textEdit);
+
+	// TODO: add to the settings
+	QFont font;
+	font.setFamily("Courier");
+	font.setFixedPitch(true);
+	font.setPointSize(10);
+	m_textEdit->setFont(font);
 }
 
 DockScriptOutput::~DockScriptOutput(void)
@@ -42,12 +49,60 @@ DockScriptOutput::~DockScriptOutput(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void DockScriptOutput::scriptStdout(const QString& str)
+void DockScriptOutput::error(const QString& str)
 {
-	m_textEdit->append(str);
+	m_textEdit->setTextColor(QColor(255, 0, 0));
+	m_textEdit->insertPlainText(str);
+	m_textEdit->insertPlainText("\n");
+	m_textEdit->ensureCursorVisible();
 }
 
-void DockScriptOutput::scriptStderr(const QString& str)
+void DockScriptOutput::error(const QString& pos, const QString& str)
 {
-	m_textEdit->append("<span style=\"color: red;\">" + str + "</span>");
+	m_textEdit->setTextColor(QColor(255, 0, 0));
+	m_textEdit->insertPlainText(pos + ": " + str);
+	m_textEdit->insertPlainText("\n");
+	m_textEdit->ensureCursorVisible();
+}
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void DockScriptOutput::warn(const QString& str)
+{
+	m_textEdit->setTextColor(QColor(255, 0, 0));
+	m_textEdit->insertPlainText(str);
+	m_textEdit->insertPlainText("\n");
+	m_textEdit->ensureCursorVisible();
+}
+
+void DockScriptOutput::warn(const QString& pos, const QString& str)
+{
+	m_textEdit->setTextColor(QColor(255, 0, 0));
+	m_textEdit->insertPlainText(pos + ": " + str);
+	m_textEdit->insertPlainText("\n");
+	m_textEdit->ensureCursorVisible();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void DockScriptOutput::info(const QString& str)
+{
+	m_textEdit->setTextColor(QColor(130, 130, 130));
+	m_textEdit->insertPlainText(str);
+	m_textEdit->insertPlainText("\n");
+	m_textEdit->ensureCursorVisible();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void DockScriptOutput::scriptStdout(const QString& str)
+{
+	m_textEdit->setTextColor(QColor(0, 0, 0));
+	m_textEdit->insertPlainText(str);
+	m_textEdit->ensureCursorVisible();
 }

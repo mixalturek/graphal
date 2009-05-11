@@ -284,19 +284,19 @@ PTR_Value ValueIdentifier::gt(const ValueVertexSet& left)   const { return dynam
 PTR_Value ValueIdentifier::gt(const ValueEdgeSet& left)     const { return dynamic_cast<const Value&>(left).gt(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::member(const Value& right)             const { return this->getReferredValue()->member(right); } // .
-PTR_Value ValueIdentifier::member(const ValueNull& /*left*/)      const { WARN << _("Member access to the NULL variable, operation is not supported") << endl; return VALUENULL; }
-PTR_Value ValueIdentifier::member(const ValueBool& /*left*/)      const { WARN << _("Member access to the bool variable, operation is not supported") << endl; return VALUENULL; }
-PTR_Value ValueIdentifier::member(const ValueInt& /*left*/)       const { WARN << _("Member access to the int variable, operation is not supported") << endl; return VALUENULL; }
-PTR_Value ValueIdentifier::member(const ValueFloat& /*left*/)     const { WARN << _("Member access to the float variable, operation is not supported") << endl; return VALUENULL; }
-PTR_Value ValueIdentifier::member(const ValueString& /*left*/)    const { WARN << _("Member access to the string variable, operation is not supported") << endl; return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueNull& /*left*/)      const { WARN_P(_("Member access to the NULL variable")); return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueBool& /*left*/)      const { WARN_P(_("Member access to the bool variable")); return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueInt& /*left*/)       const { WARN_P(_("Member access to the int variable")); return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueFloat& /*left*/)     const { WARN_P(_("Member access to the float variable")); return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueString& /*left*/)    const { WARN_P(_("Member access to the string variable")); return VALUENULL; }
 PTR_Value ValueIdentifier::member(const ValueStruct& left)        const { return const_cast<ValueStruct&>(left).getItem(m_val); }
 PTR_Value ValueIdentifier::member(const ValueReference& left)     const { return left.getReferredValue()->member(*dynamic_cast<const Value*>(this)); }
 PTR_Value ValueIdentifier::member(const ValueIdentifier& left)    const { return left.getReferredValue()->member(*dynamic_cast<const Value*>(this)); }
-PTR_Value ValueIdentifier::member(const ValueGraph& /*left*/)     const { WARN << _("Member access to the graph variable, operation is not supported") << endl; return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueGraph& /*left*/)     const { WARN_P(_("Member access to the graph variable")); return VALUENULL; }
 PTR_Value ValueIdentifier::member(const ValueVertex& left)        const { return const_cast<ValueVertex&>(left).getItem(m_val); }
 PTR_Value ValueIdentifier::member(const ValueEdge& left)          const { return const_cast<ValueEdge&>(left).getItem(m_val); }
-PTR_Value ValueIdentifier::member(const ValueVertexSet& /*left*/) const { WARN << _("Member access to the VertexSet variable, operation is not supported") << endl; return VALUENULL; }
-PTR_Value ValueIdentifier::member(const ValueEdgeSet& /*left*/)   const { WARN << _("Member access to the EdgeSet variable, operation is not supported") << endl; return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueVertexSet& /*left*/) const { WARN_P(_("Member access to the VertexSet variable")); return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueEdgeSet& /*left*/)   const { WARN_P(_("Member access to the EdgeSet variable")); return VALUENULL; }
 
 PTR_Value ValueIdentifier::index(const Value& right)         const { return this->getReferredValue()->index(right); } // []
 PTR_Value ValueIdentifier::index(const ValueNull& left)      const { return dynamic_cast<const Value&>(left).index(*getReferredValue()); }

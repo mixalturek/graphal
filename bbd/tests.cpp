@@ -59,7 +59,11 @@
 #define verify(expr)                                                          \
 	result = result && (expr);                                                \
 	if(!(expr))                                                               \
-		ERROR_S << __FILE__ << ":" << __LINE__ << "   " << #expr << endl
+	{                                                                         \
+		stringstream ss;                                                       \
+		ss << __FILE__ << ":" << __LINE__ << "   " << #expr;                  \
+		ERROR(ss.str());                                                      \
+	}
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -98,9 +102,9 @@ ostream& operator<<(ostream& os, const Tests& node)
 bool Tests::testResult(const string& testName, bool result)
 {
 	if(result)
-		INFO  << _("[ OK ]     ") << testName << endl;
+		INFO(_("[ OK ]     ") + testName);
 	else
-		ERROR_S << _("[ FAILED ] ") << testName << endl;
+		ERROR(_("[ FAILED ] ") + testName);
 
 	return result;
 }
@@ -141,7 +145,9 @@ void Tests::run(void)
 	// Template
 	// failed += !test();
 
-	INFO << _("Number of failed tests: ") << failed << endl;
+	stringstream ss;
+	ss << _("Number of failed tests: ") << failed;
+	INFO(ss.str());
 }
 
 
@@ -1120,12 +1126,12 @@ bool Tests::testNodeFunction(void)
 				new NodeValue(new ValueIdentifier(local_id)),
 				new NodeValue(new ValueInt(10))
 			),
-			CodePosition(STR2ID("unittest"), 0)
+			new CodePosition(STR2ID("unittest"), 0)
 		);
 
 	CONTEXT.addFunction(func);
 
-	NodeFunctionCall func_call(func_id, NULL, CodePosition(STR2ID("unittest"), 0));
+	NodeFunctionCall func_call(func_id, NULL, new CodePosition(STR2ID("unittest"), 0));
 	func_call.execute();
 
 
@@ -1141,12 +1147,12 @@ bool Tests::testNodeFunction(void)
 			new NodeUnaryReturn(
 				new NodeValue(new ValueInt(5))
 			),
-			CodePosition(STR2ID("unittest"), 0)
+			new CodePosition(STR2ID("unittest"), 0)
 		);
 
 	CONTEXT.addFunction(freturn);
 
-	NodeFunctionCall freturn_call(freturn_id, NULL, CodePosition(STR2ID("unittest"), 0));
+	NodeFunctionCall freturn_call(freturn_id, NULL, new CodePosition(STR2ID("unittest"), 0));
 	str = freturn_call.execute()->toString();
 	verify(str == "5");
 
@@ -1173,10 +1179,10 @@ bool Tests::testNodeFunction(void)
 	);
 
 	NodeFunction* freturn_local = new NodeFunctionScript(freturn_local_id,
-		new list<identifier>(), body, CodePosition(STR2ID("unittest"), 0));
+		new list<identifier>(), body, new CodePosition(STR2ID("unittest"), 0));
 	CONTEXT.addFunction(freturn_local);
 
-	NodeFunctionCall freturn_local_call(freturn_local_id, NULL, CodePosition(STR2ID("unittest"), 0));
+	NodeFunctionCall freturn_local_call(freturn_local_id, NULL, new CodePosition(STR2ID("unittest"), 0));
 	str = freturn_local_call.execute()->toString();
 	verify(str == "10");
 
@@ -1217,19 +1223,19 @@ bool Tests::testNodeFunction(void)
 						new NodeFunctionCall(
 							factorial_id,
 							params,
-							CodePosition(STR2ID("unittest"), 0)
+							new CodePosition(STR2ID("unittest"), 0)
 						)
 					)
 				)
 			),
-			CodePosition(STR2ID("unittest"), 0)
+			new CodePosition(STR2ID("unittest"), 0)
 		);
 
 	CONTEXT.addFunction(factorial);
 
 	NodeFunctionCall factorial_call(factorial_id,
 		new NodeBlock(new NodeValue(new ValueInt(4))),
-		CodePosition(STR2ID("unittest"), 0));
+		new CodePosition(STR2ID("unittest"), 0));
 
 	str = factorial_call.execute()->toString();
 	verify(str == "24");

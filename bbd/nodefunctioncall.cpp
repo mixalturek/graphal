@@ -30,19 +30,22 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-NodeFunctionCall::NodeFunctionCall(identifier name, NodeBlock* parameters, const CodePosition& pos)
+NodeFunctionCall::NodeFunctionCall(identifier name, NodeBlock* parameters, CodePosition* pos)
 	: Node(),
 	m_name(name),
 	m_parameters((parameters != NULL) ? parameters : new NodeBlock()),
 	m_position(pos)
 {
-
+	assert(pos != NULL);
 }
 
 NodeFunctionCall::~NodeFunctionCall()
 {
 	delete m_parameters;
 	m_parameters = NULL;
+
+	delete m_position;
+	m_position = NULL;
 }
 
 
@@ -55,7 +58,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 
 	if(function == NULL)
 	{
-		ERROR << _("Function ") << ID2STR(m_name) << _("() has not been defined") << endl;
+		ERROR_P(_("Function ") + ID2STR(m_name) + _("() has not been defined"));
 		return VALUENULL;
 	}
 
@@ -96,9 +99,11 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 	}
 	else
 	{
-		ERROR << _("Wrong number of parameters was passed to function ")
-			<< ID2STR(m_name) << "(" << names << _("), declared at ")
-			<< function->declarationPos() << endl;
+		stringstream ss;
+		ss << ID2STR(m_name) << _("(") << names << _(")");
+		ERROR_P(_("Wrong number of parameters was passed to the function"));
+		ERROR_PP(function->declarationPos(), ss.str());
+
 		return VALUENULL;
 	}
 

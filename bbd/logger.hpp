@@ -20,75 +20,43 @@
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
+#include <sstream>
 #include "general.hpp"
 #include "baseobject.hpp"
-#include "context.hpp"
+#include "objectcreator.hpp"
 
-#define ERROR Logger::getInstance().errorPos()
-#define WARN Logger::getInstance().warnPos()
-#define ERROR_S Logger::getInstance().error()
-#define WARN_S Logger::getInstance().warn()
-#define INFO Logger::getInstance().info()
-#define DBG Logger::getInstance().debug()
-#define SCRIPT_STDOUT Logger::getInstance().script_stdout()
+#define ERROR_P(str) ObjectCreator::getInstance().getLogger()->errorPos(str)
+#define WARN_P(str) ObjectCreator::getInstance().getLogger()->warnPos(str)
+#define ERROR_PP(pos, str) ObjectCreator::getInstance().getLogger()->errorPos((pos), (str))
+#define WARN_PP(pos, str) ObjectCreator::getInstance().getLogger()->warnPos((pos), (str))
+#define ERROR(str) ObjectCreator::getInstance().getLogger()->error(str)
+#define WARN(str) ObjectCreator::getInstance().getLogger()->warn(str)
+#define INFO(str) ObjectCreator::getInstance().getLogger()->info(str)
+#define SCRIPT_STDOUT(str) ObjectCreator::getInstance().getLogger()->scriptStdout(str)
 
-// Singleton
+
 class Logger : public BaseObject
 {
 public:
-	static inline Logger& getInstance(void)
-	{
-		return m_instance;
-	}
-
-	ostream& errorPos(void)
-	{
-		return cerr << _("[e] ") << CONTEXT.getPosition().toString() << ": ";
-	}
-
-	ostream& warnPos(void)
-	{
-		return cerr << _("[w] ") << CONTEXT.getPosition().toString() << ": ";
-	}
-
-	ostream& error(void)
-	{
-		return cerr << _("[e] ");
-	}
-
-	ostream& warn(void)
-	{
-		return cerr << _("[w] ");
-	}
-
-	ostream& info(void)
-	{
-		return cerr << _("[i] ");
-	}
-
-	ostream& debug(void)
-	{
-		return cerr << _("[d] ");
-	}
-
-	ostream& script_stdout(void)
-	{
-		return cout;
-	}
-
-	virtual void dump(ostream& os, uint indent) const;
-
-private:
-	static Logger m_instance;
-
-private:
 	Logger(void);
-	~Logger(void);
+	virtual ~Logger(void);
 
+public:
+	virtual void error(const string& str) = 0;
+	virtual void errorPos(const string& str) = 0;
+	virtual void errorPos(const string& pos, const string& str) = 0;
+
+	virtual void warn(const string& str) = 0;
+	virtual void warnPos(const string& str) = 0;
+	virtual void warnPos(const string& pos, const string& str) = 0;
+
+	virtual void info(const string& str) = 0;
+
+	virtual void scriptStdout(const string& str) = 0;
+
+private:
 	Logger(const Logger& object);
 	Logger& operator=(const Logger& object);
 };
-
-ostream& operator<<(ostream& os, const Logger& node);
 
 #endif

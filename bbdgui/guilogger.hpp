@@ -18,26 +18,43 @@
  */
 
 
-#ifndef OBJECTFACTORY_HPP
-#define OBJECTFACTORY_HPP
+#ifndef GUILOGGER_HPP
+#define GUILOGGER_HPP
 
 #include "general.hpp"
-#include "baseobject.hpp"
-
-class Logger;
+#include "logger.hpp"
 
 
-class ObjectFactory : public BaseObject
+class GuiLogger : public Logger
 {
+	Q_OBJECT
+
 public:
-	ObjectFactory(void);
-	virtual ~ObjectFactory(void);
+	GuiLogger(void);
+	virtual ~GuiLogger(void);
 
-	virtual Logger* newLogger(void) const = 0;
+	virtual void dump(ostream& os, uint indent) const;
 
-private:
-	ObjectFactory(const ObjectFactory& object);
-	ObjectFactory& operator=(const ObjectFactory& object);
+public:
+	virtual void error(const string& str);
+	virtual void errorPos(const string& str);
+	virtual void errorPos(const string& pos, const string& str);
+
+	virtual void warn(const string& str);
+	virtual void warnPos(const string& str);
+	virtual void warnPos(const string& pos, const string& str);
+
+	virtual void info(const string& str);
+
+	virtual void scriptStdout(const string& str);
+
+signals:
+	void error(const QString& str);
+	void error(const QString& pos, const QString& str);
+	void warn(const QString& str);
+	void warn(const QString& pos, const QString& str);
+	void info(const QString& str);
+	void scriptStdout(const QString& str);
 };
 
-#endif // OBJECTFACTORY_HPP
+#endif // GUILOGGER_HPP

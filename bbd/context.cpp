@@ -43,7 +43,7 @@ Context::Context()
 	m_local_variables(),
 	m_global_variables(),
 	m_call_stack(),
-	m_position(STR2ID("nofile"), 0),
+	m_position(NULL),// TODO: is OK?
 	m_stringtable(),
 	m_include_dirs()
 {
@@ -99,7 +99,7 @@ void Context::printStackTrace() const
 {
 	deque<identifier>::const_iterator it;
 	for(it = m_call_stack.begin(); it != m_call_stack.end(); it++)
-		SCRIPT_STDOUT << ID2STR(*it) << "()" << endl;
+		SCRIPT_STDOUT(ID2STR(*it) + _("()\n"));
 }
 
 
@@ -223,10 +223,11 @@ void Context::addFunction(NodeFunction* function)
 
 	if(!ret.second)
 	{
-		WARN << _("Function has been already defined: ")
-			<< ID2STR(function->getName()) << _("() at ")
-			<< ret.first->second->declarationPos() << endl;
+		WARN_PP(function->declarationPos(), _("Function ") + ID2STR(function->getName()) + _("() has been already defined, redefinition ignored"));
+		WARN_PP(ret.first->second->declarationPos(), ID2STR(function->getName()) + _("()"));
+
 		delete function;
+		function = NULL;
 	}
 }
 
@@ -265,12 +266,13 @@ int Context::executeScriptMain(int argc, char** argv)
 	NodeFunction* maintest = getFunction(getStringTable()->getID("main"));
 	if(maintest == NULL)
 	{
-		ERROR_S << _("Function main(argv) has not been defined in the script, exiting") << endl;
+		ERROR(_("Function main(argv) has not been defined in the script, exiting"));
 		return 1;
 	}
 	else if(maintest->getNumberOfParameters() != 1)
 	{
-		ERROR_S << maintest->declarationPos() << _(": Function main(argv) expects one parameter, exiting") << endl;
+		ERROR_PP(maintest->declarationPos(),
+			_("Function main(argv) does not expect one parameter, exiting"));
 		return 1;
 	}
 
@@ -282,29 +284,32 @@ int Context::executeScriptMain(int argc, char** argv)
 
 	NodeFunctionCall main(getStringTable()->getID("main"),
 		new NodeBlock(new NodeValue(argv_array)),
-		CodePosition(STR2ID("script enter"), 0));
+		new CodePosition(STR2ID("script enter"), 0));
 
-	INFO << _("*** ENTERING SCRIPT MAIN ***") << endl;
+	INFO(_("*** ENTERING SCRIPT MAIN ***"));
 
 	try
 	{
 		CountPtr<Value> main_retval = main.execute();
-		INFO << _("*** EXITING SCRIPT MAIN, OK ***") << endl;
-		INFO << _("Return value: ") << main_retval->toString() << endl;
+		INFO(_("*** EXITING SCRIPT MAIN, OK ***"));
+		INFO(_("Return value: ") + main_retval->toString());
 	}
-	catch(ExitValue& ex)
+	catch(ExitValue* ex)
 	{
-		INFO << _("*** EXITING SCRIPT MAIN, OK ***") << endl;
-		INFO << _("Exit value: ") << ex.getValue()->toString() << endl;
+		INFO(_("*** EXITING SCRIPT MAIN, OK ***"));
+		INFO( _("Exit value: ") + ex->getValue()->toString());
+
+		delete ex;
+		ex = NULL;
 	}
 	catch(runtime_error& ex)
 	{
-		WARN << "Runtime error: " << ex.what() << endl;
+		ERROR_P(string(_("Runtime error: ")) + ex.what());
 		return 1;
 	}
 	catch(...)
 	{
-		WARN << "Unexpected exception was thrown from the script!" << endl;
+		ERROR_P(_("Unexpected exception was thrown from the script!"));
 		return 1;
 	}
 

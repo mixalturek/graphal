@@ -33,7 +33,7 @@ public:
 
 	void dump(ostream& os, uint indent) const;
 
-private:
+	virtual Logger* newLogger(void) const;
 };
 
 #endif // CLIFACTORY_HPP

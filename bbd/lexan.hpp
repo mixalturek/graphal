@@ -46,6 +46,7 @@ public:
 
 	inline identifier getFile(void) const { return m_source.empty() ? 0 : m_source.top()->getFile(); }
 	inline uint getLine(void) const { return m_source.empty() ? 0 : m_source.top()->getLine(); }
+	string getPosition(void) const;
 
 	void setCurrentlyProcessedFunction(identifier name) { m_currently_processed_function = name; }
 

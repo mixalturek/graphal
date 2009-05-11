@@ -17,9 +17,6 @@
  *      MA 02110-1301, USA.
  */
 
-// TODO: delete
-#include <iostream>
-using namespace std;
 
 #include "scriptthread.h"
 #include "context.hpp"
@@ -52,5 +49,5 @@ void ScriptThread::run(void)
 	if(parseCode(m_scriptFilename.toStdString()) == 0)
 		CONTEXT.executeScriptMain(0, NULL);
 	else
-		ERROR_S << _("Error while parsing") << endl;
+		ERROR(_("Error while parsing"));
 }

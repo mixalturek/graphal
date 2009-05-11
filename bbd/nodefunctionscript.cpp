@@ -31,18 +31,21 @@
 ////
 
 NodeFunctionScript::NodeFunctionScript(identifier name, list<identifier>* parameters,
-		Node* block, const CodePosition& pos)
+		Node* block, CodePosition* pos)
 	: NodeFunction(name, parameters),
 	m_block((block != NULL) ? block : new NodeEmptyCommand()),
 	m_position(pos)
 {
-
+	assert(m_position != NULL);
 }
 
 NodeFunctionScript::~NodeFunctionScript()
 {
 	delete m_block;
 	m_block = NULL;
+
+	delete m_position;
+	m_position = NULL;
 }
 
 
@@ -70,11 +73,11 @@ CountPtr<Value> NodeFunctionScript::execute(void)
 	}
 	catch(NodeJumpContinue* ex)
 	{
-		WARN << "Continue command occured outside of a loop." << endl;
+		WARN_P(_("Continue occured outside of a loop"));
 	}
 	catch(NodeJumpBreak* ex)
 	{
-		WARN << "Break command occured outside of a loop." << endl;
+		WARN_P(_("Break occured outside of a loop"));
 	}
 
 	return VALUENULL;

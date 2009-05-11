@@ -29,17 +29,17 @@
 class NodeFunctionScript : public NodeFunction
 {
 public:
-	NodeFunctionScript(identifier name, list<identifier>* parameters, Node* block, const CodePosition& pos);
+	NodeFunctionScript(identifier name, list<identifier>* parameters, Node* block, CodePosition* pos);
 	virtual ~NodeFunctionScript();
 
 	virtual CountPtr<Value> execute(void);
 	virtual void dump(ostream& os, uint indent) const;
 
-	virtual string declarationPos(void) const { return m_position.toString(); }
+	virtual string declarationPos(void) const { return m_position->toString(); }
 
 private:
 	Node* m_block;
-	CodePosition m_position;
+	CodePosition* m_position;
 };
 
 ostream& operator<<(ostream& os, const NodeFunctionScript& node);

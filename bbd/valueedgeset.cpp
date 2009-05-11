@@ -62,7 +62,7 @@ void ValueEdgeSet::addEdge(ValueEdge* edge)
 	if(m_graph == edge->getGraph())
 		m_edges.insert(edge);
 	else
-		WARN << _("Edge belongs to the different graph than EdgeSet");
+		WARN_P(_("Edge belongs to the different graph than EdgeSet"));
 }
 
 void ValueEdgeSet::deleteEdge(ValueEdge* edge)
@@ -110,7 +110,7 @@ CountPtr<Value> ValueEdgeSet::getUnion(const ValueEdgeSet& es) const
 {
 	if(m_graph != es.m_graph)
 	{
-		WARN << _("EdgeSet belong to the different graph");
+		WARN_P(_("EdgeSet belongs to the different graph"));
 		return VALUENULL;
 	}
 
@@ -131,7 +131,7 @@ CountPtr<Value> ValueEdgeSet::getIntersection(const ValueEdgeSet& es) const
 {
 	if(m_graph != es.m_graph)
 	{
-		WARN << _("EdgeSet belong to the different graph");
+		WARN_P(_("EdgeSet belongs to the different graph"));
 		return VALUENULL;
 	}
 
@@ -152,7 +152,7 @@ CountPtr<Value> ValueEdgeSet::getDifference(const ValueEdgeSet& es) const
 {
 	if(m_graph != es.m_graph)
 	{
-		WARN << _("EdgeSet belong to the different graph");
+		WARN_P(_("EdgeSet belongs to the different graph"));
 		return VALUENULL;
 	}
 

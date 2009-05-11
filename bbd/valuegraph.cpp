@@ -73,7 +73,7 @@ ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end)
 {
 	if(!(begin->getGraph() == this && end->getGraph() == this))
 	{
-		WARN << _("Vertex belongs to the different graph");
+		WARN_P(_("Vertex belongs to the different graph"));
 		return NULL;
 	}
 

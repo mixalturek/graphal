@@ -62,7 +62,7 @@ void ValueVertexSet::addVertex(ValueVertex* vertex)
 	if(m_graph == vertex->getGraph())
 		m_vertices.insert(vertex);
 	else
-		WARN << _("Vertex belongs to the different graph than VertexSet");
+		WARN_P(_("Vertex belongs to the different graph than VertexSet"));
 }
 
 void ValueVertexSet::deleteVertex(ValueVertex* vertex)
@@ -110,7 +110,7 @@ CountPtr<Value> ValueVertexSet::getUnion(const ValueVertexSet& vs) const
 {
 	if(m_graph != vs.m_graph)
 	{
-		WARN << _("VertexSet belong to the different graph");
+		WARN_P(_("VertexSet belongs to the different graph"));
 		return VALUENULL;
 	}
 
@@ -130,7 +130,7 @@ CountPtr<Value> ValueVertexSet::getIntersection(const ValueVertexSet& vs) const
 {
 	if(m_graph != vs.m_graph)
 	{
-		WARN << _("VertexSet belong to the different graph");
+		WARN_P(_("VertexSet belongs to the different graph"));
 		return VALUENULL;
 	}
 
@@ -151,7 +151,7 @@ CountPtr<Value> ValueVertexSet::getDifference(const ValueVertexSet& vs) const
 {
 	if(m_graph != vs.m_graph)
 	{
-		WARN << _("VertexSet belong to the different graph");
+		WARN_P(_("VertexSet belongs to the different graph"));
 		return VALUENULL;
 	}
 

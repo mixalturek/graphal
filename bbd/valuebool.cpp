@@ -90,7 +90,7 @@ PTR_Value ValueBool::div(const ValueBool& left)    const
 {
 	if(m_val == 0)
 	{
-		WARN << _("Division by zero") << endl;
+		WARN_P(_("Division by zero"));
 		return VALUENULL;
 	}
 	else
@@ -103,7 +103,7 @@ PTR_Value ValueBool::div(const ValueInt& left)     const
 {
 	if(m_val == 0)
 	{
-		WARN << _("Division by zero") << endl;
+		WARN_P(_("Division by zero"));
 		return VALUENULL;
 	}
 	else
@@ -116,7 +116,7 @@ PTR_Value ValueBool::div(const ValueFloat& left)   const
 {
 	if(m_val == 0)
 	{
-		WARN << _("Division by zero") << endl;
+		WARN_P(_("Division by zero"));
 		return VALUENULL;
 	}
 	else
@@ -132,7 +132,7 @@ PTR_Value ValueBool::mod(const ValueBool& left)    const
 {
 	if(m_val == 0)
 	{
-		WARN << _("Division (modulo) by zero") << endl;
+		WARN_P(_("Division (modulo) by zero"));
 		return VALUENULL;
 	}
 	else
@@ -145,7 +145,7 @@ PTR_Value ValueBool::mod(const ValueInt& left)     const
 {
 	if(m_val == 0)
 	{
-		WARN << _("Division (modulo) by zero") << endl;
+		WARN_P(_("Division (modulo) by zero"));
 		return VALUENULL;
 	}
 	else
@@ -156,7 +156,7 @@ PTR_Value ValueBool::mod(const ValueInt& left)     const
 
 PTR_Value ValueBool::mod(const ValueFloat& /* left */)   const
 {
-	WARN << _("Invalid operands of types float and bool to modulo operator") << endl;
+	WARN_P(_("Invalid operands of types float and bool to modulo operator"));
 	return VALUENULL;
 }
 
@@ -211,8 +211,11 @@ PTR_Value ValueBool::index(const ValueString& left) const
 		return PTR_Value(new ValueString(char2string(left.getVal()[m_val])));
 	else
 	{
-		WARN << _("Index out of bounds (size: ") << left.getVal().length()
-			<< _(", index: ") << m_val << ")" << endl;
+		stringstream ss;
+		ss << _("Index out of bounds (size: ") << left.getVal().length()
+			<< _(", index: ") << m_val << ")";
+		WARN_P(ss.str());
+
 		return VALUENULL;
 	}
 }

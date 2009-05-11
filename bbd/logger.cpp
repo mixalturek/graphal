@@ -36,15 +36,3 @@ Logger::~Logger(void)
 
 /////////////////////////////////////////////////////////////////////////////
 ////
-
-void Logger::dump(ostream& os, uint indent) const
-{
-	dumpIndent(os, indent);
-	os << "<Logger />" << endl;
-}
-
-ostream& operator<<(ostream& os, const Logger& node)
-{
-	node.dump(os, 0);
-	return os;
-}

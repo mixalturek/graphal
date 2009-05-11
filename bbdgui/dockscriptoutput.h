@@ -35,8 +35,13 @@ public:
 
 public slots:
 	void clear(void) { m_textEdit->clear(); }
+
+	void error(const QString& str);
+	void error(const QString& pos, const QString& str);
+	void warn(const QString& str);
+	void warn(const QString& pos, const QString& str);
+	void info(const QString& str);
 	void scriptStdout(const QString& str);
-	void scriptStderr(const QString& str);
 
 private:
 	QTextBrowser* m_textEdit;

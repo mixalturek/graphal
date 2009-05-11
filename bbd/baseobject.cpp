@@ -30,6 +30,9 @@
 ////
 
 BaseObject::BaseObject()
+#ifdef QTGUI
+	: QObject()
+#endif // QTGUI
 {
 #ifdef CHECK_MEMORY_LEAKS
 	m_allocated_objects.insert(this);
@@ -50,7 +53,9 @@ BaseObject::~BaseObject()
 void BaseObject::printMemoryLeaks(uint number_of_static_objects)
 {
 	uint num_of_leaks = m_allocated_objects.size() - number_of_static_objects;
-	INFO << "Number of memory leaks: " << num_of_leaks << endl;
+	stringstream ss;
+	ss << "Number of memory leaks: " << num_of_leaks;
+	INFO(ss.str());
 
 	if(num_of_leaks == 0)
 		return;
@@ -59,7 +64,11 @@ void BaseObject::printMemoryLeaks(uint number_of_static_objects)
 	// (ie. ValueStruct::m_notfound)
 	set<BaseObject*>::const_iterator it;
 	for(it = m_allocated_objects.begin(); it != m_allocated_objects.end(); it++)
-		ERROR_S << *it << ", " << typeid(**it).name() << endl;
+	{
+		ss.clear();
+		ss << *it << ", " << typeid(**it).name();
+		ERROR(ss.str());
+	}
 }
 #endif // CHECK_MEMORY_LEAKS
 

@@ -71,8 +71,8 @@ public:
 	void addIncludeDirectory(const string& directory);
 	string getIncludeFullPath(const string& filename) const;
 
-	void setPosition(const CodePosition& pos) { m_position = pos; }
-	const CodePosition& getPosition(void) const { return m_position; }
+	void setPosition(CodePosition* pos) { m_position = pos; }
+	const CodePosition* getPosition(void) const { return m_position; }
 
 private:
 	Context(void);
@@ -87,7 +87,7 @@ private:
 	deque< map<identifier, CountPtr<Value> > > m_local_variables;
 	map<identifier, CountPtr<Value> > m_global_variables;
 	deque<identifier> m_call_stack;
-	CodePosition m_position;
+	CodePosition* m_position;
 	StringTable m_stringtable;
 
 	set<string> m_include_dirs;

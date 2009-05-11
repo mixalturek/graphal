@@ -179,7 +179,7 @@ my $funcdecl;
 $funcdecl = 'echo(object) : object';
 
 $code = <<END_OF_CODE;
-	SCRIPT_STDOUT << par[0]->toString();
+	SCRIPT_STDOUT(par[0]->toString());
 	return par[0];
 END_OF_CODE
 genBFClass('echo', 'NodeBuiltinEcho', 1, $code);
@@ -191,7 +191,7 @@ genBFClass('echo', 'NodeBuiltinEcho', 1, $code);
 $funcdecl = 'dump(object) : object';
 
 $code = <<END_OF_CODE;
-	par[0]->dump(SCRIPT_STDOUT, 0);
+	par[0]->dump(cout, 0);// TODO: GUI???
 	return par[0];
 END_OF_CODE
 genBFClass('dump', 'NodeBuiltinDump', 1, $code);
@@ -207,7 +207,7 @@ $include = <<END_OF_CODE;
 END_OF_CODE
 
 $code = <<END_OF_CODE;
-	throw ExitValue(par[0]);
+	throw new ExitValue(par[0]);
 
 	// It will never be called
 	return VALUENULL;
@@ -245,7 +245,7 @@ END_OF_CODE
 $code = <<END_OF_CODE;
 	if(!par[0]->toBool())
 	{
-		WARN << _("Verify: Operation was not successful") << endl;
+		WARN_P(_("Verify: Operation was not successful"));
 		return VALUEBOOL_FALSE;
 	}
 
@@ -266,7 +266,8 @@ END_OF_CODE
 $code = <<END_OF_CODE;
 	if(par[0]->toBool())
 	{
-		WARN << "Breakpoint, press any key... ";
+		// TODO: GUI
+		WARN_P(_("Breakpoint, press any key... "));
 		getchar();
 	}
 
@@ -552,7 +553,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(new ValueArray((uint)f->getVal()));
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -588,7 +589,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(new ValueInt(s->getSize()));
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -614,7 +615,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -640,7 +641,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -666,7 +667,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -692,7 +693,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -715,7 +716,7 @@ $code = <<END_OF_CODE;
 		return a->back();
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -738,7 +739,7 @@ $code = <<END_OF_CODE;
 		return a->front();
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -770,7 +771,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(new ValueVertexSet(g));
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -794,7 +795,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(new ValueEdgeSet(g));
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -818,7 +819,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>((g->isOriented()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -849,13 +850,13 @@ $code = <<END_OF_CODE;
 			return CountPtr<Value>((g->setOriented(i->getVal())) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 		else
 		{
-			WARN << _("Bad parameters type: $funcdecl") << endl;
+			WARN_P(_("Bad parameters type: $funcdecl"));
 			return VALUENULL;
 		}
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -881,7 +882,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -909,7 +910,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -944,7 +945,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -979,7 +980,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1014,7 +1015,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1042,7 +1043,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(new ValueInt(vs->getNumVertices()));
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1070,7 +1071,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(new ValueInt(es->getNumEdges()));
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1093,7 +1094,7 @@ $code = <<END_OF_CODE;
 		return g->getVertices();
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1116,7 +1117,7 @@ $code = <<END_OF_CODE;
 		return g->getEdges();
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1140,7 +1141,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(new ValueInt(v->getDegree()));
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1164,7 +1165,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>(v->getNeighbors());
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1192,7 +1193,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1220,7 +1221,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1257,7 +1258,7 @@ $code = <<END_OF_CODE;
 	}
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1293,7 +1294,7 @@ $code = <<END_OF_CODE;
 			return CountPtr<Value>((g->contains(e)) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 		else
 		{
-			WARN << _("Bad parameters type: $funcdecl") << endl;
+			WARN_P(_("Bad parameters type: $funcdecl"));
 			return VALUENULL;
 		}
 	}
@@ -1303,7 +1304,7 @@ $code = <<END_OF_CODE;
 		return CountPtr<Value>((es->contains(e)) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1332,7 +1333,7 @@ $code = <<END_OF_CODE;
 		return es1->getUnion(*es2);
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1361,7 +1362,7 @@ $code = <<END_OF_CODE;
 		return es1->getIntersection(*es2);
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
@@ -1390,7 +1391,7 @@ $code = <<END_OF_CODE;
 		return es1->getDifference(*es2);
 	else
 	{
-		WARN << _("Bad parameters type: $funcdecl") << endl;
+		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE

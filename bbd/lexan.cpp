@@ -26,9 +26,6 @@
 #include "context.hpp"
 
 
-#define POSITION ID2STR(m_source.top()->getFile()) << ":" << m_source.top()->getLine() << ": "
-
-
 /////////////////////////////////////////////////////////////////////////////
 ////
 
@@ -158,14 +155,14 @@ bool Lexan::expandMacro(void)
 {
 	map<identifier, string>::iterator it = m_defines.find(STR2ID(m_string));
 
-    if(it != m_defines.end())
-    {
-//		DBG << POSITION << _("Expanding macro: ") << ID2STR(it->first) << endl;
+	if(it != m_defines.end())
+	{
+//		DBG << getPosition() << _("Expanding macro: ") << ID2STR(it->first) << endl;
 		m_source.push(new LexanIteratorString(getFile(), getLine(), it->first, it->second));
 		return true;// Macro expanded
-    }
+	}
 
-    return false;// It wasn't a macro
+	return false;// It wasn't a macro
 }
 
 
@@ -223,6 +220,8 @@ LEXTOKEN Lexan::nextToken(void)
 	float float_dms = 0.1;	// Multiplier of float number (after point)
 	int exp = 0;		// Exponent
 	int exp_sign = 1;	// 1 or -1
+
+	stringstream ss;
 
 
 	while(true)
@@ -357,8 +356,10 @@ LEXTOKEN Lexan::nextToken(void)
 				break;
 			}
 
-			ERROR_S << POSITION << _("Unexpected character: '")
-				<< (char)c << "' (ascii " << c << ")" << endl;
+			ss.clear();
+			ss << _("Unexpected character: '")
+				<< (char)c << "' (ascii " << c << ")";
+			ERROR_PP(getPosition(), ss.str());
 
 			return LEX_ERROR;
 
@@ -393,9 +394,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_S << POSITION
-					<< _("Unexpected end of source: unterminated /* c-style */ comment")
-					<< endl;
+				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated /* c-style */ comment"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -426,9 +425,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_S << POSITION
-					<< _("Unexpected end of source: unterminated /* c-style */ comment")
-					<< endl;
+				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated /* c-style */ comment"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -465,16 +462,12 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c == '\n')
 			{
 				m_source.top()->incLine();
-				ERROR_S << POSITION
-					<< _("Unexpected end of line: unterminated \"string\" constant")
-					<< endl;
+				ERROR_PP(getPosition(), _("Unexpected end of line: unterminated \"string\" constant"));
 				return LEX_ERROR;
 			}
 			if(c == EOF)
 			{
-				ERROR_S << POSITION
-					<< _("Unexpected end of source: unterminated \"string\" constant")
-					<< endl;
+				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -562,9 +555,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == '\r')// Trash MS Windows \r
 			{
-				WARN_S << POSITION
-					<< _("Detected \\r character (CR, 13 in ascii) in string escape sequence after backslash. This would be without problem if you want to use multiline string here and your script uses CR-LF style of line ending (common for text editors under MS Windows)")
-					<< endl;
+				WARN_PP(getPosition(), _("Detected \\r character (CR, 13 in ascii) in string escape sequence after backslash. This would be without problem if you want to use multiline string here and your script uses CR-LF style of line ending (common for text editors under MS Windows)"));
 
 				// Stay in this state and hope \n will continue
 				break;
@@ -577,9 +568,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_S << POSITION
-					<< _("Unexpected end of source: unterminated \"string\" constant")
-					<< endl;
+				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -588,9 +577,10 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_ERROR;
 			}
 
-			WARN_S << POSITION
-				<< _("Unrecognized escape sequence in \"string\" constant: '")
-				<< (char)c << "' (ascii " << c << ")" << endl;
+			ss.clear();
+			ss << _("Unrecognized escape sequence in \"string\" constant: '")
+				<< (char)c << "' (ascii " << c << ")";
+			WARN_PP(getPosition(), ss.str());
 
 			m_string += '\\';
 			m_string += c;
@@ -613,9 +603,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_S << POSITION
-					<< _("Unexpected end of source: unterminated \"string\" constant")
-					<< endl;
+				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -624,9 +612,10 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_ERROR;
 			}
 
-			WARN_S << POSITION
-				<< _("Character is not valid in \"string\" HEX escape sequence context: '")
-				<< (char)c << "' (ascii " << c << ")" << endl;
+			ss.clear();
+			ss << _("Character is not valid in \"string\" HEX escape sequence context: '")
+				<< (char)c << "' (ascii " << c << ")";
+			WARN_PP(getPosition(), ss.str());
 
 			m_string += "\\x";
 			unget();
@@ -653,9 +642,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_S << POSITION
-					<< _("Unexpected end of source: unterminated \"string\" constant")
-					<< endl;
+				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -664,9 +651,10 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_ERROR;
 			}
 
-			WARN_S << POSITION
-				<< _("Character is not valid in \"string\" HEX escape sequence context: '")
-				<< (char)c << "' (ascii " << c << ")" << endl;
+			ss.clear();
+			ss << _("Character is not valid in \"string\" HEX escape sequence context: '")
+				<< (char)c << "' (ascii " << c << ")";
+			WARN_PP(getPosition(), ss.str());
 
 			m_string += "\\x";
 			m_string += (m_int < 10) ? '0' + m_int : 'a' + m_int - 10;
@@ -684,9 +672,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_S << POSITION
-					<< _("Unexpected end of source: unterminated \"string\" constant")
-					<< endl;
+				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -695,9 +681,10 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_ERROR;
 			}
 
-			WARN_S << POSITION
-				<< _("Character is not valid in \"string\" OCT escape sequence context: '")
-				<< (char)c << "' (ascii " << c << ")" << endl;
+			ss.clear();
+			ss << _("Character is not valid in \"string\" OCT escape sequence context: '")
+				<< (char)c << "' (ascii " << c << ")";
+			WARN_PP(getPosition(), ss.str());
 
 			m_string += '\\';
 			m_string += '0' + m_int;
@@ -713,9 +700,7 @@ LEXTOKEN Lexan::nextToken(void)
 
 				if(m_int > 255)
 				{
-					WARN_S << POSITION
-						<< _("The value of \"string\" OCT escape sequence is too big ( > 0377)")
-						<< endl;
+					WARN_PP(getPosition(), _("The value of \"string\" OCT escape sequence is too big ( > 0377)"));
 
 					m_string += '\\';
 					m_string += '0' + (m_int>>6);
@@ -732,9 +717,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_S << POSITION
-					<< _("Unexpected end of source: unterminated \"string\" constant")
-					<< endl;
+				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -743,9 +726,10 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_ERROR;
 			}
 
-			WARN_S << POSITION
-				<< _("Character is not valid in \"string\" OCT escape sequence context: '")
-				<< (char)c << "' (ascii " << c << ")" << endl;
+			ss.clear();
+			ss << _("Character is not valid in \"string\" OCT escape sequence context: '")
+				<< (char)c << "' (ascii " << c << ")";
+			WARN_PP(getPosition(), ss.str());
 
 			m_string += '\\';
 			m_string += '0' + (m_int>>3);
@@ -787,9 +771,10 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c >= '8' && c <= '9')
 			{
-				ERROR_S << POSITION
-					<< _("This number is not valid in \"string\" OCT escape sequence context: '")
-					<< (char)c << "' (ascii " << c << ")" << endl;
+				ss.clear();
+				ss << _("This number is not valid in \"string\" OCT escape sequence context: '")
+					<< (char)c << "' (ascii " << c << ")";
+				ERROR_PP(getPosition(), ss.str());
 
 				return LEX_ERROR;
 			}
@@ -819,9 +804,11 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c >= '8' && c <= '9')
 			{
-				ERROR_S << POSITION
-					<< _("This number is not valid in \"string\" OCT escape sequence context: '")
-					<< (char)c << "' (ascii " << c << ")" << endl;
+				ss.clear();
+				ss << _("This number is not valid in \"string\" OCT escape sequence context: '")
+					<< (char)c << "' (ascii " << c << ")";
+				ERROR_PP(getPosition(), ss.str());
+
 				return LEX_ERROR;
 			}
 
@@ -993,9 +980,12 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_REF_ASSIGN;
 
 			unget();
-			ERROR_S << POSITION
-				<< _("Unexpected character, this is not operator && nor &=: '")
-				<< (char)c << "' (ascii " << c << ")" << endl;
+
+			ss.clear();
+			ss << _("Unexpected character, this is not operator && nor &=: '")
+				<< (char)c << "' (ascii " << c << ")";
+			ERROR_PP(getPosition(), ss.str());
+
 			return LEX_ERROR;
 
 		case ST_OP_OR:
@@ -1003,9 +993,11 @@ LEXTOKEN Lexan::nextToken(void)
 				return LEX_OR_OP;
 
 			unget();
-			ERROR_S << POSITION
-				<< _("Unexpected character, this is not operator ||: '")
-				<< (char)c << "' (ascii " << c << ")" << endl;
+
+			ss.clear();
+			ss << _("Unexpected character, this is not operator ||: '")
+				<< (char)c << "' (ascii " << c << ")";
+			ERROR_PP(getPosition(), ss.str());
 
 			return LEX_ERROR;
 
@@ -1027,15 +1019,13 @@ void Lexan::parseInclude(void)
 
 	if(nextToken() != LEX_LPA)
 	{
-		ERROR_S << POSITION
-			<< _("Left parenthesis '(' expected") << endl;
+		ERROR_PP(getPosition(), _("Left parenthesis '(' expected"));
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
 	if(nextToken() != LEX_STRING)
 	{
-		ERROR_S << POSITION
-			<< _("String constant expected") << endl;
+		ERROR_PP(getPosition(), _("String constant expected"));
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
@@ -1043,22 +1033,20 @@ void Lexan::parseInclude(void)
 
 	if(nextToken() != LEX_RPA)
 	{
-		ERROR_S << POSITION
-			<< _("Right parenthesis ')' expected") << endl;
+		ERROR_PP(getPosition(), _("Right parenthesis ')' expected"));
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
 	if(nextToken() != LEX_SEMICOLON)
 	{
-		ERROR_S << POSITION
-			<< _("Semicolon ';' expected") << endl;
+		ERROR_PP(getPosition(), _("Semicolon ';' expected"));
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
 
 	string tmp = CONTEXT.getIncludeFullPath(filename);
 
-//	DBG << POSITION << "Including " << tmp << endl;
+//	DBG << getPosition() << "Including " << tmp << endl;
 
 	m_source.push(new LexanIteratorFile(tmp));
 }
@@ -1070,15 +1058,13 @@ void Lexan::parseDefine(void)
 
 	if(nextToken() != LEX_LPA)
 	{
-		ERROR_S << POSITION
-			<< _("Left parenthesis '(' expected") << endl;
+		ERROR_PP(getPosition(), _("Left parenthesis '(' expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	if(nextToken() != LEX_STRING)
 	{
-		ERROR_S << POSITION
-			<< _("String constant expected") << endl;
+		ERROR_PP(getPosition(), _("String constant expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
@@ -1086,15 +1072,13 @@ void Lexan::parseDefine(void)
 
 	if(nextToken() != LEX_COMMA)
 	{
-		ERROR_S << POSITION
-			<< _("Comma ',' expected") << endl;
+		ERROR_PP(getPosition(), _("Comma ',' expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	if(nextToken() != LEX_STRING)
 	{
-		ERROR_S << POSITION
-			<< _("String constant expected") << endl;
+		ERROR_PP(getPosition(), _("String constant expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
@@ -1102,27 +1086,32 @@ void Lexan::parseDefine(void)
 
 	if(nextToken() != LEX_RPA)
 	{
-		ERROR_S << POSITION
-			<< _("Right parenthesis ')' expected") << endl;
+		ERROR_PP(getPosition(), _("Right parenthesis ')' expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	if(nextToken() != LEX_SEMICOLON)
 	{
-		ERROR_S << POSITION
-			<< _("Semicolon ';' expected") << endl;
+		ERROR_PP(getPosition(), _("Semicolon ';' expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
-//	DBG << POSITION << _("Defining macro: ") << name << endl;
+//	DBG << getPosition() << _("Defining macro: ") << name << endl;
 
 	pair< map<identifier, string>::iterator, bool > ret;
 
 	ret = m_defines.insert(pair<identifier,string>(STR2ID(name), value));
 	if(ret.second == false)
-	{
-		WARN_S << POSITION
-			<< _("Macro has been already defined: ") << name << endl;
-	}
+		WARN_PP(getPosition(), _("Macro has been already defined: ") + name);
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+string Lexan::getPosition(void) const
+{
+	stringstream ss;
+	ss << ID2STR(m_source.top()->getFile()) << ":" << m_source.top()->getLine();
+	return ss.str();
+}

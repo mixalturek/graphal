@@ -29,7 +29,7 @@
 class NodePosition : public Node
 {
 public:
-	NodePosition(Node* next, const CodePosition& pos);
+	NodePosition(Node* next, CodePosition* pos);
 	virtual ~NodePosition();
 
 	virtual CountPtr<Value> execute(void);
@@ -37,7 +37,7 @@ public:
 
 private:
 	Node* m_next;
-	CodePosition m_position;
+	CodePosition* m_position;
 };
 
 #endif // NODEPOSITION_HPP

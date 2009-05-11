@@ -19,6 +19,7 @@
 
 
 #include "clifactory.hpp"
+#include "clilogger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -43,4 +44,13 @@ void CliFactory::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
 	os << "<CliFactory />" << endl;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+Logger* CliFactory::newLogger(void) const
+{
+	return new CliLogger();
 }

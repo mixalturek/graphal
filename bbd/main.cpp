@@ -43,7 +43,7 @@ void runUnitTests(void)
 
 void usage(int /* argc */, char** argv)
 {
-	INFO << _("Usage: ") << argv[0] << " [-I<directory>] [--unit-tests] [--ast-dump] " << _("<filename>") << endl
+	cout << _("Usage: ") << argv[0] << " [-I<directory>] [--unit-tests] [--ast-dump] " << _("<filename>") << endl
 		<< endl
 		<< "\t-I<directory>" << endl
 		<< "\t\tSpecify include directories (relative to the current working directory)" << endl
@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 {
 	CREATOR.init(new CliFactory());
 
-	INFO << "bbd [svn version " << SVN_VERSION << "]" << endl;
+	cout << "bbd [svn version " << SVN_VERSION << "]" << endl;
 
 	if(argc < 2)
 	{
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
 				if(param.length() == 0)
 				{
 					usage(argc, argv);
-					WARN_S << _("There should be no space after -I command line option") << endl;
+					WARN(_("There should be no space after -I command line option"));
 				}
 				else
 				{
@@ -115,7 +115,7 @@ int main(int argc, char** argv)
 			{
 				// The last is the filename
 				if(i < argc-1)
-					WARN_S << _("Unknown command line option: ") << param << endl;
+					WARN(_("Unknown command line option: ") + param);
 			}
 		}
 
@@ -137,23 +137,23 @@ int main(int argc, char** argv)
 		}
 		else
 		{
-			ERROR_S << _("Error while parsing") << endl;
+			ERROR(_("Error while parsing"));
 			error_occured = true;
 		}
 	}
 	catch(runtime_error& ex)
 	{
-		ERROR_S << ex.what() << endl;
+		ERROR(ex.what());
 		error_occured = true;
 	}
 	catch(exception& ex)
 	{
-		ERROR_S << ex.what() << endl;
+		ERROR(ex.what());
 		error_occured = true;
 	}
 	catch(...)
 	{
-		ERROR_S << _("Unknown exception catched!") << endl;
+		ERROR(_("Unknown exception caught!"));
 		error_occured = true;
 	}
 
@@ -165,13 +165,13 @@ int main(int argc, char** argv)
 
 	if(error_occured)
 	{
-		INFO << "*** EXITING MAIN, FAILED ***" << endl;
+		INFO(_("*** EXITING MAIN, FAILED ***"));
 		CREATOR.destroy();
 		return 1;
 	}
 	else
 	{
-		INFO << "*** EXITING MAIN, OK ***" << endl;
+		INFO(_("*** EXITING MAIN, OK ***"));
 		CREATOR.destroy();
 		return 0;
 	}
