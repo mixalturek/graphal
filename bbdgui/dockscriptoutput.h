@@ -36,7 +36,7 @@ public:
 	QTextBrowser* getTextBrowser(void) const { return m_textEdit; }
 
 public slots:
-	void clear(void) { m_textEdit->clear(); }
+	void reinit(void);
 
 	void error(const QString& str);
 	void error(const QString& pos, const QString& str);

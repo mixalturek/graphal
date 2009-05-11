@@ -65,8 +65,6 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 
 	connect(m_scriptThread, SIGNAL(started()), this, SLOT(scriptStarted()));
 	connect(m_scriptThread, SIGNAL(finished()), this, SLOT(scriptFinished()));
-	connect(m_dockScriptOutput->getTextBrowser(), SIGNAL(anchorClicked(QUrl)),
-			this, SLOT(open(QUrl)));
 
 	statusBarMessage(tr("Ready"));
 }
@@ -773,6 +771,9 @@ void MainWindow::fileSelected(const QString& path)
 
 void MainWindow::runScript()
 {
+	if(m_scriptThread->isRunning())
+		return;
+
 	saveAll();
 
 	TextEditor* editor = activeTextEditor();
@@ -782,11 +783,12 @@ void MainWindow::runScript()
 		return;
 	}
 
-	if(!m_scriptThread->isRunning())
-	{
-		m_scriptThread->setScriptFilename(editor->currentFile());
-		m_scriptThread->start();
-	}
+	m_dockScriptOutput->reinit();
+	connect(m_dockScriptOutput->getTextBrowser(), SIGNAL(anchorClicked(QUrl)),
+			this, SLOT(open(QUrl)));
+
+	m_scriptThread->setScriptFilename(editor->currentFile());
+	m_scriptThread->start();
 }
 
 
@@ -796,7 +798,6 @@ void MainWindow::runScript()
 void MainWindow::scriptStarted(void)
 {
 	m_runScriptAct->setEnabled(false);
-	m_dockScriptOutput->clear();
 }
 
 void MainWindow::scriptFinished(void)

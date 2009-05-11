@@ -26,24 +26,35 @@
 
 DockScriptOutput::DockScriptOutput(QWidget* parent, Qt::WindowFlags flags)
 	: QDockWidget(tr("Script output"), parent, flags),
-	m_textEdit(new QTextBrowser(this))
+	m_textEdit(NULL)
 {
-	m_textEdit->setUndoRedoEnabled(false);
-	m_textEdit->setReadOnly(true);
-	m_textEdit->setOpenLinks(false);// anchorClicked() -> MainWindow::open()
-	setWidget(m_textEdit);
-
-	// TODO: add to the settings
-	QFont font;
-	font.setFamily("Courier");
-	font.setFixedPitch(true);
-	font.setPointSize(10);
-	m_textEdit->setFont(font);
+	reinit();
 }
 
 DockScriptOutput::~DockScriptOutput(void)
 {
+	if(m_textEdit != NULL)
+	{
+		delete m_textEdit;
+		m_textEdit = NULL;
+	}
+}
 
+void DockScriptOutput::reinit(void)
+{
+	if(m_textEdit != NULL)
+	{
+		delete m_textEdit;
+		m_textEdit = NULL;
+	}
+
+	m_textEdit = new QTextBrowser();// TODO: this as parent, check memory leaks
+
+	m_textEdit->setUndoRedoEnabled(false);
+	m_textEdit->setReadOnly(true);
+	m_textEdit->setOpenLinks(false);// anchorClicked() -> MainWindow::open()
+	m_textEdit->setFont(QFont("Courier", 10));// TODO: add to the settings
+	setWidget(m_textEdit);
 }
 
 

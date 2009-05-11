@@ -31,13 +31,7 @@ TextEditor::TextEditor(QWidget* parent)
 	m_isUntitled(true)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-
-	// TODO: add to the settings
-	QFont font;
-	font.setFamily("Courier");
-	font.setFixedPitch(true);
-	font.setPointSize(10);
-	setFont(font);
+	setFont(QFont("Courier", 10));// TODO: add to the settings
 }
 
 
