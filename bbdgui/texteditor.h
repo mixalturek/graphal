@@ -39,11 +39,18 @@ public:
 	QString currentFile() const { return m_curFile; }
 	bool isUntitled() const { return m_isUntitled; }
 
+	void lineNumberAreaPaintEvent(QPaintEvent *event);
+	int lineNumberAreaWidth(void);
+
 protected:
 	void closeEvent(QCloseEvent* event);
+	void resizeEvent(QResizeEvent *event);
 
 private slots:
 	void setWindowModifiedFlag();
+	void updateLineNumberAreaWidth(int newBlockCount);
+	void highlightCurrentLine(void);
+	void updateLineNumberArea(const QRect&, int);
 
 private:
 	bool maybeSave();
@@ -52,6 +59,8 @@ private:
 private:
 	QString m_curFile;
 	bool m_isUntitled;
+
+	QWidget* m_lineNumberArea;
 };
 
 #endif

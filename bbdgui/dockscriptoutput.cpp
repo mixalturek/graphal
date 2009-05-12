@@ -53,7 +53,12 @@ void DockScriptOutput::reinit(void)
 	m_textEdit->setUndoRedoEnabled(false);
 	m_textEdit->setReadOnly(true);
 	m_textEdit->setOpenLinks(false);// anchorClicked() -> MainWindow::open()
-	m_textEdit->setFont(QFont("Courier", 10));// TODO: add to the settings
+
+	// TODO: add to the settings
+	QFont font("Monospace", 9);
+	font.setStyleHint(QFont::TypeWriter);
+	m_textEdit->setFont(font);
+
 	setWidget(m_textEdit);
 
 	connect(m_textEdit, SIGNAL(anchorClicked(QUrl)),

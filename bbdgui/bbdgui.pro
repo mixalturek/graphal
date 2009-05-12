@@ -19,6 +19,7 @@ SOURCES += main.cpp \
     dockfiles.cpp \
     guifactory.cpp \
     guilogger.cpp \
+    texteditorlines.cpp \
     ../bbd/logger.cpp \
     ../bbd/lexaniteratorstring.cpp \
     ../bbd/lexaniteratorfile.cpp \
@@ -158,6 +159,7 @@ HEADERS += mainwindow.h \
     dockfiles.h \
     guifactory.hpp \
     guilogger.hpp \
+    texteditorlines.h \
     ../bbd/logger.hpp \
     ../bbd/lexantokens.hpp \
     ../bbd/lexaniteratorstring.hpp \
