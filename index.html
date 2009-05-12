@@ -88,7 +88,9 @@ Linux evm 2.6.26-1-686 #1 SMP Wed Nov 26 19:14:11 UTC 2008 i686 GNU/Linux
 </pre>
 
 
-<h3><a href="http://www.codeblocks.org/">Code::Blocks</a></h3>
+<h3>Code::Blocks</h3>
+
+<p><a href="http://www.codeblocks.org/">http://www.codeblocks.org/</a></p>
 
 <p>Při instalaci pod MS Windows byla použita verze s integrovaným <em>GCC</em> a <em>GDB</em> (<em>codeblocks-8.02mingw-setup.exe</em>), v GNU/Linuxu verze z repozitáře.</p>
 
@@ -104,6 +106,19 @@ libwxsmithlib0 - wxSmith shared library (wxSmith is a Code::Blocks plugin for RA
 [woq@evm bbd]$ <strong>apt-cache show codeblocks | grep Version</strong>
 Version: 8.02
 [woq@evm bbd]$
+</pre>
+
+
+<h3>Qt, Qt Creator</h3>
+
+<p><a href="http://www.qtsoftware.com/downloads">http://www.qtsoftware.com/downloads</a></p>
+
+<p>Při instalaci pod MS Windows byla použita verze <em>Qt SDK for Windows* (167Mb)</em> (<em>qt-sdk-win-opensource-2009.02.exe</em>).</p>
+
+<pre>
+[woq@evm ~]$ qtcreator -version 2>&amp;1 | grep Creator
+Qt Creator 1.1.0 based on Qt 4.5.1
+[woq@evm ~]$
 </pre>
 
 
@@ -196,14 +211,21 @@ Subversion is open source software, see http://subversion.tigris.org/
 <p>Zdrojový soubor <em>general.hpp</em> obsahuje základní konfiguraci a je inkludován do všech ostatních souborů. Je v něm možné zapnout debug/release konfiguraci (+ parametry kompilátoru v <em>Makefile</em>) a testování úniků paměti. Pro základní použití a vývoj není třeba cokoli měnit.</p>
 
 
-<h3>Code::Blocks</h3>
+<h3>Code::Blocks (CLI verze, bbd)</h3>
 
 <p>Otevřít projekt, v menu <em>Build</em> - <em>Build</em> (F9).</p>
 
 <p>Prostředí není nastaveno, aby volalo skripty na generování zdrojových kódů (<em>bison</em>, <em>gen_operators.pl</em>, <em>gen_builtin.pl</em>), vygenerované soubory už musí být na disku. Nejjednodušší cesta je po jejich změně spustit <em>make rebuild</em> a poté kompilovat ve vývojovém prostředí.</p>
 
 
-<h3>Makefile</h3>
+<h3>Qt Creator (GUI verze, bbdgui)</h3>
+
+<p>Otevřít projekt, v menu <em>Build</em> - <em>Build All</em> (Ctrl+Shift+B).</p>
+
+<p>Prostředí není nastaveno, aby volalo skripty na generování zdrojových kódů (<em>bison</em>, <em>gen_operators.pl</em>, <em>gen_builtin.pl</em>), vygenerované soubory už musí být na disku. Nejjednodušší cesta je po jejich změně spustit <em>make rebuild</em> a poté kompilovat ve vývojovém prostředí.</p>
+
+
+<h3>Makefile (CLI verze, bbd)</h3>
 
 <p>Kompletní rebuild, včetně generování zdrojových kódů (<em>bison</em>, <em>gen_operators.pl</em>, <em>gen_builtin.pl</em>) a závislostí mezi soubory (<em>makedepend</em>).</p>
 
@@ -217,30 +239,7 @@ bison -d -o parser.cpp parser.y
 perl gen_operators.pl
 Generating NodeUnarySub
 Generating NodeUnaryNot
-Generating NodeUnaryReturn
-Generating NodeUnaryIncPre
-Generating NodeUnaryIncPost
-Generating NodeUnaryDecPre
-Generating NodeUnaryDecPost
-Generating NodeBinaryAdd
-Generating NodeBinarySub
-Generating NodeBinaryMult
-Generating NodeBinaryDiv
-Generating NodeBinaryMod
-Generating NodeBinaryEq
-Generating NodeBinaryNe
-Generating NodeBinaryLe
-Generating NodeBinaryGe
-Generating NodeBinaryLt
-Generating NodeBinaryGt
-Generating NodeBinaryAnd
-Generating NodeBinaryOr
-Generating NodeBinaryMember
-Generating NodeBinaryIndex
-Generating NodeBinaryAss
-Generating NodeBinaryAssAdd
-Generating NodeBinaryAssSub
-Generating NodeBinaryAssMult
+...
 Generating NodeBinaryAssDiv
 Generating NodeBinaryAssMod
 perl gen_builtin.pl
@@ -254,81 +253,40 @@ makedepend -Y -m baseobject.cpp context.cpp init_static_objects.cpp lexan.cpp le
 makedepend: warning:  parser.cpp, line 324: cannot find include file "stddef.h"
 g++ -c baseobject.cpp -std=c++98 -pedantic -Wall
 g++ -c context.cpp -std=c++98 -pedantic -Wall
-g++ -c init_static_objects.cpp -std=c++98 -pedantic -Wall
-g++ -c lexan.cpp -std=c++98 -pedantic -Wall
-g++ -c lexaniterator.cpp -std=c++98 -pedantic -Wall
-g++ -c lexaniteratorfile.cpp -std=c++98 -pedantic -Wall
-g++ -c lexaniteratorstring.cpp -std=c++98 -pedantic -Wall
-g++ -c logger.cpp -std=c++98 -pedantic -Wall
-g++ -c main.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryadd.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryand.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryassadd.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryass.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryassdiv.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryassmod.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryassmult.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryasssub.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinary.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinarydiv.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryeq.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryge.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinarygt.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryindex.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryle.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinarylt.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinarymember.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinarymod.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinarymult.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryne.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinaryor.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebinarysub.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeblock.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebuiltinarray.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebuiltindump.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebuiltinecho.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebuiltingraph.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebuiltinsize.cpp -std=c++98 -pedantic -Wall
-g++ -c nodebuiltinstruct.cpp -std=c++98 -pedantic -Wall
-g++ -c nodecondition.cpp -std=c++98 -pedantic -Wall
-g++ -c node.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeemptycommand.cpp -std=c++98 -pedantic -Wall
-g++ -c nodefunctionbuiltin.cpp -std=c++98 -pedantic -Wall
-g++ -c nodefunctioncall.cpp -std=c++98 -pedantic -Wall
-g++ -c nodefunction.cpp -std=c++98 -pedantic -Wall
-g++ -c nodefunctionscript.cpp -std=c++98 -pedantic -Wall
-g++ -c nodejumpbreak.cpp -std=c++98 -pedantic -Wall
-g++ -c nodejumpcontinue.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeloop.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeunary.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeunarydecpost.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeunarydecpre.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeunaryincpost.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeunaryincpre.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeunarynot.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeunaryreturn.cpp -std=c++98 -pedantic -Wall
-g++ -c nodeunarysub.cpp -std=c++98 -pedantic -Wall
-g++ -c nodevalue.cpp -std=c++98 -pedantic -Wall
-g++ -c parser.cpp -std=c++98 -pedantic -Wall
-g++ -c stringtable.cpp -std=c++98 -pedantic -Wall
-g++ -c tests.cpp -std=c++98 -pedantic -Wall
-g++ -c valuearray.cpp -std=c++98 -pedantic -Wall
-g++ -c valuebool.cpp -std=c++98 -pedantic -Wall
-g++ -c value.cpp -std=c++98 -pedantic -Wall
-g++ -c valueedge.cpp -std=c++98 -pedantic -Wall
-g++ -c valueedgeset.cpp -std=c++98 -pedantic -Wall
-g++ -c valuefloat.cpp -std=c++98 -pedantic -Wall
-g++ -c valuegraph.cpp -std=c++98 -pedantic -Wall
-g++ -c valueidentifier.cpp -std=c++98 -pedantic -Wall
-g++ -c valueint.cpp -std=c++98 -pedantic -Wall
-g++ -c valuenull.cpp -std=c++98 -pedantic -Wall
-g++ -c valuereference.cpp -std=c++98 -pedantic -Wall
-g++ -c valuestring.cpp -std=c++98 -pedantic -Wall
-g++ -c valuestruct.cpp -std=c++98 -pedantic -Wall
+...
 g++ -c valuevertex.cpp -std=c++98 -pedantic -Wall
 g++ -c valuevertexset.cpp -std=c++98 -pedantic -Wall
 g++ -o bbd baseobject.o context.o init_static_objects.o lexan.o lexaniterator.o lexaniteratorfile.o lexaniteratorstring.o logger.o main.o nodebinaryadd.o nodebinaryand.o nodebinaryassadd.o nodebinaryass.o nodebinaryassdiv.o nodebinaryassmod.o nodebinaryassmult.o nodebinaryasssub.o nodebinary.o nodebinarydiv.o nodebinaryeq.o nodebinaryge.o nodebinarygt.o nodebinaryindex.o nodebinaryle.o nodebinarylt.o nodebinarymember.o nodebinarymod.o nodebinarymult.o nodebinaryne.o nodebinaryor.o nodebinarysub.o nodeblock.o nodebuiltinarray.o nodebuiltindump.o nodebuiltinecho.o nodebuiltingraph.o nodebuiltinsize.o nodebuiltinstruct.o nodecondition.o node.o nodeemptycommand.o nodefunctionbuiltin.o nodefunctioncall.o nodefunction.o nodefunctionscript.o nodejumpbreak.o nodejumpcontinue.o nodeloop.o nodeunary.o nodeunarydecpost.o nodeunarydecpre.o nodeunaryincpost.o nodeunaryincpre.o nodeunarynot.o nodeunaryreturn.o nodeunarysub.o nodevalue.o parser.o stringtable.o tests.o valuearray.o valuebool.o value.o valueedge.o valueedgeset.o valuefloat.o valuegraph.o valueidentifier.o valueint.o valuenull.o valuereference.o valuestring.o valuestruct.o valuevertex.o valuevertexset.o
 [woq@evm bbd]$
+</pre>
+
+
+<h3>Makefile (GUI verze, bbdgui)</h3>
+
+<pre>
+[woq@evm diplomka]$ <strong>cd bbdgui/</strong>
+[woq@evm bbdgui]$ <strong>make</strong>
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o main.o main.cpp
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o mainwindow.o mainwindow.cpp
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o texteditor.o texteditor.cpp
+...
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o baseobject.o ../bbd/baseobject.cpp
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o objectfactory.o ../bbd/objectfactory.cpp
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o objectcreator.o ../bbd/objectcreator.cpp
+/usr/bin/moc-qt4 -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. mainwindow.h -o moc_mainwindow.cpp
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o moc_mainwindow.o moc_mainwindow.cpp
+/usr/bin/moc-qt4 -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. texteditor.h -o moc_texteditor.cpp
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o moc_texteditor.o moc_texteditor.cpp
+/usr/bin/moc-qt4 -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. dockscriptoutput.h -o moc_dockscriptoutput.cpp
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o moc_dockscriptoutput.o moc_dockscriptoutput.cpp
+/usr/bin/moc-qt4 -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. dockfiles.h -o moc_dockfiles.cpp
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o moc_dockfiles.o moc_dockfiles.cpp
+/usr/bin/moc-qt4 -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. guilogger.hpp -o moc_guilogger.cpp
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o moc_guilogger.o moc_guilogger.cpp
+/usr/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
+g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o qrc_resources.o qrc_resources.cpp
+g++  -o bbdgui main.o mainwindow.o texteditor.o settings.o scriptthread.o dockscriptoutput.o dockfiles.o guifactory.o guilogger.o logger.o lexaniteratorstring.o lexaniteratorfile.o lexaniterator.o lexan.o init_static_objects.o valuevertexset.o valuevertex.o valuestruct.o valuestring.o valuereference.o valuenull.o valueint.o valueidentifier.o valuegraph.o valuefloat.o valueedgeset.o valueedge.o valuebool.o valuearray.o value.o stringtable.o parser.o nodevalue.o nodeunarysub.o nodeunaryreturn.o nodeunarynot.o nodeunaryincpre.o nodeunaryincpost.o nodeunarydecpre.o nodeunarydecpost.o nodeunary.o nodeposition.o nodeloop.o nodejumpcontinue.o nodejumpbreak.o nodeglobal.o nodefunctionscript.o nodefunctioncall.o nodefunctionbuiltin.o nodefunction.o nodeforeach.o nodeemptycommand.o nodecondition.o nodebuiltinvertexset.o nodebuiltinverify.o nodebuiltinunion.o nodebuiltinstruct.o nodebuiltinsize.o nodebuiltinsetoriented.o nodebuiltinresetiterator.o nodebuiltinpushfront.o nodebuiltinpushback.o nodebuiltinprintstacktrace.o nodebuiltinpopfront.o nodebuiltinpopback.o nodebuiltinnext.o nodebuiltiniterator.o nodebuiltinisvertexset.o nodebuiltinisvertex.o nodebuiltinisstruct.o nodebuiltinisstring.o nodebuiltinisoriented.o nodebuiltinisnull.o nodebuiltinisint.o nodebuiltinisgraph.o nodebuiltinisfloat.o nodebuiltinisedgeset.o nodebuiltinisedge.o nodebuiltinisbool.o nodebuiltinisarray.o nodebuiltininvertedgesorientation.o nodebuiltinintersection.o nodebuiltinhasnext.o nodebuiltingraph.o nodebuiltingetvertices.o nodebuiltingetnumvertices.o nodebuiltingetnumedges.o nodebuiltingetneighbors.o nodebuiltingetendvertex.o nodebuiltingetedges.o nodebuiltingetdegree.o nodebuiltingetbeginvertex.o nodebuiltingeneratevertex.o nodebuiltingenerateedge.o nodebuiltinfront.o nodebuiltinexit.o nodebuiltinedgeset.o nodebuiltinecho.o nodebuiltindump.o nodebuiltindifference.o nodebuiltindeletevertex.o nodebuiltindeleteedge.o nodebuiltincontains.o nodebuiltinbreakpoint.o nodebuiltinback.o nodebuiltinassert.o nodebuiltinarray.o nodebuiltinadd.o nodebuiltin_inst.o nodeblock.o nodebinarysub.o nodebinaryor.o nodebinaryne.o nodebinarymult.o nodebinarymod.o nodebinarymember.o nodebinarylt.o nodebinaryle.o nodebinaryindex.o nodebinarygt.o nodebinaryge.o nodebinaryeq.o nodebinarydiv.o nodebinaryasssub.o nodebinaryassref.o nodebinaryassmult.o nodebinaryassmod.o nodebinaryassdiv.o nodebinaryassadd.o nodebinaryass.o nodebinaryand.o nodebinaryadd.o nodebinary.o node.o exitvalue.o context.o codeposition.o baseobject.o objectfactory.o objectcreator.o moc_mainwindow.o moc_texteditor.o moc_dockscriptoutput.o moc_dockfiles.o moc_guilogger.o qrc_resources.o    -L/usr/lib -lpthread -lQtGui -lQtCore
+[woq@evm bbdgui]$
 </pre>
 
 

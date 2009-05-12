@@ -52,7 +52,7 @@ private slots:
 	void newFile();
 	void open();
 	bool open(const QString& fileName, bool warnIfNotFound);
-	void open(const QUrl& link);
+	void open(const QString& fileName, int line);
 	void save();
 	void saveAs();
 	void saveAll();

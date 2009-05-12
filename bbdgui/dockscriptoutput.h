@@ -35,6 +35,9 @@ public:
 
 	QTextBrowser* getTextBrowser(void) const { return m_textEdit; }
 
+signals:
+	void anchorClicked(const QString& filename, int line);
+
 public slots:
 	void reinit(void);
 
@@ -44,6 +47,9 @@ public slots:
 	void warn(const QString& pos, const QString& str);
 	void info(const QString& str);
 	void scriptStdout(const QString& str);
+
+private slots:
+	void anchorClicked(const QUrl& link);
 
 private:
 	QTextBrowser* m_textEdit;

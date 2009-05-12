@@ -55,6 +55,28 @@ void DockScriptOutput::reinit(void)
 	m_textEdit->setOpenLinks(false);// anchorClicked() -> MainWindow::open()
 	m_textEdit->setFont(QFont("Courier", 10));// TODO: add to the settings
 	setWidget(m_textEdit);
+
+	connect(m_textEdit, SIGNAL(anchorClicked(QUrl)),
+			this, SLOT(anchorClicked(QUrl)));
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void DockScriptOutput::anchorClicked(const QUrl& link)
+{
+	// Links are expected in "filename:line" format
+	QStringList path(link.toString().split(':'));
+
+	if(path.size() == 2)
+	{
+		bool ok;
+		int line = path.at(1).toInt(&ok);
+
+		if(ok)
+			emit anchorClicked(path.at(0), line);
+	}
 }
 
 

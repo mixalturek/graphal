@@ -147,31 +147,21 @@ bool MainWindow::open(const QString& fileName, bool warnIfNotFound)
 	return false;
 }
 
-void MainWindow::open(const QUrl& link)
+void MainWindow::open(const QString& fileName, int line)
 {
-	// Links are expected in "filename:line" format
-	QStringList path(link.toString().split(':'));
-
-	if(path.size() == 2 && open(path.at(0), true))
+	if(open(fileName, true))
 	{
-		bool ok;
-		int line = path.at(1).toInt(&ok);
-
 		TextEditor* editor = activeTextEditor();
-		assert(editor != NULL);
+		assert(editor != NULL);// Open() was ok
 
-		if(ok && line <= editor->blockCount())
+		if(line <= editor->blockCount())
 		{
 			// Three hours of my life to write the following line :-(
 			editor->setTextCursor(QTextCursor(editor->document()->findBlockByNumber(line-1)));
-			// editor->centerCursor();// TOOD: if it is not visible only
+			// editor->centerCursor();// TOOD: only if it is not visible
 		}
 
 		editor->setFocus();
-	}
-	else
-	{
-		assert("Should not be called" == NULL);
 	}
 }
 
@@ -245,7 +235,7 @@ void MainWindow::about()
 {
 	// TODO: update text, version
 	QMessageBox::about(this, tr("About bbdgui"),
-		tr("Graphs algorithms interpreter<br />SVN version ")
+		tr("Graph algorithms interpreter<br />SVN version ")
 		+ QString::number(SVN_VERSION));
 }
 
@@ -592,6 +582,7 @@ void MainWindow::createDocks()
 	connect(logger, SIGNAL(warn(QString, QString)), m_dockScriptOutput, SLOT(warn(QString, QString)));
 	connect(logger, SIGNAL(info(QString)), m_dockScriptOutput, SLOT(info(QString)));
 	connect(logger, SIGNAL(scriptStdout(QString)), m_dockScriptOutput, SLOT(scriptStdout(QString)));
+	connect(m_dockScriptOutput, SIGNAL(anchorClicked(QString, int)), this, SLOT(open(QString, int)));
 }
 
 
@@ -784,8 +775,6 @@ void MainWindow::runScript()
 	}
 
 	m_dockScriptOutput->reinit();
-	connect(m_dockScriptOutput->getTextBrowser(), SIGNAL(anchorClicked(QUrl)),
-			this, SLOT(open(QUrl)));
 
 	m_scriptThread->setScriptFilename(editor->currentFile());
 	m_scriptThread->start();
