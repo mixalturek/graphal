@@ -72,16 +72,13 @@ void DockScriptOutput::reinit(void)
 void DockScriptOutput::anchorClicked(const QUrl& link)
 {
 	// Links are expected in "filename:line" format
-	QStringList path(link.toString().split(':'));
+	// MS Windows C:/filename:line !!!
 
-	if(path.size() == 2)
-	{
-		bool ok;
-		int line = path.at(1).toInt(&ok);
+	bool ok;
+	int line = link.toString().section(':', -1).toInt(&ok);
 
-		if(ok)
-			emit anchorClicked(path.at(0), line);
-	}
+	if(ok)
+		emit anchorClicked(link.toString().section(':', 0, -2), line);
 }
 
 

@@ -300,7 +300,7 @@ void TextEditor::highlightCurrentLine()
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
 {
 	QPainter painter(m_lineNumberArea);
-	painter.fillRect(event->rect(), QColor(230, 230, 230));
+	painter.fillRect(event->rect(), QColor(230, 230, 230));// TODO: Add to the settings
 
 	QTextBlock block = firstVisibleBlock();
 	int blockNumber = block.blockNumber();
@@ -312,7 +312,7 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
 		if(block.isVisible() && bottom >= event->rect().top())
 		{
 			QString number = QString::number(blockNumber + 1);
-			painter.setPen(QColor(85, 85, 85));
+			painter.setPen(QColor(85, 85, 85));// TODO: Add to the settings
 			painter.drawText(-LR_LINES_MARGIN, top, m_lineNumberArea->width(),
 				fontMetrics().height(), Qt::AlignRight, number);
 		}

@@ -65,6 +65,7 @@ body		{ margin: 0%; }
 <p>ChangeLog a TODO soubory jsou uloženy v archivech.</p>
 
 <ul>
+<li><a href="down/bbd_svn140.tar.gz">Wed, 13 May 09 21:33:31 +0800, svn v140</a> - GUI</li>
 <li><a href="down/bbd_svn125.tar.gz">Mon, 30 Mar 09 20:55:54 +0800, svn v125</a></li>
 <li><a href="down/bbd_svn119.tar.gz">Sun, 22 Mar 09 21:46:08 +0700, svn v119</a></li>
 <li><a href="down/bbd_svn99.tar.gz">Tue, 24 Feb 09 20:13:30 +0700, svn v99</a></li>
@@ -92,8 +93,6 @@ Linux evm 2.6.26-1-686 #1 SMP Wed Nov 26 19:14:11 UTC 2008 i686 GNU/Linux
 
 <p><a href="http://www.codeblocks.org/">http://www.codeblocks.org/</a></p>
 
-<p>Při instalaci pod MS Windows byla použita verze s integrovaným <em>GCC</em> a <em>GDB</em> (<em>codeblocks-8.02mingw-setup.exe</em>), v GNU/Linuxu verze z repozitáře.</p>
-
 <pre>
 [woq@evm bbd]$ <strong>apt-cache search codeblocks</strong>
 codeblocks-dev - Code::Blocks development files (SDK)
@@ -108,18 +107,20 @@ Version: 8.02
 [woq@evm bbd]$
 </pre>
 
+<p>Při instalaci pod MS Windows byla použita verze s integrovaným <em>GCC</em> a <em>GDB</em> (<em>codeblocks-8.02mingw-setup.exe</em>), v GNU/Linuxu verze z repozitáře.</p>
+
 
 <h3>Qt, Qt Creator</h3>
 
 <p><a href="http://www.qtsoftware.com/downloads">http://www.qtsoftware.com/downloads</a></p>
-
-<p>Při instalaci pod MS Windows byla použita verze <em>Qt SDK for Windows* (167Mb)</em> (<em>qt-sdk-win-opensource-2009.02.exe</em>).</p>
 
 <pre>
 [woq@evm ~]$ qtcreator -version 2>&amp;1 | grep Creator
 Qt Creator 1.1.0 based on Qt 4.5.1
 [woq@evm ~]$
 </pre>
+
+<p>Při instalaci pod MS Windows byla použita verze <em>Qt libraries 4.5 for Windows (167 Mb)</em> (<em>qt-win-opensource-4.5.1-mingw.exe</em>). Instalátor nenastavuje systémovou proměnnou PATH, je třeba do ní <a href="http://vlaurie.com/computers2/Articles/environment.htm">přidat</a> cesty k adresářům C:/Qt/4.5.1/bin a C:/MinGW/bin.</p>
 
 
 <h3>GNU Make</h3>
