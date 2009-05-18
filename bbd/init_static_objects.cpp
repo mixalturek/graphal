@@ -27,8 +27,6 @@
 
 #include "general.hpp"
 #include "baseobject.hpp"
-#include "logger.hpp"
-#include "context.hpp"
 #include "valuenull.hpp"
 #include "valuebool.hpp"
 #include "objectcreator.hpp"
@@ -54,12 +52,6 @@ set<BaseObject*> BaseObject::m_allocated_objects = set<BaseObject*>();
 CountPtr<Value> ValueNull::m_instance(new ValueNull());
 CountPtr<Value> ValueBool::m_instance_true(new ValueBool(true));
 CountPtr<Value> ValueBool::m_instance_false(new ValueBool(false));
-
-
-/////////////////////////////////////////////////////////////////////////////
-//// Context
-
-Context Context::m_instance;
 
 
 /////////////////////////////////////////////////////////////////////////////

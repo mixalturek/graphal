@@ -1,5 +1,5 @@
 /*
- *      Copyright 2009 Michal Turek <http://woq.nipax.cz/>
+ *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -18,28 +18,51 @@
  */
 
 
-#ifndef OBJECTFACTORY_HPP
-#define OBJECTFACTORY_HPP
+#ifndef GUICONTEXT_H
+#define GUICONTEXT_H
 
-#include "general.hpp"
-#include "baseobject.hpp"
-
-class Logger;
-class Context;
+#include <QMutex>
+#include <QWaitCondition>
+#include "context.hpp"
 
 
-class ObjectFactory : public BaseObject
+enum SteppingType
 {
-public:
-	ObjectFactory(void);
-	virtual ~ObjectFactory(void);
-
-	virtual Logger* newLogger(void) const = 0;
-	virtual Context* newContext(void) const = 0;
-
-private:
-	ObjectFactory(const ObjectFactory& object);
-	ObjectFactory& operator=(const ObjectFactory& object);
+	ST_NONE = 0,
+	ST_INTO,
+	ST_OVER,
+	ST_OUT
 };
 
-#endif // OBJECTFACTORY_HPP
+
+class GuiContext : public Context
+{
+	Q_OBJECT
+
+public:
+	GuiContext(void);
+	virtual ~GuiContext(void);
+
+	virtual void clear(void);
+
+	virtual void setPosition(CodePosition* pos);
+
+public slots:
+	virtual void breakpoint(void);
+	virtual void debugRun(void);
+	virtual void debugStep(void);
+	virtual void debugOver(void);
+	virtual void debugOut(void);
+
+signals:
+	void positionChanged(const QString& filename, int line);
+
+private:
+	QMutex m_accessMutex;
+	QMutex m_dbgMutex;
+	QWaitCondition m_waitCondition;
+	SteppingType m_steppingType;
+	int m_callStackSize;
+};
+
+#endif // GUICONTEXT_H

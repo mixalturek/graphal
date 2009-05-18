@@ -54,7 +54,7 @@ NodeFunctionScript::~NodeFunctionScript()
 
 CountPtr<Value> NodeFunctionScript::execute(void)
 {
-	CONTEXT.setPosition(m_position);
+	CONTEXT.setPositionEnterToFunction(m_position);
 
 	try
 	{

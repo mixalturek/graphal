@@ -26,9 +26,12 @@
 #define CREATOR ObjectCreator::getInstance()
 #define FACTORY ObjectCreator::getInstance().getFactory()
 #define LOGGER ObjectCreator::getInstance().getLogger()
+#define CONTEXT ObjectCreator::getInstance().getContext()
+
 
 class ObjectFactory;
 class Logger;
+class Context;
 
 class ObjectCreator
 {
@@ -43,6 +46,7 @@ public:
 
 	ObjectFactory& getFactory(void) { return *m_factory; }
 	Logger* getLogger(void) { return m_logger; }
+	Context& getContext(void) { return *m_context; }
 
 private:
 	ObjectCreator(void);
@@ -52,8 +56,10 @@ private:
 
 private:
 	static ObjectCreator m_instance;
+
 	ObjectFactory* m_factory;
 	Logger* m_logger;
+	Context* m_context;
 };
 
 #endif // OBJECTCREATOR_HPP

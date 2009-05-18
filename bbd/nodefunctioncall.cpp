@@ -94,7 +94,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 			CountPtr<Value> ret = function->execute();
 		CONTEXT.popLocal();
 
-		CONTEXT.setPosition(m_position);// Set caller's position
+		CONTEXT.setPositionReturnFromFunction(m_position);// Set caller's position
 		return ret;
 	}
 	else

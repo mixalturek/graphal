@@ -28,6 +28,7 @@
 #include "objectcreator.hpp"
 #include "logger.hpp"
 #include "version.hpp"
+#include "guicontext.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -59,12 +60,16 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 	createMenus();
 	updateMenus();
 	readSettings();
+	scriptFinished();// Update UI
 
 	m_mdiArea->setViewMode(QMdiArea::TabbedView);
 	setWindowTitle(tr("bbdgui"));
 
 	connect(m_scriptThread, SIGNAL(started()), this, SLOT(scriptStarted()));
 	connect(m_scriptThread, SIGNAL(finished()), this, SLOT(scriptFinished()));
+
+	connect(&CONTEXT, SIGNAL(positionChanged(const QString&, int)),
+			this, SLOT(open(const QString&, int)));
 
 	statusBarMessage(tr("Ready"));
 }
@@ -83,10 +88,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
+	// TODO: check if the script is running and MessageBox("terminate?")
+
 	writeSettings();
 	m_mdiArea->closeAllSubWindows();
 
-	if(activeTextEditor())
+	if(m_mdiArea->subWindowList().size() != 0)
 		event->ignore();
 	else
 		event->accept();
@@ -429,8 +436,28 @@ void MainWindow::createActions()
 
 	m_runScriptAct = new QAction(QIcon(":/images/run.png"), tr("&Run"), this);
 	m_runScriptAct->setShortcut(tr("Ctrl+R"));
-	m_runScriptAct->setStatusTip(tr("Execute the script"));
+	m_runScriptAct->setStatusTip(tr("Run current script"));
 	connect(m_runScriptAct, SIGNAL(triggered()), this, SLOT(runScript()));
+
+	m_debugRunAct = new QAction(QIcon(":/images/dbgrun.png"), tr("Continue"), this);
+	m_debugRunAct->setShortcut(tr("F9"));
+	m_debugRunAct->setStatusTip(tr("Continue execution until next breakpoint or script exit"));
+	connect(m_debugRunAct, SIGNAL(triggered()), &CONTEXT, SLOT(debugRun()));
+
+	m_debugStepAct = new QAction(QIcon(":/images/dbgstep.png"), tr("Step into"), this);
+	m_debugStepAct->setShortcut(tr("F10"));
+	m_debugStepAct->setStatusTip(tr("Execute the next command, but step inside functions"));
+	connect(m_debugStepAct, SIGNAL(triggered()), &CONTEXT, SLOT(debugStep()));
+
+	m_debugOverAct = new QAction(QIcon(":/images/dbgnext.png"), tr("Step over"), this);
+	m_debugOverAct->setShortcut(tr("F11"));
+	m_debugOverAct->setStatusTip(tr("Execute the next command, over the functions"));
+	connect(m_debugOverAct, SIGNAL(triggered()), &CONTEXT, SLOT(debugOver()));
+
+	m_debugOutAct = new QAction(QIcon(":/images/dbgstepout.png"), tr("Step out"), this);
+	m_debugOutAct->setShortcut(tr("F12"));
+	m_debugOutAct->setStatusTip(tr("Continue execution until return from this function"));
+	connect(m_debugOutAct, SIGNAL(triggered()), &CONTEXT, SLOT(debugOut()));
 }
 
 
@@ -496,6 +523,11 @@ void MainWindow::createMenus()
 	// Script
 	m_scriptMenu = menuBar()->addMenu(tr("&Script"));
 	m_scriptMenu->addAction(m_runScriptAct);
+	m_scriptMenu->addSeparator();
+	m_scriptMenu->addAction(m_debugRunAct);
+	m_scriptMenu->addAction(m_debugStepAct);
+	m_scriptMenu->addAction(m_debugOverAct);
+	m_scriptMenu->addAction(m_debugOutAct);
 
 
 	// Window
@@ -538,6 +570,10 @@ void MainWindow::createToolBars()
 	m_scriptToolBar = addToolBar(tr("Script"));
 	m_scriptToolBar->setObjectName("Script");
 	m_scriptToolBar->addAction(m_runScriptAct);
+	m_scriptToolBar->addAction(m_debugRunAct);
+	m_scriptToolBar->addAction(m_debugStepAct);
+	m_scriptToolBar->addAction(m_debugOverAct);
+	m_scriptToolBar->addAction(m_debugOutAct);
 }
 
 
@@ -787,10 +823,18 @@ void MainWindow::runScript()
 void MainWindow::scriptStarted(void)
 {
 	m_runScriptAct->setEnabled(false);
+	m_debugRunAct->setEnabled(true);
+	m_debugStepAct->setEnabled(true);
+	m_debugOverAct->setEnabled(true);
+	m_debugOutAct->setEnabled(true);
 }
 
 void MainWindow::scriptFinished(void)
 {
 	m_runScriptAct->setEnabled(true);
+	m_debugRunAct->setEnabled(false);
+	m_debugStepAct->setEnabled(false);
+	m_debugOverAct->setEnabled(false);
+	m_debugOutAct->setEnabled(false);
 }
 

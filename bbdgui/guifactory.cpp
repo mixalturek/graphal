@@ -20,6 +20,7 @@
 
 #include "guifactory.hpp"
 #include "guilogger.hpp"
+#include "guicontext.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -53,4 +54,9 @@ void GuiFactory::dump(ostream& os, uint indent) const
 Logger* GuiFactory::newLogger(void) const
 {
 	return new GuiLogger();
+}
+
+Context* GuiFactory::newContext(void) const
+{
+	return new GuiContext();
 }

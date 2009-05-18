@@ -34,6 +34,9 @@ public:
 	virtual void dump(ostream& os, uint indent) const;
 	string toString(void) const;
 
+	identifier getFile(void) const { return m_file; }
+	uint getLine(void) const { return m_line; }
+
 private:
 	identifier m_file;
 	uint m_line;

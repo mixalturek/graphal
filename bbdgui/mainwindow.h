@@ -129,6 +129,10 @@ private:
 	QAction* m_aboutAct;
 	QAction* m_aboutQtAct;
 	QAction* m_runScriptAct;
+	QAction* m_debugRunAct;
+	QAction* m_debugStepAct;
+	QAction* m_debugOverAct;
+	QAction* m_debugOutAct;
 
 	ScriptThread* m_scriptThread;
 };

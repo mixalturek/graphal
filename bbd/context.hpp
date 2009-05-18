@@ -30,10 +30,10 @@
 #include "value.hpp"
 #include "stringtable.hpp"
 #include "codeposition.hpp"
+#include "objectcreator.hpp"
 
-#define CONTEXT Context::getInstance()
-#define STR2ID(str) Context::getInstance().getStringTable()->getID((str))
-#define ID2STR(id) Context::getInstance().getStringTable()->getString((id))
+#define STR2ID(str) CONTEXT.getStringTable()->getID(str)
+#define ID2STR(id) CONTEXT.getStringTable()->getString(id)
 
 class NodeFunction;
 
@@ -41,12 +41,10 @@ class NodeFunction;
 class Context : public BaseObject
 {
 public:
-	static inline Context& getInstance(void)
-	{
-		return m_instance;
-	}
+	Context(void);
+	virtual ~Context(void);
 
-	void clear(void);
+	virtual void clear(void);
 	void dump(ostream& os, uint indent) const;
 	int executeScriptMain(int argc, char** argv);
 
@@ -60,6 +58,7 @@ public:
 	void pushLocal(identifier function_name);
 	void popLocal(void);
 	identifier getExecutedFunctionName(void) const { return m_call_stack.back(); }
+	int getStackSize(void) const { return m_call_stack.size(); }
 	void printStackTrace() const;
 
 	NodeFunction* getFunction(identifier name);
@@ -71,18 +70,22 @@ public:
 	void addIncludeDirectory(const string& directory);
 	string getIncludeFullPath(const string& filename) const;
 
-	void setPosition(CodePosition* pos) { m_position = pos; }
+	virtual void setPosition(CodePosition* pos) { m_position = pos; }
+	virtual void setPositionEnterToFunction(CodePosition* pos) { m_position = pos; }
+	virtual void setPositionReturnFromFunction(CodePosition* pos) { m_position = pos; }
 	const CodePosition* getPosition(void) const { return m_position; }
 
+	virtual void breakpoint(void);
+	virtual void debugRun(void) { }
+	virtual void debugStep(void) { }
+	virtual void debugOver(void) { }
+	virtual void debugOut(void) { }
+
 private:
-	Context(void);
-	virtual ~Context(void);
 	Context(const Context& object);
 	Context& operator=(const Context& object);
 
 private:
-	static Context m_instance;
-
 	map<identifier, NodeFunction*> m_functions;
 	deque< map<identifier, CountPtr<Value> > > m_local_variables;
 	map<identifier, CountPtr<Value> > m_global_variables;

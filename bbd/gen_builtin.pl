@@ -265,11 +265,7 @@ END_OF_CODE
 
 $code = <<END_OF_CODE;
 	if(par[0]->toBool())
-	{
-		// TODO: GUI
-		WARN_P(_("Breakpoint, press any key... "));
-		getchar();
-	}
+		CONTEXT.breakpoint();
 
 	return VALUENULL;
 END_OF_CODE

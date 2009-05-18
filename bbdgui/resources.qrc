@@ -14,5 +14,9 @@
         <file>images/redo.png</file>
         <file>images/run.png</file>
         <file alias="applogo.png">images/toast/toast_32.png</file>
+        <file>images/dbgrun.png</file>
+        <file>images/dbgstep.png</file>
+        <file>images/dbgnext.png</file>
+        <file>images/dbgstepout.png</file>
     </qresource>
 </RCC>

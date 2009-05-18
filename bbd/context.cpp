@@ -47,7 +47,7 @@ Context::Context()
 	m_stringtable(),
 	m_include_dirs()
 {
-	pushLocal(STR2ID("init_code"));
+	pushLocal(getStringTable()->getID(("init_code")));
 	addIncludeDirectory("./");
 }
 
@@ -348,3 +348,9 @@ string Context::getIncludeFullPath(const string& filename) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+void Context::breakpoint(void)
+{
+	// TODO: parse and execute specific commands here?
+	WARN_P(_("Breakpoint, press any key..."));
+	getchar();
+}

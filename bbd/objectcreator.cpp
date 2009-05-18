@@ -22,13 +22,15 @@
 #include "objectcreator.hpp"
 #include "objectfactory.hpp"
 #include "logger.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
 ObjectCreator::ObjectCreator(void)
-	: m_factory(NULL)
+	: m_factory(NULL),
+	m_context(NULL)
 {
 
 }
@@ -48,6 +50,7 @@ void ObjectCreator::init(ObjectFactory* factory)
 	m_factory = factory;
 
 	m_logger = m_factory->newLogger();
+	m_context = m_factory->newContext();
 }
 
 void ObjectCreator::destroy(void)
@@ -62,6 +65,12 @@ void ObjectCreator::destroy(void)
 	{
 		delete m_logger;
 		m_logger = NULL;
+	}
+
+	if(m_context != NULL)
+	{
+		delete m_context;
+		m_context = NULL;
 	}
 }
 

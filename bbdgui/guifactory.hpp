@@ -34,6 +34,7 @@ public:
 	void dump(ostream& os, uint indent) const;
 
 	virtual Logger* newLogger(void) const;
+	virtual Context* newContext(void) const;
 
 private:
 };
