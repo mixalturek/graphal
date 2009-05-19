@@ -47,6 +47,7 @@ public:
 	virtual void clear(void);
 	void dump(ostream& os, uint indent) const;
 	int executeScriptMain(int argc, char** argv);
+	virtual void stopScript(void);
 
 	bool isVariableSet(identifier name);
 	CountPtr<Value> getLocalVariable(identifier name);

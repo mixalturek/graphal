@@ -30,7 +30,8 @@ GuiContext::GuiContext(void)
 	m_dbgMutex(),
 	m_waitCondition(),
 	m_steppingType(ST_NONE),
-	m_callStackSize(0)
+	m_callStackSize(0),
+	m_stopScript(false)
 {
 
 }
@@ -45,6 +46,7 @@ void GuiContext::clear(void)
 	Context::clear();
 
 	m_steppingType = ST_NONE;
+	m_stopScript = false;
 }
 
 
@@ -56,6 +58,12 @@ void GuiContext::setPosition(CodePosition* pos)
 	Context::setPosition(pos);
 
 	m_accessMutex.lock();
+	if(m_stopScript)
+	{
+		m_accessMutex.unlock();
+		Context::stopScript();
+	}
+
 	switch(m_steppingType)
 	{
 	case ST_INTO:
@@ -132,6 +140,19 @@ void GuiContext::debugOut(void)
 
 		if(getExecutedFunctionName() == STR2ID("breakpoint"))
 			m_callStackSize--;
+	m_accessMutex.unlock();
+
+	m_waitCondition.wakeAll();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void GuiContext::stopScript(void)
+{
+	m_accessMutex.lock();
+	m_stopScript = true;
 	m_accessMutex.unlock();
 
 	m_waitCondition.wakeAll();

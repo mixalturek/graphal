@@ -48,6 +48,7 @@ public:
 	virtual void setPosition(CodePosition* pos);
 
 public slots:
+	virtual void stopScript(void);
 	virtual void breakpoint(void);
 	virtual void debugRun(void);
 	virtual void debugStep(void);
@@ -63,6 +64,7 @@ private:
 	QWaitCondition m_waitCondition;
 	SteppingType m_steppingType;
 	int m_callStackSize;
+	bool m_stopScript;
 };
 
 #endif // GUICONTEXT_H

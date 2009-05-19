@@ -88,7 +88,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-	// TODO: check if the script is running and MessageBox("terminate?")
+	// TODO: MessageBox("terminate?")
+	if(m_scriptThread->isRunning())
+	{
+		CONTEXT.stopScript();
+		m_scriptThread->wait();
+	}
 
 	writeSettings();
 	m_mdiArea->closeAllSubWindows();
@@ -439,6 +444,11 @@ void MainWindow::createActions()
 	m_runScriptAct->setStatusTip(tr("Run current script"));
 	connect(m_runScriptAct, SIGNAL(triggered()), this, SLOT(runScript()));
 
+	m_stopScriptAct = new QAction(QIcon(":/images/stop.png"), tr("&Stop"), this);
+	m_stopScriptAct->setShortcut(tr("Ctrl+Shift+R"));
+	m_stopScriptAct->setStatusTip(tr("Stop the executed script"));
+	connect(m_stopScriptAct, SIGNAL(triggered()), &CONTEXT, SLOT(stopScript()));
+
 	m_debugRunAct = new QAction(QIcon(":/images/dbgrun.png"), tr("Continue"), this);
 	m_debugRunAct->setShortcut(tr("F9"));
 	m_debugRunAct->setStatusTip(tr("Continue execution until next breakpoint or script exit"));
@@ -523,6 +533,7 @@ void MainWindow::createMenus()
 	// Script
 	m_scriptMenu = menuBar()->addMenu(tr("&Script"));
 	m_scriptMenu->addAction(m_runScriptAct);
+	m_scriptMenu->addAction(m_stopScriptAct);
 	m_scriptMenu->addSeparator();
 	m_scriptMenu->addAction(m_debugRunAct);
 	m_scriptMenu->addAction(m_debugStepAct);
@@ -570,6 +581,7 @@ void MainWindow::createToolBars()
 	m_scriptToolBar = addToolBar(tr("Script"));
 	m_scriptToolBar->setObjectName("Script");
 	m_scriptToolBar->addAction(m_runScriptAct);
+	m_scriptToolBar->addAction(m_stopScriptAct);
 	m_scriptToolBar->addAction(m_debugRunAct);
 	m_scriptToolBar->addAction(m_debugStepAct);
 	m_scriptToolBar->addAction(m_debugOverAct);
@@ -823,6 +835,7 @@ void MainWindow::runScript()
 void MainWindow::scriptStarted(void)
 {
 	m_runScriptAct->setEnabled(false);
+	m_stopScriptAct->setEnabled(true);
 	m_debugRunAct->setEnabled(true);
 	m_debugStepAct->setEnabled(true);
 	m_debugOverAct->setEnabled(true);
@@ -832,6 +845,7 @@ void MainWindow::scriptStarted(void)
 void MainWindow::scriptFinished(void)
 {
 	m_runScriptAct->setEnabled(true);
+	m_stopScriptAct->setEnabled(false);
 	m_debugRunAct->setEnabled(false);
 	m_debugStepAct->setEnabled(false);
 	m_debugOverAct->setEnabled(false);

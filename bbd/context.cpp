@@ -296,8 +296,13 @@ int Context::executeScriptMain(int argc, char** argv)
 	}
 	catch(ExitValue* ex)
 	{
-		INFO(_("*** EXITING SCRIPT MAIN, OK ***"));
-		INFO( _("Exit value: ") + ex->getValue()->toString());
+		if(ex->getValue()->isNull())// Context::stopScript()
+			INFO(_("*** THE SCRIPT WAS STOPPED ***"));
+		else
+		{
+			INFO(_("*** EXITING SCRIPT MAIN, OK ***"));
+			INFO( _("Exit value: ") + ex->getValue()->toString());
+		}
 
 		delete ex;
 		ex = NULL;
@@ -314,6 +319,15 @@ int Context::executeScriptMain(int argc, char** argv)
 	}
 
 	return 0;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Context::stopScript(void)
+{
+	throw new ExitValue(VALUENULL);
 }
 
 
