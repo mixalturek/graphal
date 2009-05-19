@@ -1,5 +1,5 @@
 /*
- *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
+ *      Copyright 2009 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -18,53 +18,30 @@
  */
 
 
-#ifndef GUICONTEXT_H
-#define GUICONTEXT_H
+#ifndef DOCKCALLSTACK_H
+#define DOCKCALLSTACK_H
 
-#include <QMutex>
-#include <QWaitCondition>
-#include "context.hpp"
+#include <QDockWidget>
 
 
-enum SteppingType
-{
-	ST_NONE = 0,
-	ST_INTO,
-	ST_OVER,
-	ST_OUT
-};
+class QTreeView;
+class QStandardItemModel;
 
-
-class GuiContext : public Context
+class DockCallStack : public QDockWidget
 {
 	Q_OBJECT
 
 public:
-	GuiContext(void);
-	virtual ~GuiContext(void);
-
-	virtual void clear(void);
-
-	virtual void setPosition(CodePosition* pos);
+	DockCallStack(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+	~DockCallStack(void);
 
 public slots:
-	virtual void stopScript(void);
-	virtual void breakpoint(void);
-	virtual void debugRun(void);
-	virtual void debugStep(void);
-	virtual void debugOver(void);
-	virtual void debugOut(void);
-
-signals:
-	void breakpointOccured(void);
+	void clear(void);
+	void insert(const QString& function, const QString& filename, int line);
 
 private:
-	QMutex m_accessMutex;
-	QMutex m_dbgMutex;
-	QWaitCondition m_waitCondition;
-	SteppingType m_steppingType;
-	int m_callStackSize;
-	bool m_stopScript;
+	QTreeView* m_table;
+	QStandardItemModel* m_itemModel;
 };
 
-#endif // GUICONTEXT_H
+#endif // DOCKCALLSTACK_H

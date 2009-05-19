@@ -25,6 +25,7 @@
 #include "settings.h"
 #include "dockscriptoutput.h"
 #include "dockfiles.h"
+#include "dockcallstack.h"
 #include "objectcreator.hpp"
 #include "logger.hpp"
 #include "version.hpp"
@@ -68,8 +69,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 	connect(m_scriptThread, SIGNAL(started()), this, SLOT(scriptStarted()));
 	connect(m_scriptThread, SIGNAL(finished()), this, SLOT(scriptFinished()));
 
-	connect(&CONTEXT, SIGNAL(positionChanged(const QString&, int)),
-			this, SLOT(open(const QString&, int)));
+	connect(&CONTEXT, SIGNAL(breakpointOccured()), this, SLOT(breakpointOccured()));
 
 	statusBarMessage(tr("Ready"));
 }
@@ -515,6 +515,10 @@ void MainWindow::createMenus()
 	tmp->setText(tmp->text() + tr(" dock"));
 	m_viewMenu->addAction(tmp);
 
+	tmp = m_dockCallStack->toggleViewAction();
+	tmp->setText(tmp->text() + tr(" dock"));
+	m_viewMenu->addAction(tmp);
+
 	m_viewMenu->addSeparator();
 
 	tmp = m_fileToolBar->toggleViewAction();
@@ -562,7 +566,7 @@ void MainWindow::createMenus()
 void MainWindow::createToolBars()
 {
 	m_fileToolBar = addToolBar(tr("File"));
-	m_fileToolBar->setObjectName("File");// TODO: Why is it needed by saveState()?
+	m_fileToolBar->setObjectName("File");
 	m_fileToolBar->addAction(m_newAct);
 	m_fileToolBar->addAction(m_openAct);
 	m_fileToolBar->addAction(m_saveAct);
@@ -571,7 +575,7 @@ void MainWindow::createToolBars()
 	m_fileToolBar->addAction(m_closeAct);
 
 	m_editToolBar = addToolBar(tr("Edit"));
-	m_editToolBar->setObjectName("Edit");// TODO: Why is it needed by saveState()?
+	m_editToolBar->setObjectName("Edit");
 	m_editToolBar->addAction(m_undoAct);
 	m_editToolBar->addAction(m_redoAct);
 	m_editToolBar->addAction(m_cutAct);
@@ -610,7 +614,7 @@ void MainWindow::createDocks()
 {
 	// Files
 	m_dockFiles = new DockFiles(this);
-	m_dockFiles->setObjectName("Files");// TODO: Why is it needed by saveState()?
+	m_dockFiles->setObjectName("Files");
 	addDockWidget(Qt::LeftDockWidgetArea, m_dockFiles);
 	connect(m_dockFiles, SIGNAL(fileSelected(QString)),
 			this, SLOT(fileSelected(QString)));
@@ -620,7 +624,7 @@ void MainWindow::createDocks()
 
 	// Script output
 	m_dockScriptOutput = new DockScriptOutput(this);
-	m_dockScriptOutput->setObjectName("ScriptOutput");// TODO: Why is it needed by saveState()?
+	m_dockScriptOutput->setObjectName("ScriptOutput");
 	addDockWidget(Qt::BottomDockWidgetArea, m_dockScriptOutput);
 
 	Logger* logger = ObjectCreator::getInstance().getLogger();
@@ -631,6 +635,12 @@ void MainWindow::createDocks()
 	connect(logger, SIGNAL(info(QString)), m_dockScriptOutput, SLOT(info(QString)));
 	connect(logger, SIGNAL(scriptStdout(QString)), m_dockScriptOutput, SLOT(scriptStdout(QString)));
 	connect(m_dockScriptOutput, SIGNAL(anchorClicked(QString, int)), this, SLOT(open(QString, int)));
+
+
+	// Call stack
+	m_dockCallStack = new DockCallStack(this);
+	m_dockCallStack->setObjectName("CallStack");
+	addDockWidget(Qt::BottomDockWidgetArea, m_dockCallStack);
 }
 
 
@@ -840,6 +850,7 @@ void MainWindow::scriptStarted(void)
 	m_debugStepAct->setEnabled(true);
 	m_debugOverAct->setEnabled(true);
 	m_debugOutAct->setEnabled(true);
+	m_dockCallStack->clear();
 }
 
 void MainWindow::scriptFinished(void)
@@ -850,5 +861,25 @@ void MainWindow::scriptFinished(void)
 	m_debugStepAct->setEnabled(false);
 	m_debugOverAct->setEnabled(false);
 	m_debugOutAct->setEnabled(false);
+	m_dockCallStack->clear();
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::breakpointOccured(void)
+{
+	// Access to CONTEXT members should be safe, breakpoint() waits QWaitCondition
+
+	// Update position in the code
+	const CodePosition* pos = CONTEXT.getPosition();
+	open(QString::fromStdString(ID2STR(pos->getFile())), (int)pos->getLine());
+
+	// Update call stack dock
+	m_dockCallStack->clear();
+	const deque<identifier>& callStack = CONTEXT.getCallStack();
+	deque<identifier>::const_iterator it;
+	for(it = callStack.begin(); it != callStack.end(); it++)
+		m_dockCallStack->insert(QString::fromStdString(ID2STR(*it)), "TODO:", 0);
+}

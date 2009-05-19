@@ -17,6 +17,7 @@ SOURCES += main.cpp \
     scriptthread.cpp \
     dockscriptoutput.cpp \
     dockfiles.cpp \
+    dockcallstack.cpp \
     guifactory.cpp \
     guilogger.cpp \
     guicontext.cpp \
@@ -158,6 +159,7 @@ HEADERS += mainwindow.h \
     scriptthread.h \
     dockscriptoutput.h \
     dockfiles.h \
+    dockcallstack.h \
     guifactory.hpp \
     guilogger.hpp \
     guicontext.h \

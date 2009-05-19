@@ -47,7 +47,7 @@ Context::Context()
 	m_stringtable(),
 	m_include_dirs()
 {
-	pushLocal(getStringTable()->getID(("init_code")));
+	pushLocal(getStringTable()->getID(("init_code")));// TODO: remove
 	addIncludeDirectory("./");
 }
 
@@ -75,8 +75,6 @@ void Context::clear(void)
 
 	m_stringtable.clear();
 	m_functions.clear();
-
-	pushLocal(STR2ID("init_code"));
 }
 
 
@@ -86,7 +84,7 @@ void Context::clear(void)
 void Context::pushLocal(identifier function_name)
 {
 	m_local_variables.push_back(map<identifier, CountPtr<Value> >());
-	m_call_stack.push_back(function_name);
+	m_call_stack.push_back(function_name);// TODO: save possition in the code
 }
 
 void Context::popLocal(void)

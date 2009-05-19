@@ -92,8 +92,7 @@ void GuiContext::setPosition(CodePosition* pos)
 
 void GuiContext::breakpoint(void)
 {
-	emit positionChanged(QString::fromStdString(ID2STR(getPosition()->getFile())),
-		getPosition()->getLine());
+	emit breakpointOccured();
 
 	m_dbgMutex.lock();
 	m_waitCondition.wait(&m_dbgMutex);

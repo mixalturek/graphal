@@ -61,6 +61,7 @@ public:
 	identifier getExecutedFunctionName(void) const { return m_call_stack.back(); }
 	int getStackSize(void) const { return m_call_stack.size(); }
 	void printStackTrace() const;
+	const deque<identifier>& getCallStack(void) const { return m_call_stack; }
 
 	NodeFunction* getFunction(identifier name);
 	void addFunction(NodeFunction* function);
