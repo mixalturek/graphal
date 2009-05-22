@@ -26,6 +26,8 @@
 
 class QTreeView;
 class QStandardItemModel;
+class QModelIndex;
+
 
 class DockCallStack : public QDockWidget
 {
@@ -38,6 +40,10 @@ public:
 public slots:
 	void clear(void);
 	void insert(const QString& function, const QString& filename, int line);
+	void itemDoubleClicked(const QModelIndex& index);
+
+signals:
+	void openRequest(const QString& filename, int line);
 
 private:
 	QTreeView* m_table;

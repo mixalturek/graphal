@@ -152,7 +152,8 @@ SOURCES += main.cpp \
     ../bbd/codeposition.cpp \
     ../bbd/baseobject.cpp \
     ../bbd/objectfactory.cpp \
-    ../bbd/objectcreator.cpp
+    ../bbd/objectcreator.cpp \
+    ../bbd/callstackitem.cpp
 HEADERS += mainwindow.h \
     texteditor.h \
     settings.h \
@@ -297,6 +298,7 @@ HEADERS += mainwindow.h \
     ../bbd/codeposition.hpp \
     ../bbd/baseobject.hpp \
     ../bbd/objectfactory.hpp \
-    ../bbd/objectcreator.hpp
+    ../bbd/objectcreator.hpp \
+    ../bbd/callstackitem.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 

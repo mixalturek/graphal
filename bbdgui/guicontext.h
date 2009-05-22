@@ -21,6 +21,7 @@
 #ifndef GUICONTEXT_H
 #define GUICONTEXT_H
 
+#include <QObject>
 #include <QMutex>
 #include <QWaitCondition>
 #include "context.hpp"
@@ -35,7 +36,7 @@ enum SteppingType
 };
 
 
-class GuiContext : public Context
+class GuiContext : public QObject, public Context
 {
 	Q_OBJECT
 

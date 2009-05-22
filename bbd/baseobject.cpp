@@ -30,9 +30,6 @@
 ////
 
 BaseObject::BaseObject()
-#ifdef QTGUI
-	: QObject()
-#endif // QTGUI
 {
 #ifdef CHECK_MEMORY_LEAKS
 	m_allocated_objects.insert(this);

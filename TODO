@@ -35,10 +35,12 @@ gui
 	font settings, zoom text
 	void QTextEdit::zoomIn ( int range = 1 )   [slot]
 	void QTextEdit::zoomOut ( int range = 1 )   [slot]
-	http://www.qtforum.org/article/11364/show-line-numbers-on-qtextedit.html
 	dock with predefined strings
 		QPlainTextEdit::insertPlainText ( const QString & text )
 		edit->textCursor().insertText(text);
+	Script toolbar item to show current position in the executed script
+	Execute 02_include.txt -> crash (include directories)
+
 
 ////////////////////////////////////////////////////////////////////////////
 ////

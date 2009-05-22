@@ -31,6 +31,7 @@
 #include "stringtable.hpp"
 #include "codeposition.hpp"
 #include "objectcreator.hpp"
+#include "callstackitem.hpp"
 
 #define STR2ID(str) CONTEXT.getStringTable()->getID(str)
 #define ID2STR(id) CONTEXT.getStringTable()->getString(id)
@@ -56,12 +57,12 @@ public:
 	void deleteLocalVariable(identifier name);
 	CountPtr<Value> propagateGlobalVariable(identifier name);
 
-	void pushLocal(identifier function_name);
+	void pushLocal(identifier function_name, const CodePosition* return_address);
 	void popLocal(void);
-	identifier getExecutedFunctionName(void) const { return m_call_stack.back(); }
+	identifier getExecutedFunctionName(void) const { return m_call_stack.back().getFunctionName(); }
 	int getStackSize(void) const { return m_call_stack.size(); }
 	void printStackTrace() const;
-	const deque<identifier>& getCallStack(void) const { return m_call_stack; }
+	const deque<CallStackItem>& getCallStack(void) const { return m_call_stack; }
 
 	NodeFunction* getFunction(identifier name);
 	void addFunction(NodeFunction* function);
@@ -72,9 +73,9 @@ public:
 	void addIncludeDirectory(const string& directory);
 	string getIncludeFullPath(const string& filename) const;
 
-	virtual void setPosition(CodePosition* pos) { m_position = pos; }
-	virtual void setPositionEnterToFunction(CodePosition* pos) { m_position = pos; }
-	virtual void setPositionReturnFromFunction(CodePosition* pos) { m_position = pos; }
+	virtual void setPosition(const CodePosition* pos) { m_position = pos; }
+	virtual void setPositionEnterToFunction(const CodePosition* pos) { m_position = pos; }
+	virtual void setPositionReturnFromFunction(const CodePosition* pos) { m_position = pos; }
 	const CodePosition* getPosition(void) const { return m_position; }
 
 	virtual void breakpoint(void);
@@ -89,10 +90,9 @@ private:
 
 private:
 	map<identifier, NodeFunction*> m_functions;
-	deque< map<identifier, CountPtr<Value> > > m_local_variables;
 	map<identifier, CountPtr<Value> > m_global_variables;
-	deque<identifier> m_call_stack;
-	CodePosition* m_position;
+	deque<CallStackItem> m_call_stack;
+	const CodePosition* m_position;
 	StringTable m_stringtable;
 
 	set<string> m_include_dirs;

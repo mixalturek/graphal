@@ -31,7 +31,7 @@
 ////
 
 NodeFunctionScript::NodeFunctionScript(identifier name, list<identifier>* parameters,
-		Node* block, CodePosition* pos)
+		Node* block, const CodePosition* pos)
 	: NodeFunction(name, parameters),
 	m_block((block != NULL) ? block : new NodeEmptyCommand()),
 	m_position(pos)

@@ -83,7 +83,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 				values.push_back(tmp);
 		}
 
-		CONTEXT.pushLocal(m_name);
+		CONTEXT.pushLocal(m_name, CONTEXT.getPosition());
 			list<identifier>::const_iterator itn;
 			list< CountPtr<Value> >::iterator itv;
 
@@ -102,7 +102,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 		stringstream ss;
 		ss << ID2STR(m_name) << _("(") << names << _(")");
 		ERROR_P(_("Wrong number of parameters was passed to the function"));
-		ERROR_PP(function->declarationPos(), ss.str());
+		ERROR_PP(function->declarationPos()->toString(), ss.str());
 
 		return VALUENULL;
 	}

@@ -5,7 +5,8 @@ BaseObject
 		CliFactory
 		GuiFactory
 	Context
-		GuiContext
+		GuiContext (+ QObject)
+	CallStackItem
 	ExitValue
 	CodePosition
 	Node (interface)
@@ -72,7 +73,7 @@ BaseObject
 	StringTable
 	Logger (interface)
 		CliLogger
-		GuiLogger
+		GuiLogger (+ QObject)
 	Lexan
 	LexanIterator (interface)
 		LexanIteratorFile

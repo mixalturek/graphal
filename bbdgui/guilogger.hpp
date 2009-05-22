@@ -21,11 +21,11 @@
 #ifndef GUILOGGER_HPP
 #define GUILOGGER_HPP
 
-#include "general.hpp"
+#include <QObject>
 #include "logger.hpp"
 
 
-class GuiLogger : public Logger
+class GuiLogger : public QObject, public Logger
 {
 	Q_OBJECT
 

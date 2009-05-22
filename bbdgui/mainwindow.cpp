@@ -27,7 +27,7 @@
 #include "dockfiles.h"
 #include "dockcallstack.h"
 #include "objectcreator.hpp"
-#include "logger.hpp"
+#include "guilogger.hpp"
 #include "version.hpp"
 #include "guicontext.h"
 
@@ -69,7 +69,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 	connect(m_scriptThread, SIGNAL(started()), this, SLOT(scriptStarted()));
 	connect(m_scriptThread, SIGNAL(finished()), this, SLOT(scriptFinished()));
 
-	connect(&CONTEXT, SIGNAL(breakpointOccured()), this, SLOT(breakpointOccured()));
+	GuiContext* context = dynamic_cast<GuiContext*>(&CONTEXT);
+	assert(context != NULL);
+	connect(context, SIGNAL(breakpointOccured()), this, SLOT(breakpointOccured()));
 
 	statusBarMessage(tr("Ready"));
 }
@@ -159,7 +161,7 @@ bool MainWindow::open(const QString& fileName, bool warnIfNotFound)
 	return false;
 }
 
-void MainWindow::open(const QString& fileName, int line)
+void MainWindow::openAndScroll(const QString& fileName, int line)
 {
 	if(open(fileName, true))
 	{
@@ -340,6 +342,9 @@ QMdiSubWindow* MainWindow::createTextEditor()
 
 void MainWindow::createActions()
 {
+	GuiContext* context = dynamic_cast<GuiContext*>(&CONTEXT);
+	assert(context != NULL);
+
 	m_newAct = new QAction(QIcon(":/images/filenew.png"), tr("&New"), this);
 	m_newAct->setShortcut(tr("Ctrl+N"));
 	m_newAct->setStatusTip(tr("Create a new file"));
@@ -447,27 +452,27 @@ void MainWindow::createActions()
 	m_stopScriptAct = new QAction(QIcon(":/images/stop.png"), tr("&Stop"), this);
 	m_stopScriptAct->setShortcut(tr("Ctrl+Shift+R"));
 	m_stopScriptAct->setStatusTip(tr("Stop the executed script"));
-	connect(m_stopScriptAct, SIGNAL(triggered()), &CONTEXT, SLOT(stopScript()));
+	connect(m_stopScriptAct, SIGNAL(triggered()), context, SLOT(stopScript()));
 
 	m_debugRunAct = new QAction(QIcon(":/images/dbgrun.png"), tr("Continue"), this);
 	m_debugRunAct->setShortcut(tr("F9"));
 	m_debugRunAct->setStatusTip(tr("Continue execution until next breakpoint or script exit"));
-	connect(m_debugRunAct, SIGNAL(triggered()), &CONTEXT, SLOT(debugRun()));
+	connect(m_debugRunAct, SIGNAL(triggered()), context, SLOT(debugRun()));
 
 	m_debugStepAct = new QAction(QIcon(":/images/dbgstep.png"), tr("Step into"), this);
 	m_debugStepAct->setShortcut(tr("F10"));
 	m_debugStepAct->setStatusTip(tr("Execute the next command, but step inside functions"));
-	connect(m_debugStepAct, SIGNAL(triggered()), &CONTEXT, SLOT(debugStep()));
+	connect(m_debugStepAct, SIGNAL(triggered()), context, SLOT(debugStep()));
 
 	m_debugOverAct = new QAction(QIcon(":/images/dbgnext.png"), tr("Step over"), this);
 	m_debugOverAct->setShortcut(tr("F11"));
 	m_debugOverAct->setStatusTip(tr("Execute the next command, over the functions"));
-	connect(m_debugOverAct, SIGNAL(triggered()), &CONTEXT, SLOT(debugOver()));
+	connect(m_debugOverAct, SIGNAL(triggered()), context, SLOT(debugOver()));
 
 	m_debugOutAct = new QAction(QIcon(":/images/dbgstepout.png"), tr("Step out"), this);
 	m_debugOutAct->setShortcut(tr("F12"));
 	m_debugOutAct->setStatusTip(tr("Continue execution until return from this function"));
-	connect(m_debugOutAct, SIGNAL(triggered()), &CONTEXT, SLOT(debugOut()));
+	connect(m_debugOutAct, SIGNAL(triggered()), context, SLOT(debugOut()));
 }
 
 
@@ -627,20 +632,24 @@ void MainWindow::createDocks()
 	m_dockScriptOutput->setObjectName("ScriptOutput");
 	addDockWidget(Qt::BottomDockWidgetArea, m_dockScriptOutput);
 
-	Logger* logger = ObjectCreator::getInstance().getLogger();
+	GuiLogger* logger = dynamic_cast<GuiLogger*>(ObjectCreator::getInstance().getLogger());
+	assert(logger != NULL);
 	connect(logger, SIGNAL(error(QString)), m_dockScriptOutput, SLOT(error(QString)));
 	connect(logger, SIGNAL(error(QString, QString)), m_dockScriptOutput, SLOT(error(QString, QString)));
 	connect(logger, SIGNAL(warn(QString)), m_dockScriptOutput, SLOT(warn(QString)));
 	connect(logger, SIGNAL(warn(QString, QString)), m_dockScriptOutput, SLOT(warn(QString, QString)));
 	connect(logger, SIGNAL(info(QString)), m_dockScriptOutput, SLOT(info(QString)));
 	connect(logger, SIGNAL(scriptStdout(QString)), m_dockScriptOutput, SLOT(scriptStdout(QString)));
-	connect(m_dockScriptOutput, SIGNAL(anchorClicked(QString, int)), this, SLOT(open(QString, int)));
+	connect(m_dockScriptOutput, SIGNAL(anchorClicked(QString, int)),
+			this, SLOT(openAndScroll(const QString&, int)));
 
 
 	// Call stack
 	m_dockCallStack = new DockCallStack(this);
 	m_dockCallStack->setObjectName("CallStack");
 	addDockWidget(Qt::BottomDockWidgetArea, m_dockCallStack);
+	connect(m_dockCallStack, SIGNAL(openRequest(const QString&, int)),
+		this, SLOT(openAndScroll(const QString&, int)));
 }
 
 
@@ -874,12 +883,19 @@ void MainWindow::breakpointOccured(void)
 
 	// Update position in the code
 	const CodePosition* pos = CONTEXT.getPosition();
-	open(QString::fromStdString(ID2STR(pos->getFile())), (int)pos->getLine());
+	openAndScroll(QString::fromStdString(ID2STR(pos->getFile())), pos->getLine());
 
 	// Update call stack dock
 	m_dockCallStack->clear();
-	const deque<identifier>& callStack = CONTEXT.getCallStack();
-	deque<identifier>::const_iterator it;
+	const deque<CallStackItem>& callStack = CONTEXT.getCallStack();
+	deque<CallStackItem>::const_iterator it;
+
 	for(it = callStack.begin(); it != callStack.end(); it++)
-		m_dockCallStack->insert(QString::fromStdString(ID2STR(*it)), "TODO:", 0);
+	{
+		m_dockCallStack->insert(
+			QString::fromStdString(ID2STR(it->getFunctionName())),
+			QString::fromStdString(ID2STR(it->getReturnAddress()->getFile())),
+			it->getReturnAddress()->getLine()
+		);
+	}
 }

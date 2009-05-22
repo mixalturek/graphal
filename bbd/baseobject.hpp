@@ -21,10 +21,6 @@
 #ifndef BASEOBJECT_HPP
 #define BASEOBJECT_HPP
 
-#ifdef QTGUI
-#include <QObject>
-#endif // QTGUI
-
 #include "general.hpp"
 
 #ifdef CHECK_MEMORY_LEAKS
@@ -32,9 +28,6 @@
 #endif // CHECK_MEMORY_LEAKS
 
 class BaseObject
-#ifdef QTGUI
-	: public QObject
-#endif // QTGUI
 {
 public:
 	BaseObject();

@@ -39,6 +39,8 @@
 		</Compiler>
 		<Unit filename="baseobject.cpp" />
 		<Unit filename="baseobject.hpp" />
+		<Unit filename="callstackitem.cpp" />
+		<Unit filename="callstackitem.hpp" />
 		<Unit filename="class_hierarchy.txt" />
 		<Unit filename="clifactory.cpp" />
 		<Unit filename="clifactory.hpp" />

@@ -25,7 +25,8 @@
 ////
 
 GuiContext::GuiContext(void)
-	: Context(),
+	: QObject(),
+	Context(),
 	m_accessMutex(),
 	m_dbgMutex(),
 	m_waitCondition(),

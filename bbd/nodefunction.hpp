@@ -25,6 +25,7 @@
 #include "general.hpp"
 #include "node.hpp"
 
+class CodePosition;
 
 class NodeFunction : public Node
 {
@@ -36,7 +37,7 @@ public:
 	const list<identifier>& getParameterNames(void) const { return *m_parameters; }
 	uint getNumberOfParameters(void) const { return m_parameters->size(); }
 
-	virtual string declarationPos(void) const = 0;
+	virtual const CodePosition* declarationPos(void) const = 0;
 
 private:
 	list<identifier>* m_parameters;

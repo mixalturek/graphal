@@ -26,7 +26,8 @@
 ////
 
 GuiLogger::GuiLogger(void)
-	: Logger()
+	: QObject(),
+	Logger()
 {
 
 }

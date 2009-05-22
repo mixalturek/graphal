@@ -51,6 +51,8 @@ void ObjectCreator::init(ObjectFactory* factory)
 
 	m_logger = m_factory->newLogger();
 	m_context = m_factory->newContext();
+
+	m_builtin_declaration_pos = new CodePosition(STR2ID(_("built-in")), 0);
 }
 
 void ObjectCreator::destroy(void)
@@ -71,6 +73,12 @@ void ObjectCreator::destroy(void)
 	{
 		delete m_context;
 		m_context = NULL;
+	}
+
+	if(m_builtin_declaration_pos != NULL)
+	{
+		delete m_builtin_declaration_pos;
+		m_builtin_declaration_pos = NULL;
 	}
 }
 

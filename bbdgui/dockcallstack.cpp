@@ -22,47 +22,17 @@
 #include <QStandardItemModel>
 #include "dockcallstack.h"
 
-void addMail(QAbstractItemModel *model, const QString &subject,
-			 const QString &sender, const QDateTime &date)
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+enum CallStackColumns
 {
-	model->insertRow(0);
-	model->setData(model->index(0, 0), subject);
-	model->setData(model->index(0, 1), sender);
-	model->setData(model->index(0, 2), date);
-}
+	COL_FUNCTION = 0,
+	COL_FILENAME = 1,
+	COL_LINE = 2
+};
 
-QAbstractItemModel *createMailModel(QObject *parent)
-{
-	QStandardItemModel *model = new QStandardItemModel(0, 3, parent);
-
-	model->setHeaderData(0, Qt::Horizontal, QObject::tr("Subject"));
-	model->setHeaderData(1, Qt::Horizontal, QObject::tr("Sender"));
-	model->setHeaderData(2, Qt::Horizontal, QObject::tr("Date"));
-
-/*
-	addMail(model, "Happy New Year!", "Grace K. <grace@software-inc.com>",
-			QDateTime(QDate(2006, 12, 31), QTime(17, 03)));
-	addMail(model, "Radically new concept", "Grace K. <grace@software-inc.com>",
-			QDateTime(QDate(2006, 12, 22), QTime(9, 44)));
-	addMail(model, "Accounts", "pascale@nospam.com",
-			QDateTime(QDate(2006, 12, 31), QTime(12, 50)));
-	addMail(model, "Expenses", "Joe Bloggs <joe@bloggs.com>",
-			QDateTime(QDate(2006, 12, 25), QTime(11, 39)));
-	addMail(model, "Re: Expenses", "Andy <andy@nospam.com>",
-			QDateTime(QDate(2007, 01, 02), QTime(16, 05)));
-	addMail(model, "Re: Accounts", "Joe Bloggs <joe@bloggs.com>",
-			QDateTime(QDate(2007, 01, 03), QTime(14, 18)));
-	addMail(model, "Re: Accounts", "Andy <andy@nospam.com>",
-			QDateTime(QDate(2007, 01, 03), QTime(14, 26)));
-	addMail(model, "Sports", "Linda Smith <linda.smith@nospam.com>",
-			QDateTime(QDate(2007, 01, 05), QTime(11, 33)));
-	addMail(model, "AW: Sports", "Rolf Newschweinstein <rolfn@nospam.com>",
-			QDateTime(QDate(2007, 01, 05), QTime(12, 00)));
-	addMail(model, "RE: Sports", "Petra Schmidt <petras@nospam.com>",
-			QDateTime(QDate(2007, 01, 05), QTime(12, 01)));
-*/
-	return model;
-}
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -81,6 +51,9 @@ DockCallStack::DockCallStack(QWidget* parent, Qt::WindowFlags flags)
 	m_table->setAlternatingRowColors(true);
 	m_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	setWidget(m_table);
+
+	connect(m_table, SIGNAL(doubleClicked(const QModelIndex&)),
+			this, SLOT(itemDoubleClicked(const QModelIndex&)));
 }
 
 DockCallStack::~DockCallStack(void)
@@ -94,10 +67,18 @@ DockCallStack::~DockCallStack(void)
 
 void DockCallStack::insert(const QString& function, const QString& filename, int line)
 {
-	m_itemModel->insertRow(0);
-	m_itemModel->setData(m_itemModel->index(0, 0), function);
-	m_itemModel->setData(m_itemModel->index(0, 1), filename);
-	m_itemModel->setData(m_itemModel->index(0, 2), line);
+	QStandardItem* fileitem = new QStandardItem(filename.section('/', -1));
+	fileitem->setToolTip(filename);
+
+	QList<QStandardItem *> items;
+	items << new QStandardItem(function)
+		<< fileitem
+		<< new QStandardItem(QString::number(line));
+
+	m_itemModel->insertRow(0, items);
+	m_table->resizeColumnToContents(COL_FUNCTION);
+	m_table->resizeColumnToContents(COL_FILENAME);
+	m_table->resizeColumnToContents(COL_LINE);
 	m_table->scrollToTop();
 }
 
@@ -108,4 +89,20 @@ void DockCallStack::insert(const QString& function, const QString& filename, int
 void DockCallStack::clear(void)
 {
 	m_itemModel->removeRows(0, m_itemModel->rowCount());
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void DockCallStack::itemDoubleClicked(const QModelIndex& index)
+{
+	bool ok;
+
+	QString filename = m_itemModel->item(index.row(), COL_FILENAME)->toolTip();
+	int line = m_itemModel->item(index.row(), COL_LINE)->text().toInt(&ok);
+
+	if(ok)
+		emit openRequest(filename, line);
+
 }

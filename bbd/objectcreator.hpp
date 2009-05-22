@@ -32,6 +32,8 @@
 class ObjectFactory;
 class Logger;
 class Context;
+class CodePosition;
+
 
 class ObjectCreator
 {
@@ -48,6 +50,8 @@ public:
 	Logger* getLogger(void) { return m_logger; }
 	Context& getContext(void) { return *m_context; }
 
+	const CodePosition* getBuiltinDeclarationPos(void) const { return m_builtin_declaration_pos; }
+
 private:
 	ObjectCreator(void);
 	virtual ~ObjectCreator(void);
@@ -60,6 +64,7 @@ private:
 	ObjectFactory* m_factory;
 	Logger* m_logger;
 	Context* m_context;
+	const CodePosition* m_builtin_declaration_pos;
 };
 
 #endif // OBJECTCREATOR_HPP

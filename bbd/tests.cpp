@@ -114,6 +114,10 @@ bool Tests::testResult(const string& testName, bool result)
 
 void Tests::run(void)
 {
+	CodePosition tmp(STR2ID("tests"), 0);
+	CONTEXT.pushLocal(STR2ID("tests"), &tmp);
+	CONTEXT.setPosition(&tmp);
+
 	uint failed = 0;
 #ifdef CHECK_MEMORY_LEAKS
 	failed += !testMemoryLeaks();

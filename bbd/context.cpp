@@ -40,15 +40,13 @@
 Context::Context()
 	: BaseObject(),
 	m_functions(),
-	m_local_variables(),
 	m_global_variables(),
 	m_call_stack(),
-	m_position(NULL),// TODO: is OK?
+	m_position(NULL),
 	m_stringtable(),
 	m_include_dirs()
 {
-	pushLocal(getStringTable()->getID(("init_code")));// TODO: remove
-	addIncludeDirectory("./");
+	addIncludeDirectory("./");// TODO: call explicitly
 }
 
 
@@ -60,9 +58,6 @@ Context::~Context()
 
 void Context::clear(void)
 {
-	while(!m_local_variables.empty())
-		popLocal();
-
 	m_global_variables.clear();
 	m_call_stack.clear();
 
@@ -81,23 +76,22 @@ void Context::clear(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void Context::pushLocal(identifier function_name)
+void Context::pushLocal(identifier function_name, const CodePosition* return_address)
 {
-	m_local_variables.push_back(map<identifier, CountPtr<Value> >());
-	m_call_stack.push_back(function_name);// TODO: save possition in the code
+	m_call_stack.push_back(CallStackItem(function_name, return_address));
 }
 
 void Context::popLocal(void)
 {
-	m_local_variables.pop_back();
 	m_call_stack.pop_back();
 }
 
 void Context::printStackTrace() const
 {
-	deque<identifier>::const_iterator it;
+	// TODO: position in the code
+	deque<CallStackItem>::const_iterator it;
 	for(it = m_call_stack.begin(); it != m_call_stack.end(); it++)
-		SCRIPT_STDOUT(ID2STR(*it) + _("()\n"));
+		SCRIPT_STDOUT(ID2STR(it->getFunctionName()) + _("()\n"));
 }
 
 
@@ -106,75 +100,33 @@ void Context::printStackTrace() const
 
 bool Context::isVariableSet(identifier name)
 {
-	assert(!m_local_variables.empty());
-
-	return m_local_variables.back().count(name);
+	assert(!m_call_stack.empty());
+	return m_call_stack.back().isVariableSet(name);
 }
 
 CountPtr<Value> Context::getLocalVariable(identifier name)
 {
-	assert(!m_local_variables.empty());
-
-	map<identifier, CountPtr<Value> >::iterator it = m_local_variables.back().find(name);
-
-	if(it != m_local_variables.back().end())
-		return it->second;
-	else
-	{
-		// WARN << _("Variable has not been initialized: ") << ID2STR(name) << endl;
-		// Variable have to be created because of assigning
-		return m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name,
-				CountPtr<Value>(new ValueReference(VALUENULL)))).first->second;
-	}
+	assert(!m_call_stack.empty());
+	return m_call_stack.back().getVariable(name);
 }
 
 
 CountPtr<Value> Context::setLocalVariable(identifier name, CountPtr<Value> val)
 {
-	assert(!m_local_variables.empty());
-
-	map<identifier, CountPtr<Value> >::iterator it = m_local_variables.back().find(name);
-	if(it != m_local_variables.back().end())
-	{
-		assert((*it).second->toValueReference() != NULL);
-
-		if(val->isLValue())
-			(*it).second->toValueReference()->assign(val->getReferredValue());
-		else
-			(*it).second->toValueReference()->assign(val);
-	}
-	else
-	{
-		if(val->isLValue())
-			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name,
-					CountPtr<Value>(new ValueReference(val->getReferredValue()))));
-		else
-			m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name,
-					CountPtr<Value>(new ValueReference(val))));
-	}
-
-	return val;
+	assert(!m_call_stack.empty());
+	return m_call_stack.back().setVariable(name, val);
 }
 
 CountPtr<Value> Context::setLocalVariableAllowRef(identifier name, CountPtr<Value> val)
 {
-	assert(!m_local_variables.empty());
-
-	deleteLocalVariable(name);
-
-	if(val->isLValue())
-		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, val));
-	else
-		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name,
-				CountPtr<Value>(new ValueReference(val))));
-
-	return val;
+	assert(!m_call_stack.empty());
+	return m_call_stack.back().setVariableAllowRef(name, val);
 }
 
 void Context::deleteLocalVariable(identifier name)
 {
-	assert(!m_local_variables.empty());
-	m_local_variables.back().erase(name);
+	assert(!m_call_stack.empty());
+	return m_call_stack.back().deleteVariable(name);
 }
 
 CountPtr<Value> Context::propagateGlobalVariable(identifier name)
@@ -183,17 +135,16 @@ CountPtr<Value> Context::propagateGlobalVariable(identifier name)
 	if(it != m_global_variables.end())
 	{
 		assert(it->second->isLValue());
-		deleteLocalVariable(name);
-		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, it->second));
+		setLocalVariableAllowRef(name, it->second);
 		return it->second;
 	}
 	else
 	{
+		// Global variable does not exist, create and set local
 		CountPtr<Value> tmp(new ValueReference(VALUENULL));
 		m_global_variables.insert(pair<identifier, CountPtr<Value> >(name, tmp));
 
-		deleteLocalVariable(name);
-		m_local_variables.back().insert(pair<identifier, CountPtr<Value> >(name, tmp));
+		setLocalVariableAllowRef(name, tmp);
 		return tmp;
 	}
 }
@@ -221,8 +172,11 @@ void Context::addFunction(NodeFunction* function)
 
 	if(!ret.second)
 	{
-		WARN_PP(function->declarationPos(), _("Function ") + ID2STR(function->getName()) + _("() has been already defined, redefinition ignored"));
-		WARN_PP(ret.first->second->declarationPos(), ID2STR(function->getName()) + _("()"));
+		WARN_PP(function->declarationPos()->toString(),
+			_("Function ") + ID2STR(function->getName())
+			+ _("() has been already defined, redefinition ignored"));
+		WARN_PP(ret.first->second->declarationPos()->toString(),
+			ID2STR(function->getName()) + _("()"));
 
 		delete function;
 		function = NULL;
@@ -269,10 +223,12 @@ int Context::executeScriptMain(int argc, char** argv)
 	}
 	else if(maintest->getNumberOfParameters() != 1)
 	{
-		ERROR_PP(maintest->declarationPos(),
+		ERROR_PP(maintest->declarationPos()->toString(),
 			_("Function main(argv) does not expect one parameter, exiting"));
 		return 1;
 	}
+
+	setPosition(const_cast<CodePosition*>(maintest->declarationPos()));
 
 	ValueArray* argv_array = new ValueArray();
 	argv_array->resize(argc);
