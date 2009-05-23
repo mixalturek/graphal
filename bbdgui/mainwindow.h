@@ -66,6 +66,7 @@ private slots:
 	void updateMenus();
 	void updateWindowMenu();
 	void runScript();
+	void includeDirectories(void);
 
 	void saveLayout();
 	void loadLayout();
@@ -137,6 +138,7 @@ private:
 	QAction* m_debugStepAct;
 	QAction* m_debugOverAct;
 	QAction* m_debugOutAct;
+	QAction* m_includeDirectoriesAct;
 
 	ScriptThread* m_scriptThread;
 };

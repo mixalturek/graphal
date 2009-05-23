@@ -108,3 +108,17 @@ void Settings::setOpenedFiles(const QStringList& files)
 {
 	m_settings->setValue("openedfiles", files);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+QStringList Settings::getIncludeDirectories(void)
+{
+	return m_settings->value("includedirectories", QStringList()).toStringList();
+}
+
+void Settings::setIncludeDirectories(const QStringList& files)
+{
+	m_settings->setValue("includedirectories", files);
+}

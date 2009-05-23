@@ -72,6 +72,7 @@ public:
 	// TODO: move to settings class
 	void addIncludeDirectory(const string& directory);
 	string getIncludeFullPath(const string& filename) const;
+	void clearIncludeDirectories(void) { m_include_dirs.clear(); }
 
 	virtual void setPosition(const CodePosition* pos) { m_position = pos; }
 	virtual void setPositionEnterToFunction(const CodePosition* pos) { m_position = pos; }

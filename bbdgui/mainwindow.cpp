@@ -30,6 +30,7 @@
 #include "guilogger.hpp"
 #include "version.hpp"
 #include "guicontext.h"
+#include "dialogincludedirs.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -473,6 +474,10 @@ void MainWindow::createActions()
 	m_debugOutAct->setShortcut(tr("F12"));
 	m_debugOutAct->setStatusTip(tr("Continue execution until return from this function"));
 	connect(m_debugOutAct, SIGNAL(triggered()), context, SLOT(debugOut()));
+
+	m_includeDirectoriesAct = new QAction(tr("Include directories"), this);
+	m_includeDirectoriesAct->setStatusTip(tr("Include directories settings"));
+	connect(m_includeDirectoriesAct, SIGNAL(triggered()), this, SLOT(includeDirectories()));
 }
 
 
@@ -548,6 +553,8 @@ void MainWindow::createMenus()
 	m_scriptMenu->addAction(m_debugStepAct);
 	m_scriptMenu->addAction(m_debugOverAct);
 	m_scriptMenu->addAction(m_debugOutAct);
+	m_scriptMenu->addSeparator();
+	m_scriptMenu->addAction(m_includeDirectoriesAct);
 
 
 	// Window
@@ -898,4 +905,16 @@ void MainWindow::breakpointOccured(void)
 			it->getReturnAddress()->getLine()
 		);
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::includeDirectories(void)
+{
+	DialogIncludeDirs dlg(this);
+	dlg.setDirectories(SETTINGS.getIncludeDirectories());
+	if(dlg.exec() == QDialog::Accepted)
+		SETTINGS.setIncludeDirectories(dlg.getDirectories());
 }

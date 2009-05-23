@@ -46,7 +46,7 @@ Context::Context()
 	m_stringtable(),
 	m_include_dirs()
 {
-	addIncludeDirectory("./");// TODO: call explicitly
+
 }
 
 
@@ -309,7 +309,7 @@ string Context::getIncludeFullPath(const string& filename) const
 		}
 	}
 
-	THROW(runtime_error(_("File was not found")));
+	THROW(runtime_error(_("File was not found, check settings of include directories")));
 	return filename;// Should not be called
 }
 

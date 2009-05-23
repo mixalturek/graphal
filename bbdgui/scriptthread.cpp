@@ -18,10 +18,13 @@
  */
 
 
+#include <QStringList>
 #include "scriptthread.h"
 #include "context.hpp"
 #include "nodebuiltin_inst.hpp"
 #include "logger.hpp"
+#include "settings.h"
+
 
 int parseCode(const string& str);
 
@@ -43,13 +46,20 @@ ScriptThread::~ScriptThread(void)
 
 void ScriptThread::run(void)
 {
-	CONTEXT.clear();
+	Context& context = CONTEXT;
+
+	context.clear();
+	context.clearIncludeDirectories();
 	generateBuiltinFunctions();
+
+	QStringList includeDirs(SETTINGS.getIncludeDirectories());
+	foreach(QString dir, includeDirs)
+		context.addIncludeDirectory(dir.toStdString());
 
 	try
 	{
 		if(parseCode(m_scriptFilename.toStdString()) == 0)
-			CONTEXT.executeScriptMain(0, NULL);
+			context.executeScriptMain(0, NULL);
 		else
 			ERROR(_("Error while parsing"));
 	}

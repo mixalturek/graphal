@@ -22,6 +22,7 @@ SOURCES += main.cpp \
     guilogger.cpp \
     guicontext.cpp \
     texteditorlines.cpp \
+    dialogincludedirs.cpp \
     ../bbd/logger.cpp \
     ../bbd/lexaniteratorstring.cpp \
     ../bbd/lexaniteratorfile.cpp \
@@ -165,6 +166,7 @@ HEADERS += mainwindow.h \
     guilogger.hpp \
     guicontext.h \
     texteditorlines.h \
+    dialogincludedirs.h \
     ../bbd/logger.hpp \
     ../bbd/lexantokens.hpp \
     ../bbd/lexaniteratorstring.hpp \
@@ -302,3 +304,4 @@ HEADERS += mainwindow.h \
     ../bbd/callstackitem.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
+FORMS += dialogincludedirs.ui

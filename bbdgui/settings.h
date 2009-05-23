@@ -47,6 +47,9 @@ public:
 	QStringList getOpenedFiles(void);
 	void setOpenedFiles(const QStringList& files);
 
+	QStringList getIncludeDirectories(void);
+	void setIncludeDirectories(const QStringList& files);
+
 
 private:
 	Settings(void);

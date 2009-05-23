@@ -1,4 +1,11 @@
+function doSomething(par)
+{
+	echo(par);
+	echo("\n");
+}
+
 function fromIncludedFile(param)
 {
+	doSomething(param);
 	return param;
 }
