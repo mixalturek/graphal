@@ -228,7 +228,7 @@ int Context::executeScriptMain(int argc, char** argv)
 		return 1;
 	}
 
-	setPosition(const_cast<CodePosition*>(maintest->declarationPos()));
+	setPosition(maintest->declarationPos());
 
 	ValueArray* argv_array = new ValueArray();
 	argv_array->resize(argc);
@@ -309,7 +309,8 @@ string Context::getIncludeFullPath(const string& filename) const
 		}
 	}
 
-	return filename;
+	THROW(runtime_error(_("File was not found")));
+	return filename;// Should not be called
 }
 
 

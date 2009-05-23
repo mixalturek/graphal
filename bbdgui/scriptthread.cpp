@@ -46,8 +46,19 @@ void ScriptThread::run(void)
 	CONTEXT.clear();
 	generateBuiltinFunctions();
 
-	if(parseCode(m_scriptFilename.toStdString()) == 0)
-		CONTEXT.executeScriptMain(0, NULL);
-	else
-		ERROR(_("Error while parsing"));
+	try
+	{
+		if(parseCode(m_scriptFilename.toStdString()) == 0)
+			CONTEXT.executeScriptMain(0, NULL);
+		else
+			ERROR(_("Error while parsing"));
+	}
+	catch(exception& ex)
+	{
+		ERROR(ex.what());
+	}
+	catch(...)
+	{
+		ERROR(_("Unknown exception caught!"));
+	}
 }

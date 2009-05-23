@@ -46,7 +46,7 @@ public:
 
 	virtual void clear(void);
 
-	virtual void setPosition(CodePosition* pos);
+	virtual void setPosition(const CodePosition* pos);
 
 public slots:
 	virtual void stopScript(void);

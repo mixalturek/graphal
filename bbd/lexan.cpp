@@ -1044,11 +1044,17 @@ void Lexan::parseInclude(void)
 	}
 
 
-	string tmp = CONTEXT.getIncludeFullPath(filename);
-
-//	DBG << getPosition() << "Including " << tmp << endl;
-
-	m_source.push(new LexanIteratorFile(tmp));
+	try
+	{
+		string tmp = CONTEXT.getIncludeFullPath(filename);
+//		DBG << getPosition() << "Including " << tmp << endl;
+		m_source.push(new LexanIteratorFile(tmp));
+	}
+	catch(runtime_error& ex)
+	{
+		// File was not found
+		WARN_PP(getPosition(), ex.what());
+	}
 }
 
 void Lexan::parseDefine(void)

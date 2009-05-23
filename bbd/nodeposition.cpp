@@ -25,7 +25,7 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-NodePosition::NodePosition(Node* next, CodePosition* pos)
+NodePosition::NodePosition(Node* next, const CodePosition* pos)
 	: Node(),
 	m_next(next),
 	m_position(pos)

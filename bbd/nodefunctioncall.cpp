@@ -30,7 +30,7 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-NodeFunctionCall::NodeFunctionCall(identifier name, NodeBlock* parameters, CodePosition* pos)
+NodeFunctionCall::NodeFunctionCall(identifier name, NodeBlock* parameters, const CodePosition* pos)
 	: Node(),
 	m_name(name),
 	m_parameters((parameters != NULL) ? parameters : new NodeBlock()),

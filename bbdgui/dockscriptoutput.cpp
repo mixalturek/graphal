@@ -55,7 +55,7 @@ void DockScriptOutput::reinit(void)
 	m_textEdit->setOpenLinks(false);// anchorClicked() -> MainWindow::open()
 
 	// TODO: add to the settings
-	QFont font("Monospace", 9);
+	QFont font("Monospace", 8);
 	font.setStyleHint(QFont::TypeWriter);
 	m_textEdit->setFont(font);
 

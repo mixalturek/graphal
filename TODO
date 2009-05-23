@@ -39,7 +39,6 @@ gui
 		QPlainTextEdit::insertPlainText ( const QString & text )
 		edit->textCursor().insertText(text);
 	Script toolbar item to show current position in the executed script
-	Execute 02_include.txt -> crash (include directories)
 
 
 ////////////////////////////////////////////////////////////////////////////

@@ -54,7 +54,7 @@ void GuiContext::clear(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void GuiContext::setPosition(CodePosition* pos)
+void GuiContext::setPosition(const CodePosition* pos)
 {
 	Context::setPosition(pos);
 
