@@ -1,5 +1,6 @@
 function main(argv)
 {
+	breakpoint(true);
 	num = argv.size();
 	for(i = 0; i < num; i++)
 		echo("argv[" + i + "]: " + argv[i] + "\n");

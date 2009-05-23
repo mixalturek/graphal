@@ -39,7 +39,7 @@ public:
 	virtual void dump(ostream& os, uint indent) const;
 
 	virtual bool     toBool(void) const { return !m_vertices.empty(); }
-	virtual string toString(void) const { return "ValueGraph"; }
+	virtual string toString(void) const { return "#Graph"; }
 
 	bool isOriented(void) const { return m_oriented; }
 	bool setOriented(bool oriented) { bool ret = m_oriented; m_oriented = oriented; return ret; }

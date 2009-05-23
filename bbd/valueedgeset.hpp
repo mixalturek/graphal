@@ -40,7 +40,7 @@ public:
 	virtual void dump(ostream& os, uint indent) const;
 
 	virtual bool     toBool(void) const { return !m_edges.empty(); }
-	virtual string toString(void) const { return "ValueEdgeSet"; }
+	virtual string toString(void) const { return "#EdgeSet"; }
 
 	void addEdge(ValueEdge* edge);
 	void deleteEdge(ValueEdge* edge);

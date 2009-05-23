@@ -69,19 +69,19 @@ void GuiContext::setPosition(const CodePosition* pos)
 	{
 	case ST_INTO:
 		m_accessMutex.unlock();
-		breakpoint();
+		pauseExecution();
 		break;
 
 	case ST_OVER:
 		m_accessMutex.unlock();
 		if(getStackSize() <= m_callStackSize)
-			breakpoint();
+			pauseExecution();
 		break;
 
 	case ST_OUT:
 		m_accessMutex.unlock();
 		if(getStackSize() < m_callStackSize)
-			breakpoint();
+			pauseExecution();
 		break;
 
 	case ST_NONE:
@@ -91,15 +91,21 @@ void GuiContext::setPosition(const CodePosition* pos)
 	}
 }
 
-void GuiContext::breakpoint(void)
+void GuiContext::pauseExecution(void)
 {
-	emit breakpointOccured();
+	emit executionPaused();
 
 	m_dbgMutex.lock();
 	m_waitCondition.wait(&m_dbgMutex);
 	m_dbgMutex.unlock();
 }
 
+
+void GuiContext::breakpoint(void)
+{
+	// Go outside of the breakpoint() inline function and pause
+	debugStep();
+}
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -137,9 +143,6 @@ void GuiContext::debugOut(void)
 	m_accessMutex.lock();
 		m_steppingType = ST_OUT;
 		m_callStackSize = getStackSize();
-
-		if(getExecutedFunctionName() == STR2ID("breakpoint"))
-			m_callStackSize--;
 	m_accessMutex.unlock();
 
 	m_waitCondition.wakeAll();

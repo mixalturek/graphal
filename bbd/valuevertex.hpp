@@ -38,7 +38,7 @@ public:
 	virtual ~ValueVertex();
 
 	virtual bool     toBool(void) const { return true; }
-	virtual string toString(void) const { return "ValueVertex"; }
+	virtual string toString(void) const { return "#Vertex"; }
 
 	virtual ValueStruct*       toValueStruct(void) { return m_properties; }
 	virtual ValueVertex*       toValueVertex(void) { return this; }

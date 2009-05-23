@@ -36,7 +36,7 @@ public:
 	virtual ~ValueVertexSet();
 
 	virtual bool     toBool(void) const { return !m_vertices.empty(); }
-	virtual string toString(void) const { return "ValueVertexSet"; }
+	virtual string toString(void) const { return "#VertexSet"; }
 
 	virtual ValueVertexSet* toValueVertexSet(void) { return this; }
 

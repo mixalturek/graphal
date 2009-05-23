@@ -26,6 +26,7 @@
 #include "dockscriptoutput.h"
 #include "dockfiles.h"
 #include "dockcallstack.h"
+#include "dockvariables.h"
 #include "objectcreator.hpp"
 #include "guilogger.hpp"
 #include "version.hpp"
@@ -72,7 +73,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 
 	GuiContext* context = dynamic_cast<GuiContext*>(&CONTEXT);
 	assert(context != NULL);
-	connect(context, SIGNAL(breakpointOccured()), this, SLOT(breakpointOccured()));
+	connect(context, SIGNAL(executionPaused()), this, SLOT(scriptPaused()));
 
 	statusBarMessage(tr("Ready"));
 }
@@ -529,6 +530,10 @@ void MainWindow::createMenus()
 	tmp->setText(tmp->text() + tr(" dock"));
 	m_viewMenu->addAction(tmp);
 
+	tmp = m_dockVariables->toggleViewAction();
+	tmp->setText(tmp->text() + tr(" dock"));
+	m_viewMenu->addAction(tmp);
+
 	m_viewMenu->addSeparator();
 
 	tmp = m_fileToolBar->toggleViewAction();
@@ -657,6 +662,12 @@ void MainWindow::createDocks()
 	addDockWidget(Qt::BottomDockWidgetArea, m_dockCallStack);
 	connect(m_dockCallStack, SIGNAL(openRequest(const QString&, int)),
 		this, SLOT(openAndScroll(const QString&, int)));
+
+
+	// Variables
+	m_dockVariables = new DockVariables(this);
+	m_dockVariables->setObjectName("Variables");
+	addDockWidget(Qt::BottomDockWidgetArea, m_dockVariables);
 }
 
 
@@ -867,6 +878,7 @@ void MainWindow::scriptStarted(void)
 	m_debugOverAct->setEnabled(true);
 	m_debugOutAct->setEnabled(true);
 	m_dockCallStack->clear();
+	m_dockVariables->clear();
 }
 
 void MainWindow::scriptFinished(void)
@@ -878,13 +890,14 @@ void MainWindow::scriptFinished(void)
 	m_debugOverAct->setEnabled(false);
 	m_debugOutAct->setEnabled(false);
 	m_dockCallStack->clear();
+	m_dockVariables->clear();
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void MainWindow::breakpointOccured(void)
+void MainWindow::scriptPaused(void)
 {
 	// Access to CONTEXT members should be safe, breakpoint() waits QWaitCondition
 
@@ -903,6 +916,19 @@ void MainWindow::breakpointOccured(void)
 			QString::fromStdString(ID2STR(it->getFunctionName())),
 			QString::fromStdString(ID2STR(it->getReturnAddress()->getFile())),
 			it->getReturnAddress()->getLine()
+		);
+	}
+
+	// Update variables dock
+	m_dockVariables->clear();
+	const map<identifier, CountPtr<Value> >& vars = callStack.back().getVariables();
+	map<identifier, CountPtr<Value> >::const_iterator itv;
+
+	for(itv = vars.begin(); itv != vars.end(); itv++)
+	{
+		m_dockVariables->insert(
+			QString::fromStdString(ID2STR(itv->first)),
+			QString::fromStdString(itv->second->toString())
 		);
 	}
 }

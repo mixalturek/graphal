@@ -20,7 +20,7 @@
 
 #include <QTreeView>
 #include <QStandardItemModel>
-#include "dockcallstack.h"
+#include "dockvariables.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -28,38 +28,33 @@
 
 enum CallStackColumns
 {
-	COL_FUNCTION = 0,
-	COL_FILENAME = 1,
-	COL_LINE = 2
+	COL_NAME = 0,
+	COL_VALUE = 1,
 };
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-DockCallStack::DockCallStack(QWidget* parent, Qt::WindowFlags flags)
-	: QDockWidget(tr("Call stack"), parent, flags),
+DockVariables::DockVariables(QWidget* parent, Qt::WindowFlags flags)
+	: QDockWidget(tr("Variables"), parent, flags),
 	m_table(new QTreeView(this)),
-	m_itemModel(new QStandardItemModel(0, 3, m_table))
+	m_itemModel(new QStandardItemModel(0, 2, m_table))
 {
 	QStringList headers;
-	headers << tr("Function") << tr("File") << tr("Line");
+	headers << tr("Name") << tr("Value");
 	m_itemModel->setHorizontalHeaderLabels(headers);
 
 	m_table->setModel(m_itemModel);
 	m_table->setRootIsDecorated(false);
 	m_table->setAlternatingRowColors(true);
 	m_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	m_table->resizeColumnToContents(COL_FUNCTION);
-	m_table->resizeColumnToContents(COL_FILENAME);
-	m_table->resizeColumnToContents(COL_LINE);
+	m_table->resizeColumnToContents(COL_NAME);
+	m_table->resizeColumnToContents(COL_VALUE);
 	setWidget(m_table);
-
-	connect(m_table, SIGNAL(doubleClicked(const QModelIndex&)),
-			this, SLOT(itemDoubleClicked(const QModelIndex&)));
 }
 
-DockCallStack::~DockCallStack(void)
+DockVariables::~DockVariables(void)
 {
 
 }
@@ -68,44 +63,22 @@ DockCallStack::~DockCallStack(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void DockCallStack::insert(const QString& function, const QString& filename, int line)
+void DockVariables::insert(const QString& name, const QString& value)
 {
-	QStandardItem* fileitem = new QStandardItem(filename.section('/', -1));
-	fileitem->setToolTip(filename);
 
 	QList<QStandardItem *> items;
-	items << new QStandardItem(function)
-		<< fileitem
-		<< new QStandardItem(QString::number(line));
+	items << new QStandardItem(name) << new QStandardItem(value);
 
-	m_itemModel->insertRow(0, items);
-	m_table->resizeColumnToContents(COL_FUNCTION);
-	m_table->resizeColumnToContents(COL_FILENAME);
-	m_table->resizeColumnToContents(COL_LINE);
-	m_table->scrollToTop();
+	m_itemModel->appendRow(items);
+	m_table->resizeColumnToContents(COL_NAME);
+	m_table->resizeColumnToContents(COL_VALUE);
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void DockCallStack::clear(void)
+void DockVariables::clear(void)
 {
 	m_itemModel->removeRows(0, m_itemModel->rowCount());
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void DockCallStack::itemDoubleClicked(const QModelIndex& index)
-{
-	bool ok;
-
-	QString filename = m_itemModel->item(index.row(), COL_FILENAME)->toolTip();
-	int line = m_itemModel->item(index.row(), COL_LINE)->text().toInt(&ok);
-
-	if(ok)
-		emit openRequest(filename, line);
-
 }

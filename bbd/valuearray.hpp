@@ -37,7 +37,7 @@ public:
 public:
 	deque< CountPtr<Value> >   getVal(void) const { return m_val; }
 	virtual bool     toBool(void) const { return !m_val.empty(); }
-	virtual string toString(void) const;
+	virtual string toString(void) const { return "#Array"; }
 
 	virtual ValueArray*         toValueArray(void) { return this; }
 

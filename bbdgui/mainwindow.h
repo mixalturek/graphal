@@ -27,6 +27,7 @@ class ScriptThread;
 class DockScriptOutput;
 class DockFiles;
 class DockCallStack;
+class DockVariables;
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -81,7 +82,7 @@ private slots:
 
 	void scriptStarted(void);
 	void scriptFinished(void);
-	void breakpointOccured(void);
+	void scriptPaused(void);
 
 private:
 	void createActions();
@@ -109,6 +110,7 @@ private:
 	DockFiles* m_dockFiles;
 	DockScriptOutput* m_dockScriptOutput;
 	DockCallStack* m_dockCallStack;
+	DockVariables* m_dockVariables;
 
 	QAction* m_newAct;
 	QAction* m_openAct;

@@ -46,6 +46,8 @@ public:
 	CountPtr<Value> setVariableAllowRef(identifier name, CountPtr<Value> val);
 	void deleteVariable(identifier name);
 
+	const map<identifier, CountPtr<Value> >& getVariables(void) const { return m_local_variables; }
+
 private:
 	identifier m_function_name;
 	const CodePosition* m_return_address;

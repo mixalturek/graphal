@@ -49,6 +49,7 @@ public:
 	virtual void setPosition(const CodePosition* pos);
 
 public slots:
+	void pauseExecution(void);
 	virtual void stopScript(void);
 	virtual void breakpoint(void);
 	virtual void debugRun(void);
@@ -57,7 +58,7 @@ public slots:
 	virtual void debugOut(void);
 
 signals:
-	void breakpointOccured(void);
+	void executionPaused(void);
 
 private:
 	QMutex m_accessMutex;

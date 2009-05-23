@@ -356,11 +356,12 @@ bool Tests::testValueArray(void)
 	// indexval->dump(cout, 0);
 
 	verify(indexval->toString() == "NULL");
-	verify(ident->toString() == "NULL");
+	verify(ident->toString() == "#Array");
+
 	indexval->assign(val);
 	// ident->dump(cout, 0);
-	verify(indexval->toString() != "NULL");
-	verify(ident->toString() != "NULL");
+	verify(indexval->toString() == "3");
+	verify(ident->toString() == "#Array");
 
 
 	return testResult(__FUNCTION__, result);
