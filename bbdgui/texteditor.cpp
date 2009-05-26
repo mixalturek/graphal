@@ -21,6 +21,7 @@
 #include <QtGui>
 #include "texteditor.h"
 #include "texteditorlines.h"
+#include "texteditorhighlighter.h"
 
 
 #define LR_LINES_MARGIN 3
@@ -33,7 +34,8 @@ TextEditor::TextEditor(QWidget* parent)
 	: QPlainTextEdit(parent),
 	m_curFile(""),
 	m_isUntitled(true),
-	m_lineNumberArea(new TextEditorLines(this))
+	m_lineNumberArea(new TextEditorLines(this)),
+	m_highlighter(new TextEditorHighlighter(document()))
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 

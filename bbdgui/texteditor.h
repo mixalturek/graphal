@@ -22,6 +22,8 @@
 
 #include <QPlainTextEdit>
 
+class TextEditorHighlighter;
+
 class TextEditor : public QPlainTextEdit
 {
 	Q_OBJECT
@@ -61,6 +63,7 @@ private:
 	bool m_isUntitled;
 
 	QWidget* m_lineNumberArea;
+	TextEditorHighlighter* m_highlighter;
 };
 
 #endif

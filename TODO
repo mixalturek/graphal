@@ -30,7 +30,6 @@ unit tests
 
 gui
 	qtdemo - MainWindow
-	qtdemo - Rich Text - Syntax highlighter
 	memory leaks in the gui part, does qt offer some tools for detection?
 	font settings, zoom text
 	void QTextEdit::zoomIn ( int range = 1 )   [slot]

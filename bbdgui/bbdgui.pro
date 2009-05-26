@@ -23,6 +23,7 @@ SOURCES += main.cpp \
     guilogger.cpp \
     guicontext.cpp \
     texteditorlines.cpp \
+    texteditorhighlighter.cpp \
     dialogincludedirs.cpp \
     ../bbd/logger.cpp \
     ../bbd/lexaniteratorstring.cpp \
@@ -168,6 +169,7 @@ HEADERS += mainwindow.h \
     guilogger.hpp \
     guicontext.h \
     texteditorlines.h \
+    texteditorhighlighter.h \
     dialogincludedirs.h \
     ../bbd/logger.hpp \
     ../bbd/lexantokens.hpp \
