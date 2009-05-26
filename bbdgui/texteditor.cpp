@@ -35,7 +35,8 @@ TextEditor::TextEditor(QWidget* parent)
 	m_curFile(""),
 	m_isUntitled(true),
 	m_lineNumberArea(new TextEditorLines(this)),
-	m_highlighter(new TextEditorHighlighter(document()))
+	m_highlighter(new TextEditorHighlighter(document())),
+	m_vertLinePos(80)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -43,6 +44,11 @@ TextEditor::TextEditor(QWidget* parent)
 	QFont font("Monospace", 9);
 	font.setStyleHint(QFont::TypeWriter);
 	setFont(font);
+
+	// TODO: add to the settings
+	setTabStopWidth(fontMetrics().width(QLatin1Char(' ')) * 4);
+	setLineWrapMode(QPlainTextEdit::NoWrap);
+	// m_vertLinePos = 80;
 
 	connect(this, SIGNAL(blockCountChanged(int)),
 			this, SLOT(updateLineNumberAreaWidth(int)));
@@ -323,5 +329,63 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
 		top = bottom;
 		bottom = top + (int)blockBoundingRect(block).height();
 		++blockNumber;
+	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void TextEditor::keyPressEvent(QKeyEvent* event)
+{
+	QPlainTextEdit::keyPressEvent(event);
+
+	if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+		autoIndent();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void TextEditor::autoIndent(void)
+{
+	QTextBlock previousBlock = textCursor().block().previous();
+	if(!previousBlock.isValid())
+		return;
+
+	QString previousBlockText = previousBlock.text();
+
+	int num;
+	for(num = 0; num < previousBlockText.size(); num++)
+	{
+		if(!previousBlockText.at(num).isSpace())
+			break;
+	}
+
+	if(num > 0)
+		textCursor().insertText(previousBlockText.left(num));
+
+	if(num < previousBlockText.size() && previousBlockText.at(num) == '{')
+		textCursor().insertText("\t");// TODO: allow spaces
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void TextEditor::paintEvent(QPaintEvent* event)
+{
+	QPlainTextEdit::paintEvent(event);
+
+	// TODO: 4 is the space between the left border and the text, how to get it?
+	int x = fontMetrics().maxWidth() * m_vertLinePos + 4;
+
+	if(x > event->rect().x() && x < event->rect().x() + event->rect().width())
+	{
+		int y = event->rect().y();
+		QPainter painter(viewport());
+		painter.setPen(Qt::gray);// TODO: Add to the settings
+		painter.drawLine(x, y, x, y + event->rect().height());
 	}
 }

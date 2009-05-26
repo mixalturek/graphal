@@ -46,7 +46,9 @@ public:
 
 protected:
 	void closeEvent(QCloseEvent* event);
-	void resizeEvent(QResizeEvent *event);
+	void resizeEvent(QResizeEvent* event);
+	void keyPressEvent(QKeyEvent* event);
+	void paintEvent(QPaintEvent* event);
 
 private slots:
 	void setWindowModifiedFlag();
@@ -57,6 +59,7 @@ private slots:
 private:
 	bool maybeSave();
 	void initCurrentFile(const QString& fileName);
+	void autoIndent(void);
 
 private:
 	QString m_curFile;
@@ -64,6 +67,8 @@ private:
 
 	QWidget* m_lineNumberArea;
 	TextEditorHighlighter* m_highlighter;
+
+	int m_vertLinePos;// In characters
 };
 
 #endif
