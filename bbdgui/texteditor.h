@@ -60,6 +60,7 @@ private:
 	bool maybeSave();
 	void initCurrentFile(const QString& fileName);
 	void autoIndent(void);
+	void homeKey(bool shift);
 
 private:
 	QString m_curFile;

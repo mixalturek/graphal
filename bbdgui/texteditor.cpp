@@ -338,10 +338,25 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
 
 void TextEditor::keyPressEvent(QKeyEvent* event)
 {
-	QPlainTextEdit::keyPressEvent(event);
-
-	if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+	switch(event->key())
+	{
+	case Qt::Key_Return:
+	case Qt::Key_Enter:
+		QPlainTextEdit::keyPressEvent(event);
 		autoIndent();
+		break;
+
+	case Qt::Key_Home:
+		// Home or Shift+Home, standard behavior for other modifiers
+		if(!event->modifiers() || event->modifiers() == Qt::ShiftModifier)
+			homeKey(event->modifiers() == Qt::ShiftModifier);
+		else
+			QPlainTextEdit::keyPressEvent(event);
+		break;
+
+	default:
+		QPlainTextEdit::keyPressEvent(event);
+	}
 }
 
 
@@ -357,7 +372,8 @@ void TextEditor::autoIndent(void)
 	QString previousBlockText = previousBlock.text();
 
 	int num;
-	for(num = 0; num < previousBlockText.size(); num++)
+	int size = previousBlockText.size();
+	for(num = 0; num < size; num++)
 	{
 		if(!previousBlockText.at(num).isSpace())
 			break;
@@ -366,8 +382,35 @@ void TextEditor::autoIndent(void)
 	if(num > 0)
 		textCursor().insertText(previousBlockText.left(num));
 
-	if(num < previousBlockText.size() && previousBlockText.at(num) == '{')
+	if(num < size && previousBlockText.at(num) == '{')
 		textCursor().insertText("\t");// TODO: allow spaces
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void TextEditor::homeKey(bool shift)
+{
+	QTextCursor::MoveMode mode(shift ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor);
+	QTextCursor cursor(textCursor());
+	QString text(cursor.block().text());
+	int oldPos = cursor.columnNumber();
+	int size = text.size();
+
+	int pos;
+	for(pos = 0; pos < size; pos++)
+	{
+		if(!text.at(pos).isSpace())
+			break;
+	}
+
+	cursor.movePosition(QTextCursor::StartOfLine, mode);
+
+	if(oldPos != pos)
+		cursor.movePosition(QTextCursor::NextCharacter, mode, pos);
+
+	setTextCursor(cursor);
 }
 
 
