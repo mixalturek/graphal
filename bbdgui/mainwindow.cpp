@@ -243,6 +243,12 @@ void MainWindow::paste()
 		activeTextEditor()->paste();
 }
 
+void MainWindow::selectAll(void)
+{
+	if(activeTextEditor())
+		activeTextEditor()->selectAll();
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////
@@ -267,6 +273,8 @@ void MainWindow::updateMenus()
 	m_saveAsAct->setEnabled(editor != NULL);
 	m_saveAllAct->setEnabled(editor != NULL);
 	m_pasteAct->setEnabled(editor != NULL);
+	m_selectAllAct->setEnabled(editor != NULL);
+	m_gotoLineAct->setEnabled(editor != NULL);
 	m_closeAct->setEnabled(editor != NULL);
 	m_closeAllAct->setEnabled(editor != NULL);
 	m_tileAct->setEnabled(editor != NULL);
@@ -419,6 +427,11 @@ void MainWindow::createActions()
 	m_pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current selection"));
 	connect(m_pasteAct, SIGNAL(triggered()), this, SLOT(paste()));
 
+	m_selectAllAct = new QAction(tr("&Select all"), this);
+	m_selectAllAct->setShortcut(tr("Ctrl+A"));
+	m_selectAllAct->setStatusTip(tr("Select whole text in the editor"));
+	connect(m_selectAllAct, SIGNAL(triggered()), this, SLOT(selectAll()));
+
 	m_tileAct = new QAction(tr("&Tile"), this);
 	m_tileAct->setStatusTip(tr("Tile the windows"));
 	connect(m_tileAct, SIGNAL(triggered()), m_mdiArea, SLOT(tileSubWindows()));
@@ -479,6 +492,11 @@ void MainWindow::createActions()
 	m_includeDirectoriesAct = new QAction(tr("Include directories"), this);
 	m_includeDirectoriesAct->setStatusTip(tr("Include directories settings"));
 	connect(m_includeDirectoriesAct, SIGNAL(triggered()), this, SLOT(includeDirectories()));
+
+	m_gotoLineAct = new QAction(tr("&Go to line"), this);
+	m_gotoLineAct->setShortcut(tr("Ctrl+G"));
+	m_gotoLineAct->setStatusTip(tr("Go to the specified line in the document"));
+	connect(m_gotoLineAct, SIGNAL(triggered()), this, SLOT(gotoLine()));
 }
 
 
@@ -513,6 +531,9 @@ void MainWindow::createMenus()
 	m_editMenu->addAction(m_cutAct);
 	m_editMenu->addAction(m_copyAct);
 	m_editMenu->addAction(m_pasteAct);
+	m_editMenu->addAction(m_selectAllAct);
+	m_editMenu->addSeparator();
+	m_editMenu->addAction(m_gotoLineAct);
 
 
 	// View
@@ -943,4 +964,26 @@ void MainWindow::includeDirectories(void)
 	dlg.setDirectories(SETTINGS.getIncludeDirectories());
 	if(dlg.exec() == QDialog::Accepted)
 		SETTINGS.setIncludeDirectories(dlg.getDirectories());
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::gotoLine(void)
+{
+	TextEditor* editor = activeTextEditor();
+	if(editor == NULL)
+	{
+		statusBarMessageWithTimeout(tr("No text editor is active"));
+		return;
+	}
+
+	bool ok = false;
+	int val = QInputDialog::getInteger(this, tr("Go to line"),
+		tr("Line 1 - ") + QString::number(editor->blockCount()),
+		editor->textCursor().blockNumber()+1, 1, editor->blockCount(), 1, &ok);
+
+	if(ok)
+		editor->setTextCursor(QTextCursor(editor->document()->findBlockByNumber(val-1)));;
 }

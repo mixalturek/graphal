@@ -63,11 +63,13 @@ private slots:
 	void cut();
 	void copy();
 	void paste();
+	void selectAll(void);
 	void about();
 	void updateMenus();
 	void updateWindowMenu();
 	void runScript();
 	void includeDirectories(void);
+	void gotoLine(void);
 
 	void saveLayout();
 	void loadLayout();
@@ -125,6 +127,7 @@ private:
 	QAction* m_cutAct;
 	QAction* m_copyAct;
 	QAction* m_pasteAct;
+	QAction* m_selectAllAct;
 	QAction* m_closeAct;
 	QAction* m_closeAllAct;
 	QAction* m_tileAct;
@@ -141,6 +144,7 @@ private:
 	QAction* m_debugOverAct;
 	QAction* m_debugOutAct;
 	QAction* m_includeDirectoriesAct;
+	QAction* m_gotoLineAct;
 
 	ScriptThread* m_scriptThread;
 };
