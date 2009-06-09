@@ -27,6 +27,7 @@
 #include "dockfiles.h"
 #include "dockcallstack.h"
 #include "dockvariables.h"
+#include "dockvisualization.h"
 #include "objectcreator.hpp"
 #include "guilogger.hpp"
 #include "version.hpp"
@@ -555,6 +556,10 @@ void MainWindow::createMenus()
 	tmp->setText(tmp->text() + tr(" dock"));
 	m_viewMenu->addAction(tmp);
 
+	tmp = m_dockVisualization->toggleViewAction();
+	tmp->setText(tmp->text() + tr(" dock"));
+	m_viewMenu->addAction(tmp);
+
 	m_viewMenu->addSeparator();
 
 	tmp = m_fileToolBar->toggleViewAction();
@@ -689,6 +694,12 @@ void MainWindow::createDocks()
 	m_dockVariables = new DockVariables(this);
 	m_dockVariables->setObjectName("Variables");
 	addDockWidget(Qt::BottomDockWidgetArea, m_dockVariables);
+
+
+	// Visualization
+	m_dockVisualization = new DockVisualization(this);
+	m_dockVisualization->setObjectName("Visualization");
+	addDockWidget(Qt::RightDockWidgetArea, m_dockVisualization);
 }
 
 

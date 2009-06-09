@@ -7,6 +7,7 @@ INCLUDEPATH += ../bbd/
 CONFIG += qt \
     thread \
     warn_on
+QT += opengl
 DEFINES += QTGUI
 RC_FILE = bbdgui.rc
 ICON = images/toast/toast.icns
@@ -19,6 +20,8 @@ SOURCES += main.cpp \
     dockfiles.cpp \
     dockcallstack.cpp \
     dockvariables.cpp \
+    dockvisualization.cpp \
+    visualization.cpp \
     guifactory.cpp \
     guilogger.cpp \
     guicontext.cpp \
@@ -165,6 +168,8 @@ HEADERS += mainwindow.h \
     dockfiles.h \
     dockcallstack.h \
     dockvariables.h \
+    dockvisualization.h \
+    visualisation.h \
     guifactory.hpp \
     guilogger.hpp \
     guicontext.h \

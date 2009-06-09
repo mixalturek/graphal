@@ -28,6 +28,7 @@ class DockScriptOutput;
 class DockFiles;
 class DockCallStack;
 class DockVariables;
+class DockVisualization;
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -113,6 +114,7 @@ private:
 	DockScriptOutput* m_dockScriptOutput;
 	DockCallStack* m_dockCallStack;
 	DockVariables* m_dockVariables;
+	DockVisualization* m_dockVisualization;
 
 	QAction* m_newAct;
 	QAction* m_openAct;
