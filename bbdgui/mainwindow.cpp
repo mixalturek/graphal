@@ -33,6 +33,7 @@
 #include "version.hpp"
 #include "guicontext.h"
 #include "dialogincludedirs.h"
+#include "dialogfind.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -40,7 +41,9 @@
 
 MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 	: QMainWindow(parent, flags),
-	m_scriptThread(new ScriptThread())
+	m_scriptThread(new ScriptThread()),
+	m_findText(""),
+	m_findFlags(0)
 {
 	m_mdiArea = new QMdiArea;
 	setCentralWidget(m_mdiArea);
@@ -274,6 +277,9 @@ void MainWindow::updateMenus()
 	m_saveAsAct->setEnabled(editor != NULL);
 	m_saveAllAct->setEnabled(editor != NULL);
 	m_pasteAct->setEnabled(editor != NULL);
+	m_findAct->setEnabled(editor != NULL);
+	m_findNextAct->setEnabled(editor != NULL);
+	m_findPreviousAct->setEnabled(editor != NULL);
 	m_selectAllAct->setEnabled(editor != NULL);
 	m_gotoLineAct->setEnabled(editor != NULL);
 	m_closeAct->setEnabled(editor != NULL);
@@ -433,6 +439,21 @@ void MainWindow::createActions()
 	m_selectAllAct->setStatusTip(tr("Select whole text in the editor"));
 	connect(m_selectAllAct, SIGNAL(triggered()), this, SLOT(selectAll()));
 
+	m_findAct = new QAction(QIcon(":/images/find.png"), tr("&Find"), this);
+	m_findAct->setShortcut(tr("Ctrl+F"));
+	m_findAct->setStatusTip(tr("Find text"));
+	connect(m_findAct, SIGNAL(triggered()), this, SLOT(findDialog()));
+
+	m_findNextAct = new QAction(QIcon(":/images/next.png"), tr("Find ne&xt"), this);
+	m_findNextAct->setShortcut(tr("F3"));
+	m_findNextAct->setStatusTip(tr("Find next occurence of the text"));
+	connect(m_findNextAct, SIGNAL(triggered()), this, SLOT(findNext()));
+
+	m_findPreviousAct = new QAction(QIcon(":/images/previous.png"), tr("Find pre&vious"), this);
+	m_findPreviousAct->setShortcut(tr("Shift+F3"));
+	m_findPreviousAct->setStatusTip(tr("Find previous occurence of the text"));
+	connect(m_findPreviousAct, SIGNAL(triggered()), this, SLOT(findPrevious()));
+
 	m_tileAct = new QAction(tr("&Tile"), this);
 	m_tileAct->setStatusTip(tr("Tile the windows"));
 	connect(m_tileAct, SIGNAL(triggered()), m_mdiArea, SLOT(tileSubWindows()));
@@ -441,11 +462,11 @@ void MainWindow::createActions()
 	m_cascadeAct->setStatusTip(tr("Cascade the windows"));
 	connect(m_cascadeAct, SIGNAL(triggered()), m_mdiArea, SLOT(cascadeSubWindows()));
 
-	m_nextAct = new QAction(tr("Ne&xt"), this);
+	m_nextAct = new QAction(QIcon(":/images/next.png"), tr("Ne&xt"), this);
 	m_nextAct->setStatusTip(tr("Move the focus to the next window"));
 	connect(m_nextAct, SIGNAL(triggered()), m_mdiArea, SLOT(activateNextSubWindow()));
 
-	m_previousAct = new QAction(tr("Pre&vious"), this);
+	m_previousAct = new QAction(QIcon(":/images/previous.png"), tr("Pre&vious"), this);
 	m_previousAct->setStatusTip(tr("Move the focus to the previous window"));
 	connect(m_previousAct, SIGNAL(triggered()), m_mdiArea, SLOT(activatePreviousSubWindow()));
 
@@ -533,6 +554,10 @@ void MainWindow::createMenus()
 	m_editMenu->addAction(m_copyAct);
 	m_editMenu->addAction(m_pasteAct);
 	m_editMenu->addAction(m_selectAllAct);
+	m_editMenu->addSeparator();
+	m_editMenu->addAction(m_findAct);
+	m_editMenu->addAction(m_findNextAct);
+	m_editMenu->addAction(m_findPreviousAct);
 	m_editMenu->addSeparator();
 	m_editMenu->addAction(m_gotoLineAct);
 
@@ -997,4 +1022,78 @@ void MainWindow::gotoLine(void)
 
 	if(ok)
 		editor->setTextCursor(QTextCursor(editor->document()->findBlockByNumber(val-1)));;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::findDialog(void)
+{
+	TextEditor* editor = activeTextEditor();
+	if(editor == NULL)
+	{
+		statusBarMessageWithTimeout(tr("No text editor is active"));
+		return;
+	}
+
+	DialogFind dlg(this);
+	dlg.setText(m_findText);
+	dlg.setFlags(m_findFlags);
+
+	if(dlg.exec() == QDialog::Accepted)
+	{
+		m_findText = dlg.getText();
+		m_findFlags = dlg.getFlags();
+
+		// The editor will not have the focus if the dialog is active
+		findText(editor);
+	}
+}
+
+void MainWindow::findNext(void)
+{
+	m_findFlags &= ~QTextDocument::FindBackward;
+	findText(NULL);
+}
+
+void MainWindow::findPrevious(void)
+{
+	m_findFlags |= QTextDocument::FindBackward;
+	findText(NULL);
+}
+
+void MainWindow::findText(TextEditor* editor)
+{
+	if(editor == NULL)
+	{
+		editor = activeTextEditor();
+		if(editor == NULL)
+		{
+			statusBarMessageWithTimeout(tr("No text editor is active"));
+			return;
+		}
+	}
+
+	if(!editor->find(m_findText, m_findFlags))
+	{
+		QString messageText(
+			(m_findFlags & QTextDocument::FindBackward)
+			? tr("Beginning of document reached.<br />Continue from the end?")
+			: tr("End of document reached.<br />Continue from the beginning?"));
+
+		QMessageBox::StandardButton btn;
+		btn = QMessageBox::information(this, tr("Find"),
+			messageText, QMessageBox::Yes, QMessageBox::No);
+
+		if(btn == QMessageBox::Yes)
+		{
+			if(m_findFlags & QTextDocument::FindBackward)
+				editor->moveCursor(QTextCursor::End);
+			else
+				editor->moveCursor(QTextCursor::Start);
+
+			findText(editor);
+		}
+	}
 }

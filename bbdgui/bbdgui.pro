@@ -28,6 +28,7 @@ SOURCES += main.cpp \
     texteditorlines.cpp \
     texteditorhighlighter.cpp \
     dialogincludedirs.cpp \
+    dialogfind.cpp \
     ../bbd/logger.cpp \
     ../bbd/lexaniteratorstring.cpp \
     ../bbd/lexaniteratorfile.cpp \
@@ -176,6 +177,7 @@ HEADERS += mainwindow.h \
     texteditorlines.h \
     texteditorhighlighter.h \
     dialogincludedirs.h \
+    dialogfind.h \
     ../bbd/logger.hpp \
     ../bbd/lexantokens.hpp \
     ../bbd/lexaniteratorstring.hpp \
@@ -313,4 +315,5 @@ HEADERS += mainwindow.h \
     ../bbd/callstackitem.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
-FORMS += dialogincludedirs.ui
+FORMS += dialogincludedirs.ui \
+    dialogfind.ui

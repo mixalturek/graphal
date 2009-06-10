@@ -21,6 +21,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTextDocument>
 
 class TextEditor;
 class ScriptThread;
@@ -65,6 +66,10 @@ private slots:
 	void copy();
 	void paste();
 	void selectAll(void);
+	void findText(TextEditor* editor);
+	void findDialog(void);
+	void findNext(void);
+	void findPrevious(void);
 	void about();
 	void updateMenus();
 	void updateWindowMenu();
@@ -130,6 +135,9 @@ private:
 	QAction* m_copyAct;
 	QAction* m_pasteAct;
 	QAction* m_selectAllAct;
+	QAction* m_findAct;
+	QAction* m_findNextAct;
+	QAction* m_findPreviousAct;
 	QAction* m_closeAct;
 	QAction* m_closeAllAct;
 	QAction* m_tileAct;
@@ -149,6 +157,9 @@ private:
 	QAction* m_gotoLineAct;
 
 	ScriptThread* m_scriptThread;
+
+	QString m_findText;
+	QTextDocument::FindFlags m_findFlags;
 };
 
 #endif
