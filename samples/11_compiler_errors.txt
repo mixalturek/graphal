@@ -1,0 +1,22 @@
+function tmp()
+{
+
+}
+
+function tmp()
+{
+
+}
+
+function main(argv)
+{
+	2 = 4;
+	foreach(a; 3.14)
+	{
+		echo(a);
+	}
+
+	return 3.14;
+}
+
+error

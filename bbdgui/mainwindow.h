@@ -66,8 +66,8 @@ private slots:
 	void copy();
 	void paste();
 	void selectAll(void);
-	void findText(TextEditor* editor);
 	void findDialog(void);
+	void replaceDialog(void);
 	void findNext(void);
 	void findPrevious(void);
 	void about();
@@ -99,6 +99,10 @@ private:
 	void createDocks();
 	void readSettings();
 	void writeSettings();
+	void findText(TextEditor* editor);
+	void replaceText(TextEditor* editor);
+	int replaceAll(TextEditor* editor);
+	int replaceConfirmation(TextEditor* editor, bool* replacementDone);
 
 	TextEditor* activeTextEditor();
 	QMdiSubWindow* findTextEditor(const QString& fileName);
@@ -138,6 +142,7 @@ private:
 	QAction* m_findAct;
 	QAction* m_findNextAct;
 	QAction* m_findPreviousAct;
+	QAction* m_replaceAct;
 	QAction* m_closeAct;
 	QAction* m_closeAllAct;
 	QAction* m_tileAct;
@@ -160,6 +165,11 @@ private:
 
 	QString m_findText;
 	QTextDocument::FindFlags m_findFlags;
+
+	QString m_replaceFind;
+	QString m_replaceReplacement;
+	QTextDocument::FindFlags m_replaceFlags;
+	bool m_replacePrompt;
 };
 
 #endif

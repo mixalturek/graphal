@@ -34,6 +34,8 @@
 #include "guicontext.h"
 #include "dialogincludedirs.h"
 #include "dialogfind.h"
+#include "dialogreplace.h"
+#include "dialogreplaceconfirmation.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -43,7 +45,11 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 	: QMainWindow(parent, flags),
 	m_scriptThread(new ScriptThread()),
 	m_findText(""),
-	m_findFlags(0)
+	m_findFlags(0),
+	m_replaceFind(""),
+	m_replaceReplacement(""),
+	m_replaceFlags(0),
+	m_replacePrompt(false)
 {
 	m_mdiArea = new QMdiArea;
 	setCentralWidget(m_mdiArea);
@@ -278,6 +284,7 @@ void MainWindow::updateMenus()
 	m_saveAllAct->setEnabled(editor != NULL);
 	m_pasteAct->setEnabled(editor != NULL);
 	m_findAct->setEnabled(editor != NULL);
+	m_replaceAct->setEnabled(editor != NULL);
 	m_findNextAct->setEnabled(editor != NULL);
 	m_findPreviousAct->setEnabled(editor != NULL);
 	m_selectAllAct->setEnabled(editor != NULL);
@@ -454,6 +461,11 @@ void MainWindow::createActions()
 	m_findPreviousAct->setStatusTip(tr("Find previous occurence of the text"));
 	connect(m_findPreviousAct, SIGNAL(triggered()), this, SLOT(findPrevious()));
 
+	m_replaceAct = new QAction(tr("&Replace"), this);
+	m_replaceAct->setShortcut(tr("Ctrl+R"));
+	m_replaceAct->setStatusTip(tr("Replace text"));
+	connect(m_replaceAct, SIGNAL(triggered()), this, SLOT(replaceDialog()));
+
 	m_tileAct = new QAction(tr("&Tile"), this);
 	m_tileAct->setStatusTip(tr("Tile the windows"));
 	connect(m_tileAct, SIGNAL(triggered()), m_mdiArea, SLOT(tileSubWindows()));
@@ -482,12 +494,12 @@ void MainWindow::createActions()
 	connect(m_aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
 	m_runScriptAct = new QAction(QIcon(":/images/run.png"), tr("&Run"), this);
-	m_runScriptAct->setShortcut(tr("Ctrl+R"));
+	m_runScriptAct->setShortcut(tr("F5"));
 	m_runScriptAct->setStatusTip(tr("Run current script"));
 	connect(m_runScriptAct, SIGNAL(triggered()), this, SLOT(runScript()));
 
 	m_stopScriptAct = new QAction(QIcon(":/images/stop.png"), tr("&Stop"), this);
-	m_stopScriptAct->setShortcut(tr("Ctrl+Shift+R"));
+	m_stopScriptAct->setShortcut(tr("Shift+F5"));
 	m_stopScriptAct->setStatusTip(tr("Stop the executed script"));
 	connect(m_stopScriptAct, SIGNAL(triggered()), context, SLOT(stopScript()));
 
@@ -558,6 +570,7 @@ void MainWindow::createMenus()
 	m_editMenu->addAction(m_findAct);
 	m_editMenu->addAction(m_findNextAct);
 	m_editMenu->addAction(m_findPreviousAct);
+	m_editMenu->addAction(m_replaceAct);
 	m_editMenu->addSeparator();
 	m_editMenu->addAction(m_gotoLineAct);
 
@@ -1037,8 +1050,18 @@ void MainWindow::findDialog(void)
 		return;
 	}
 
+	QString text;
+	QTextCursor cursor(editor->textCursor());
+	if(!cursor.hasSelection())
+		cursor.select(QTextCursor::WordUnderCursor);
+
+	text = cursor.selectedText();
+
+	if(text.isEmpty())
+		text = m_findText;
+
 	DialogFind dlg(this);
-	dlg.setText(m_findText);
+	dlg.setText(text);
 	dlg.setFlags(m_findFlags);
 
 	if(dlg.exec() == QDialog::Accepted)
@@ -1051,17 +1074,28 @@ void MainWindow::findDialog(void)
 	}
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void MainWindow::findNext(void)
 {
 	m_findFlags &= ~QTextDocument::FindBackward;
 	findText(NULL);
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void MainWindow::findPrevious(void)
 {
 	m_findFlags |= QTextDocument::FindBackward;
 	findText(NULL);
 }
+
+/////////////////////////////////////////////////////////////////////////////
+////
 
 void MainWindow::findText(TextEditor* editor)
 {
@@ -1096,4 +1130,160 @@ void MainWindow::findText(TextEditor* editor)
 			findText(editor);
 		}
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::replaceDialog(void)
+{
+	TextEditor* editor = activeTextEditor();
+	if(editor == NULL)
+	{
+		statusBarMessageWithTimeout(tr("No text editor is active"));
+		return;
+	}
+
+	QString text;
+	QTextCursor cursor(editor->textCursor());
+	if(!cursor.hasSelection())
+		cursor.select(QTextCursor::WordUnderCursor);
+
+	text = cursor.selectedText();
+
+	if(text.isEmpty())
+		text = m_replaceFind;
+
+	DialogReplace dlg(this);
+	dlg.setTextFind(text);
+	dlg.setTextReplace(m_replaceReplacement);
+	dlg.setFlags(m_replaceFlags);
+	dlg.setPrompt(m_replacePrompt);
+
+	if(dlg.exec() == QDialog::Accepted)
+	{
+		m_replaceFind = dlg.getTextFind();
+		m_replaceReplacement = dlg.getTextReplace();
+		m_replaceFlags = dlg.getFlags();
+		m_replacePrompt = dlg.getPrompt();
+
+		// The editor will not have the focus if the dialog is active
+		replaceText(editor);
+	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::replaceText(TextEditor* editor)
+{
+	if(editor == NULL)
+	{
+		editor = activeTextEditor();
+		if(editor == NULL)
+		{
+			statusBarMessageWithTimeout(tr("No text editor is active"));
+			return;
+		}
+	}
+
+	int num = 0;
+
+	if(m_replacePrompt)
+	{
+		bool replacementDone = false;
+		num += replaceConfirmation(editor, &replacementDone);
+
+		if(replacementDone)
+		{
+			QMessageBox::information(this, tr("Replace"), tr("%1 replacements made").arg(num));
+			return;
+		}
+
+		QString messageText(
+			(m_findFlags & QTextDocument::FindBackward)
+			? tr("Beginning of document reached.<br />Continue from the end?")
+			: tr("End of document reached.<br />Continue from the beginning?"));
+
+		QMessageBox::StandardButton btn;
+		btn = QMessageBox::information(this, tr("Find"),
+			messageText, QMessageBox::Yes, QMessageBox::No);
+
+		if(btn == QMessageBox::Yes)
+		{
+			if(m_findFlags & QTextDocument::FindBackward)
+				editor->moveCursor(QTextCursor::End);
+			else
+				editor->moveCursor(QTextCursor::Start);
+
+			num += replaceConfirmation(editor, &replacementDone);
+		}
+	}
+	else
+	{
+		num += replaceAll(editor);
+	}
+
+	QMessageBox::information(this, tr("Replace"), tr("%1 replacements made").arg(num));
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+int MainWindow::replaceAll(TextEditor* editor)
+{
+	assert(editor != NULL);
+	int num = 0;
+
+	editor->moveCursor(QTextCursor::Start);
+	while(editor->find(m_replaceFind, m_replaceFlags))
+	{
+		editor->insertPlainText(m_replaceReplacement);
+		num++;
+	}
+
+	return num;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+int MainWindow::replaceConfirmation(TextEditor* editor, bool* replacementDone)
+{
+	assert(editor != NULL);
+	int num = 0;
+	*replacementDone = false;
+
+	while(editor->find(m_replaceFind, m_replaceFlags))
+	{
+		DialogReplaceConfirmation dlg(this);
+		int ret = dlg.exec();
+
+		if(ret == DialogReplaceConfirmation::REPLACE)
+		{
+			editor->insertPlainText(m_replaceReplacement);
+			num++;
+		}
+		else if(ret == DialogReplaceConfirmation::REPLACE_ALL)
+		{
+			num += replaceAll(editor);
+			*replacementDone = true;
+			break;
+		}
+		else if(ret == DialogReplaceConfirmation::FIND_NEXT)
+		{
+			continue;// New loop iteration
+		}
+		else // DialogReplaceConfirmation::CLOSE_DIALOG or something unexpected
+		{
+			*replacementDone = true;
+			break;
+		}
+	}
+
+	return num;
 }
