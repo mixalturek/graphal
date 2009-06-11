@@ -341,7 +341,7 @@ void yyerror(char const *msg)
 {
 	stringstream ss;
 	ss << ID2STR(g_lexan->getFile()) << ":" << g_lexan->getLine();
-	ERROR_PP(ss.str(), msg);
+	ERR_PP(ss.str(), msg);
 }
 
 int parseCode(const string& str)

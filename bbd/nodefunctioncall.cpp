@@ -58,7 +58,7 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 
 	if(function == NULL)
 	{
-		ERROR_P(_("Function ") + ID2STR(m_name) + _("() has not been defined"));
+		ERR_P(_("Function ") + ID2STR(m_name) + _("() has not been defined"));
 		return VALUENULL;
 	}
 
@@ -101,8 +101,8 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 	{
 		stringstream ss;
 		ss << ID2STR(m_name) << _("(") << names << _(")");
-		ERROR_P(_("Wrong number of parameters was passed to the function"));
-		ERROR_PP(function->declarationPos()->toString(), ss.str());
+		ERR_P(_("Wrong number of parameters was passed to the function"));
+		ERR_PP(function->declarationPos()->toString(), ss.str());
 
 		return VALUENULL;
 	}

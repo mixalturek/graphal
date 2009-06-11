@@ -932,6 +932,7 @@ void MainWindow::runScript()
 	m_dockScriptOutput->reinit();
 
 	m_scriptThread->setScriptFilename(editor->currentFile());
+	m_scriptThread->setIncludeDirectories(SETTINGS.getIncludeDirectories());
 	m_scriptThread->start();
 }
 

@@ -25,11 +25,11 @@
 #include "baseobject.hpp"
 #include "objectcreator.hpp"
 
-#define ERROR_P(str) ObjectCreator::getInstance().getLogger()->errorPos(str)
+#define ERR_P(str) ObjectCreator::getInstance().getLogger()->errorPos(str)
 #define WARN_P(str) ObjectCreator::getInstance().getLogger()->warnPos(str)
-#define ERROR_PP(pos, str) ObjectCreator::getInstance().getLogger()->errorPos((pos), (str))
+#define ERR_PP(pos, str) ObjectCreator::getInstance().getLogger()->errorPos((pos), (str))
 #define WARN_PP(pos, str) ObjectCreator::getInstance().getLogger()->warnPos((pos), (str))
-#define ERROR(str) ObjectCreator::getInstance().getLogger()->error(str)
+#define ERR(str) ObjectCreator::getInstance().getLogger()->error(str)
 #define WARN(str) ObjectCreator::getInstance().getLogger()->warn(str)
 #define INFO(str) ObjectCreator::getInstance().getLogger()->info(str)
 #define SCRIPT_STDOUT(str) ObjectCreator::getInstance().getLogger()->scriptStdout(str)

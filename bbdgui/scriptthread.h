@@ -30,10 +30,12 @@ public:
 	~ScriptThread(void);
 
 	void run(void);
-	void setScriptFilename(QString filename) { m_scriptFilename = filename; }
+	void setScriptFilename(const QString& filename) { m_scriptFilename = filename; }
+	void setIncludeDirectories(const QStringList& directories) { m_includeDirectories = directories; }
 
 private:
 	QString m_scriptFilename;
+	QStringList m_includeDirectories;
 };
 
 #endif // SCRIPTTHREAD_H

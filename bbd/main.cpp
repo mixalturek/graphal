@@ -137,23 +137,23 @@ int main(int argc, char** argv)
 		}
 		else
 		{
-			ERROR(_("Error while parsing"));
+			ERR(_("Error while parsing"));
 			error_occured = true;
 		}
 	}
 	catch(runtime_error& ex)
 	{
-		ERROR(ex.what());
+		ERR(ex.what());
 		error_occured = true;
 	}
 	catch(exception& ex)
 	{
-		ERROR(ex.what());
+		ERR(ex.what());
 		error_occured = true;
 	}
 	catch(...)
 	{
-		ERROR(_("Unknown exception caught!"));
+		ERR(_("Unknown exception caught!"));
 		error_occured = true;
 	}
 

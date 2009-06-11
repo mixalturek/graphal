@@ -64,7 +64,7 @@ void BaseObject::printMemoryLeaks(uint number_of_static_objects)
 	{
 		ss.clear();
 		ss << *it << ", " << typeid(**it).name();
-		ERROR(ss.str());
+		ERR(ss.str());
 	}
 }
 #endif // CHECK_MEMORY_LEAKS

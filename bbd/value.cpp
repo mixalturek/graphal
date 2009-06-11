@@ -70,7 +70,7 @@ PTR_Value Value::logOR(const Value& right) const
 
 CountPtr<Value> Value::assign(CountPtr<Value> /* val */)
 {
-	ERROR_P(_("L-value is required as left operand of assignment: ") + toString());
+	ERR_P(_("L-value is required as left operand of assignment: ") + toString());
 	// this->dump(SCRIPT_STDOUT, 1);// TODO: GUI???
 
 	return VALUENULL;
@@ -78,7 +78,7 @@ CountPtr<Value> Value::assign(CountPtr<Value> /* val */)
 
 CountPtr<Value> Value::assignRef(CountPtr<Value> /* val */)
 {
-	ERROR_P(_("L-value is required as left operand of reference assignment: ") + toString());
+	ERR_P(_("L-value is required as left operand of reference assignment: ") + toString());
 	// this->dump(SCRIPT_STDOUT, 1);// TODO: GUI???
 
 	return VALUENULL;
@@ -86,7 +86,7 @@ CountPtr<Value> Value::assignRef(CountPtr<Value> /* val */)
 
 CountPtr<Value> Value::getReferredValue(void) const
 {
-	ERROR_P(_("Attemp to get referred value, but value is not reference: ") + toString());
+	ERR_P(_("Attemp to get referred value, but value is not reference: ") + toString());
 	// this->dump(SCRIPT_STDOUT, 1);// TODO: GUI???
 
 	return VALUENULL;

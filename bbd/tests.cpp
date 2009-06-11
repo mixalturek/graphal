@@ -62,7 +62,7 @@
 	{                                                                         \
 		stringstream ss;                                                       \
 		ss << __FILE__ << ":" << __LINE__ << "   " << #expr;                  \
-		ERROR(ss.str());                                                      \
+		ERR(ss.str());                                                      \
 	}
 
 
@@ -104,7 +104,7 @@ bool Tests::testResult(const string& testName, bool result)
 	if(result)
 		INFO(_("[ OK ]     ") + testName);
 	else
-		ERROR(_("[ FAILED ] ") + testName);
+		ERR(_("[ FAILED ] ") + testName);
 
 	return result;
 }

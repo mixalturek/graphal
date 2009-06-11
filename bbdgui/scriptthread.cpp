@@ -34,7 +34,8 @@ int parseCode(const string& str);
 
 ScriptThread::ScriptThread(QObject* parent)
 	: QThread(parent),
-	m_scriptFilename("")
+	m_scriptFilename(""),
+	m_includeDirectories()
 {
 
 }
@@ -52,8 +53,7 @@ void ScriptThread::run(void)
 	context.clearIncludeDirectories();
 	generateBuiltinFunctions();
 
-	QStringList includeDirs(SETTINGS.getIncludeDirectories());
-	foreach(QString dir, includeDirs)
+	foreach(QString dir, m_includeDirectories)
 		context.addIncludeDirectory(dir.toStdString());
 
 	try
@@ -61,14 +61,14 @@ void ScriptThread::run(void)
 		if(parseCode(m_scriptFilename.toStdString()) == 0)
 			context.executeScriptMain(0, NULL);
 		else
-			ERROR(_("Error while parsing"));
+			ERR(_("Error while parsing"));
 	}
 	catch(exception& ex)
 	{
-		ERROR(ex.what());
+		ERR(ex.what());
 	}
 	catch(...)
 	{
-		ERROR(_("Unknown exception caught!"));
+		ERR(_("Unknown exception caught!"));
 	}
 }

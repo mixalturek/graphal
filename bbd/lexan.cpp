@@ -359,7 +359,7 @@ LEXTOKEN Lexan::nextToken(void)
 			ss.clear();
 			ss << _("Unexpected character: '")
 				<< (char)c << "' (ascii " << c << ")";
-			ERROR_PP(getPosition(), ss.str());
+			ERR_PP(getPosition(), ss.str());
 
 			return LEX_ERROR;
 
@@ -394,7 +394,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated /* c-style */ comment"));
+				ERR_PP(getPosition(), _("Unexpected end of source: unterminated /* c-style */ comment"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -425,7 +425,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated /* c-style */ comment"));
+				ERR_PP(getPosition(), _("Unexpected end of source: unterminated /* c-style */ comment"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -462,12 +462,12 @@ LEXTOKEN Lexan::nextToken(void)
 			if(c == '\n')
 			{
 				m_source.top()->incLine();
-				ERROR_PP(getPosition(), _("Unexpected end of line: unterminated \"string\" constant"));
+				ERR_PP(getPosition(), _("Unexpected end of line: unterminated \"string\" constant"));
 				return LEX_ERROR;
 			}
 			if(c == EOF)
 			{
-				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
+				ERR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -568,7 +568,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
+				ERR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -603,7 +603,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
+				ERR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -642,7 +642,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
+				ERR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -672,7 +672,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
+				ERR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -717,7 +717,7 @@ LEXTOKEN Lexan::nextToken(void)
 			}
 			if(c == EOF)
 			{
-				ERROR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
+				ERR_PP(getPosition(), _("Unexpected end of source: unterminated \"string\" constant"));
 
 				delete m_source.top();
 				m_source.pop();
@@ -774,7 +774,7 @@ LEXTOKEN Lexan::nextToken(void)
 				ss.clear();
 				ss << _("This number is not valid in \"string\" OCT escape sequence context: '")
 					<< (char)c << "' (ascii " << c << ")";
-				ERROR_PP(getPosition(), ss.str());
+				ERR_PP(getPosition(), ss.str());
 
 				return LEX_ERROR;
 			}
@@ -807,7 +807,7 @@ LEXTOKEN Lexan::nextToken(void)
 				ss.clear();
 				ss << _("This number is not valid in \"string\" OCT escape sequence context: '")
 					<< (char)c << "' (ascii " << c << ")";
-				ERROR_PP(getPosition(), ss.str());
+				ERR_PP(getPosition(), ss.str());
 
 				return LEX_ERROR;
 			}
@@ -984,7 +984,7 @@ LEXTOKEN Lexan::nextToken(void)
 			ss.clear();
 			ss << _("Unexpected character, this is not operator && nor &=: '")
 				<< (char)c << "' (ascii " << c << ")";
-			ERROR_PP(getPosition(), ss.str());
+			ERR_PP(getPosition(), ss.str());
 
 			return LEX_ERROR;
 
@@ -997,7 +997,7 @@ LEXTOKEN Lexan::nextToken(void)
 			ss.clear();
 			ss << _("Unexpected character, this is not operator ||: '")
 				<< (char)c << "' (ascii " << c << ")";
-			ERROR_PP(getPosition(), ss.str());
+			ERR_PP(getPosition(), ss.str());
 
 			return LEX_ERROR;
 
@@ -1019,13 +1019,13 @@ void Lexan::parseInclude(void)
 
 	if(nextToken() != LEX_LPA)
 	{
-		ERROR_PP(getPosition(), _("Left parenthesis '(' expected"));
+		ERR_PP(getPosition(), _("Left parenthesis '(' expected"));
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
 	if(nextToken() != LEX_STRING)
 	{
-		ERROR_PP(getPosition(), _("String constant expected"));
+		ERR_PP(getPosition(), _("String constant expected"));
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
@@ -1033,13 +1033,13 @@ void Lexan::parseInclude(void)
 
 	if(nextToken() != LEX_RPA)
 	{
-		ERROR_PP(getPosition(), _("Right parenthesis ')' expected"));
+		ERR_PP(getPosition(), _("Right parenthesis ')' expected"));
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
 	if(nextToken() != LEX_SEMICOLON)
 	{
-		ERROR_PP(getPosition(), _("Semicolon ';' expected"));
+		ERR_PP(getPosition(), _("Semicolon ';' expected"));
 		THROW(runtime_error(_("Syntax of include statement: include(\"filename\");")));
 	}
 
@@ -1064,13 +1064,13 @@ void Lexan::parseDefine(void)
 
 	if(nextToken() != LEX_LPA)
 	{
-		ERROR_PP(getPosition(), _("Left parenthesis '(' expected"));
+		ERR_PP(getPosition(), _("Left parenthesis '(' expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	if(nextToken() != LEX_STRING)
 	{
-		ERROR_PP(getPosition(), _("String constant expected"));
+		ERR_PP(getPosition(), _("String constant expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
@@ -1078,13 +1078,13 @@ void Lexan::parseDefine(void)
 
 	if(nextToken() != LEX_COMMA)
 	{
-		ERROR_PP(getPosition(), _("Comma ',' expected"));
+		ERR_PP(getPosition(), _("Comma ',' expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	if(nextToken() != LEX_STRING)
 	{
-		ERROR_PP(getPosition(), _("String constant expected"));
+		ERR_PP(getPosition(), _("String constant expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
@@ -1092,13 +1092,13 @@ void Lexan::parseDefine(void)
 
 	if(nextToken() != LEX_RPA)
 	{
-		ERROR_PP(getPosition(), _("Right parenthesis ')' expected"));
+		ERR_PP(getPosition(), _("Right parenthesis ')' expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 
 	if(nextToken() != LEX_SEMICOLON)
 	{
-		ERROR_PP(getPosition(), _("Semicolon ';' expected"));
+		ERR_PP(getPosition(), _("Semicolon ';' expected"));
 		THROW(runtime_error(_("Syntax of define statement: define(\"name\", \"value\");")));
 	}
 

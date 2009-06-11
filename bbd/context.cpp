@@ -218,12 +218,12 @@ int Context::executeScriptMain(int argc, char** argv)
 	NodeFunction* maintest = getFunction(getStringTable()->getID("main"));
 	if(maintest == NULL)
 	{
-		ERROR(_("Function main(argv) has not been defined in the script, exiting"));
+		ERR(_("Function main(argv) has not been defined in the script, exiting"));
 		return 1;
 	}
 	else if(maintest->getNumberOfParameters() != 1)
 	{
-		ERROR_PP(maintest->declarationPos()->toString(),
+		ERR_PP(maintest->declarationPos()->toString(),
 			_("Function main(argv) does not expect one parameter, exiting"));
 		return 1;
 	}
@@ -263,12 +263,12 @@ int Context::executeScriptMain(int argc, char** argv)
 	}
 	catch(runtime_error& ex)
 	{
-		ERROR_P(string(_("Runtime error: ")) + ex.what());
+		ERR_P(string(_("Runtime error: ")) + ex.what());
 		return 1;
 	}
 	catch(...)
 	{
-		ERROR_P(_("Unexpected exception was thrown from the script!"));
+		ERR_P(_("Unexpected exception was thrown from the script!"));
 		return 1;
 	}
 
