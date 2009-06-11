@@ -172,7 +172,7 @@ HEADERS += mainwindow.h \
     dockcallstack.h \
     dockvariables.h \
     dockvisualization.h \
-    visualisation.h \
+    visualization.h \
     guifactory.hpp \
     guilogger.hpp \
     guicontext.h \

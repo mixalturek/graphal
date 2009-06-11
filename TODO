@@ -7,6 +7,7 @@ g.setPropertyToAllVertices();
 g.setPropertyForAllEdges();
 error message "variable not defined" if not assigning
 create bbd library
+build warning: ERROR macro redefined under MS Windows
 
 
 valgrind --leak-check=yes ./bbd --unit-tests ../samples/01_factorial.txt

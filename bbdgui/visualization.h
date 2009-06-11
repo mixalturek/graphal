@@ -18,8 +18,8 @@
  */
 
 
-#ifndef VISUALISATION_H
-#define VISUALISATION_H
+#ifndef VISUALIZATION_H
+#define VISUALIZATION_H
 
 #include <QGLWidget>
 
