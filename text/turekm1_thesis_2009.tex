@@ -1,0 +1,810 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+%% History:
+% Pavel Tvrdik (26.12.2004)
+%  + initial version for PhD Report
+%
+% Daniel Sykora (27.01.2005)
+%
+% Michal Valenta (3.12.2008)
+% rada zmen ve formatovani (diky M. Duškovi, J. Holubovi a J. Žďárkovi)
+% sjednoceni zdrojoveho kodu pro anglickou, ceskou, bakalarskou a diplomovou praci
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\documentclass[11pt,twoside,a4paper]{book}
+\usepackage[czech, english]{babel}
+
+%\usepackage[T1]{fontenc} % pouzije EC fonty
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+%\usepackage{indentfirst} %1. odstavec jako v cestine.
+
+\usepackage{k336_thesis_macros}
+
+
+\newcommand\TypeOfWork{Diplomová práce} \typeout{Diplomova prace}
+%\newcommand\TypeOfWork{Master's Thesis}   \typeout{Master's Thesis}
+
+
+% http://www.fel.cvut.cz/cz/education/bk/prehled.html
+
+\newcommand\StudProgram{Elektrotechnika a informatika, strukturovaný, Navazující magisterský}
+%\newcommand\StudProgram{Electrical Engineering and Information Technology}  % master program
+
+\newcommand\StudBranch{Výpočetní technika}   % pro prgoram EaI mag. (dobihajici i strukt.)
+%\newcommand\StudBranch{Computer Science and Engineering}  % master programe
+
+
+\newcommand\WorkTitle{Interpret grafových algoritmů}
+\newcommand\FirstandFamilyName{Bc. Michal Turek}
+\newcommand\Supervisor{RNDr. Marko Genyk-Berezovskyj}
+
+
+
+% \hyphenation{  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\usepackage[
+pdftitle={\WorkTitle},
+pdfauthor={\FirstandFamilyName},
+bookmarks=true,
+colorlinks=true,
+breaklinks=true,
+urlcolor=red,
+citecolor=blue,
+linkcolor=blue,
+unicode=true,
+]
+{hyperref}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\begin{document}
+
+\selectlanguage{czech}
+%\selectlanguage{english}
+
+\iflanguage{czech}{
+	 \typeout{************************************************}
+	 \typeout{Zvoleny jazyk: cestina}
+	 \typeout{Typ prace: \TypeOfWork}
+	 \typeout{Studijni program: \StudProgram}
+	 \typeout{Obor: \StudBranch}
+	 \typeout{Jmeno: \FirstandFamilyName}
+	 \typeout{Nazev prace: \WorkTitle}
+	 \typeout{Vedouci prace: \Supervisor}
+	 \typeout{***************************************************}
+	 \newcommand\Department{Katedra počítačů}
+	 \newcommand\Faculty{Fakulta elektrotechnická}
+	 \newcommand\University{České vysoké učení technické v Praze}
+	 \newcommand\labelSupervisor{Vedoucí práce}
+	 \newcommand\labelStudProgram{Studijní program}
+	 \newcommand\labelStudBranch{Obor}
+}{
+	 \typeout{************************************************}
+	 \typeout{Language: english}
+	 \typeout{Type of Work: \TypeOfWork}
+	 \typeout{Study Program: \StudProgram}
+	 \typeout{Study Branch: \StudBranch}
+	 \typeout{Author: \FirstandFamilyName}
+	 \typeout{Title: \WorkTitle}
+	 \typeout{Supervisor: \Supervisor}
+	 \typeout{***************************************************}
+	 \newcommand\Department{Department of Computer Science and Engineering}
+	 \newcommand\Faculty{Faculty of Electrical Engineering}
+	 \newcommand\University{Czech Technical University in Prague}
+	 \newcommand\labelSupervisor{Supervisor}
+	 \newcommand\labelStudProgram{Study Programme}
+	 \newcommand\labelStudBranch{Field of Study}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\coverpagestarts
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\acknowledgements
+\noindent
+
+\noindent Rád bych poděkoval svému vedoucímu RNDr. Marku Genyk-Berezovskému za jeho připomínky a cené rady při tvoření práce. Druhou osobou zůstává Renat Rafisovič Kagirov, který se mě během studia na SibGAU v Krasnojarsku snažil přivést, bohužel neúspěšně, k psaní v angličtině. V této době vznikla podrobná osnova a úvodní kapitoly.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+% TODO: update information
+\declaration{V Krasnojarsku dne 12.\,6.\,2009}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\abstractpage
+The core of this diploma thesis is design and implementation of a special language based on C, which will be used for the graph manipulations. Integrated development environment consists of the text editor for programmers, debugger and visualization window, in which the progress of the interpreted algorithm and graph can be displayed using 3D graphics.
+
+\vglue60mm
+
+\noindent{\Huge \textbf{Abstrakt}}
+\vspace{8ex}
+
+\noindent
+Jádrem diplomové práce je návrh a implementace speciálního programovacího jazyka založeného na syntaxi C, který slouží pro manipulaci s grafy. Integrované vývojové prostředí sestává z programátorsky zaměřeného textového editoru, debuggeru a vizualizačního okna, v němž je ve 3D zobrazován průběh interpretovaného algoritmu nad daným grafem.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\mainbodystarts
+
+\parskip=5pt plus 4pt minus 4pt
+\parindent=0em
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Úvod}
+
+Algoritmy \textit{difuze} slouží pro zpracování obrazů. Každý ví, že fungují, ale nikdo neví, jakým způsobem \textit{přesně} fungují. Výstupem tohoto projektu bude integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
+
+Vstupními daty je obrázek a výstupem například, ve které jeho části se nachází objekt, kde je pozadí a podobně. Obrázek je převeden na speciální graf s několika vrcholy pro každý pixel a pospojovanými ohodnocenými hranami. Difuzní algoritmus pracuje s lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Zadání může být tedy zobecněno z práce s obrázky na jednoduché grafové operace.
+
+Cílem diplomové práce je návrh a implementace jazyka založeného na syntaxi C, který slouží pro manipulaci s grafy. Jazyk má podporu pro základní datové typy, jako jsou celá a desetinná čísla, řetězce, pole a struktury. Proměnné mohou být lokální i globální, bez deklarací. Výčet kontrolních struktur sestává z \texttt{if-else} podmínek, \texttt{for}, \texttt{while} a \texttt{foreach} cyklů, deklarace funkcí a jejich volání. \texttt{Include} a \texttt{define} direktivy preprocesoru jsou implementované na úrovni lexikálního analyzátoru. Jazyk nepodporuje ukazatele ani objektově orientované programování.
+
+Speciální datové typy zahrnují grafy, vrcholy, hrany, množiny vrcholů a množiny hran. Interpret obsahuje zabudované funkce pro vytváření a rušení těchto proměnných, vracení sousedů daného vrcholu a další. Každému vrcholu a hraně může být přiřazen libovolný počet dalších hodnot, k přístupu k nim složí jméno předávané tečkovou notací \texttt{objekt.vlastnost}. Speciální řídící stuktury pro zpracování komplexních proměnných jsou implementovány na bázi iterátorů, jež jsou interně volané i ve \texttt{foreach} cyklu.
+
+Grafické uživatelské rozhraní sestává především z programátorsky zaměřeného textového editoru se zvýrazňováním syntaxe, číslováním řádků, zvýrazněním aktuálního řádku, automatickým odsazováním a inteligentní klávesou \texttt{Home}. Všechny ostatní části aplikace jsou tvořeny panely, které mohou být uživatelem přesunuty na jiné místo, skryty a také \textit{vytrhnuty} z hlavního do samostatného okna, což je výhodné především v případě dvou monitorů. Mimo jiné je v nich možné zobrazit textový výstup z parsování a interpretace skriptu, zásobník volání funkcí, seznam definovaných proměnných a vizualizační okno.
+
+Vizualizace jsou přímo propojené s krokováním skriptu či, přesněji řečeno, s debuggingem. Vykonávání může být pozastaveno breakpointem a poté krokováno s možností vstupu do funkcí, opuštění dané funkce či její vykonání a opětovné pozastavení. Při každém zastavení skriptu se aktualizuje panel zásobníku volání funkcí, seznam definovaných proměnných a vizualazace grafu, s níž se dá následně otáčet, přibližovat, oddalovat a provádět další 3D operace. Graf může být nahrán jak kódem skriptu, tak uživatelem ve vizualizačním okně.
+
+Základní kód interpretu a rozhraní pro příkazovou řádku je napsáno v jazyce C++ s využitím parser generátoru Bison (LALR gramatika) a nezávisí na žádné externí knihovně kromě standardního STL. Tato část je tudíž zkompilovatelná na libovolné platformě, pro kterou existuje C++ kompilátor. Grafická část aplikace používá knihovnu Qt a vizualizace OpenGL, obě jsou dostupné na všech majoritních operačních systémech.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Popis problému, specifikace cíle}
+
+% TODO: delete
+%\begin{itemize}
+%\item Popis řešeného problému, vymezení cílů DP/BP a požadavků na implementovaný systém.
+%\item Popis struktury DP/BP ve vztahu k vytyčeným cílům.
+%\item Rešeršní zpracování existujících implementací, pokud jsou známy.
+%\end{itemize}
+
+
+\section{Požadavky na aplikaci}
+
+Navrhněte a implementujte interpret jazyka, který bude zaměřen na manipulaci s grafy. Jazyk bude obsahovat základní datové struktury nezbytné pro manipulaci s grafy a bude tak podporovat efektivní zápis grafových algoritmů. Interpret vybavte uživatelským rozhraním skládajícím se z editoru pro zápis algoritmu a dále grafickým oknem zobrazujícím interaktivně průběh algoritmu na konkrétním grafu. V grafické části aplikace využijte knihoven OpenGL.
+
+Zásadní jsou neorientované grafy, implementace orientovaných je volitelná.
+
+\subsection{Navrhovaný jazyk}
+
+Jazykové konstrukce by měly být podobné jazyku C. Zahrnují základní datové typy, datové a řídící struktury.
+
+\begin{itemize}
+\item celá a desetinná čísla
+\item pole
+\item podmínky, cykly, deklarace a volání funkcí
+\item výstup textu na vlastní konzolu
+\item direktiva \texttt{include} v jednoduché verzi, tj. nikoli hlavičky, ale celé soubory
+
+\item zvažte
+	\begin{itemize}
+	\item datový typ boolean
+	\item znaky a řetězce, v jednoduché formě bez složitých funkcí pro manipulaci
+	\item ukazatele a struktury jako v jazyce C
+	\item objektově orientované vlastnosti
+	\item čtení a zápis souborů, jde především o načítání specifikací grafu z externích souborů
+	\end{itemize}
+
+\item specifické elementy jazyka
+	\begin{itemize}
+	\item primitivní typy
+		\begin{itemize}
+		\item graf, vrchol, hrana, množina vrcholů, množina hran
+		\end{itemize}
+	\item základní funkce
+		\begin{itemize}
+		\item vytvoř/smaž graf/hranu/vrchol
+		\item ohodnoť hranu/vrchol
+		\item vrať všechny sousedy daného vrcholu
+		\item vytvoř/zruš množinu vrcholů/hran, přidej/odeber vrchol/hranu
+		\item vrať stupeň vrcholu
+		\end{itemize}
+	\item řídící struktury
+		\begin{itemize}
+		\item pro všechny sousedy daného vrcholu vykonej \texttt{příkaz}
+		\item pro všechny vrcholy/hrany v dané množině vykonej \texttt{příkaz}
+		\item pro všechny vrcholy/hrany grafu vykonej \texttt{příkaz}
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+
+\subsection{Textový editor}
+
+Textový editor by měl být programátorsky zaměřený, zvýrazňování syntaxe je vítáno. Další vymoženosti podle dohody a možností.
+
+
+\subsection{Zobrazovací jednotka, vizualizace}
+
+Vizualizační jednotka zobrazuje aktuálně zpracovávaný graf ve 3D, nemusí to být editor, ve kterém je možné grafy editovat. Uživatel má interaktivní možnost graf natáčet, přibližovat, oddalovat a posouvat v libovolném směru. Dále vůže zapnout a vypnout zobrazování jednotlivých částí grafu, aby bylo možné dosáhnout méně přeplněného výstupu.
+
+Pokud bude v jazyce možnost přidávat barevné (texturové?) atributy vrcholům, hranám nebo jejich množinám, promítaly by se i do zobrazení. Zobrazovací okno má vlastní možnost načtení grafu, aplikace umožní volit, zda má algoritmus pracovat s grafem, který je v grafickém okně nebo zda si jej načte sám podle zápisu v kódu.
+
+
+\subsection{Manipulace s grafem, debugger}
+
+Interpretace kódu může být krokována, po provedení jednoho příkazu se ve vizualizačním okně zobrazí aktuální stav zpracování grafu. V něm je možné následně měnit pohled na graf, dokud není vydán příkaz k dalšímu kroku. Parametry samotného grafu během průběhu programu není vhodné měnit, parametry zobrazení nejspíše ano (barvy, měřítka a podobně). Debugging není třeba nijak zvlášť podporovat, postačí konzole, kam si programátor může vypsat ladící a trasovací tisky.
+
+
+\subsection{Systémové požadavky}
+
+\begin{itemize}
+	\item Verze pro příkazovou řádku
+		\begin{itemize}
+		\item platformy \texttt{i386} a \texttt{amd64}, podpora dalších volitelná
+		\item operační systémy \texttt{GNU/Linux}, \texttt{MS Windows} (založený na NT) a \texttt{MacOS}, podpora dalších volitelná
+		\item procesor min. 1 GHz
+		\item operační paměť min. 2 GB RAM, v grafech se předpokládají miliony vrcholů
+		\end{itemize}
+
+	\item Grafická verze
+		\begin{itemize}
+		\item grafická karta s podporou OpenGL (např. \texttt{nVidia GeForce 2} a novější)
+		\item nainstalované OpenGL ovladače a Qt4 knihovny
+		\item rozlišení monitoru min. 1024x768
+		\end{itemize}
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Analýza a návrh řešení}
+
+% TODO: delete
+% Analýza a návrh implementace (včetně diskuse různých alternativ a volby im\-ple\-men\-tač\-ní\-ho prostředí).
+
+\section{Obecný postup řešení}
+
+Základním cílem tohoto projektu je vyvinout integrované vývojové prostředí pro programovací jazyk orientovaný na manipulace s grafy. Tato komplexní úloha může být rozdělena na několik více méně oddělených částí, které budou řešeny v následujícím pořadí.
+
+\begin{enumerate}
+\item Návrh jazyka pro manipulace s grafy, který odpovídá všem požadavkům
+\item Návrh reprezentace grafů v aplikaci, jak k nim bude přistupováno z interpretu
+\item Implementace lexikálního analyzátoru a parseru
+\item Implementace interpretu pro příkazovou řádku
+\item Návrh a implementace grafického vývojového prostředí a vizualizací
+\end{enumerate}
+
+
+\section{Volba jazyka a knihoven pro implementaci}
+
+Na samém začátku je možné uvažovat tři běžně používané jazyky pro tvorbu sys\-té\-mo\-vých aplikací: C++, Javu a C\#. Třetí z nich může být automaticky vyškrtnut, protože neodpovídá zásadnímu požadavku na přenositelnost a především odporu autora práce. Jazyk C++ je portovatelný na úrovni zdrojových kódů a Java na úrovni byte kódu. Žádné skriptovací jazyky, jako například Perl a Python, nejsou uvažovány. Ačkoli mnoho vývojářů může tvrdit přesný opak, nejsou příliš vhodné pro tak velkou aplikaci a psát interpret v interpretovaném jazyce nevypadá hezky.
+
+Obrovskými výhodami Javy je její automatický správce paměti a spousta existujících knihoven a frameworků. Na druhou stranu naprostá většina kompilátorů a interpretů je psaná v C nebo C++ kvůli kompilaci do strojového kódu a z ní vyplývající rychlosti provádění.
+
+Autor při vývoji systémových aplikací preferuje C++ a má s ním také mnohem více zkušeností, a proto byl tento jazyk, spolu s knihovnou STL, zvolen pro implementaci aplikace. Žádná další knihovna nebude při tvorbě základního kódu použita, interpret pro příkazovou řádku by měl mít co nejméně externích závislostí. Díky tomu by měl být bez větších problémů portovatelný na všechny platformy, pro které existuje C++ kompilátor.
+
+Grafické část aplikace bude naprogramována s použitím knihovny Qt. Je jednou z nejlépe navržených knihoven pro tvorbu GUI aplikací, přenositelná na všechny majoritní operační systémy a bezplatná pro nekomerční použití (licence GNU LGPL). Vizualizace grafů budou používat OpenGL, což je standard pro 3D grafiku. Druhá možná volba, Direct3D, není použitelná na ne-Microsoft platformách, a proto je zbytečné o ní byť i uvažovat.
+
+
+\section{Embedded Python}
+
+TODO: až bude internet ;-)
+
+\begin{verbatim}
+Python
+	naprogramovat grafové třídy v Pythonu a zkusit použít
+	http://www.python.org/doc/ext/embedding.html
+	http://docs.python.org/lib/module-pdb.html
+	jednoduché na implementaci, ale vlastní interpret jednodušší na použití
+\end{verbatim}
+
+
+\section{Návrh a specifikace vytvářeného jazyka}
+
+Jak už bylo zmíněno, syntaxe jazyka je z větší části založena na všeobecně známém C, což programátorům přináší výhodu rychlejšího učení. Jazyk rozlišuje malá a velká písmena, je procedurální a nepodporuje objektově orientované vlastnosti.
+
+
+\subsection{Datové typy a proměnné}
+
+Proměnné se nedeklarují a v průběhu vykonávání skriptu mohou libovolně měnit svůj datový typ. Uvnitř interpretu jsou rozlišovány typy \texttt{null}, \texttt{bool}, \texttt{int}, \texttt{float}, \texttt{string}, \texttt{struct}, \texttt{array}, \texttt{graph}, \texttt{vertex}, \texttt{vertexset}, \texttt{edge} a \texttt{edgeset}. Jazyk nepodporuje modifikátory typu, jako jsou například \texttt{unsigned} nebo \texttt{const}, protože nepřinášejí žádné výrazné vylepšení, programátor se bude muset obejít bez nich.
+
+Viditelnost proměnných je definována na úroveň funkcí, tudíž opuštění daného bloku (například cyklu) nezpůsobuje zrušení v něm používaných proměnných. Globální pro\-měn\-nou je možné ve funkci zpřístupnit po vzoru jazyka PHP klíčovým slovem \texttt{global}.
+
+\begin{verbatim}
+function example()
+{
+    global g_var;
+    g_var = "some value";
+}
+\end{verbatim}
+
+Při úvahách o deklaracích proměnných byly zvažovány celkem čtyři možnosti.
+
+\begin{enumerate}
+\item Jako v C, povinná
+\item Jako v C, nepovinná
+\item Jako v JavaScriptu pomocí \texttt{var jméno;}, nepovinná
+\item Bez deklarací
+\end{enumerate}
+
+Na první pohled je jasné, že prostřední dvě možnosti nepřinášejí nic užitečného. Pokud jsou deklarace volitelné, nejde těžit z jejich výhod a pouze přidávají nová klíčová slova, což je patrné především u JavaScriptového způsobu.
+
+Výhodou deklarací je automatická detekce chyb a případně možnost větších optimalizací. Na druhou stranu příliš svazují, což je patrné především u skriptovacích jazyků, které se snaží o co nejmenší množství kódu na co největší funkcionalitu. Právě z tohoto důvodu byla zvolena verze bez deklarací.
+
+Poznámka na okraj. Deklarace by se mohly hodit i pro automatizovaný překlad do jiných jazyků, než ve kterém byl napsán vlastní algoritmus, v tomto případě by se pravděpodobně jednalo o kompilovatelné C++ nebo Javu. Tato myšlenka je inspirována Google Web Toolkitem, který překládá javovské programy do HTML, CSS a JavaSkriptu, nejedná se o nic nereálného.
+
+
+\subsection{Operátory}
+
+Jazyk podporuje prakticky všechny operátory z jazyka C, s výjimkou operátoru čárky a bitových operátorů. Priority jsou stejné jako v C.
+
+\begin{itemize}
+\item Unární operátory
+	\begin{itemize}
+	\item \texttt{-}, \texttt{!}, \texttt{++}, \texttt{--}
+	\end{itemize}
+\item Binární operátory
+	\begin{itemize}
+	\item Aritmetické: \texttt{+}, \texttt{-}, \texttt{*}, \texttt{/}, \texttt{\%}
+	\item Přiřazovací: \texttt{=}, \texttt{+=}, \texttt{-=}, \texttt{*=}, \texttt{/=}, \texttt{\%=}
+	\item Přiřazení reference: \texttt{\&=}
+	\item Logické: \texttt{==}, \texttt{!=}, \texttt{<=}, \texttt{>=}, \texttt{<}, \texttt{>} \texttt{\&\&}, \texttt{||}
+	\item Přístup k prvkům: \texttt{.}, \texttt{[]}
+	\end{itemize}
+\item Ternární operátor
+	\begin{itemize}
+	\item \texttt{? :}
+	\end{itemize}
+\end{itemize}
+
+
+\subsection{Řídící struktury}
+
+Zápis podmínek a cyklů je naprosto stejný jako v C, je možné použít \texttt{if}, \texttt{if-else}, \texttt{for} a \texttt{while}. Vícenásobné větvení \texttt{switch} není implementováno, protože je bez problémů nahraditelné vnořenými \texttt{if-else} podmínkami.
+
+Jazyk dále přináší cyklus \texttt{foreach}, který umí iterovat přes všechny prvky složeného datového typu, jímž jsou například pole a struktury, ale také vlastnosti vrcholů a hran. Cyklus \texttt{foreach} interně používá iterátory, které jsou v interpretu zpřístupněny přes zabudované funkce.
+
+\begin{verbatim}
+foreach(item; iterableObject)
+{
+    echo(item);
+}
+\end{verbatim}
+
+Předčasné ukončení cyklu je možné klasicky pomocí strukturovaných skoků \texttt{break} a \texttt{continue}.
+
+
+\subsection{Funkce}
+
+Funkce se ve skriptu deklarují podobně jako v jazyce PHP. Klíčové slovo \texttt{function}, následuje jméno funkce, v kulatých závorkách čárkami oddělený seznam parametrů a ve složených závorkách tělo funkce. Při parsování nezávisí na pořadí deklarace funkcí, interpretace začíná až po zpracování celého zdrojového kódu, kdy už jsou všechny dostupné.
+
+U volání funkcí jsou k dispozici dvě ekvivalentní syntaxe. V první verzi je možné všechny parametry předat klasicky do kulatých závorek, u druhého způsobu je první parametr zapsán tečkovou notací před jméno funkce a celý zápis potom vypadá, jako volání metody nad daným objektem. Forma je podobná jazyku Python a jeho \texttt{self} parametrům metod.
+
+\begin{verbatim}
+function someFunc(parameter1, parameter2, parameter3)
+{
+    return "some value";
+}
+
+someFunc(object, parameter2, parameter3);
+object.someFunc(parameter2, parameter3);
+\end{verbatim}
+
+Při návrhu bylo zvažováno také předávání parametrů odkazem, tato technika se používá především k vracení několika hodnot z funkce najednou. Nakonec se ale došlo k závěru, že není vyloženě nutná, protože je možné uložit tyto hodnoty do struktury nebo pole a vrátit celý kontejner. Jednoduchost jazyka a nedeklarativnost proměnných k tomu přímo vybízí.
+
+
+\subsection{Preprocesor}
+
+Pro vložení zdrojového souboru, například knihovny funkcí, slouží příkaz \texttt{include} s cestou a jménem souboru v parametru. Nové makro je možné specifikovat příkazem \texttt{define}. Kdykoli se ve zdrojovém souboru najde specifikovaný identifikátor, je automaticky nahrazen hodnotou makra. Obě konstrukce se zpracovávají na úrovni lexikálního analyzátoru v době překladu.
+
+\begin{verbatim}
+include("filename");
+define("name", "value");
+\end{verbatim}
+
+
+\subsection{Datové kontejnery}
+
+\begin{verbatim}
+// Array, stack, queue, map
+
+a = new array();
+
+a[0] = 10;
+a['name'] = 'value';
+a.lenght();
+
+a.pushBack(item);
+a.getBack();
+a.popBack();
+
+a.pushFront(item);
+a.getFront();
+a.popFront();
+
+a.push(position, item);
+a.get(position);
+a.pop(position);
+
+\subsection{Special constructs, graphs support}
+
+TODO: X36ASS
+
+Množina vrcholů, množina hran
+	TODO: jsou na to použitelné iterátory + vlastnosti?
+
+//---------------- Color all vertex neighbors to red
+vi = v.getNeighbors();
+while(vi.hasNext())
+{
+	tmp = vi.getNext();
+	tmp.setProperty('color', 'red');
+}
+
+// ...or using foreach
+foreach(neighbor; v.getNeighbors())
+	neighbor.setProperty('color', 'red');
+
+
+
+//---------------- Recursive depth first search
+function dfs(v)
+{
+	v.setProperty('visited', true);
+
+	foreach(i; v.getNeighbors())
+	{
+		DOBEFORE(i);
+		if(i.getProperty('visited') == false)
+			dfs(i);
+		DOAFTER(i);
+	}
+}
+\end{verbatim}
+
+
+\subsection{Ukázka zdrojových kódů}
+
+Ukázka existujících algoritmů (zkusit si je přepsat do navrženého jazyka)
+
+
+\section{Analýza reprezentace grafu}
+
+The assumed size of the stored graphs is millions vertices and edges. Each graph primitive will be a variable in the interpreter and may be referred from the several places so same kind of memory management should be propounded. The work with the whole graph and with its parts represented by sets should be similar.
+
+
+\begin{verbatim}
+Uvažovat paralelní hrany???!!!
+	trojrozměrné pole hran u matice sousednosti
+	jak označovat hrany? [počátek][konec] už není jednoznačné
+	TODO: nahradit matici sousednosti za nějaký druh spojové
+		reprezentace? Množiny hran apod. by se takhle
+		implementovaly asi líp...
+
+Reprezentace grafu
+	maticová reprezentace není možná kvůli paralelním hranám,
+		počáteční a koncový vrchol by neurčoval hranu
+		jednoznačně, další problémy, preferovaná univerzálnost
+	pole vrcholů a pole hran
+	jednoduché na implementaci
+	jednoduché vracení množin vrcholů a hranám
+	pomalé? nepředpokládají se extrémně velké grafy
+\end{verbatim}
+
+
+\subsection{Standardní reprezentace}
+
+\subsection{Vlastní reprezentace}
+
+\subsubsection{Paměťový management}
+
+\subsection{Shrnutí}
+
+
+\section{Proměnné ve skriptu, typy a operace}
+
+\begin{verbatim}
+proměnné
+	hierarchie tříd, ne jen jedna třída
+	double dispatch pattern - http://en.wikipedia.org/wiki/Double\_dispatch
+	Bruce Eckel: Thinking in C++ 2, Multiple dispatching, str. 459
+\end{verbatim}
+
+\subsection{Hierarchie tříd}
+
+\subsection{Multiple dispatching pattern}
+
+
+\section{Reprezentace skriptu a vykonávání}
+
+
+\subsection{Procházení AST}
+
+\begin{verbatim}
+Jak uložit pozici ve zdrojových kódech?
+	zaznamenat si pozici příkazu, bloku, funkce a ukládat to do
+	těchto tříd ve stromě lexan vrací změnu pozice jako token,
+	virtuální instrukce, problémy s gramatikou?
+\end{verbatim}
+
+
+\subsection{Virtuální procesor}
+
+\subsection{Podpora debuggingu}
+
+\begin{verbatim}
+Implementace krokování
+	rekurzivní volání execute() na stromovou strukturu, krokování pomocí
+	synchronizace vláken lineární pole instrukcí, virtuální procesor
+
+breakpoint(bool);
+\end{verbatim}
+
+
+\section{Úniky paměti, správce paměti}
+
+\subsection{Garbage collector}
+
+\subsection{Chytré ukazatele}
+
+\begin{verbatim}
+auto\_ptr ze STL nelze použít, protože...
+http://www.davethehat.com/articles/smartp.htm
+http://ootips.org/yonat/4dev/smart-pointers.html
+http://www.josuttis.com/libbook/cont/countptr.hpp.html
+\end{verbatim}
+
+\section{Grafické uživatelské rozhraní}
+
+
+\section{Generování kódu}
+
+\begin{verbatim}
+Automatické generování C/Java zdrojových kódů?
+	aneb po zkušenostech s GWT proč ne? :-)
+	komentáře asi ignorovat
+\end{verbatim}
+
+
+\section{Shrnutí}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Realizace}
+
+% TODO: delete
+Popis implementace / realizace se zaměřením na nestandardní části řešení.
+
+\section{Základní kód a interpret pro příkazovou řádku}
+
+\subsection{Inicializace statických objektů a úniky paměti}
+
+\begin{verbatim}
+init\_static\_objects.cpp
+BaseObject
+general.hpp ???
+\end{verbatim}
+
+
+\subsection{BaseObject::dump()}
+
+\subsection{Lexikální analyzátor}
+
+Z větší části převzatý Borsch a rozšířený
+http://woq.nipax.cz/borsch/devel.php
+
+\begin{verbatim}
+// Identifikatory, retezec -> id
+// Slozitost: generovani, pouziti id, zpetne dotazovani na retezce
+http://zdrojak.root.cz/clanky/javascript-implementace-v-prohlizecich/
+http://links.twibright.com/doc/projektova.pdf - links projektová
+	dokumentace
+http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
+\end{verbatim}
+
+
+\subsection{Gramatika, Bison}
+
+\subsubsection{Pozice ve skriptu a AST}
+
+
+\subsection{Proměnné ve skriptu, Value* hierarchie tříd}
+
+\subsection{Abstraktní strom syntaxe, Node* hierarchie tříd}
+
+
+\subsection{Funkce}
+
+\subsubsection{Funkce zapsané ve skriptu}
+
+\subsubsection{Zabudované funkce}
+
+
+\subsection{Generátory zdrojových kódů}
+
+\subsubsection{Operátory, zabudované funkce}
+
+\subsubsection{C makra}
+Great problems with debugging
+
+\subsubsection{Skripty pro generování zdrojových kódů}
+
+
+\subsection{Ladění intepretovaného skriptu}
+
+\subsubsection{Vykonávání kódu}
+
+Recursive traversion of AST, mutexes
+
+
+\subsubsection{Zabudovaná funkce breakpoint()}
+
+\subsubsection{Proměnné skriptu}
+
+\subsubsection{Zásobník volání funkcí}
+
+
+\subsection{Shrnutí}
+
+
+
+\section{Grafické uživatelské rozhraní}
+
+\subsection{Hlavní okno}
+
+\subsection{Editor}
+
+Code Editor Example
+http://doc.trolltech.com/4.5/widgets-codeeditor.html
+
+\subsection{Debugger}
+
+\subsection{Vizualizace grafu}
+
+\subsection{Shrnutí}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Testování}
+
+% TODO: delete
+\begin{itemize}
+ \item Způsob, průběh a výsledky testování.
+ \item Srovnání s existujícími řešeními, pokud jsou známy.
+\end{itemize}
+
+\section{Unit testy}
+
+\section{Skriptové unit testy}
+
+\section{Benchmarks}
+
+\section{Použitelnost}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Závěr}
+
+% TODO: delete
+\begin{itemize}
+\item Zhodnocení splnění cílů DP/BP a  vlastního přínosu práce (při formulaci je třeba vzít v potaz zadání práce).
+\item Diskuse dalšího možného pokračování práce.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+%\bibliographystyle{abbrv}
+%bibliographystyle{plain}
+%\bibliographystyle{psc}
+%\bibliographystyle{alpha} % [AutorRok]
+%{
+%\def\CS{$\cal C\kern-0.1667em\lower.5ex\hbox{$\cal S$}\kern-0.075em $}
+%\bibliography{reference}
+%}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\appendix
+
+
+\chapter{Gramatika jazyka}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Hierarchie tříd}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Vývojové prostředí}
+
+\section{Vývojové nástroje, verze}
+\section{Kompilování}
+\section{Spuštění, parametry příkazové řádky}
+\section{Grafické uživatelské rozhraní}
+
+base code for the application qt4/examples/mainwindows/mdi
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Seznam použitých zkratek}
+\begin{description}
+\setlength{\labelwidth}{2.5cm}
+\setlength{\itemindent}{1.5cm}
+\item[LALR] Look Ahead Left to Right (grammar type)
+\item[STL] Standard Template Library
+\item[AST] Abstract Syntax Tree
+\item[CLI] Command Line Interface
+\item[GUI] Graphics User Interface
+\item[OOP] Object Oriented Programming
+\item[I/O] Input/Output
+\item[OpenGL] Open Graphics Library
+\end{description}
+\vdots
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{UML diagramy}
+
+TODO: X36ASS
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Instalační a uživatelská příručka}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Obsah přiloženého CD}
+
+
+\end{document}
