@@ -16,14 +16,14 @@ ref:	$(PROJECT).tex
 bib:
 	$(BIBTEX) $(PROJECT)
 
-$(PROJECT).pdf: *.tex
+$(PROJECT).pdf: $(PROJECT).tex
 	$(PDFLATEX) $<
 	$(PDFLATEX) $<
 
 #$(PROJECT).pdf: *.ps
 #	ps2pdf -s PAPERSIZE=a4 $<
 
-$(PROJECT).ps: *.tex
+$(PROJECT).ps: $(PROJECT).tex
 	$(LATEX) $<
 
 clean:
