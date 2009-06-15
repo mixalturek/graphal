@@ -328,7 +328,7 @@ Python
 
 \section{Návrh a specifikace vytvářeného jazyka}
 
-Jak už bylo zmíněno, syntaxe jazyka je z větší části založena na všeobecně známém C, což programátorům přináší výhodu rychlejšího učení. Jazyk rozlišuje malá a velká písmena, je procedurální a nepodporuje objektově orientované vlastnosti.
+Jak už bylo zmíněno, syntaxe jazyka je z větší části založena na všeobecně známém C, což programátorům přináší výhodu rychlého učení. Jazyk rozlišuje malá a velká písmena, je procedurální a nepodporuje objektově orientované vlastnosti.
 
 
 \subsection{Datové typy a proměnné}
@@ -356,9 +356,9 @@ Při úvahách o deklaracích proměnných byly zvažovány celkem čtyři možn
 
 Na první pohled je jasné, že prostřední dvě možnosti nepřinášejí nic užitečného. Pokud jsou deklarace volitelné, nejde těžit z jejich výhod a pouze přidávají nová klíčová slova, což je patrné především u JavaScriptového způsobu.
 
-Výhodou deklarací je automatická detekce chyb a případně možnost větších optimalizací. Na druhou stranu příliš svazují, což je patrné především u skriptovacích jazyků, které se snaží o co nejmenší množství kódu na co největší funkcionalitu. Právě z tohoto důvodu byla zvolena verze bez deklarací.
+Výhodou deklarací je snadná automatická detekce chyb a případně možnost větších optimalizací. Na druhou stranu příliš svazují, což je patrné především u skriptovacích jazyků, které se snaží o co nejmenší množství kódu na co největší funkcionalitu. Právě z tohoto důvodu byla zvolena verze bez deklarací.
 
-Poznámka na okraj. Deklarace by se mohly hodit i pro automatizovaný překlad do jiných jazyků, než ve kterém byl napsán vlastní algoritmus, v tomto případě by se pravděpodobně jednalo o kompilovatelné C++ nebo Javu. Tato myšlenka je inspirována Google Web Toolkitem, který překládá javovské programy do HTML, CSS a JavaSkriptu, nejedná se o nic nereálného.
+Poznámka na okraj. Deklarace by se mohly hodit i pro automatizovaný překlad do jiných běžně používaných jazyků, než ve kterém byl napsán vlastní algoritmus. V tomto případě by se pravděpodobně jednalo o kompilovatelné C++ nebo Javu. Tato myšlenka je inspirována Google Web Toolkitem, který překládá javovské programy do HTML, CSS a JavaSkriptu, nejedná se o nic nereálného.
 
 
 \subsection{Operátory}
@@ -432,67 +432,112 @@ define("name", "value");
 
 \subsection{Datové kontejnery}
 
+Základními datovými kontejnery jsou pole a struktury, které se dají jednoduše rozšířit. Zásobník a fronta se z pole vytvoří definováním operací \texttt{pushFront()}, \texttt{push\-Back()}, \texttt{popFront()}, \texttt{popBack()}, \texttt{front()} a \texttt{back()}. Struktura se dá bez jakýchkoli změn po\-u\-ží\-vat i jako mapa (asociativní pole) a množina.
+
+Na rozdíl od jiných skriptovacích jazyků není definována speciální syntaxe pro deklarace a vytváření. Pro zachování jednoduchosti stačí pouze zavolat zabudované funkce \texttt{array()} a \texttt{struct()}, které vrací nově vytvořený objekt daného datového typu, a ná\-sled\-ně je začít používat.
+
 \begin{verbatim}
-// Array, stack, queue, map
+arr = array(5);
+arr[0] = "item";
+arr[1] = array(10);
+arr[3] = 3.14;
 
-a = new array();
-
-a[0] = 10;
-a['name'] = 'value';
-a.lenght();
-
-a.pushBack(item);
-a.getBack();
-a.popBack();
-
-a.pushFront(item);
-a.getFront();
-a.popFront();
-
-a.push(position, item);
-a.get(position);
-a.pop(position);
-
-\subsection{Special constructs, graphs support}
-
-TODO: X36ASS
-
-Množina vrcholů, množina hran
-	TODO: jsou na to použitelné iterátory + vlastnosti?
-
-//---------------- Color all vertex neighbors to red
-vi = v.getNeighbors();
-while(vi.hasNext())
-{
-	tmp = vi.getNext();
-	tmp.setProperty('color', 'red');
-}
-
-// ...or using foreach
-foreach(neighbor; v.getNeighbors())
-	neighbor.setProperty('color', 'red');
+st = struct();
+st.name = "item";
+st.valid = true;
+\end{verbatim}
 
 
+\subsection{Grafy, vrcholy a hrany}
 
-//---------------- Recursive depth first search
+První operací při práci s grafovými vlastnostmi jazyka je vždy \texttt{graph()}, zabudovaná funkce pro konstrukci objektu grafu. Je-li vytvořen graf, může se přistoupit k vytváření vrcholů a hran a následně k práci s nimi. Vrcholy a hrany se zároveň chovají i jako struktury, tudíž je u nich možné používat libovolný počet libovolně pojmenovaných vlastností.
+
+\begin{verbatim}
+g = graph();
+
+v1 = g.generateVertex();
+v2 = g.generateVertex();
+e1 = g.generateEdge(v1, v2);
+
+v1.color = "red";
+v2.visited = false;
+e1.value = 3.14;
+neighbors = v1.getNeighbors();
+
+foreach(vert; neighbors)
+	doSomething(vert);
+\end{verbatim}
+
+Pro vytváření množin vrcholů a hran slouží opět zabudované funkce.
+
+
+\subsection{Ukázka spustitelného skriptu}
+
+Příkladem kompletního skriptu zapsaného ve vytvářeném jazyce bude rekurzivní prohledávání grafu do hloubky. Parametrem uživatelsky definované funkce \texttt{dfs()} je libovolný vrchol grafu. Pokud už byl daný vrchol navštíven, větev procházeného stromu se ukončí, v opačném případě se označí vrchol za navštívený a funkce se rekurzivně zavolá nad všemi jeho sousedy.
+
+\begin{verbatim}
+define("NEW", "0");
+define("CLOSED", "1");
+
+// Recursive depth first search
 function dfs(v)
 {
-	v.setProperty('visited', true);
+    if(v.state == CLOSED)
+        return;
 
-	foreach(i; v.getNeighbors())
-	{
-		DOBEFORE(i);
-		if(i.getProperty('visited') == false)
-			dfs(i);
-		DOAFTER(i);
-	}
+    echo("Closing vertex: " + v.num + "\n");
+    v.state = CLOSED;
+
+    foreach(neighbor; v.getNeighbors())
+        dfs(neighbor);
 }
 \end{verbatim}
 
 
-\subsection{Ukázka zdrojových kódů}
+Výše definovaný algoritmus funguje nad všemi orientovanými i neorientovanými spojitými grafy. Od začátku vývoje se předpokládá nahrávání grafů z externích souborů, nicméně jejich vytváření je možné i v kódu programu.
 
-Ukázka existujících algoritmů (zkusit si je přepsat do navrženého jazyka)
+V následujícím výpisu je definován netriviální neorientovaný graf o dynamicky definované velikosti. Každému vrcholu je nastavením vlastnosti \texttt{num} předáno pořadové číslo vytvoření. Následně je stav všech vrcholů inicializován na \texttt{NEW} a spuštěn algoritmus pro procházení do hloubky.
+
+\begin{verbatim}
+define("NUM_VERTICES", "10"); // In one layer
+
+function main(argv)
+{
+    // o --- o --- o --- ...
+    // |     |     |
+    // o     o     o
+
+    g = graph();
+    v1 = g.generateVertex();
+    v1.num = 0;
+    first = v1;
+
+    // Generate first layer
+    for(i = 1; i < NUM_VERTICES; i++)
+    {
+        v2 = g.generateVertex();
+        v2.num = i;
+
+        g.generateEdge(v1, v2);
+        v1 = v2;
+    }
+
+    // Generate second layer
+    foreach(v1; g.getVertices())
+    {
+        v2 = g.generateVertex();
+        v2.num = i++;
+        g.generateEdge(v1, v2);
+    }
+
+    // Initialize states
+    foreach(v; g.getVertices())
+        v.state = NEW;
+
+    // Run (any vertex first)
+    dfs(first);
+}
+\end{verbatim}
 
 
 \section{Analýza reprezentace grafu}
