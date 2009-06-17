@@ -26,7 +26,7 @@
 \usepackage{k336_thesis_macros}
 
 
-\newcommand\TypeOfWork{Diplomová práce} \typeout{Diplomova prace}
+\newcommand\TypeOfWork{Diplomová práce} % \typeout{Diplomova prace}
 %\newcommand\TypeOfWork{Master's Thesis}   \typeout{Master's Thesis}
 
 
@@ -73,15 +73,15 @@ unicode=true,
 %\selectlanguage{english}
 
 \iflanguage{czech}{
-	 \typeout{************************************************}
-	 \typeout{Zvoleny jazyk: cestina}
-	 \typeout{Typ prace: \TypeOfWork}
-	 \typeout{Studijni program: \StudProgram}
-	 \typeout{Obor: \StudBranch}
-	 \typeout{Jmeno: \FirstandFamilyName}
-	 \typeout{Nazev prace: \WorkTitle}
-	 \typeout{Vedouci prace: \Supervisor}
-	 \typeout{***************************************************}
+%	 \typeout{************************************************}
+%	 \typeout{Zvoleny jazyk: cestina}
+%	 \typeout{Typ prace: \TypeOfWork}
+%	 \typeout{Studijni program: \StudProgram}
+%	 \typeout{Obor: \StudBranch}
+%	 \typeout{Jmeno: \FirstandFamilyName}
+%	 \typeout{Nazev prace: \WorkTitle}
+%	 \typeout{Vedouci prace: \Supervisor}
+%	 \typeout{***************************************************}
 	 \newcommand\Department{Katedra počítačů}
 	 \newcommand\Faculty{Fakulta elektrotechnická}
 	 \newcommand\University{České vysoké učení technické v Praze}
@@ -89,15 +89,15 @@ unicode=true,
 	 \newcommand\labelStudProgram{Studijní program}
 	 \newcommand\labelStudBranch{Obor}
 }{
-	 \typeout{************************************************}
-	 \typeout{Language: english}
-	 \typeout{Type of Work: \TypeOfWork}
-	 \typeout{Study Program: \StudProgram}
-	 \typeout{Study Branch: \StudBranch}
-	 \typeout{Author: \FirstandFamilyName}
-	 \typeout{Title: \WorkTitle}
-	 \typeout{Supervisor: \Supervisor}
-	 \typeout{***************************************************}
+%	 \typeout{************************************************}
+%	 \typeout{Language: english}
+%	 \typeout{Type of Work: \TypeOfWork}
+%	 \typeout{Study Program: \StudProgram}
+%	 \typeout{Study Branch: \StudBranch}
+%	 \typeout{Author: \FirstandFamilyName}
+%	 \typeout{Title: \WorkTitle}
+%	 \typeout{Supervisor: \Supervisor}
+%	 \typeout{***************************************************}
 	 \newcommand\Department{Department of Computer Science and Engineering}
 	 \newcommand\Faculty{Faculty of Electrical Engineering}
 	 \newcommand\University{Czech Technical University in Prague}
@@ -133,7 +133,7 @@ unicode=true,
 %%%%
 
 \abstractpage
-The core of this diploma thesis is design and implementation of a special language based on C, which will be used for the graph manipulations. Integrated development environment consists of the text editor for programmers, debugger and visualization window, in which the progress of the interpreted algorithm and graph can be displayed using 3D graphics.
+The core of this diploma thesis is design and implementation of a special language based on C, which will be used for the graph manipulations. Integrated development environment was developed, it consists of the text editor for programmers, debugger and visualization window, in which the progress of the interpreted algorithm and graph can be displayed using 3D graphics.
 
 \vglue60mm
 
@@ -141,7 +141,7 @@ The core of this diploma thesis is design and implementation of a special langua
 \vspace{8ex}
 
 \noindent
-Jádrem diplomové práce je návrh a implementace speciálního programovacího jazyka založeného na syntaxi C, který slouží pro manipulaci s grafy. Integrované vývojové prostředí sestává z programátorsky zaměřeného textového editoru, debuggeru a vizualizačního okna, v němž je ve 3D zobrazován průběh interpretovaného algoritmu nad daným grafem.
+Jádrem diplomové práce je návrh a implementace speciálního programovacího jazyka založeného na syntaxi C, který slouží pro manipulaci s grafy. Dále bylo vytvořeno integrované vývojové prostředí sestávající z programátorsky zaměřeného textového editoru, debuggeru a vizualizačního okna, v němž je ve 3D zobrazován průběh interpretovaného algoritmu nad daným grafem.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -332,6 +332,7 @@ Jak už bylo zmíněno, syntaxe jazyka je z větší části založena na všeob
 
 
 \subsection{Datové typy a proměnné}
+\label{datove_typy_a_promenne}
 
 Proměnné se nedeklarují a v průběhu vykonávání skriptu mohou libovolně měnit svůj datový typ. Uvnitř interpretu jsou rozlišovány typy \texttt{null}, \texttt{bool}, \texttt{int}, \texttt{float}, \texttt{string}, \texttt{struct}, \texttt{array}, \texttt{graph}, \texttt{vertex}, \texttt{vertexset}, \texttt{edge} a \texttt{edgeset}. Jazyk nepodporuje modifikátory typu, jako jsou například \texttt{unsigned} nebo \texttt{const}, protože nepřinášejí žádné výrazné vylepšení, programátor se bude muset obejít bez nich.
 
@@ -542,49 +543,292 @@ function main(argv)
 
 \section{Analýza reprezentace grafu}
 
-The assumed size of the stored graphs is millions vertices and edges. Each graph primitive will be a variable in the interpreter and may be referred from the several places so same kind of memory management should be propounded. The work with the whole graph and with its parts represented by sets should be similar.
+\subsection{Obecné požadavky}
 
+Jedním ze základních kamenů vytvářené aplikace je reprezentace grafů, vrcholů, hran a jejich množin v kódu programu. Přímo ze zadání práce vyplývá několik skutečností, ostatní se dají odvodit, či odhalit prostou logikou. Následuje stručný přehled, který bude dále rozebírán a diskutován.
+
+\begin{itemize}
+\item typ podporovaných grafů
+\item zapnutí a vypnutí orientace, inverze orientace
+\item dynamické grafy, složitost vytváření nových uzlů a hran
+\item způsob uložení vlastností uzlů a hran
+\item zpětná reference na objekt celého grafu
+\item identifikovatelnost sebe sama v grafu
+\item přístup k sousedním uzlům
+\item přístup k počátečnímu a koncovému uzlu hrany
+\item reprezentace množin uzlů a hran, množinové operace
+\item iterace přes všechny uzly/hrany grafu/množiny
+\item paměťový management, paměťové nároky
+\end{itemize}
+
+První a nejdůležitější z otázek se ptá, jakou třídu grafů je třeba podporovat. Jelikož je program psán úplně od začátku a neexistují žádná omezení plynoucí z již existujícího kódu a napojování se na něj, je rozumnou volbou uvažovat maximální množinu všech grafů. Ta zahrnuje orientované i neorientované grafy, spojité i nespojité, několik paralelních hran mezi dvěma uzly a samozřejmě také smyčky nad uzlem -- tj. hrana začíná i končí ve stejném vrcholu. Dále v textu bude vidět, že toto rozhodnotí silně omezí možné způsoby implementace, popř. je výrazně zesložití.
+
+Ačkoli se předpokládají spíše statické grafy, které se na začátku vytvoří a dále se už měnit nebudou, přidávání a mazání nových uzlů a hran by mělo být \textit{rozumně} složité a netrvat věčnost. Kopírovat celou matici sousednosti o milionu prvků kvůli jednomu přidanému uzlu rozhodně nebude správnou cestou.
+
+Zadání práce požaduje, aby vrcholy i hrany mohly být nějakým, nespecifikovaným, způsobem ohodnoceny. Opět bude vhodné uvažovat, kvůli obecnosti řešení, maximalistickou variantu. Budeme předpokládat, že každá z hran i vrcholů může být ohodnocena libovolným počtem vlastností libovolného typu. Z tohoto rozhodnutí plyne, že by vrchol i hrana měly mít svou vlastní třídu (ve významu objektového programování), aby se s nimi dalo jednodušeji manipulovat.
+
+Jelikož budou vrcholy a hrany v interpretu zpřístupnitelné i jako samostatné proměnné, je třeba, aby si nějakým způsobem pamatovaly, ke kterému grafu patří. Tento požadavek bude nejspíše řešen uložením ukazatele na objekt grafu do atributu třídy. Vrcholy i hrany by dále měly být v grafu schopné identifikovat sebe sama. Pokud by byl graf implementován například maticí sousednosti, je tento požadavek naprosto zásadní, protože bez něj by například nebylo možné najít sousedy daného uzlu.
+
+Další z důležitých otázek je reprezentace množin uzlů a hran, přidávání a odebírání prvků, množinové a jiné operace. Výhodou bude, když budou množiny reprezentované identicky jako celý graf, protože spousta kódu potom zůstane ekvivalentní. Předpokládá se časté přidávání a odebírání prvků, a proto by měly být tyto operace jednoduché a rychlé.
+
+Předpokládaná velikost grafů jsou miliony vrcholů a hran, čímž vznikají ob\-rov\-ské pa\-mě\-ťo\-vé nároky. Každé z primitiv může být odkazováno proměnnou v interpretu, či jiného místa, a proto bude pravděpodobně potřeba nějaký druh paměťového managementu, který zamezí chybám při práci s dynamickou pamětí.
+
+
+\subsection{Reprezentace grafu}
+
+Existuje několik možností, jak reprezentovat graf v programu. V teorii grafů bývají nejčastěji zmi\-ňo\-vá\-ny maticové reprezentace a spojové seznamy, ale existují i další, méně obvyklé, způsoby.
+
+% TODO: znak x v matematice
+
+\begin{itemize}
+\item matice inicidence $|U|$ x $|H|$
+\item matice sousednosti $|U|$ x $|U|$
+\item spojové seznamy -- seznam následníků apod.
+\item jiné reprezentace
+\end{itemize}
+
+Cílem této části bude najít nejvhodnější reprezentaci grafu, kterou by bylo možné použít ve specifické oblasti interpretu.
+
+
+\subsubsection{Standardní maticové reprezentace}
+
+% TODO: znak x v matematice
+
+Matice sousednosti je v grafové teorii definována jako dvourozměrné pole $|U|$ x $|U|$. V jazyce C++ s použitím knihovny STL by mohly být atributy třídy grafu definovány například následovně.
 
 \begin{verbatim}
-Uvažovat paralelní hrany???!!!
-	trojrozměrné pole hran u matice sousednosti
-	jak označovat hrany? [počátek][konec] už není jednoznačné
-	TODO: nahradit matici sousednosti za nějaký druh spojové
-		reprezentace? Množiny hran apod. by se takhle
-		implementovaly asi líp...
-
-Reprezentace grafu
-	maticová reprezentace není možná kvůli paralelním hranám,
-		počáteční a koncový vrchol by neurčoval hranu
-		jednoznačně, další problémy, preferovaná univerzálnost
-	pole vrcholů a pole hran
-	jednoduché na implementaci
-	jednoduché vracení množin vrcholů a hranám
-	pomalé? nepředpokládají se extrémně velké grafy
+class Graph
+{
+    vector<Vertex*> m_vertices;
+    vector< vector<Edge*> > m_edges;
+};
 \end{verbatim}
 
+Parametry datových kontejnerů nemohou být primitivní datové typy, protože každý vrchol i hrana musí umět ukládat dodatečné vlastnosti typu klíč--hodnota definované v požadavcích na systém.
 
-\subsection{Standardní reprezentace}
+Na první pohled se zdá, že by mohlo být výhodné použít tuto reprezentaci, nicméně existuje několik výrazných problémů. Největším z nich jsou paralelní hrany, protože počáteční a koncový vrchol hranu neurčují jednoznačně. Řešením by mohla být trojrozměrná matice a trojrozměrné indexy, je však vidět, že toto řešení rozhodně není hezké.
 
-\subsection{Vlastní reprezentace}
+\begin{verbatim}
+    vector< vector< vector<Edge*> > > m_edges;
+\end{verbatim}
 
-\subsubsection{Paměťový management}
+Další velkou nevýhodou je příliš složité přidávání a mazání vrcholů a vyplývající časté realokace velkých bloků paměti. Toto řešení by tedy bylo vhodné spíše pro statické grafy, které se na začátku vytvoří a pak zůstanou nezměněny až do konce algoritmu.
 
-\subsection{Shrnutí}
+Problémem je i složité procházení vrcholů a hran a hledání sebe sama v grafu. Každý vrchol a hrana musí mít u sebe uložen index do matice reprezentující graf, který se navíc může při přidání nového vrcholu u všech již existujících vrcholů posunout. Tímto by se výrazně zvýšily paměťové i výpočetní nároky.
+
+Další problémy pravděpodobně vzniknou při vytváření množin vrcholů a hran, které budou mít naprosto odlišnou implementaci vzhledem k vlastní třídě grafu. Paměťový management by býl extrémně složitý a náchylný k chybám.
+
+Výše uvedená diskuze odhalila množství nepřekonatelných problémů, které by vznikly při použití matice sousednosti. Dá se také předpokládat, že se úplně stejné problémy objeví i u matice inicidence a všude tam, kde je vlastní struktura grafu, návaznost vrcholů a hran, definovaná centrálně ve třídě grafu.
+
+
+\subsubsection{Reprezentace množinami vrcholů a hran}
+
+Tato reprezentace grafů se ve školách neučí, ale v tomto konkrétním specifickém případě, intepretu, je velice elegantní. Samotný nápad vznikl při odhalení slepé uličky u maticových reprezentací, které strukturu grafu definují centrálně v jedné datové struktuře. Bylo potřeba najít nějaké distribuované řešení.
+
+Datové položky grafu budou tvořit pouze dvě množiny vrcholů a hran. Na tomto místě by se dal použít i jiný datový kontejner, avšak množiny se objeví i v jiných třídách a tam už budou nutné. Dá se říci, že ani tyto dva kontejnery ukazatelů by nemusely být ve třídě grafu definovány, nicméně je třeba nějakým způsobem uvolňovat dynamickou paměť, uložení pointerů je proto nezbytné.
+
+\begin{verbatim}
+class Graph
+{
+    set<Vertex*> m_vertices;
+    set<Edge*> m_edges;
+};
+\end{verbatim}
+
+Vlastní struktura grafu, čili propojení vrcholů hranami, je definovaná ne ve třídě grafu, ale přímo ve třídách vrcholů a hran. Vrchol obsahuje množinu hran, které s ním incidují a hrany ukládají ukazatele na svůj počáteční a koncový uzel. Referenci na graf je nutné uchovávat kvůli interpretu.
+
+\begin{verbatim}
+class Vertex
+{
+    Graph* m_graph;
+    set<Edge*> m_edges;
+};
+
+class Edge
+{
+    Graph*  m_graph;
+    Vertex* m_begin
+    Vertex* m_end;
+};
+\end{verbatim}
+
+Hlavní výhodou této reprezentace je možnost práce s naprosto obecným grafem, nemusíme se starat o paralelní hrany ani smyčky nad uzly. Už bylo zmíněno, že druhý typ reprezentace, matice sousednosti, ve své standardní verzi neumí pracovat s paralelními hranami.
+
+Druhou obrovskou výhodou je ekvivalentní implementace grafu a množin jeho uzlů a hran. Není nutné programovat identické operace dvakrát a poté je navíc složitě napojovat na sebe. Výhodou je i přirozená a jednoduchá iterovatelnost množin, díky níž nebude složité implementovat procházení grafu pomocí cyklu \texttt{foreach}.
+
+Jedinou možnou nevýhodou je mírná duplicita informací při definici struktury gra\-fu, která je podobná obousměrně propojenému spojovému seznamu. Průchod je možný od uzlů k hranám a také naopak od hran k uzlům. V rozhraní tříd bude nutné ošetřit, aby kvůli této duplicitě nemohly vzniknout žádné problémy.
+
+
+\subsubsection{Testovací implementace}
+
+V následujícím výpisu kódu je ukázána až překvapivá elegance řešení na bázi množin vrcholů a hran ve spojení se standardní knihovnou STL a její šablonou \texttt{set}. Jsou ukázány čtyři funkce třídy grafu, které se starají o vytváření a mazání vrcholů a hran. Zdají natolik jednoduché, že veškeré komentáře jsou asi zbytečné.
+
+\begin{verbatim}
+Vertex* Graph::generateVertex(void)
+{
+    Vertex* vertex = new Vertex(this);
+    m_vertices.insert(vertex);
+    return vertex;
+}
+
+Edge* Graph::generateEdge(Vertex* begin, Vertex* end)
+{
+    Edge* edge = new Edge(this, begin, end);
+    m_edges.insert(edge);
+
+    begin->addEdge(edge);
+    end->addEdge(edge);
+
+    return edge;
+}
+
+void Graph::deleteVertex(Vertex* vertex)
+{
+    set<Edge*>& edges = vertex->getEdges();
+
+    set<Edge*>::iterator it;
+    for(it = edges.begin(); it != edges.end(); it++)
+        deleteEdge(*it);
+
+    m_vertices.erase(vertex);
+    delete vertex;
+}
+
+void Graph::deleteEdge(Edge* edge)
+{
+    edge->getBeginVertex()->deleteEdge(edge);
+    edge->getEndVertex()->deleteEdge(edge);
+    m_edges.erase(edge);
+    delete edge;
+}
+\end{verbatim}
+
+Výhradně tyto čtyři funkce pracují s pamětí, a tudíž je možnost jejích úniků v této části aplikace vyloučená.
+
+Implementace podmnožin vrcholů a hran je téměř identická jako implementace vlastního grafu. Jediný rozdíl se nachází v těchto čtyřech metodách, které u podmnožin nepracují s pamětí, ale pouze se starají o ukládání a vracení již existujících ukazatelů na objekty.
+
+Přiřazování mezi proměnnými v interpretu není třeba nějak speciálně ošetřovat. Pokud je proměnná \texttt{vertex} vrcholem grafu, pak jeho přiřazení do jiné proměnné nevytváří v původním grafu ani v žádném jiném nový vrchol, nejde o hlubokou kopii. Protože žádný vrchol nemůže bez grafu existovat, je jasné, že proměnná \texttt{alias} z příkladu musí být identická k původnímu vrcholu. Stejnou úvahu lze provést i pro hrany.
+
+\begin{verbatim}
+vertex = g.generateVertex();
+alias = vertex;
+\end{verbatim}
+
+Výše uvedený kód může vypadat jako nežádoucí a jeho použití okrajové, ale naprosto stejné operace se provádějí při předávání parametrů funkcím, a proto je dobré mít ověřeno, že při jejich volání nenastanou žádné problémy. Jak už bylo řečeno, o veškerou dynamicky alokovanou paměť grafu se stará třída \texttt{Graf} a nikdo jiný. Díky mělkým kopiím objektů není tudíž třeba ani garbage collectoru, ani chytrých ukazatelů s počítáním referencí.
 
 
 \section{Proměnné ve skriptu, typy a operace}
 
+\subsection{Implementace operací větvením}
+
+Existují v zásadě dvě možnosti, jak implementovat sčítání, odčítání a ostatní operace nad hodnotami a proměnnými ve skriptu. První z nich předpokládá použití \texttt{unionu} a pomocné proměnné, která ukládá datový typ uložené hodnoty.
+
 \begin{verbatim}
-proměnné
-	hierarchie tříd, ne jen jedna třída
-	double dispatch pattern - http://en.wikipedia.org/wiki/Double\_dispatch
-	Bruce Eckel: Thinking in C++ 2, Multiple dispatching, str. 459
+class CNodeValue
+{
+private:
+    TYPE m_type;
+
+    union
+    {
+    	bool m_b;
+        int m_i;
+        float m_f;
+    };
+};
 \end{verbatim}
 
-\subsection{Hierarchie tříd}
+Toto řešení je funkční, nicméně při více podporovaných datových typech a operacích začíná být extrémně nepřehledné a náchylné k chybám. Každá z funkcí implementujících například některou aritmetickou operaci musí obsahovat větvení podle typu, navíc, v případě binární operace, vnořené. Příkladem budiž ukázka části kódu sčítání z autorova dřívějšího interpretu.
 
-\subsection{Multiple dispatching pattern}
+% TODO: literatura Borsch
+
+
+\begin{verbatim}
+const CNodeValue CNodeValue::operator+(const CNodeValue& object) const
+{
+    // ...
+
+    switch(m_type)
+    {
+    case LEX_BOOL:
+        switch(object.m_type)
+        {
+        case LEX_BOOL:
+            return CNodeValue(m_b + object.m_b);
+        case LEX_INT:
+            return CNodeValue(m_b + object.m_i);
+        case LEX_FLOAT:
+            return CNodeValue(m_b + object.m_f);
+        default:
+            assert(false);
+            return *this;
+        }
+
+        // ...
+    }
+}
+\end{verbatim}
+
+Tento kód ošetřuje sčítání boolean hodnoty s druhou boolean hodnotou, celým číslem a desetinným číslem. Jedná se pouze o část funkce, v případě tří různých datových typů by funkce obsahovala tři podobné sekce, ve výsledku devět, respektive šestnáct, podmínek.
+
+Navrhovaný jazyk předpokládá dvanáct různých datových typů (viz sekce \ref{datove_typy_a_promenne} na straně \pageref{datove_typy_a_promenne}), což pouze pro sčítání dává celkem 144 větvení! Psát a poté udržovat podobný kód pro všechny operace je naprosto nereálné. Navíc přidání nového datového typu způsobí nutnost slo\-ži\-tých úprav všech existujících funkcí.
+
+
+\subsection{Double dispatching pattern}
+
+% TODO: reference na Bruce Eckel: Thinking in C++ 2, Multiple dispatching, str. 459
+
+Odpovědí na všechny výše uvedené problémy je návrhový vzor \textit{Multiple dispatching}, který poskytuje možnost volání typových operací nad kombinací beztypových objektů. Základem je abstraktní třída \texttt{Value}, která deklaruje všechny potřebné operace -- pro každý datový typ a operaci jedna virtuální metoda, plus jedna čistě virtuální metoda pro neznámý datový typ.
+
+\begin{verbatim}
+class Value
+{
+    // +
+    virtual PTR_Value add(const Value&     right) const = 0;
+    virtual PTR_Value add(const ValueBool&  left) const;
+    virtual PTR_Value add(const ValueInt&   left) const;
+    virtual PTR_Value add(const ValueFloat& left) const;
+    // ...
+};
+\end{verbatim}
+
+Sčítání celého čísla s ostatními datovými typy může vypadat následovně. Nejdříve je nutné definovat sčítání celého čísla s neznámým datovým typem na pravé straně. V takovém případě funkce neví, jak tuto operaci provést, a proto požádá tento neznámý typ o sečtení se sebou samým, s tím, že mu oznámí, že se jedná o sčítání s celým číslem (typ ukazatele \texttt{this} je zde \texttt{ValueInt}).
+
+Dejme tomu, že se jednalo také o celé číslo, zavolala se tedy třetí z uvedených metod a provedlo se sečtení celých čísel, jehož výsledkem je taktéž celé číslo. V tuto chvíli byly již všechny potřebné datové typy známé a operace se mohla vykonat.
+
+\begin{verbatim}
+PTR_Value ValueInt::add(const Value& right) const
+{
+    return right.add(*this);
+}
+
+PTR_Value ValueInt::add(const ValueBool& left) const
+{
+    return PTR_Value(new ValueInt(left.getVal() + m_val));
+}
+
+PTR_Value ValueInt::add(const ValueInt& left) const
+{
+    return PTR_Value(new ValueInt(left.getVal() + m_val));
+}
+
+PTR_Value ValueInt::add(const ValueFloat& left) const
+{
+    return PTR_Value(new ValueFloat(left.getVal() + m_val));
+}
+\end{verbatim}
+
+Jednou z výhod Double dispatching patternu je také to, že není nutné definovat všechny metody pro všechny kombinace datových typů. Pokud operace s danými parametry nedává smysl, například sčítání čísla s vrcholem grafu, ponechá se vykonání operace na rodičovské třídě \texttt{Value}, jež může kupříkladu vypsat chybu a vrátit \texttt{NULL} hodnotu.
+
+\begin{verbatim}
+PTR_Value Value::add(const ValueGraph& /* left */) const
+{
+    cerr << "Operation is not supported" << endl;
+    return VALUENULL;
+}
+\end{verbatim}
+
+V případě přidání nového datového typu se žádná z již existujících funkcí nemění, pouze se do základní třídy dopíše nová virtuální operace a do potomků, kde to dává smysl, její implementace.
 
 
 \section{Reprezentace skriptu a vykonávání}
