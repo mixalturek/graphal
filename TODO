@@ -40,6 +40,7 @@ gui
 	Script toolbar item to show current position in the executed script
 	Parameters of the executed script!!!
 	Checkbox to menu and toolbar to enable/disable breakpoints
+	Disable memory checks in BaseObject!
 
 
 ////////////////////////////////////////////////////////////////////////////

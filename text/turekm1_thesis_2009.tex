@@ -44,9 +44,6 @@
 \newcommand\Supervisor{RNDr. Marko Genyk-Berezovskyj}
 
 
-
-% \hyphenation{  }
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
 
@@ -466,7 +463,7 @@ e1.value = 3.14;
 neighbors = v1.getNeighbors();
 
 foreach(vert; neighbors)
-	doSomething(vert);
+    doSomething(vert);
 \end{verbatim}
 
 Pro vytváření množin vrcholů a hran slouží opět zabudované funkce.
@@ -622,6 +619,7 @@ Výše uvedená diskuze odhalila množství nepřekonatelných problémů, kter�
 
 
 \subsubsection{Reprezentace množinami vrcholů a hran}
+\label{reprezentace_mnozinami_vrcholu_a_hran}
 
 Tato reprezentace grafů se ve školách neučí, ale v tomto konkrétním specifickém případě, intepretu, je velice elegantní. Samotný nápad vznikl při odhalení slepé uličky u maticových reprezentací, které strukturu grafu definují centrálně v jedné datové struktuře. Bylo potřeba najít nějaké distribuované řešení.
 
@@ -775,6 +773,7 @@ Navrhovaný jazyk předpokládá dvanáct různých datových typů (viz sekce \
 
 
 \subsection{Double dispatching pattern}
+\label{double_dispatching_pattern}
 
 % TODO: reference na Bruce Eckel: Thinking in C++ 2, Multiple dispatching, str. 459
 
@@ -834,6 +833,7 @@ V případě přidání nového datového typu se žádná z již existujících
 \section{Reprezentace skriptu a vykonávání}
 
 \subsection{Abstraktní strom syntaxe}
+\label{abstraktni_strom_syntaxe}
 
 Zdrojové soubory skriptu se překládají pomocí lexikálního analyzátoru a parseru do vnitřní reprezentace. Jejím základním prvkem je abstraktní třída \texttt{Node}, ze které budou odvozené všechny ostatní, například třída pro větvení, třída pro cykly a další.
 
@@ -886,33 +886,73 @@ void resume(void)
 Ač se to nemusí zdát, je výše uvedené řešení plně funkční. Bylo implementováno v jednoduché testovací aplikaci a pracuje bez jediného problému.
 
 
-\section{Úniky paměti, správce paměti}
+\subsection{Úniky paměti, správce paměti}
 
-\subsection{Garbage collector}
+V kapitole \ref{abstraktni_strom_syntaxe} na straně \pageref{abstraktni_strom_syntaxe} byla představena virtuální funkce \texttt{execute()}, jejíž rekurzivní volání umožňuje interpretaci skriptu. Jednou ze zcela zásadních věcí je její návratová hodnota, která slouží především pro získání výsledku aritmetických výrazů.
 
-\subsection{Chytré ukazatele}
+Mějmě například následující jednoduchý skript, jehož úkolem je sečíst dvě čísla.
 
 \begin{verbatim}
-auto\_ptr ze STL nelze použít, protože...
-http://www.davethehat.com/articles/smartp.htm
-http://ootips.org/yonat/4dev/smart-pointers.html
-http://www.josuttis.com/libbook/cont/countptr.hpp.html
+function main(argv)
+{
+    return 1 + 2;
+}
 \end{verbatim}
+
+Součet bude v syntaktickém stromu uložen celkem ve třech uzlech. Listy vracejí svoji hodnotu ve formě celých čísel, binární operátor následně tyto dvě hodnoty sečte a vrátí výsledek operátoru return. Vykonávání pokračuje v podobném duchu až do dosažení kořene stromu.
+
+Je jasné, že třída pro sčítání nezná datový typ návratové hodnoty při kompilaci, může jím být například \texttt{NULL}, \texttt{int}, \texttt{float} aj., a tudíž návratovou hodnotou funkce musí být abstraktní objekt typu \texttt{Value} představený v sekci \ref{double_dispatching_pattern} na straně \pageref{double_dispatching_pattern}.
+
+Z toho dále vyplývá, že se musí objekty vytvářet dynamicky a s tím souvisí velice častý problém programátorů v jazycích C a C++: \textit{Kdy je možné tyto objekty smazat a kdo se o to postará}.
+
+
+\subsubsection{Garbage collector}
+
+% TODO: odkaz na literaturu
+
+Jednou z možností je naprogramovat a poté používat \textit{Garbage collector} obdobný javovskému. Velkou výhodou by bylo vyřešení naprosto všech, současných i budoucích, problémů s uvolňováním dynamické paměti. Nevýhodou složitá implementace a dodatečná režie při vykonávání.
+
+V tomto případě se zdá, že nevýhody převažují nad výhodami. Navíc se přece jedná o návratovou hodnotu \textit{výhradně} jedné funkce, možná by stačilo zapouzdřit ukazatel na návratovou hodnotu do další třídy, která by se následně postarala o smazání.
+
+
+\subsubsection{Chytré ukazatele}
+
+% TODO: odkaz na literaturu
+% http://www.davethehat.com/articles/smartp.htm
+% http://ootips.org/yonat/4dev/smart-pointers.html
+% http://www.josuttis.com/libbook/cont/countptr.hpp.html
+
+Nejjednodužší implementací chytrých ukazatelů je šablona \texttt{auto\_ptr} ze standardní kni\-hov\-ny. Bude stačit nebo bude potřeba silnější nástroj? Po požádání se \texttt{auto\_ptr} stává výhradním vlastníkem ukazatele a při své destrukci smaže i předanou dynamickou paměť. Výhradní vlastník znamená, že v jednom okamžiku může existovat právě jedna \texttt{auto\_ptr} reference, na danou paměť.
+
+Splnit tento požadavek bohužel nelze. Chceme-li například vrátit hodnotu uloženou v proměnné interpretovaného skriptu, první referencí bude původní proměnná a druhou vracená hodnota. Musíme tedy hledat silnější nástroj.
+
+Pokud je jediným problémem \texttt{auto\_ptr} pouze možný větší počet odkazů, můžeme použít chytrý ukazatel na bázi čítání referencí. Ten zapouzdřuje ukazatel na dynamický objekt spolu s čítačem referencí, který se při vytvoření objektu nastaví na jedna a při každém zavolání kopíravacího konstruktoru nebo operátoru přiřazení inkrementuje. V destruktoru se naopak počet referencí dekrementuje a při dosažení nulové hodnoty se objekt smaže.
+
+Toto řešení by mohlo fungovat, jen je třeba si dát pozor na cyklické reference, kdy první objekt odkazuje na druhý a zároveň druhý objekt odkazuje na první, paměť by se nikdy neuvolnila. Tato situace bohužel může v interpretu nastat, protože právě tímto způsobem je uložena struktura grafu (viz kapitola \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}). Vrcholy obsahují seznam incidujících hran a hrany odkaz na počáteční a koncový uzel.
+
+Z toho plyne, že pokud nebude na tomto konkrétním místě chytrý ukazatel s čítáním referencí použit, což není žádné zásadní omezení, bude efektivním řešením problému návratové hodnoty \texttt{execute()}.
+
 
 \section{Grafické uživatelské rozhraní}
 
+Grafické uživatelské rozhraní bude naprogramováno s použitím knihovny Qt. Sestává z hlavního okna aplikace \texttt{QMainWindow}, jehož centrálním widgetem bude textový editor pro programátory na bázi \texttt{QPlainTextEdit}. Jedná se o MDI aplikaci, jednotlivé editory je možné přepínat, po vzoru webových prohlížečů, pomocí panelů či listů. Menu, nástrojová lišta a stavový řádek jsou pro daný typ aplikace samozřejmostí.
 
-\section{Generování kódu}
+Knihovna Qt poskytuje možnost vkládat do okrajů hlavního okna plovoucí panely \texttt{QDockWidget}, jež mohou být přesunuty na jiné místo a také \textit{vytrhnuty} do samostatného okna. Tato funkcionalita se určitě hodí u vizualizací, v případě jednoho monitoru budou panelem v hlavním okně aplikace, zároveň však existuje možnost zobrazit ho i v samostatném okně na druhém monitoru.
 
-\begin{verbatim}
-Automatické generování C/Java zdrojových kódů?
-	aneb po zkušenostech s GWT proč ne? :-)
-	komentáře asi ignorovat
-\end{verbatim}
+Panelů může být definováno libovolné množství, pro začátek se kromě vizualizací před\-po\-klá\-dá i zobrazování výstupu z vykonávaného skriptu, seznam definovaných proměnných spolu s jejich hodnotami a zásobník volání funkcí.
 
 
 \section{Shrnutí}
 
+V této kapitole byly definovány základní myšlenky a rozhodnutí pro tvorbu interpretu speciálního programovacího jazyka pro manipulaci s grafy. Aplikace bude naprogramována v C++ s využitím standardní knihovny STL, grafická část v Qt a OpenGL.
+
+Analýza odhalila nemožnost reprezentovat graf maticí sousednosti ani jinými technikami, ve kterých je struktura grafu uložena centrálně. Navržené řešení spočívá v obecných množinách uzlů a hran, kde si uzly udržují seznam incidujících hran a hrany odkazy na svůj počáteční a koncový uzel. Díky této technice může být podporován libovolný typ grafů bez jakéhokoli omezení a hlavně s rozumnými složitostmi vykonávání všech operací.
+
+Hodnoty a proměnné ve skriptu budou implementovány pomocí hierarchie tříd, jednotlivé operace budou pracovat na bázi návrhového vzoru Double dispatching.
+
+Skript bude v interpretu reprezentován abstraktním stromem syntaxe. Jeho vykonávání spočívá v rekurzivním volání metody \texttt{execute()} nad každým uzlem tohoto stromu. Návratovou hodnotou bude chytrý ukazatel na bázi čítání referencí zapouzdřující obecnou hodnotu. Skript může být v případě debuggingu pozastaven technikami ví\-ce\-vlák\-no\-vé\-ho programování.
+
+Grafické uživatelské rozhraní bude zahrnovat hlavní okno s textovým editorem pro programátory a několika speciálními plovoucí panely, které mohou být uživatelem vytrnuty do samostatného okna.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1101,6 +1141,7 @@ base code for the application qt4/examples/mainwindows/mdi
 \item[OOP] Object Oriented Programming
 \item[I/O] Input/Output
 \item[OpenGL] Open Graphics Library
+\item[MDI] Multiple Document Interface
 \end{description}
 \vdots
 
