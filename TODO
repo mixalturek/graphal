@@ -39,6 +39,7 @@ gui
 		edit->textCursor().insertText(text);
 	Script toolbar item to show current position in the executed script
 	Parameters of the executed script!!!
+	Checkbox to menu and toolbar to enable/disable breakpoints
 
 
 ////////////////////////////////////////////////////////////////////////////

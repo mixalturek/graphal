@@ -404,7 +404,7 @@ Předčasné ukončení cyklu je možné klasicky pomocí strukturovaných skok�
 
 \subsection{Funkce}
 
-Funkce se ve skriptu deklarují podobně jako v jazyce PHP. Klíčové slovo \texttt{function}, následuje jméno funkce, v kulatých závorkách čárkami oddělený seznam parametrů a ve složených závorkách tělo funkce. Při parsování nezávisí na pořadí deklarace funkcí, interpretace začíná až po zpracování celého zdrojového kódu, kdy už jsou všechny dostupné.
+Funkce se ve skriptu deklarují podobně jako v jazyce PHP. Klíčové slovo \texttt{function}, následuje jméno funkce, v kulatých závorkách čárkami oddělený seznam parametrů a ve složených závorkách tělo funkce. Při parsování nezávisí na pořadí uvedení funkcí, interpretace začíná až po zpracování celého zdrojového kódu, kdy už jsou všechny dostupné. Samotný skript se spouští funkcí \texttt{main(argv)} s polem argumentů v parametrech.
 
 U volání funkcí jsou k dispozici dvě ekvivalentní syntaxe. V první verzi je možné všechny parametry předat klasicky do kulatých závorek, u druhého způsobu je první parametr zapsán tečkovou notací před jméno funkce a celý zápis potom vypadá, jako volání metody nad daným objektem. Forma je podobná jazyku Python a jeho \texttt{self} parametrům metod.
 
@@ -833,28 +833,57 @@ V případě přidání nového datového typu se žádná z již existujících
 
 \section{Reprezentace skriptu a vykonávání}
 
+\subsection{Abstraktní strom syntaxe}
 
-\subsection{Procházení AST}
+Zdrojové soubory skriptu se překládají pomocí lexikálního analyzátoru a parseru do vnitřní reprezentace. Jejím základním prvkem je abstraktní třída \texttt{Node}, ze které budou odvozené všechny ostatní, například třída pro větvení, třída pro cykly a další.
+
+Posláním parseru je sestavit \textit{abstraktní strom syntaxe}, který bude následně použit pro vykonávání programu. Povinností stavebních kamenů je definovat metodu \texttt{execute()}, jež se bude při vykonávání volat rekurzivně na všech úrovních stromu.
 
 \begin{verbatim}
-Jak uložit pozici ve zdrojových kódech?
-	zaznamenat si pozici příkazu, bloku, funkce a ukládat to do
-	těchto tříd ve stromě lexan vrací změnu pozice jako token,
-	virtuální instrukce, problémy s gramatikou?
+class Node
+{
+public:
+    virtual CountPtr<Value> execute(void) = 0;
+};
 \end{verbatim}
 
+Kontext skriptu, ve kterém jsou uložené například hodnoty proměnných bude definován v externí třídě, pravděpodobně singletonu. Druhou možností by bylo předávat kontext metodám v parametru, ale to bylo v současnosti označeno za zbytečné plýtvání výkonem, nepředpokládají se vícevláknové skripty.
 
-\subsection{Virtuální procesor}
+Alternativní možností vykonávání skriptu by mohl být překlad do instrukcí virtuálního procesoru a jejich interpretace, nicméně to se aktuálně jeví jako zbytečně náročné řešení, které by nepřineslo téměř nic navíc.
+
+Pozice ve zdrojových kódech bude uchovávána ne ve všech, ale pouze ve speciálních uzlech stromu. Například příkazy budou obaleny objekty typu \texttt{NodePosition}, jejichž prací bude aktualizovat pozici v kontextu a rekurzivní zavolání metody svého následníka. Tato technika umožní, aby pozice nemusela být zbytečně uchovávána v každém prvku stromu.
+
 
 \subsection{Podpora debuggingu}
 
-\begin{verbatim}
-Implementace krokování
-	rekurzivní volání execute() na stromovou strukturu, krokování pomocí
-	synchronizace vláken lineární pole instrukcí, virtuální procesor
+Výhodou lineárního pole instrukcí a virtuálního procesoru je snadná implementace debuggingu. V kterémkoli okamžiku je možné pozastavit vykonávání, protože kód skriptu je uložen výhradně v datové struktuře. Po případném opuštění interpretující funkce zůstane stav virtuálního procesoru zachován a pozastavený skript může být kdykoli opětovně spuštěn.
 
-breakpoint(bool);
+Naproti tomu, při použití abstraktního stromu syntaxe, je kód reprezentován především datovými typy uzlů. Vykonávání spočívá v rekurzivním volání jedné funkce, kteréžto není možné přerušit a na daném místě později pokračovat. Vzniká otázka, jak pozastavit toto rekurzivní vykonávání.
+
+Odpovědí je \textit{vícevláknové programování} a jeho synchronizační prostředky. V případě řádkové utility se debugging nepředpokládá, u grafického rozhraní je další vlákno pro vykonávání skriptu naopak nezbytné. Bez něj by aplikace po spuštění interpretu nemohla reagovat na žádné požadavky a uživateli by se jevila jako zamrzlá.
+
+Princip pozastavení skriptu demonstruje následující výpis kódu, používající synchronizační prostředky knihovny Qt. Pokud skript narazí například na breakpoint, zavolá funkci \texttt{pause()}, jež ve \texttt{wait()} čeká na signál k opětovnému spuštění. Tento příkaz vydává hlavní vlákno aplikace kupříkladu po kliknutí uživatele na tlačítko \textit{Pokračovat}.
+
+\begin{verbatim}
+QMutex dbgMutex;
+QWaitCondition waitCondition;
+
+// Script thread (ie. breakpoint)
+void pause(void)
+{
+    dbgMutex.lock();
+    waitCondition.wait(&dbgMutex);
+    dbgMutex.unlock();
+}
+
+// Main/GUI thread (ie. click on next line button)
+void resume(void)
+{
+    waitCondition.wakeAll();
+}
 \end{verbatim}
+
+Ač se to nemusí zdát, je výše uvedené řešení plně funkční. Bylo implementováno v jednoduché testovací aplikaci a pracuje bez jediného problému.
 
 
 \section{Úniky paměti, správce paměti}
