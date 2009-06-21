@@ -29,14 +29,14 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-BaseObject::BaseObject()
+BaseObject::BaseObject(void)
 {
 #ifdef CHECK_MEMORY_LEAKS
 	m_allocated_objects.insert(this);
 #endif // CHECK_MEMORY_LEAKS
 }
 
-BaseObject::~BaseObject()
+BaseObject::~BaseObject(void)
 {
 #ifdef CHECK_MEMORY_LEAKS
 	m_allocated_objects.erase(this);

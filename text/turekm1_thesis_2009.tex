@@ -961,20 +961,126 @@ Grafické uživatelské rozhraní bude zahrnovat hlavní okno s textovým editor
 \chapter{Realizace}
 
 % TODO: delete
-Popis implementace / realizace se zaměřením na nestandardní části řešení.
+% Popis implementace / realizace se zaměřením na nestandardní části řešení.
 
 \section{Základní kód a interpret pro příkazovou řádku}
 
-\subsection{Inicializace statických objektů a úniky paměti}
+\subsection{Hierarchie tříd, třída BaseObject}
+
+V objektově orientovaném návrhu aplikace je vždy dobré vytvořit kořen hierarchie tříd, který bude poskytovat, či pouze definovat, základní obecné operace nad všemi používanými objekty. V jazyce Java se taková třída jmenuje \texttt{Object}, knihovna Qt zavádí \texttt{QObject}, vyvíjená aplikace použije jméno \texttt{BaseObject}.
+
+
+\subsubsection{Výpis struktury objektů, metoda dump()}
+
+\texttt{BaseObject} v první řadě definuje čistě virtuální metodu, díky níž bude v budoucnosti snazší hledat případné chyby při skládání objektů. Využití se předpokládá především při stavbě a ověřování abstrakního stromu syntaxe skriptu, metoda umožní jeho přehledný výpis.
 
 \begin{verbatim}
-init\_static\_objects.cpp
-BaseObject
-general.hpp ???
+virtual void dump(ostream& os, uint indent) const = 0;
 \end{verbatim}
 
+Pokud každá třída definuje svoji metodu \texttt{dump()} -- a ony ji definovat musí, protože je čistě virtuální -- může do předaného proudu vypsat informace o sobě a o objektech, které v sobě uchovává. Parametr \texttt{indent} slouží pro odsazování řádků a zpřehlednění výpisu. Mějme například jednoduchý demonstrační skript.
 
-\subsection{BaseObject::dump()}
+\begin{verbatim}
+function main(argv)
+{
+    value = 1 + 2 * 3;
+}
+\end{verbatim}
+
+Po přeložení zdrojových kódů do vnitřní reprezentace a zavolání výpisu bude struktura objektů vypadat následovně.
+
+\begin{verbatim}
+    <Function name="main" id="63">
+        <Parameter name="argv" id="64" />
+        <NodeBinaryAss>
+            <ValueIdentifier name="value" id="65">
+                <NoValue />
+            </ValueIdentifier>
+            <NodeBinaryAdd>
+                <ValueInt value="1" />
+                <NodeBinaryMult>
+                    <ValueInt value="2" />
+                    <ValueInt value="3" />
+                </NodeBinaryMult>
+            </NodeBinaryAdd>
+        </NodeBinaryAss>
+    </Function>
+\end{verbatim}
+
+XML formát výstupu samozřejmě není nutný, byl použit pouze kvůli své pře\-hled\-nos\-ti.
+
+
+\subsubsection{Kontrola úniků paměti}
+\label{kontrola_uniku_pameti}
+
+Druhou funkcionalitou poskytovanou základní třídou \texttt{BaseObject} jsou testy na úniky dynamické paměti. Jedná se pouze o rychlé ověření, zda změny provedené při vývoji nezpůsobily nějaký problém, a proto záměrně není implementace nijak složitá.
+
+Třída definuje statické úložiště adres alokovaných objektů. Při své konstrukci do něj vloží ukazatel na právě vytvořený objekt, v destruktoru ho smaže, toť vše. Jelikož se jedná o kořen hierarchie tříd, tento konstruktor se z definice volá u naprosto všech objektů.
+
+\begin{verbatim}
+BaseObject::BaseObject(void)
+{
+    m_allocated_objects.insert(this);
+}
+
+BaseObject::~BaseObject(void)
+{
+    m_allocated_objects.erase(this);
+}
+\end{verbatim}
+
+Těsně před ukončením funkce \texttt{main()} se zjistí aktuální počet alokovaných objektů. Pokud není nulový (nutné brát v úvahu i staticky definované objekty), je jasné, že se někde v aplikaci objevil memory leak a tato skutečnost je signalizována vývojáři. Díky RTTI, které jazyk C++ podporuje operátorem \texttt{typeid}, je možné získat i datový typ neuvolněných objektů.
+
+Kód pro testy může způsobovat výrazné zpomalení běhu aplikace, a proto byl obalen do podmíněné sekce preprocesoru \texttt{CHECK\_MEMORY\_LEAKS}, jež je zapnutá pouze při \texttt{debug} kompilaci. Ve výsledné verzi samozřejmě nejsou testy potřeba.
+
+Pozorný čtenář si pravděpodobně uvědomil, že nejsou kontrolovány pouze dynamické, ale i statické alokace. Možná by stálo za úvahu vložit kód do přetížených operátorů \texttt{new} a \texttt{delete}, nicméně statické objekty jsou uvolněny vždy, a proto nemají žádný vliv na správnost zjištěné informace.
+
+
+\subsubsection{Pořadí inicializace statických objektů}
+
+% TODO: literatura?
+
+Učebnice jazyka C++, či jiná literatura zabývající se podobným tématem, se pouze velice zřídka věnují tématu \textit{pořadí inicializace statických objektů}. Jedná se o situaci, kdy linker při spojování jednotlivých modulů může způsobit zásadí nefunkčnost naprosto správného kódu!
+
+Termín \textit{statický objekt} je zde používán ve významu atributu třídy deklarovaného s modifikátorem \texttt{static}, jenž způsobí sdílení mezi všemi objekty dané třídy. Druhým problémovým typem mohou teoreticky být i globálně deklarované proměnné, to však autor práce nemá nijak ověřeno. Jako praktickou ukázku nastavší chyby můžeme použít \texttt{BaseObject::m\_allocated\_objects} z kapitoly \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}.
+
+Statický objekt je vytvářen a inicializovanám ještě před vlastním spuštěním funkce \texttt{main()}. Jazyk C++ pro inicializaci používá speciální konstrukci zapsanou vně všech funkcí a tříd.
+
+\begin{verbatim}
+class BaseObject
+{
+private:
+    static set<BaseObject*> m_allocated_objects;
+};
+
+set<BaseObject*> BaseObject::m_allocated_objects;
+\end{verbatim}
+
+Definujme ještě jednu třídu, singleton poděděný od \texttt{BaseObject}, jež bude v sobě obsahovat taktéž statický objekt.
+
+\begin{verbatim}
+class Singleton : public BaseObject
+{
+private:
+    static Singleton m_instance;
+};
+
+Singleton Singleton::m_instance;
+\end{verbatim}
+
+A nyní přichází zásadní otázka. Bude \texttt{BaseObject::m\_allocated\_objects} inicializováno dříve než \texttt{Singleton::m\_instance}, či naopak? Jedná se o zásadní otázku, protože \texttt{Singleton} dědí od \texttt{BaseObject} a pracuje s \texttt{m\_allocated\_objects}, které v tuto chvíli ještě nemusí existovat.
+
+Vše tedy závisí na linkeru, nevhodné pořadí spojování modulů může způsobit pád aplikace ještě před vlastním spuštěním funkce \texttt{main()} -- \textit{neoprávněný přístup do paměti}.
+
+Pokud nejde použití statických objektů v aplikaci zamezit nebo je jiné řešení silně nepraktické, existuje proti chybě relativně snadná obrana. Stačí založit nový soubor se zdrojovými kódy a do něj přesunout naprosto všechny statické inicializace. Nahoru je třeba zapsat ty, jenž se musejí provést nejdříve, a dolů ty, které na nich závisí. V naší demonstraci by obsah souboru vypadal následovně.
+
+\begin{verbatim}
+set<BaseObject*> BaseObject::m_allocated_objects;
+Singleton Singleton::m_instance;
+\end{verbatim}
+
+Je pravda, že výše uvedená ukázka je k chybě výrazně náchylnější než běžná použití statických objektů, nicméně autor se již v minulosti setkal s podobným problémem, který ovšem nezpůsoboval tak zásadní nefunkčnost. V obou případech se navíc jednalo o dva různé kompilátory -- Microsoft Visual Studio oproti GNU gcc.
+
 
 \subsection{Lexikální analyzátor}
 
@@ -1142,6 +1248,8 @@ base code for the application qt4/examples/mainwindows/mdi
 \item[I/O] Input/Output
 \item[OpenGL] Open Graphics Library
 \item[MDI] Multiple Document Interface
+\item[XML] eXtensible Markup Language
+\item[RTTI] Run Time Type Identification
 \end{description}
 \vdots
 

@@ -42,7 +42,7 @@ ObjectCreator ObjectCreator::m_instance;
 //// BaseObject
 
 #ifdef CHECK_MEMORY_LEAKS
-set<BaseObject*> BaseObject::m_allocated_objects = set<BaseObject*>();
+set<BaseObject*> BaseObject::m_allocated_objects;
 #endif // CHECK_MEMORY_LEAKS
 
 

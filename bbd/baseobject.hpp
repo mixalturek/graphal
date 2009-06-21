@@ -30,8 +30,8 @@
 class BaseObject
 {
 public:
-	BaseObject();
-	virtual ~BaseObject();
+	BaseObject(void);
+	virtual ~BaseObject(void);
 
 	virtual void dump(ostream& os, uint indent) const = 0;
 	static void dumpIndent(ostream& os, uint indent);

@@ -100,7 +100,9 @@ void Context::printStackTrace() const
 
 bool Context::isVariableSet(identifier name)
 {
-	assert(!m_call_stack.empty());
+	if(m_call_stack.empty())
+		return false;
+
 	return m_call_stack.back().isVariableSet(name);
 }
 
