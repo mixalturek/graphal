@@ -32,7 +32,7 @@
 
 % http://www.fel.cvut.cz/cz/education/bk/prehled.html
 
-\newcommand\StudProgram{Elektrotechnika a informatika, strukturovaný, Navazující magisterský}
+\newcommand\StudProgram{Elektrotechnika a informatika, strukturovaný,\\Navazující magisterský}
 %\newcommand\StudProgram{Electrical Engineering and Information Technology}  % master program
 
 \newcommand\StudBranch{Výpočetní technika}   % pro prgoram EaI mag. (dobihajici i strukt.)
@@ -154,7 +154,7 @@ Jádrem diplomové práce je návrh a implementace speciálního programovacího
 
 \mainbodystarts
 
-\parskip=5pt plus 4pt minus 4pt
+\parskip=5pt plus 3pt minus 3pt
 \parindent=0em
 
 
@@ -817,7 +817,7 @@ PTR_Value ValueInt::add(const ValueFloat& left) const
 }
 \end{verbatim}
 
-Jednou z výhod Double dispatching patternu je také to, že není nutné definovat všechny metody pro všechny kombinace datových typů. Pokud operace s danými parametry nedává smysl, například sčítání čísla s vrcholem grafu, ponechá se vykonání operace na rodičovské třídě \texttt{Value}, jež může kupříkladu vypsat chybu a vrátit \texttt{NULL} hodnotu.
+Jednou z výhod Double dispatching patternu je také to, že není nutné definovat všechny metody pro všechny kombinace datových typů. Pokud operace s danými parametry nedává smysl, například sčítání čísla s vrcholem grafu, ponechá se vykonání operace na rodičovské třídě \texttt{Value}, jež může kupříkladu vypsat chybu a vrátit \texttt{null} hodnotu.
 
 \begin{verbatim}
 PTR_Value Value::add(const ValueGraph& /* left */) const
@@ -901,7 +901,7 @@ function main(argv)
 
 Součet bude v syntaktickém stromu uložen celkem ve třech uzlech. Listy vracejí svoji hodnotu ve formě celých čísel, binární operátor následně tyto dvě hodnoty sečte a vrátí výsledek operátoru return. Vykonávání pokračuje v podobném duchu až do dosažení kořene stromu.
 
-Je jasné, že třída pro sčítání nezná datový typ návratové hodnoty při kompilaci, může jím být například \texttt{NULL}, \texttt{int}, \texttt{float} aj., a tudíž návratovou hodnotou funkce musí být abstraktní objekt typu \texttt{Value} představený v sekci \ref{double_dispatching_pattern} na straně \pageref{double_dispatching_pattern}.
+Je jasné, že třída pro sčítání nezná datový typ návratové hodnoty při kompilaci, může jím být například \texttt{null}, \texttt{int}, \texttt{float} aj., a tudíž návratovou hodnotou funkce musí být abstraktní objekt typu \texttt{Value} představený v sekci \ref{double_dispatching_pattern} na straně \pageref{double_dispatching_pattern}.
 
 Z toho dále vyplývá, že se musí objekty vytvářet dynamicky a s tím souvisí velice častý problém programátorů v jazycích C a C++: \textit{Kdy je možné tyto objekty smazat a kdo se o to postará}.
 
@@ -1082,6 +1082,44 @@ Singleton Singleton::m_instance;
 Je pravda, že výše uvedená ukázka je k chybě výrazně náchylnější než běžná použití statických objektů, nicméně autor se již v minulosti setkal s podobným problémem, který ovšem nezpůsoboval tak zásadní nefunkčnost. V obou případech se navíc jednalo o dva různé kompilátory -- Microsoft Visual Studio oproti GNU gcc.
 
 
+\subsection{Hodnoty a proměnné ve skriptu, Value* hierarchie tříd}
+
+Jak už bylo zmíněno v kapitole \ref{double_dispatching_pattern} analýzy na straně \pageref{double_dispatching_pattern}, binární operace nad hodnotami ve skriptu jsou vykonávány s využitím návrhového vzoru Double dispatching.
+
+Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \texttt{ValueNull}, \texttt{ValueBool}, \texttt{ValueInt}, \texttt{ValueFloat}, atd. Každá ze zavedených tříd může být použita v libovolné operaci. Hodnota \texttt{null}, respektive \texttt{false} u logických operátorů, je vrácena v případě, kdy není operace nad danou kombinací typů definována.
+
+% \begin{enumerate}
+% \item aritmetické sčítání \texttt{+}, odčítání \texttt{-}, násobení \texttt{*}, dělení \texttt{/}, dělení modulo \texttt{\%}
+% \item logická ekvivalence \texttt{==}, nonekvivalence \texttt{!=}
+% \item logické menší nebo rovno \texttt{<=}, větší nebo rovno \texttt{>=}, menší \texttt{<}, větší \texttt{>}
+% \item logické AND \texttt{\&\&} a logické OR \texttt{||}
+% \item přístup k prvkům struktury \texttt{.}, přístup k prvkům pole \texttt{[]}
+% \item unární negace \texttt{!}, unární mínus \texttt{-}
+% \end{enumerate}
+
+% Třída \texttt{Value} dále definuje metodu \texttt{toBool()}, jež umožňuje přetypování libovolného objektu na logickou hodnotu, využívána je především operátory AND a OR. Metoda \texttt{isNull()} slouží pro dotaz, zda se jedná o \textit{plnohodnotný} typ, či o \texttt{ValueNull} hodnotu. Konverzi na textovou reprezentaci zapouzdřené hodnoty je možné provést zavoláním metody \texttt{toString()}.
+
+K dotazu, zda je možné do daného objektu přiřadit jinou hodnotu, poslouží metoda \texttt{isLValue()}. Vlastní přiřazení je následně možné provést pomocí member funkcí \texttt{assign()} a \texttt{assignRef()}.
+
+Iterování přes prvky složených datových typů je podporováno metodami \texttt{iterator()}, \texttt{hasNext()}, \texttt{next()} a \texttt{resetIterator()}. Jednoduché datové typy nejsou iterovatelné, a proto jakékoli pokusy o iteraci hned na začátku odmítnou.
+
+Potomci, především grafové třídy, definují i další specifické metody. Ke konverzi z obecného \texttt{Value} ukazatele na konkrétní datový typ slouží skupina virtuálních funkcí \texttt{toValueBool()}, \texttt{toValueInt()} atd., které vracejí \texttt{NULL}, pokud se nejedná o daný datový typ. Použití leží především v zabudovaných funkcích interpretu, které v parametru předpokládají konkrétní datový typ a volají jeho specifické operace. Na tomto místě by šlo samozřejmě použít i RTTI přetypování \texttt{dynamic\_cast}, obě techniky jsou ekvivalentní.
+
+
+\subsubsection{ValueNull a ValueBool}
+
+Obě tyto třídy jsou definovány jako singleton a v kódu mohou být používány pomocí zkráceného zápisu \texttt{VALUENULL}, \texttt{VALUEBOOL\_TRUE} a \texttt{VALUEBOOL\_FALSE}. Jedná se o makro, které volá statickou metodu \texttt{getInstance()}.
+
+Implementace pomocí singletonu byla zvolena z důvodu, aby nebylo nutné neustále vytvářet nové a nové ekvivalentní objekty.
+
+
+\subsubsection{ValueIdentifier, ValueReference a přiřazování do proměnných}
+
+\subsubsection{ValueGraph, ValueVertexSet a ValueEdgeSet}
+
+\subsubsection{ValueVertex a ValueEdge}
+
+
 \subsection{Lexikální analyzátor}
 
 Z větší části převzatý Borsch a rozšířený
@@ -1101,8 +1139,6 @@ http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
 
 \subsubsection{Pozice ve skriptu a AST}
 
-
-\subsection{Proměnné ve skriptu, Value* hierarchie tříd}
 
 \subsection{Abstraktní strom syntaxe, Node* hierarchie tříd}
 
