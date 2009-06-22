@@ -44,7 +44,8 @@ Context::Context()
 	m_call_stack(),
 	m_position(NULL),
 	m_stringtable(),
-	m_include_dirs()
+	m_include_dirs(),
+	m_breakpointsEnabled(true)
 {
 
 }
@@ -322,6 +323,9 @@ string Context::getIncludeFullPath(const string& filename) const
 void Context::breakpoint(void)
 {
 	// TODO: parse and execute specific commands here?
-	WARN_P(_("Breakpoint, press any key..."));
-	getchar();
+	if(m_breakpointsEnabled)
+	{
+		WARN_P(_("Breakpoint, press any key..."));
+		getchar();
+	}
 }

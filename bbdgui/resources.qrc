@@ -22,5 +22,6 @@
         <file>images/dbgstep.png</file>
         <file>images/dbgnext.png</file>
         <file>images/dbgstepout.png</file>
+        <file>images/breakpointstoggle.png</file>
     </qresource>
 </RCC>

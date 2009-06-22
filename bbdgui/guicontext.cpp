@@ -104,7 +104,8 @@ void GuiContext::pauseExecution(void)
 void GuiContext::breakpoint(void)
 {
 	// Go outside of the breakpoint() inline function and pause
-	debugStep();
+	if(isBreakpointsEnabled())
+		debugStep();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -159,4 +160,24 @@ void GuiContext::stopScript(void)
 	m_accessMutex.unlock();
 
 	m_waitCondition.wakeAll();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void GuiContext::enableBreakpoints(bool enable)
+{
+	m_accessMutex.lock();
+	Context::enableBreakpoints(enable);
+	m_accessMutex.unlock();
+}
+
+bool GuiContext::isBreakpointsEnabled(void)
+{
+	m_accessMutex.lock();
+	bool enabled = Context::isBreakpointsEnabled();
+	m_accessMutex.unlock();
+
+	return enabled;
 }

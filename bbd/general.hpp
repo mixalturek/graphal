@@ -26,7 +26,9 @@
 
 #ifndef NDEBUG
 #define DEBUG
+#ifndef QTGUI
 #define CHECK_MEMORY_LEAKS
+#endif // QTGUI
 #endif // NDEBUG
 
 

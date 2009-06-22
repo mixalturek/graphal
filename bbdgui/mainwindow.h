@@ -158,6 +158,7 @@ private:
 	QAction* m_debugStepAct;
 	QAction* m_debugOverAct;
 	QAction* m_debugOutAct;
+	QAction* m_enableBreakpoints;
 	QAction* m_includeDirectoriesAct;
 	QAction* m_gotoLineAct;
 

@@ -84,6 +84,8 @@ public:
 	virtual void debugStep(void) { }
 	virtual void debugOver(void) { }
 	virtual void debugOut(void) { }
+	virtual void enableBreakpoints(bool enable) { m_breakpointsEnabled = enable; }
+	virtual bool isBreakpointsEnabled(void) { return m_breakpointsEnabled; }
 
 private:
 	Context(const Context& object);
@@ -97,6 +99,7 @@ private:
 	StringTable m_stringtable;
 
 	set<string> m_include_dirs;
+	bool m_breakpointsEnabled;
 };
 
 ostream& operator<<(ostream& os, const Context& node);

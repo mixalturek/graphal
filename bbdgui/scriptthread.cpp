@@ -35,7 +35,8 @@ int parseCode(const string& str);
 ScriptThread::ScriptThread(QObject* parent)
 	: QThread(parent),
 	m_scriptFilename(""),
-	m_includeDirectories()
+	m_includeDirectories(),
+	m_breakpointsEnabled(true)
 {
 
 }
@@ -55,6 +56,8 @@ void ScriptThread::run(void)
 
 	foreach(QString dir, m_includeDirectories)
 		context.addIncludeDirectory(dir.toStdString());
+
+	context.enableBreakpoints(m_breakpointsEnabled);
 
 	try
 	{

@@ -503,27 +503,33 @@ void MainWindow::createActions()
 	m_stopScriptAct->setStatusTip(tr("Stop the executed script"));
 	connect(m_stopScriptAct, SIGNAL(triggered()), context, SLOT(stopScript()));
 
-	m_debugRunAct = new QAction(QIcon(":/images/dbgrun.png"), tr("Continue"), this);
+	m_debugRunAct = new QAction(QIcon(":/images/dbgrun.png"), tr("&Continue"), this);
 	m_debugRunAct->setShortcut(tr("F9"));
 	m_debugRunAct->setStatusTip(tr("Continue execution until next breakpoint or script exit"));
 	connect(m_debugRunAct, SIGNAL(triggered()), context, SLOT(debugRun()));
 
-	m_debugStepAct = new QAction(QIcon(":/images/dbgstep.png"), tr("Step into"), this);
+	m_debugStepAct = new QAction(QIcon(":/images/dbgstep.png"), tr("Step &into"), this);
 	m_debugStepAct->setShortcut(tr("F10"));
 	m_debugStepAct->setStatusTip(tr("Execute the next command, but step inside functions"));
 	connect(m_debugStepAct, SIGNAL(triggered()), context, SLOT(debugStep()));
 
-	m_debugOverAct = new QAction(QIcon(":/images/dbgnext.png"), tr("Step over"), this);
+	m_debugOverAct = new QAction(QIcon(":/images/dbgnext.png"), tr("Step o&ver"), this);
 	m_debugOverAct->setShortcut(tr("F11"));
 	m_debugOverAct->setStatusTip(tr("Execute the next command, over the functions"));
 	connect(m_debugOverAct, SIGNAL(triggered()), context, SLOT(debugOver()));
 
-	m_debugOutAct = new QAction(QIcon(":/images/dbgstepout.png"), tr("Step out"), this);
+	m_debugOutAct = new QAction(QIcon(":/images/dbgstepout.png"), tr("Step &out"), this);
 	m_debugOutAct->setShortcut(tr("F12"));
 	m_debugOutAct->setStatusTip(tr("Continue execution until return from this function"));
 	connect(m_debugOutAct, SIGNAL(triggered()), context, SLOT(debugOut()));
 
-	m_includeDirectoriesAct = new QAction(tr("Include directories"), this);
+	m_enableBreakpoints = new QAction(QIcon(":/images/breakpointstoggle.png"), tr("Toggle &breakpoints"), this);
+	m_enableBreakpoints->setCheckable(true);
+	m_enableBreakpoints->setChecked(true);
+	m_enableBreakpoints->setStatusTip(tr("Enable or disable stopping the script on breakpoints"));
+	connect(m_enableBreakpoints, SIGNAL(toggled(bool)), context, SLOT(enableBreakpoints(bool)));
+
+	m_includeDirectoriesAct = new QAction(tr("Include &directories"), this);
 	m_includeDirectoriesAct->setStatusTip(tr("Include directories settings"));
 	connect(m_includeDirectoriesAct, SIGNAL(triggered()), this, SLOT(includeDirectories()));
 
@@ -623,6 +629,8 @@ void MainWindow::createMenus()
 	m_scriptMenu->addAction(m_debugOverAct);
 	m_scriptMenu->addAction(m_debugOutAct);
 	m_scriptMenu->addSeparator();
+	m_scriptMenu->addAction(m_enableBreakpoints);
+	m_scriptMenu->addSeparator();
 	m_scriptMenu->addAction(m_includeDirectoriesAct);
 
 
@@ -671,6 +679,7 @@ void MainWindow::createToolBars()
 	m_scriptToolBar->addAction(m_debugStepAct);
 	m_scriptToolBar->addAction(m_debugOverAct);
 	m_scriptToolBar->addAction(m_debugOutAct);
+	m_scriptToolBar->addAction(m_enableBreakpoints);
 }
 
 
@@ -933,6 +942,7 @@ void MainWindow::runScript()
 
 	m_scriptThread->setScriptFilename(editor->currentFile());
 	m_scriptThread->setIncludeDirectories(SETTINGS.getIncludeDirectories());
+	m_scriptThread->enableBreakpoints(m_enableBreakpoints->isChecked());
 	m_scriptThread->start();
 }
 

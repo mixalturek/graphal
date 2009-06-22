@@ -56,6 +56,8 @@ public slots:
 	virtual void debugStep(void);
 	virtual void debugOver(void);
 	virtual void debugOut(void);
+	virtual void enableBreakpoints(bool enable);
+	virtual bool isBreakpointsEnabled(void);
 
 signals:
 	void executionPaused(void);

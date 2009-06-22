@@ -32,10 +32,12 @@ public:
 	void run(void);
 	void setScriptFilename(const QString& filename) { m_scriptFilename = filename; }
 	void setIncludeDirectories(const QStringList& directories) { m_includeDirectories = directories; }
+	void enableBreakpoints(bool enable) { m_breakpointsEnabled = enable; }
 
 private:
 	QString m_scriptFilename;
 	QStringList m_includeDirectories;
+	bool m_breakpointsEnabled;
 };
 
 #endif // SCRIPTTHREAD_H
