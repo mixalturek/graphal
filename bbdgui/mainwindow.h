@@ -92,6 +92,7 @@ private slots:
 	void scriptStarted(void);
 	void scriptFinished(void);
 	void scriptPaused(void);
+	void showLocation(void);
 
 private:
 	void createActions();
@@ -159,6 +160,7 @@ private:
 	QAction* m_debugStepAct;
 	QAction* m_debugOverAct;
 	QAction* m_debugOutAct;
+	QAction* m_debugLocationAct;
 	QAction* m_enableBreakpointsAct;
 	QAction* m_includeDirectoriesAct;
 	QAction* m_scriptParametersAct;

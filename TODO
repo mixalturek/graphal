@@ -37,7 +37,6 @@ gui
 	dock with predefined strings
 		QPlainTextEdit::insertPlainText ( const QString & text )
 		edit->textCursor().insertText(text);
-	Script toolbar item to show current position in the executed script
 
 
 ////////////////////////////////////////////////////////////////////////////

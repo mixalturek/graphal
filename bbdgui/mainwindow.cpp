@@ -524,6 +524,11 @@ void MainWindow::createActions()
 	m_debugOutAct->setStatusTip(tr("Continue execution until return from this function"));
 	connect(m_debugOutAct, SIGNAL(triggered()), context, SLOT(debugOut()));
 
+	m_debugLocationAct = new QAction(QIcon(":/images/location.png"), tr("&Location"), this);
+	m_debugLocationAct->setShortcut(tr("Ctrl+L"));
+	m_debugLocationAct->setStatusTip(tr("Show the currently executed location"));
+	connect(m_debugLocationAct, SIGNAL(triggered()), this, SLOT(showLocation()));
+
 	m_enableBreakpointsAct = new QAction(QIcon(":/images/breakpointstoggle.png"), tr("Toggle &breakpoints"), this);
 	m_enableBreakpointsAct->setCheckable(true);
 	m_enableBreakpointsAct->setChecked(true);
@@ -633,6 +638,7 @@ void MainWindow::createMenus()
 	m_scriptMenu->addAction(m_debugStepAct);
 	m_scriptMenu->addAction(m_debugOverAct);
 	m_scriptMenu->addAction(m_debugOutAct);
+	m_scriptMenu->addAction(m_debugLocationAct);
 	m_scriptMenu->addSeparator();
 	m_scriptMenu->addAction(m_enableBreakpointsAct);
 	m_scriptMenu->addSeparator();
@@ -685,6 +691,7 @@ void MainWindow::createToolBars()
 	m_scriptToolBar->addAction(m_debugStepAct);
 	m_scriptToolBar->addAction(m_debugOverAct);
 	m_scriptToolBar->addAction(m_debugOutAct);
+	m_scriptToolBar->addAction(m_debugLocationAct);
 	m_scriptToolBar->addAction(m_enableBreakpointsAct);
 }
 
@@ -965,6 +972,7 @@ void MainWindow::scriptStarted(void)
 	m_debugStepAct->setEnabled(true);
 	m_debugOverAct->setEnabled(true);
 	m_debugOutAct->setEnabled(true);
+	m_debugLocationAct->setEnabled(true);
 	m_dockCallStack->clear();
 	m_dockVariables->clear();
 }
@@ -977,6 +985,7 @@ void MainWindow::scriptFinished(void)
 	m_debugStepAct->setEnabled(false);
 	m_debugOverAct->setEnabled(false);
 	m_debugOutAct->setEnabled(false);
+	m_debugLocationAct->setEnabled(false);
 	m_dockCallStack->clear();
 	m_dockVariables->clear();
 }
@@ -1316,4 +1325,15 @@ int MainWindow::replaceConfirmation(TextEditor* editor, bool* replacementDone)
 	}
 
 	return num;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::showLocation(void)
+{
+	// TODO: threads synchronization, is needed?
+	const CodePosition* pos = CONTEXT.getPosition();
+	openAndScroll(QString::fromStdString(ID2STR(pos->getFile())), pos->getLine());
 }

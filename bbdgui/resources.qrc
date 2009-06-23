@@ -23,5 +23,6 @@
         <file>images/dbgnext.png</file>
         <file>images/dbgstepout.png</file>
         <file>images/breakpointstoggle.png</file>
+        <file>images/location.png</file>
     </qresource>
 </RCC>
