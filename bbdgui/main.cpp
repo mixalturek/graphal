@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	Q_INIT_RESOURCE(resources);
 
 	QApplication app(argc, argv);
-	app.setOrganizationName("Michal Turek");
+	app.setOrganizationName("bbdgui");
 	app.setOrganizationDomain("woq.nipax.cz");
 	app.setApplicationName("bbdgui");
 	app.setWindowIcon(QIcon(":/applogo.png"));

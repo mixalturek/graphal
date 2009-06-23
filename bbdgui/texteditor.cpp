@@ -22,6 +22,7 @@
 #include "texteditor.h"
 #include "texteditorlines.h"
 #include "texteditorhighlighter.h"
+#include "settings.h"
 
 
 #define LR_LINES_MARGIN 3
@@ -39,11 +40,7 @@ TextEditor::TextEditor(QWidget* parent)
 	m_vertLinePos(80)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-
-	// TODO: add to the settings
-	QFont font("Monospace", 9);
-	font.setStyleHint(QFont::TypeWriter);
-	setFont(font);
+	setFont(SETTINGS.getEditorFont());
 
 	// TODO: add to the settings
 	setTabStopWidth(fontMetrics().width(QLatin1Char(' ')) * 4);

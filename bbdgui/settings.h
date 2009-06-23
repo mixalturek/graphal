@@ -23,6 +23,7 @@
 #define SETTINGS Settings::getInstance()
 
 class QSettings;
+class QFont;
 
 // Singleton
 class Settings
@@ -52,6 +53,9 @@ public:
 
 	QStringList getScriptParameters(void);
 	void setScriptParameters(const QStringList& parameters);
+
+	QFont getEditorFont(void);
+	void setEditorFont(const QFont& font);
 
 private:
 	Settings(void);

@@ -52,7 +52,7 @@ run:
 	./$(TARGET)
 
 clean:
-	rm -f $(TARGET) *.o core
+	rm -f $(TARGET) *.o core Makefile.bak
 
 todo:
 	grep -rI TODO . | grep -v './.svn/'

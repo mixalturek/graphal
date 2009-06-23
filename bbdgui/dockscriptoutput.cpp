@@ -19,6 +19,7 @@
 
 
 #include "dockscriptoutput.h"
+#include "settings.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -48,16 +49,12 @@ void DockScriptOutput::reinit(void)
 		m_textEdit = NULL;
 	}
 
-	m_textEdit = new QTextBrowser();// TODO: this as parent, check memory leaks
+	m_textEdit = new QTextBrowser();
 
 	m_textEdit->setUndoRedoEnabled(false);
 	m_textEdit->setReadOnly(true);
 	m_textEdit->setOpenLinks(false);// anchorClicked() -> MainWindow::open()
-
-	// TODO: add to the settings
-	QFont font("Monospace", 8);
-	font.setStyleHint(QFont::TypeWriter);
-	m_textEdit->setFont(font);
+	m_textEdit->setFont(SETTINGS.getEditorFont());
 
 	setWidget(m_textEdit);
 

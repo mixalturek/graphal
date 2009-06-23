@@ -547,6 +547,10 @@ void MainWindow::createActions()
 	m_gotoLineAct->setShortcut(tr("Ctrl+G"));
 	m_gotoLineAct->setStatusTip(tr("Go to the specified line in the document"));
 	connect(m_gotoLineAct, SIGNAL(triggered()), this, SLOT(gotoLine()));
+
+	m_editorFontAct = new QAction(tr("&Editor font"), this);
+	m_editorFontAct->setStatusTip(tr("Set the editor font"));
+	connect(m_editorFontAct, SIGNAL(triggered()), this, SLOT(editorFont()));
 }
 
 
@@ -627,6 +631,9 @@ void MainWindow::createMenus()
 	tmp = m_scriptToolBar->toggleViewAction();
 	tmp->setText(tmp->text() + tr(" toolbar"));
 	m_viewMenu->addAction(tmp);
+
+	m_viewMenu->addSeparator();
+	m_viewMenu->addAction(m_editorFontAct);
 
 
 	// Script
@@ -1336,4 +1343,25 @@ void MainWindow::showLocation(void)
 	// TODO: threads synchronization, is needed?
 	const CodePosition* pos = CONTEXT.getPosition();
 	openAndScroll(QString::fromStdString(ID2STR(pos->getFile())), pos->getLine());
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::editorFont(void)
+{
+	QList<QMdiSubWindow*> windowList(m_mdiArea->subWindowList());
+
+	QFont font(QFontDialog::getFont(0, SETTINGS.getEditorFont(), this));
+	SETTINGS.setEditorFont(font);
+
+	foreach(QMdiSubWindow* window, windowList)
+	{
+		TextEditor* editor = qobject_cast<TextEditor*>(window->widget());
+		assert(editor != NULL);
+		editor->setFont(font);
+	}
+
+	m_dockScriptOutput->getTextBrowser()->setFont(font);
 }

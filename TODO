@@ -31,12 +31,10 @@ unit tests
 gui
 	qtdemo - MainWindow
 	memory leaks in the gui part, does qt offer some tools for detection?
-	font settings, zoom text
-	void QTextEdit::zoomIn ( int range = 1 )   [slot]
-	void QTextEdit::zoomOut ( int range = 1 )   [slot]
 	dock with predefined strings
 		QPlainTextEdit::insertPlainText ( const QString & text )
 		edit->textCursor().insertText(text);
+	QFileDialog - default path, file types, save directory to the settings
 
 
 ////////////////////////////////////////////////////////////////////////////

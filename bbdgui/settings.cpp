@@ -21,6 +21,7 @@
 #include <cassert>
 #include <QSettings>
 #include <QDir>
+#include <QFont>
 #include "settings.h"
 
 
@@ -137,3 +138,21 @@ void Settings::setScriptParameters(const QStringList& parameters)
 	m_settings->setValue("scriptparameters", parameters);
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+QFont Settings::getEditorFont(void)
+{
+	QFont font(m_settings->value("editorfontfamily", "Monospace").toString(),
+		m_settings->value("editorfontpointsize", 9).toInt());
+
+	font.setStyleHint(QFont::TypeWriter);
+	return font;
+}
+
+void Settings::setEditorFont(const QFont& font)
+{
+	m_settings->setValue("editorfontfamily", font.family());
+	m_settings->setValue("editorfontpointsize", font.pointSize());
+}

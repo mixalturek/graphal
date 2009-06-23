@@ -77,6 +77,7 @@ private slots:
 	void includeDirectories(void);
 	void scriptParameters(void);
 	void gotoLine(void);
+	void editorFont(void);
 
 	void saveLayout();
 	void loadLayout();
@@ -165,6 +166,7 @@ private:
 	QAction* m_includeDirectoriesAct;
 	QAction* m_scriptParametersAct;
 	QAction* m_gotoLineAct;
+	QAction* m_editorFontAct;
 
 	ScriptThread* m_scriptThread;
 
