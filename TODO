@@ -38,7 +38,6 @@ gui
 		QPlainTextEdit::insertPlainText ( const QString & text )
 		edit->textCursor().insertText(text);
 	Script toolbar item to show current position in the executed script
-	Parameters of the executed script!!!
 
 
 ////////////////////////////////////////////////////////////////////////////

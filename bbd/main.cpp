@@ -43,7 +43,7 @@ void runUnitTests(void)
 
 void usage(int /* argc */, char** argv)
 {
-	cout << _("Usage: ") << argv[0] << " [-I<directory>] [--unit-tests] [--ast-dump] " << _("<filename>") << endl
+	cout << _("Usage: ") << argv[0] << " [-I<directory>] [--unit-tests] [--ast-dump] " << _("<filename> [parameters]") << endl
 		<< endl
 		<< "\t-I<directory>" << endl
 		<< "\t\tSpecify include directories (relative to the current working directory)" << endl
@@ -57,6 +57,9 @@ void usage(int /* argc */, char** argv)
 		<< endl
 		<< "\tfilename" << endl
 		<< "\t\tFile to be executed" << endl
+		<< endl
+		<< "\tparameters" << endl
+		<< "\t\tScript parameters" << endl
 		<< endl
 		;
 }
@@ -85,8 +88,9 @@ int main(int argc, char** argv)
 	{
 		bool unit_tests = false;
 		bool ast_dump = false;
+		int i = 0;
 
-		for(int i = 1; i < argc; i++)
+		for(i = 1; i < argc; i++)
 		{
 			string param(argv[i]);
 
@@ -113,9 +117,8 @@ int main(int argc, char** argv)
 			}
 			else
 			{
-				// The last is the filename
-				if(i < argc-1)
-					WARN(_("Unknown command line option: ") + param);
+				// The first unknown parameter should be the filename
+				break;
 			}
 		}
 
@@ -128,12 +131,12 @@ int main(int argc, char** argv)
 
 		generateBuiltinFunctions();
 
-		if(parseCode(argv[argc-1]) == 0)
+		if(parseCode(argv[i]) == 0)
 		{
 			if(ast_dump)
 				CONTEXT.dump(cout, 0);
 
-			CONTEXT.executeScriptMain(argc, argv);
+			CONTEXT.executeScriptMain(argc-i, &argv[i]);
 		}
 		else
 		{

@@ -218,6 +218,16 @@ ostream& operator<<(ostream& os, const Context& node)
 
 int Context::executeScriptMain(int argc, char** argv)
 {
+	deque<string> parameters;
+
+	for(int i = 0; i < argc; i++)
+		parameters.push_back(argv[i]);
+
+	return executeScriptMain(parameters);
+}
+
+int Context::executeScriptMain(const deque<string>& parameters)
+{
 	NodeFunction* maintest = getFunction(getStringTable()->getID("main"));
 	if(maintest == NULL)
 	{
@@ -234,10 +244,10 @@ int Context::executeScriptMain(int argc, char** argv)
 	setPosition(maintest->declarationPos());
 
 	ValueArray* argv_array = new ValueArray();
-	argv_array->resize(argc);
+	argv_array->resize(parameters.size());
 
-	for(int i = 0; i < argc; i++)
-		argv_array->setItem(i, CountPtr<Value>(new ValueString(argv[i])));
+	for(uint i = 0; i < parameters.size(); i++)
+		argv_array->setItem(i, CountPtr<Value>(new ValueString(parameters[i])));
 
 	NodeFunctionCall main(getStringTable()->getID("main"),
 		new NodeBlock(new NodeValue(argv_array)),

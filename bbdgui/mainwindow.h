@@ -75,6 +75,7 @@ private slots:
 	void updateWindowMenu();
 	void runScript();
 	void includeDirectories(void);
+	void scriptParameters(void);
 	void gotoLine(void);
 
 	void saveLayout();
@@ -158,8 +159,9 @@ private:
 	QAction* m_debugStepAct;
 	QAction* m_debugOverAct;
 	QAction* m_debugOutAct;
-	QAction* m_enableBreakpoints;
+	QAction* m_enableBreakpointsAct;
 	QAction* m_includeDirectoriesAct;
+	QAction* m_scriptParametersAct;
 	QAction* m_gotoLineAct;
 
 	ScriptThread* m_scriptThread;

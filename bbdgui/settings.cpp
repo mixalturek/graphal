@@ -118,7 +118,22 @@ QStringList Settings::getIncludeDirectories(void)
 	return m_settings->value("includedirectories", QStringList()).toStringList();
 }
 
-void Settings::setIncludeDirectories(const QStringList& files)
+void Settings::setIncludeDirectories(const QStringList& dirs)
 {
-	m_settings->setValue("includedirectories", files);
+	m_settings->setValue("includedirectories", dirs);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+QStringList Settings::getScriptParameters(void)
+{
+	return m_settings->value("scriptparameters", QStringList()).toStringList();
+}
+
+void Settings::setScriptParameters(const QStringList& parameters)
+{
+	m_settings->setValue("scriptparameters", parameters);
+}
+

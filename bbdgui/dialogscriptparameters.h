@@ -18,28 +18,30 @@
  */
 
 
-#ifndef SCRIPTTHREAD_H
-#define SCRIPTTHREAD_H
+#ifndef DIALOGSCRIPTPARAMETERS_H
+#define DIALOGSCRIPTPARAMETERS_H
 
-#include <QThread>
+#include <QDialog>
+#include "ui_dialogscriptparameters.h"
 
-class ScriptThread : public QThread
+class DialogScriptParameters : public QDialog
 {
-public:
-	ScriptThread(QObject* parent = 0);
-	~ScriptThread(void);
+	Q_OBJECT
 
-	void run(void);
-	void setScriptFilename(const QString& filename) { m_scriptFilename = filename; }
-	void setIncludeDirectories(const QStringList& directories) { m_includeDirectories = directories; }
-	void setScriptParameters(const QStringList& parameters) { m_scriptParameters = parameters; }
-	void enableBreakpoints(bool enable) { m_breakpointsEnabled = enable; }
+public:
+	DialogScriptParameters(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+
+	QStringList getParameters(void) const;
+	void setParameters(const QStringList& parameters);
+
+private slots:
+	void buttonAddItem(void);
+	void buttonDeleteItem(void);
+	void buttonMoveUp(void);
+	void buttonMoveDown(void);
 
 private:
-	QString m_scriptFilename;
-	QStringList m_includeDirectories;
-	QStringList m_scriptParameters;
-	bool m_breakpointsEnabled;
+	Ui::DialogScriptParameters ui;
 };
 
-#endif // SCRIPTTHREAD_H
+#endif // DIALOGSCRIPTPARAMETERS_H

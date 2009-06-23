@@ -31,6 +31,7 @@ SOURCES += main.cpp \
     dialogfind.cpp \
     dialogreplace.cpp \
     dialogreplaceconfirmation.cpp \
+    dialogscriptparameters.cpp \
     ../bbd/logger.cpp \
     ../bbd/lexaniteratorstring.cpp \
     ../bbd/lexaniteratorfile.cpp \
@@ -182,6 +183,7 @@ HEADERS += mainwindow.h \
     dialogfind.h \
     dialogreplace.h \
     dialogreplaceconfirmation.h \
+    dialogscriptparameters.h \
     ../bbd/logger.hpp \
     ../bbd/lexantokens.hpp \
     ../bbd/lexaniteratorstring.hpp \
@@ -322,4 +324,5 @@ OTHER_FILES +=
 FORMS += dialogincludedirs.ui \
     dialogfind.ui \
     dialogreplace.ui \
-    dialogreplaceconfirmation.ui
+    dialogreplaceconfirmation.ui \
+    dialogscriptparameters.ui

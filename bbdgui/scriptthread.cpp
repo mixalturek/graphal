@@ -36,6 +36,7 @@ ScriptThread::ScriptThread(QObject* parent)
 	: QThread(parent),
 	m_scriptFilename(""),
 	m_includeDirectories(),
+	m_scriptParameters(),
 	m_breakpointsEnabled(true)
 {
 
@@ -62,7 +63,14 @@ void ScriptThread::run(void)
 	try
 	{
 		if(parseCode(m_scriptFilename.toStdString()) == 0)
-			context.executeScriptMain(0, NULL);
+		{
+			deque<string> params;
+			params.push_back(m_scriptFilename.toStdString());
+			foreach(QString parameter, m_scriptParameters)
+				params.push_back(parameter.toStdString());
+
+			context.executeScriptMain(params);
+		}
 		else
 			ERR(_("Error while parsing"));
 	}

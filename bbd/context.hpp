@@ -48,6 +48,7 @@ public:
 	virtual void clear(void);
 	void dump(ostream& os, uint indent) const;
 	int executeScriptMain(int argc, char** argv);
+	int executeScriptMain(const deque<string>& parameters);
 	virtual void stopScript(void);
 
 	bool isVariableSet(identifier name);

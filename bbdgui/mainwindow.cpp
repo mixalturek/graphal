@@ -33,6 +33,7 @@
 #include "version.hpp"
 #include "guicontext.h"
 #include "dialogincludedirs.h"
+#include "dialogscriptparameters.h"
 #include "dialogfind.h"
 #include "dialogreplace.h"
 #include "dialogreplaceconfirmation.h"
@@ -523,15 +524,19 @@ void MainWindow::createActions()
 	m_debugOutAct->setStatusTip(tr("Continue execution until return from this function"));
 	connect(m_debugOutAct, SIGNAL(triggered()), context, SLOT(debugOut()));
 
-	m_enableBreakpoints = new QAction(QIcon(":/images/breakpointstoggle.png"), tr("Toggle &breakpoints"), this);
-	m_enableBreakpoints->setCheckable(true);
-	m_enableBreakpoints->setChecked(true);
-	m_enableBreakpoints->setStatusTip(tr("Enable or disable stopping the script on breakpoints"));
-	connect(m_enableBreakpoints, SIGNAL(toggled(bool)), context, SLOT(enableBreakpoints(bool)));
+	m_enableBreakpointsAct = new QAction(QIcon(":/images/breakpointstoggle.png"), tr("Toggle &breakpoints"), this);
+	m_enableBreakpointsAct->setCheckable(true);
+	m_enableBreakpointsAct->setChecked(true);
+	m_enableBreakpointsAct->setStatusTip(tr("Enable or disable stopping the script on breakpoints"));
+	connect(m_enableBreakpointsAct, SIGNAL(toggled(bool)), context, SLOT(enableBreakpoints(bool)));
 
 	m_includeDirectoriesAct = new QAction(tr("Include &directories"), this);
 	m_includeDirectoriesAct->setStatusTip(tr("Include directories settings"));
 	connect(m_includeDirectoriesAct, SIGNAL(triggered()), this, SLOT(includeDirectories()));
+
+	m_scriptParametersAct = new QAction(tr("Script &parameters"), this);
+	m_scriptParametersAct->setStatusTip(tr("Script parameters settings"));
+	connect(m_scriptParametersAct, SIGNAL(triggered()), this, SLOT(scriptParameters()));
 
 	m_gotoLineAct = new QAction(tr("&Go to line"), this);
 	m_gotoLineAct->setShortcut(tr("Ctrl+G"));
@@ -629,8 +634,9 @@ void MainWindow::createMenus()
 	m_scriptMenu->addAction(m_debugOverAct);
 	m_scriptMenu->addAction(m_debugOutAct);
 	m_scriptMenu->addSeparator();
-	m_scriptMenu->addAction(m_enableBreakpoints);
+	m_scriptMenu->addAction(m_enableBreakpointsAct);
 	m_scriptMenu->addSeparator();
+	m_scriptMenu->addAction(m_scriptParametersAct);
 	m_scriptMenu->addAction(m_includeDirectoriesAct);
 
 
@@ -679,7 +685,7 @@ void MainWindow::createToolBars()
 	m_scriptToolBar->addAction(m_debugStepAct);
 	m_scriptToolBar->addAction(m_debugOverAct);
 	m_scriptToolBar->addAction(m_debugOutAct);
-	m_scriptToolBar->addAction(m_enableBreakpoints);
+	m_scriptToolBar->addAction(m_enableBreakpointsAct);
 }
 
 
@@ -942,7 +948,8 @@ void MainWindow::runScript()
 
 	m_scriptThread->setScriptFilename(editor->currentFile());
 	m_scriptThread->setIncludeDirectories(SETTINGS.getIncludeDirectories());
-	m_scriptThread->enableBreakpoints(m_enableBreakpoints->isChecked());
+	m_scriptThread->setScriptParameters(SETTINGS.getScriptParameters());
+	m_scriptThread->enableBreakpoints(m_enableBreakpointsAct->isChecked());
 	m_scriptThread->start();
 }
 
@@ -1024,6 +1031,18 @@ void MainWindow::includeDirectories(void)
 	dlg.setDirectories(SETTINGS.getIncludeDirectories());
 	if(dlg.exec() == QDialog::Accepted)
 		SETTINGS.setIncludeDirectories(dlg.getDirectories());
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::scriptParameters(void)
+{
+	DialogScriptParameters dlg(this);
+	dlg.setParameters(SETTINGS.getScriptParameters());
+	if(dlg.exec() == QDialog::Accepted)
+		SETTINGS.setScriptParameters(dlg.getParameters());
 }
 
 

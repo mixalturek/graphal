@@ -48,8 +48,10 @@ public:
 	void setOpenedFiles(const QStringList& files);
 
 	QStringList getIncludeDirectories(void);
-	void setIncludeDirectories(const QStringList& files);
+	void setIncludeDirectories(const QStringList& dirs);
 
+	QStringList getScriptParameters(void);
+	void setScriptParameters(const QStringList& parameters);
 
 private:
 	Settings(void);
