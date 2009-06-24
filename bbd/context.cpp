@@ -251,7 +251,7 @@ int Context::executeScriptMain(const deque<string>& parameters)
 
 	NodeFunctionCall main(getStringTable()->getID("main"),
 		new NodeBlock(new NodeValue(argv_array)),
-		new CodePosition(STR2ID("script enter"), 0));
+		NULL);
 
 	INFO(_("*** ENTERING SCRIPT MAIN ***"));
 
@@ -335,7 +335,7 @@ void Context::breakpoint(void)
 	// TODO: parse and execute specific commands here?
 	if(m_breakpointsEnabled)
 	{
-		WARN_P(_("Breakpoint, press any key..."));
+		INFO_P(_("Breakpoint, press any key..."));
 		getchar();
 	}
 }

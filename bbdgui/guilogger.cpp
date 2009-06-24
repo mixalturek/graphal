@@ -96,6 +96,12 @@ void GuiLogger::info(const string& str)
 	emit info(QString::fromStdString(str));
 }
 
+void GuiLogger::infoPos(const string& str)
+{
+	emit info(QString::fromStdString(CONTEXT.getPosition()->toString()),
+		QString::fromStdString(str));
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////

@@ -744,6 +744,7 @@ void MainWindow::createDocks()
 	connect(logger, SIGNAL(warn(QString)), m_dockScriptOutput, SLOT(warn(QString)));
 	connect(logger, SIGNAL(warn(QString, QString)), m_dockScriptOutput, SLOT(warn(QString, QString)));
 	connect(logger, SIGNAL(info(QString)), m_dockScriptOutput, SLOT(info(QString)));
+	connect(logger, SIGNAL(info(QString, QString)), m_dockScriptOutput, SLOT(info(QString, QString)));
 	connect(logger, SIGNAL(scriptStdout(QString)), m_dockScriptOutput, SLOT(scriptStdout(QString)));
 	connect(m_dockScriptOutput, SIGNAL(anchorClicked(QString, int)),
 			this, SLOT(openAndScroll(const QString&, int)));

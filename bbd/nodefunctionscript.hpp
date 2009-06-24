@@ -36,6 +36,7 @@ public:
 	virtual void dump(ostream& os, uint indent) const;
 
 	virtual const CodePosition* declarationPos(void) const { return m_position; }
+	virtual bool isBuiltIn(void) const { return false; }
 
 private:
 	Node* m_block;

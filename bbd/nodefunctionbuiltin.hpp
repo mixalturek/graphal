@@ -38,6 +38,7 @@ public:
 
 	virtual void dump(ostream& os, uint indent) const;
 	virtual const CodePosition* declarationPos(void) const { return CREATOR.getBuiltinDeclarationPos(); }
+	virtual bool isBuiltIn(void) const { return true; }
 
 	vector< CountPtr<Value> > getParametersValues(void) const;
 };

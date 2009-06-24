@@ -32,6 +32,7 @@
 #define ERR(str) ObjectCreator::getInstance().getLogger()->error(str)
 #define WARN(str) ObjectCreator::getInstance().getLogger()->warn(str)
 #define INFO(str) ObjectCreator::getInstance().getLogger()->info(str)
+#define INFO_P(str) ObjectCreator::getInstance().getLogger()->infoPos(str)
 #define SCRIPT_STDOUT(str) ObjectCreator::getInstance().getLogger()->scriptStdout(str)
 
 
@@ -51,6 +52,7 @@ public:
 	virtual void warnPos(const string& pos, const string& str) = 0;
 
 	virtual void info(const string& str) = 0;
+	virtual void infoPos(const string& str) = 0;
 
 	virtual void scriptStdout(const string& str) = 0;
 

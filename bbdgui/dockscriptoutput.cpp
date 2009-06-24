@@ -131,6 +131,15 @@ void DockScriptOutput::info(const QString& str)
 	m_textEdit->ensureCursorVisible();
 }
 
+void DockScriptOutput::info(const QString& pos, const QString& str)
+{
+	m_textEdit->insertHtml("<a href=\"" + pos + "\">" + pos + "</a>: ");
+	m_textEdit->setTextColor(QColor(130, 130, 130));
+	m_textEdit->insertPlainText(str);
+	m_textEdit->insertPlainText("\n");
+	m_textEdit->ensureCursorVisible();
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////

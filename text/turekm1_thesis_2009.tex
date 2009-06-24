@@ -1086,7 +1086,7 @@ Je pravda, že výše uvedená ukázka je k chybě výrazně náchylnější ne�
 
 Jak už bylo zmíněno v kapitole \ref{double_dispatching_pattern} analýzy na straně \pageref{double_dispatching_pattern}, binární operace nad hodnotami ve skriptu jsou vykonávány s využitím návrhového vzoru Double dispatching.
 
-Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \texttt{ValueNull}, \texttt{ValueBool}, \texttt{ValueInt}, \texttt{ValueFloat}, atd. Každá ze zavedených tříd může být použita v libovolné operaci. Hodnota \texttt{null}, respektive \texttt{false} u logických operátorů, je vrácena v případě, kdy není operace nad danou kombinací typů definována.
+Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \texttt{ValueNull}, \texttt{Va\-lue\-Bool}, \texttt{ValueInt}, \texttt{ValueFloat}, atd. Každá ze zavedených tříd může být použita v libovolné operaci. Hodnota \texttt{null}, respektive \texttt{false} u logických operátorů, je vrácena v případě, kdy není operace nad danou kombinací typů definována.
 
 % \begin{enumerate}
 % \item aritmetické sčítání \texttt{+}, odčítání \texttt{-}, násobení \texttt{*}, dělení \texttt{/}, dělení modulo \texttt{\%}
@@ -1099,7 +1099,7 @@ Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \
 
 % Třída \texttt{Value} dále definuje metodu \texttt{toBool()}, jež umožňuje přetypování libovolného objektu na logickou hodnotu, využívána je především operátory AND a OR. Metoda \texttt{isNull()} slouží pro dotaz, zda se jedná o \textit{plnohodnotný} typ, či o \texttt{ValueNull} hodnotu. Konverzi na textovou reprezentaci zapouzdřené hodnoty je možné provést zavoláním metody \texttt{toString()}.
 
-K dotazu, zda je možné do daného objektu přiřadit jinou hodnotu, poslouží metoda \texttt{isLValue()}. Vlastní přiřazení je následně možné provést pomocí member funkcí \texttt{assign()} a \texttt{assignRef()}.
+K dotazu, zda je možné do daného objektu přiřadit jinou hodnotu, poslouží metoda \texttt{isLValue()}. Vlastní přiřazení je následně možné provést pomocí funkcí \texttt{assign()} a \texttt{assignRef()}.
 
 Iterování přes prvky složených datových typů je podporováno metodami \texttt{iterator()}, \texttt{hasNext()}, \texttt{next()} a \texttt{resetIterator()}. Jednoduché datové typy nejsou iterovatelné, a proto jakékoli pokusy o iteraci hned na začátku odmítnou.
 
@@ -1113,7 +1113,26 @@ Obě tyto třídy jsou definovány jako singleton a v kódu mohou být použív�
 Implementace pomocí singletonu byla zvolena z důvodu, aby nebylo nutné neustále vytvářet nové a nové ekvivalentní objekty.
 
 
-\subsubsection{ValueIdentifier, ValueReference a přiřazování do proměnných}
+\subsubsection{ValueReference a přiřazování do proměnných}
+
+Proměnné jsou ve skriptu reprezentovány třídou \texttt{ValueIdentifier}, která v sobě u\-cho\-vá\-vá identifikátor hodnoty odkazující do kontextu skriptu. Všechny operace se vykonávají stejně jako u ostatních tříd, rozdíl spočívá pouze v tom, že se neprovádějí přímo s daným objektem, ale s odkazovaným.
+
+Jelikož je navržený jazyk beztypový, proměnné musejí umět měnit nejen svou hodnotu, ale i datový typ, jedná se tedy o složitější operaci než je pouhá záměna jednoho čísla za jiné. Interpret tuto situaci řeší obalením vlastní hodnoty další třídou pojmenovanou \texttt{ValueReference}, přiřazení poté probíhá podle následujícího schématu.
+
+\begin{enumerate}
+\item Operátor přiřazení vyhodnotí výraz na své levé straně
+	\begin{itemize}
+	\item Proměnná požádá kontext o nalezení hodnoty uložené pod daným jménem
+	\item Pole poskytne prvek na daném indexu
+	\item Struktura najde prvek specifikovaného jména
+	\end{itemize}
+\item Výsledkem je vždy hodnota obalená ve třídě \texttt{ValueReference}
+\item Operátor přiřazení vyhodnotí výraz na své pravé straně
+\item \texttt{ValueReference} je použádáno o záměnu odkazované hodnoty za novou
+\end{enumerate}
+
+V případě, že proměnná daného jména, popř. položka struktury, ještě neexistuje, nově vytvořená \texttt{ValueReference} obaluje \texttt{ValueNull} hodnotu. Pole se při přístupu za své hranice automaticky nezvětšuje.
+
 
 \subsubsection{ValueGraph, ValueVertexSet a ValueEdgeSet}
 

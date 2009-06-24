@@ -38,6 +38,7 @@ public:
 	uint getNumberOfParameters(void) const { return m_parameters->size(); }
 
 	virtual const CodePosition* declarationPos(void) const = 0;
+	virtual bool isBuiltIn(void) const = 0;
 
 private:
 	list<identifier>* m_parameters;

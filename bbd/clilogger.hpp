@@ -43,6 +43,7 @@ public:
 	virtual void warnPos(const string& pos, const string& str);
 
 	virtual void info(const string& str);
+	virtual void infoPos(const string& str);
 
 	virtual void scriptStdout(const string& str);
 };

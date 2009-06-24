@@ -36,7 +36,7 @@ NodeFunctionCall::NodeFunctionCall(identifier name, NodeBlock* parameters, const
 	m_parameters((parameters != NULL) ? parameters : new NodeBlock()),
 	m_position(pos)
 {
-	assert(pos != NULL);
+
 }
 
 NodeFunctionCall::~NodeFunctionCall()
@@ -44,8 +44,11 @@ NodeFunctionCall::~NodeFunctionCall()
 	delete m_parameters;
 	m_parameters = NULL;
 
-	delete m_position;
-	m_position = NULL;
+	if(m_position != NULL)
+	{
+		delete m_position;
+		m_position = NULL;
+	}
 }
 
 
@@ -94,7 +97,10 @@ CountPtr<Value> NodeFunctionCall::execute(void)
 			CountPtr<Value> ret = function->execute();
 		CONTEXT.popLocal();
 
-		CONTEXT.setPositionReturnFromFunction(m_position);// Set caller's position
+		// Ignore return from main() and from built-in functions
+		if(m_position != NULL && !function->isBuiltIn())
+			CONTEXT.setPositionReturnFromFunction(m_position);// Set caller's position
+
 		return ret;
 	}
 	else

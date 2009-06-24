@@ -84,6 +84,11 @@ void CliLogger::info(const string& str)
 	cout << _("[i] ") << str << endl;
 }
 
+void CliLogger::infoPos(const string& str)
+{
+	cerr << _("[i] ") << CONTEXT.getPosition()->toString() << ": " << str << endl;
+}
+
 void CliLogger::scriptStdout(const string& str)
 {
 	cout << str;

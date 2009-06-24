@@ -46,6 +46,7 @@ public slots:
 	void warn(const QString& str);
 	void warn(const QString& pos, const QString& str);
 	void info(const QString& str);
+	void info(const QString& pos, const QString& str);
 	void scriptStdout(const QString& str);
 
 private slots:

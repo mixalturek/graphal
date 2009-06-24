@@ -45,6 +45,7 @@ public:
 	virtual void warnPos(const string& pos, const string& str);
 
 	virtual void info(const string& str);
+	virtual void infoPos(const string& str);
 
 	virtual void scriptStdout(const string& str);
 
@@ -54,6 +55,7 @@ signals:
 	void warn(const QString& str);
 	void warn(const QString& pos, const QString& str);
 	void info(const QString& str);
+	void info(const QString& pos, const QString& str);
 	void scriptStdout(const QString& str);
 };
 

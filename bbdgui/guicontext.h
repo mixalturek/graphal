@@ -47,6 +47,8 @@ public:
 	virtual void clear(void);
 
 	virtual void setPosition(const CodePosition* pos);
+	virtual void setPositionEnterToFunction(const CodePosition* pos) { setPosition(pos); }
+	virtual void setPositionReturnFromFunction(const CodePosition* pos) { setPosition(pos); }
 
 public slots:
 	void pauseExecution(void);
