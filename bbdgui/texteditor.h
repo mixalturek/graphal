@@ -20,56 +20,46 @@
 #ifndef TEXTEDITOR_H
 #define TEXTEDITOR_H
 
-#include <QPlainTextEdit>
+#include "texteditorprogrammers.h"
 
-class TextEditorHighlighter;
-
-class TextEditor : public QPlainTextEdit
+class TextEditor : public TextEditorProgrammers
 {
 	Q_OBJECT
 
 public:
 	TextEditor(QWidget* parent = 0);
 
-	void newFile();
+	void newFile(void);
 	bool loadFile(const QString& fileName, bool warnIfNotFound);
-	bool save();
-	bool saveAs();
+	bool save(void);
+	bool saveAs(void);
 	bool saveFile(const QString& fileName);
 
-	QString userFriendlyCurrentFile() const;
-	QString currentFile() const { return m_curFile; }
-	bool isUntitled() const { return m_isUntitled; }
+	QString userFriendlyCurrentFile(void) const;
+	QString currentFile(void) const { return m_curFile; }
+	bool isUntitled(void) const { return m_isUntitled; }
 
-	void lineNumberAreaPaintEvent(QPaintEvent *event);
-	int lineNumberAreaWidth(void);
+	void findText(const QString& text, const QTextDocument::FindFlags& flags);
+	int replaceText(const QString& text, const QString& replacement,
+		QTextDocument::FindFlags flags,	bool prompt);
+	int replaceAll(const QString& text, const QString& replacement,
+		QTextDocument::FindFlags flags);
+	int replaceConfirmation(const QString& text, const QString& replacement,
+		QTextDocument::FindFlags flags,	bool* replacementDone);
 
 protected:
 	void closeEvent(QCloseEvent* event);
-	void resizeEvent(QResizeEvent* event);
-	void keyPressEvent(QKeyEvent* event);
-	void paintEvent(QPaintEvent* event);
 
 private slots:
-	void setWindowModifiedFlag();
-	void updateLineNumberAreaWidth(int newBlockCount);
-	void highlightCurrentLine(void);
-	void updateLineNumberArea(const QRect&, int);
+	void setWindowModifiedFlag(void);
 
 private:
-	bool maybeSave();
+	bool maybeSave(void);
 	void initCurrentFile(const QString& fileName);
-	void autoIndent(void);
-	void homeKey(bool shift);
 
 private:
 	QString m_curFile;
 	bool m_isUntitled;
-
-	QWidget* m_lineNumberArea;
-	TextEditorHighlighter* m_highlighter;
-
-	int m_vertLinePos;// In characters
 };
 
 #endif

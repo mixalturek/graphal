@@ -36,7 +36,6 @@
 #include "dialogscriptparameters.h"
 #include "dialogfind.h"
 #include "dialogreplace.h"
-#include "dialogreplaceconfirmation.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1117,7 +1116,7 @@ void MainWindow::findDialog(void)
 		m_findFlags = dlg.getFlags();
 
 		// The editor will not have the focus if the dialog is active
-		findText(editor);
+		editor->findText(m_findText, m_findFlags);
 	}
 }
 
@@ -1127,8 +1126,15 @@ void MainWindow::findDialog(void)
 
 void MainWindow::findNext(void)
 {
+	TextEditor* editor = activeTextEditor();
+	if(editor == NULL)
+	{
+		statusBarMessageWithTimeout(tr("No text editor is active"));
+		return;
+	}
+
 	m_findFlags &= ~QTextDocument::FindBackward;
-	findText(NULL);
+	editor->findText(m_findText, m_findFlags);
 }
 
 
@@ -1137,46 +1143,15 @@ void MainWindow::findNext(void)
 
 void MainWindow::findPrevious(void)
 {
-	m_findFlags |= QTextDocument::FindBackward;
-	findText(NULL);
-}
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void MainWindow::findText(TextEditor* editor)
-{
+	TextEditor* editor = activeTextEditor();
 	if(editor == NULL)
 	{
-		editor = activeTextEditor();
-		if(editor == NULL)
-		{
-			statusBarMessageWithTimeout(tr("No text editor is active"));
-			return;
-		}
+		statusBarMessageWithTimeout(tr("No text editor is active"));
+		return;
 	}
 
-	if(!editor->find(m_findText, m_findFlags))
-	{
-		QString messageText(
-			(m_findFlags & QTextDocument::FindBackward)
-			? tr("Beginning of document reached.<br />Continue from the end?")
-			: tr("End of document reached.<br />Continue from the beginning?"));
-
-		QMessageBox::StandardButton btn;
-		btn = QMessageBox::information(this, tr("Find"),
-			messageText, QMessageBox::Yes, QMessageBox::No);
-
-		if(btn == QMessageBox::Yes)
-		{
-			if(m_findFlags & QTextDocument::FindBackward)
-				editor->moveCursor(QTextCursor::End);
-			else
-				editor->moveCursor(QTextCursor::Start);
-
-			findText(editor);
-		}
-	}
+	m_findFlags |= QTextDocument::FindBackward;
+	editor->findText(m_findText, m_findFlags);
 }
 
 
@@ -1216,123 +1191,9 @@ void MainWindow::replaceDialog(void)
 		m_replacePrompt = dlg.getPrompt();
 
 		// The editor will not have the focus if the dialog is active
-		replaceText(editor);
+		int num = editor->replaceText(m_replaceFind, m_replaceReplacement, m_replaceFlags, m_replacePrompt);
+		QMessageBox::information(this, tr("Replace"), tr("%1 replacements made").arg(num));
 	}
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void MainWindow::replaceText(TextEditor* editor)
-{
-	if(editor == NULL)
-	{
-		editor = activeTextEditor();
-		if(editor == NULL)
-		{
-			statusBarMessageWithTimeout(tr("No text editor is active"));
-			return;
-		}
-	}
-
-	int num = 0;
-
-	if(m_replacePrompt)
-	{
-		bool replacementDone = false;
-		num += replaceConfirmation(editor, &replacementDone);
-
-		if(replacementDone)
-		{
-			QMessageBox::information(this, tr("Replace"), tr("%1 replacements made").arg(num));
-			return;
-		}
-
-		QString messageText(
-			(m_findFlags & QTextDocument::FindBackward)
-			? tr("Beginning of document reached.<br />Continue from the end?")
-			: tr("End of document reached.<br />Continue from the beginning?"));
-
-		QMessageBox::StandardButton btn;
-		btn = QMessageBox::information(this, tr("Find"),
-			messageText, QMessageBox::Yes, QMessageBox::No);
-
-		if(btn == QMessageBox::Yes)
-		{
-			if(m_findFlags & QTextDocument::FindBackward)
-				editor->moveCursor(QTextCursor::End);
-			else
-				editor->moveCursor(QTextCursor::Start);
-
-			num += replaceConfirmation(editor, &replacementDone);
-		}
-	}
-	else
-	{
-		num += replaceAll(editor);
-	}
-
-	QMessageBox::information(this, tr("Replace"), tr("%1 replacements made").arg(num));
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-int MainWindow::replaceAll(TextEditor* editor)
-{
-	assert(editor != NULL);
-	int num = 0;
-
-	editor->moveCursor(QTextCursor::Start);
-	while(editor->find(m_replaceFind, m_replaceFlags))
-	{
-		editor->insertPlainText(m_replaceReplacement);
-		num++;
-	}
-
-	return num;
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-int MainWindow::replaceConfirmation(TextEditor* editor, bool* replacementDone)
-{
-	assert(editor != NULL);
-	int num = 0;
-	*replacementDone = false;
-
-	while(editor->find(m_replaceFind, m_replaceFlags))
-	{
-		DialogReplaceConfirmation dlg(this);
-		int ret = dlg.exec();
-
-		if(ret == DialogReplaceConfirmation::REPLACE)
-		{
-			editor->insertPlainText(m_replaceReplacement);
-			num++;
-		}
-		else if(ret == DialogReplaceConfirmation::REPLACE_ALL)
-		{
-			num += replaceAll(editor);
-			*replacementDone = true;
-			break;
-		}
-		else if(ret == DialogReplaceConfirmation::FIND_NEXT)
-		{
-			continue;// New loop iteration
-		}
-		else // DialogReplaceConfirmation::CLOSE_DIALOG or something unexpected
-		{
-			*replacementDone = true;
-			break;
-		}
-	}
-
-	return num;
 }
 
 

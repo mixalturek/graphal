@@ -13,7 +13,6 @@ RC_FILE = bbdgui.rc
 ICON = images/toast/toast.icns
 SOURCES += main.cpp \
     mainwindow.cpp \
-    texteditor.cpp \
     settings.cpp \
     scriptthread.cpp \
     dockscriptoutput.cpp \
@@ -25,6 +24,8 @@ SOURCES += main.cpp \
     guifactory.cpp \
     guilogger.cpp \
     guicontext.cpp \
+    texteditor.cpp \
+    texteditorprogrammers.cpp \
     texteditorlines.cpp \
     texteditorhighlighter.cpp \
     dialogincludedirs.cpp \
@@ -165,7 +166,6 @@ SOURCES += main.cpp \
     ../bbd/objectcreator.cpp \
     ../bbd/callstackitem.cpp
 HEADERS += mainwindow.h \
-    texteditor.h \
     settings.h \
     scriptthread.h \
     dockscriptoutput.h \
@@ -177,6 +177,8 @@ HEADERS += mainwindow.h \
     guifactory.hpp \
     guilogger.hpp \
     guicontext.h \
+    texteditor.h \
+    texteditorprogrammers.h \
     texteditorlines.h \
     texteditorhighlighter.h \
     dialogincludedirs.h \

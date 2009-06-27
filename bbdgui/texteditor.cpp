@@ -18,51 +18,31 @@
  */
 
 
-#include <QtGui>
+#include <QFile>
+#include <QFileDialog>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QApplication>
 #include "texteditor.h"
-#include "texteditorlines.h"
-#include "texteditorhighlighter.h"
-#include "settings.h"
-
-
-#define LR_LINES_MARGIN 3
+#include "dialogreplaceconfirmation.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
 TextEditor::TextEditor(QWidget* parent)
-	: QPlainTextEdit(parent),
+	: TextEditorProgrammers(parent),
 	m_curFile(""),
-	m_isUntitled(true),
-	m_lineNumberArea(new TextEditorLines(this)),
-	m_highlighter(new TextEditorHighlighter(document())),
-	m_vertLinePos(80)
+	m_isUntitled(true)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	setFont(SETTINGS.getEditorFont());
-
-	// TODO: add to the settings
-	setTabStopWidth(fontMetrics().width(QLatin1Char(' ')) * 4);
-	setLineWrapMode(QPlainTextEdit::NoWrap);
-	// m_vertLinePos = 80;
-
-	connect(this, SIGNAL(blockCountChanged(int)),
-			this, SLOT(updateLineNumberAreaWidth(int)));
-	connect(this, SIGNAL(updateRequest(const QRect&, int)),
-			this, SLOT(updateLineNumberArea(const QRect&, int)));
-	connect(this, SIGNAL(cursorPositionChanged()),
-			this, SLOT(highlightCurrentLine()));
-
-	updateLineNumberAreaWidth(0);
-	highlightCurrentLine();
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void TextEditor::newFile()
+void TextEditor::newFile(void)
 {
 	m_isUntitled = true;
 	m_curFile = tr("unnamed");
@@ -108,7 +88,7 @@ bool TextEditor::loadFile(const QString& fileName, bool warnIfNotFound)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-bool TextEditor::save()
+bool TextEditor::save(void)
 {
 	if(m_isUntitled)
 		return saveAs();
@@ -120,7 +100,7 @@ bool TextEditor::save()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-bool TextEditor::saveAs()
+bool TextEditor::saveAs(void)
 {
 	QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"), m_curFile);
 
@@ -161,7 +141,7 @@ bool TextEditor::saveFile(const QString &fileName)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-QString TextEditor::userFriendlyCurrentFile() const
+QString TextEditor::userFriendlyCurrentFile(void) const
 {
 	return QFileInfo(m_curFile).fileName();
 }
@@ -182,7 +162,7 @@ void TextEditor::closeEvent(QCloseEvent* event)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void TextEditor::setWindowModifiedFlag()
+void TextEditor::setWindowModifiedFlag(void)
 {
 	setWindowModified(document()->isModified());
 }
@@ -191,7 +171,7 @@ void TextEditor::setWindowModifiedFlag()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-bool TextEditor::maybeSave()
+bool TextEditor::maybeSave(void)
 {
 	if(document()->isModified())
 	{
@@ -228,104 +208,28 @@ void TextEditor::initCurrentFile(const QString& fileName)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-int TextEditor::lineNumberAreaWidth()
+void TextEditor::findText(const QString& text, const QTextDocument::FindFlags& flags)
 {
-	int max = qMax(1, blockCount());
-	int digits = 1;
-
-	while(max >= 10)
+	if(!find(text, flags))
 	{
-		max /= 10;
-		++digits;
-	}
+		QString messageText(
+			(flags & QTextDocument::FindBackward)
+			? tr("Beginning of document reached.<br />Continue from the end?")
+			: tr("End of document reached.<br />Continue from the beginning?"));
 
-	return LR_LINES_MARGIN*2 + fontMetrics().width(QLatin1Char('9')) * digits;
-}
+		QMessageBox::StandardButton btn;
+		btn = QMessageBox::information(this, tr("Find"),
+			messageText, QMessageBox::Yes, QMessageBox::No);
 
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void TextEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
-{
-	setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void TextEditor::updateLineNumberArea(const QRect& rect, int dy)
-{
-	if(dy)
-		m_lineNumberArea->scroll(0, dy);
-	else
-		m_lineNumberArea->update(0, rect.y(), m_lineNumberArea->width(), rect.height());
-
-	if(rect.contains(viewport()->rect()))
-		updateLineNumberAreaWidth(0);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void TextEditor::resizeEvent(QResizeEvent* e)
-{
-	QPlainTextEdit::resizeEvent(e);
-
-	QRect cr = contentsRect();
-	m_lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void TextEditor::highlightCurrentLine()
-{
-	if(!isReadOnly())
-	{
-		QTextEdit::ExtraSelection selection;
-		selection.format.setBackground(QColor(233, 238, 244));// TODO: Add to the settings
-		selection.format.setProperty(QTextFormat::FullWidthSelection, true);
-		selection.cursor = textCursor();
-		selection.cursor.clearSelection();
-
-		QList<QTextEdit::ExtraSelection> extraSelections;
-		extraSelections.append(selection);
-		setExtraSelections(extraSelections);
-	}
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
-{
-	QPainter painter(m_lineNumberArea);
-	painter.fillRect(event->rect(), QColor(230, 230, 230));// TODO: Add to the settings
-
-	QTextBlock block = firstVisibleBlock();
-	int blockNumber = block.blockNumber();
-	int top = (int)blockBoundingGeometry(block).translated(contentOffset()).top();
-	int bottom = top + (int)blockBoundingRect(block).height();
-
-	while(block.isValid() && top <= event->rect().bottom())
-	{
-		if(block.isVisible() && bottom >= event->rect().top())
+		if(btn == QMessageBox::Yes)
 		{
-			QString number = QString::number(blockNumber + 1);
-			painter.setPen(QColor(85, 85, 85));// TODO: Add to the settings
-			painter.drawText(-LR_LINES_MARGIN, top, m_lineNumberArea->width(),
-				fontMetrics().height(), Qt::AlignRight, number);
+			if(flags & QTextDocument::FindBackward)
+				moveCursor(QTextCursor::End);
+			else
+				moveCursor(QTextCursor::Start);
+
+			findText(text, flags);
 		}
-
-		block = block.next();
-		top = bottom;
-		bottom = top + (int)blockBoundingRect(block).height();
-		++blockNumber;
 	}
 }
 
@@ -333,99 +237,99 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void TextEditor::keyPressEvent(QKeyEvent* event)
+int TextEditor::replaceText(const QString& text, const QString& replacement,
+	QTextDocument::FindFlags flags,	bool prompt)
 {
-	switch(event->key())
+	int num = 0;
+
+	if(prompt)
 	{
-	case Qt::Key_Return:
-	case Qt::Key_Enter:
-		QPlainTextEdit::keyPressEvent(event);
-		autoIndent();
-		break;
+		bool replacementDone = false;
+		num += replaceConfirmation(text, replacement, flags, &replacementDone);
 
-	case Qt::Key_Home:
-		// Home or Shift+Home, standard behavior for other modifiers
-		if(!event->modifiers() || event->modifiers() == Qt::ShiftModifier)
-			homeKey(event->modifiers() == Qt::ShiftModifier);
-		else
-			QPlainTextEdit::keyPressEvent(event);
-		break;
+		if(replacementDone)
+			return num;
 
-	default:
-		QPlainTextEdit::keyPressEvent(event);
+		QString messageText(
+			(flags & QTextDocument::FindBackward)
+			? tr("Beginning of document reached.<br />Continue from the end?")
+			: tr("End of document reached.<br />Continue from the beginning?"));
+
+		QMessageBox::StandardButton btn;
+		btn = QMessageBox::information(this, tr("Replace"),
+			messageText, QMessageBox::Yes, QMessageBox::No);
+
+		if(btn == QMessageBox::Yes)
+		{
+			if(flags & QTextDocument::FindBackward)
+				moveCursor(QTextCursor::End);
+			else
+				moveCursor(QTextCursor::Start);
+
+			num += replaceConfirmation(text, replacement, flags, &replacementDone);
+		}
 	}
+	else
+		num += replaceAll(text, replacement, flags);
+
+	return num;
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void TextEditor::autoIndent(void)
+int TextEditor::replaceAll(const QString& text, const QString& replacement,
+	QTextDocument::FindFlags flags)
 {
-	QTextBlock previousBlock = textCursor().block().previous();
-	if(!previousBlock.isValid())
-		return;
+	int num = 0;
 
-	QString previousBlockText = previousBlock.text();
-
-	int num;
-	int size = previousBlockText.size();
-	for(num = 0; num < size; num++)
+	moveCursor(QTextCursor::Start);
+	while(find(text, flags))
 	{
-		if(!previousBlockText.at(num).isSpace())
+		insertPlainText(replacement);
+		num++;
+	}
+
+	return num;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+int TextEditor::replaceConfirmation(const QString& text, const QString& replacement,
+	QTextDocument::FindFlags flags, bool* replacementDone)
+{
+	int num = 0;
+	*replacementDone = false;
+
+	while(find(text, flags))
+	{
+		DialogReplaceConfirmation dlg(this);
+		int ret = dlg.exec();
+
+		switch(ret)
+		{
+		case DialogReplaceConfirmation::REPLACE:
+			insertPlainText(replacement);
+			num++;
 			break;
-	}
 
-	if(num > 0)
-		textCursor().insertText(previousBlockText.left(num));
+		case DialogReplaceConfirmation::REPLACE_ALL:
+			num += replaceAll(text, replacement, flags);
+			*replacementDone = true;
+			return num;
 
-	if(num < size && previousBlockText.at(num) == '{')
-		textCursor().insertText("\t");// TODO: allow spaces
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void TextEditor::homeKey(bool shift)
-{
-	QTextCursor::MoveMode mode(shift ? QTextCursor::KeepAnchor : QTextCursor::MoveAnchor);
-	QTextCursor cursor(textCursor());
-	QString text(cursor.block().text());
-	int oldPos = cursor.columnNumber();
-	int size = text.size();
-
-	int pos;
-	for(pos = 0; pos < size; pos++)
-	{
-		if(!text.at(pos).isSpace())
+		case DialogReplaceConfirmation::FIND_NEXT:
+			continue; // New loop iteration
 			break;
+
+		default: // DialogReplaceConfirmation::CLOSE_DIALOG or something unexpected
+			*replacementDone = true;
+			return num;
+		}
 	}
 
-	cursor.movePosition(QTextCursor::StartOfLine, mode);
-
-	if(oldPos != pos)
-		cursor.movePosition(QTextCursor::NextCharacter, mode, pos);
-
-	setTextCursor(cursor);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void TextEditor::paintEvent(QPaintEvent* event)
-{
-	QPlainTextEdit::paintEvent(event);
-
-	// TODO: 4 is the space between the left border and the text, how to get it?
-	int x = fontMetrics().maxWidth() * m_vertLinePos + 4;
-
-	if(x > event->rect().x() && x < event->rect().x() + event->rect().width())
-	{
-		int y = event->rect().y();
-		QPainter painter(viewport());
-		painter.setPen(Qt::gray);// TODO: Add to the settings
-		painter.drawLine(x, y, x, y + event->rect().height());
-	}
+	return num;
 }

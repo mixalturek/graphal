@@ -17,27 +17,41 @@
  *      MA 02110-1301, USA.
  */
 
+#ifndef TEXTEDITORPROGRAMMERS_H
+#define TEXTEDITORPROGRAMMERS_H
 
-#ifndef TEXTEDITORLINES_H
-#define TEXTEDITORLINES_H
+#include <QPlainTextEdit>
 
-#include <QWidget>
+class TextEditorHighlighter;
 
-class TextEditorProgrammers;
-
-class TextEditorLines : public QWidget
+class TextEditorProgrammers : public QPlainTextEdit
 {
-public:
-	TextEditorLines(TextEditorProgrammers* editor);
-	~TextEditorLines(void);
+	Q_OBJECT
 
-	QSize sizeHint(void) const;
+public:
+	TextEditorProgrammers(QWidget* parent = 0);
+
+	void lineNumberAreaPaintEvent(QPaintEvent *event);
+	int lineNumberAreaWidth(void);
+
+private slots:
+	void updateLineNumberAreaWidth(int newBlockCount);
+	void highlightCurrentLine(void);
+	void updateLineNumberArea(const QRect&, int);
 
 protected:
+	void resizeEvent(QResizeEvent* event);
+	void keyPressEvent(QKeyEvent* event);
 	void paintEvent(QPaintEvent* event);
 
 private:
-	TextEditorProgrammers* m_editor;
+	void autoIndent(void);
+	void homeKey(bool shift);
+
+private:
+	QWidget* m_lineNumberArea;
+	TextEditorHighlighter* m_highlighter;
+	int m_vertLinePos;// In characters
 };
 
-#endif // TEXTEDITORLINES_H
+#endif // TEXTEDITORPROGRAMMERS_H

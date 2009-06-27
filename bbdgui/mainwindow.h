@@ -102,10 +102,6 @@ private:
 	void createDocks();
 	void readSettings();
 	void writeSettings();
-	void findText(TextEditor* editor);
-	void replaceText(TextEditor* editor);
-	int replaceAll(TextEditor* editor);
-	int replaceConfirmation(TextEditor* editor, bool* replacementDone);
 
 	TextEditor* activeTextEditor();
 	QMdiSubWindow* findTextEditor(const QString& fileName);

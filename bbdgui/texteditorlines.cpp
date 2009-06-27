@@ -19,13 +19,13 @@
 
 
 #include "texteditorlines.h"
-#include "texteditor.h"
+#include "texteditorprogrammers.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-TextEditorLines::TextEditorLines(TextEditor* editor)
+TextEditorLines::TextEditorLines(TextEditorProgrammers* editor)
 	: QWidget(editor),
 	m_editor(editor)
 {
