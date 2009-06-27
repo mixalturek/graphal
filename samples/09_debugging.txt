@@ -1,11 +1,14 @@
 function g()
 {
 	echo("ggggggggg\n");
+	h();
+	echo("ggggggggg\n");
 }
 
 function f()
 {
-	breakpoint(true);
+	stop = false;
+	breakpoint(stop);
 	echo("fffffffff\n");
 	g();
 	echo("fffffffff\n");

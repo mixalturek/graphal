@@ -1128,15 +1128,25 @@ Jelikož je navržený jazyk beztypový, proměnné musejí umět měnit nejen s
 	\end{itemize}
 \item Výsledkem je vždy hodnota obalená ve třídě \texttt{ValueReference}
 \item Operátor přiřazení vyhodnotí výraz na své pravé straně
-\item \texttt{ValueReference} je použádáno o záměnu odkazované hodnoty za novou
+\item \texttt{ValueReference} je požádáno o záměnu odkazované hodnoty za novou
 \end{enumerate}
 
-V případě, že proměnná daného jména, popř. položka struktury, ještě neexistuje, nově vytvořená \texttt{ValueReference} obaluje \texttt{ValueNull} hodnotu. Pole se při přístupu za své hranice automaticky nezvětšuje.
+V případě, že proměnná daného jména, popř. položka struktury, ještě neexistuje, nově vytvořená \texttt{ValueReference} obaluje \texttt{ValueNull} hodnotu. Pole se při přístupu za své hranice automaticky nezvětšuje, je vypsána chyba.
 
 
-\subsubsection{ValueGraph, ValueVertexSet a ValueEdgeSet}
+\subsubsection{Grafové třídy}
 
-\subsubsection{ValueVertex a ValueEdge}
+TODO: nejspíš budou ještě nějaké změny
+
+
+\subsection{Abstraktní strom syntaxe, Node* hierarchie tříd}
+
+
+\subsection{Funkce}
+
+\subsubsection{Funkce zapsané ve skriptu}
+
+\subsubsection{Zabudované funkce}
 
 
 \subsection{Lexikální analyzátor}
@@ -1159,16 +1169,6 @@ http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
 \subsubsection{Pozice ve skriptu a AST}
 
 
-\subsection{Abstraktní strom syntaxe, Node* hierarchie tříd}
-
-
-\subsection{Funkce}
-
-\subsubsection{Funkce zapsané ve skriptu}
-
-\subsubsection{Zabudované funkce}
-
-
 \subsection{Generátory zdrojových kódů}
 
 \subsubsection{Operátory, zabudované funkce}
@@ -1177,20 +1177,6 @@ http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
 Great problems with debugging
 
 \subsubsection{Skripty pro generování zdrojových kódů}
-
-
-\subsection{Ladění intepretovaného skriptu}
-
-\subsubsection{Vykonávání kódu}
-
-Recursive traversion of AST, mutexes
-
-
-\subsubsection{Zabudovaná funkce breakpoint()}
-
-\subsubsection{Proměnné skriptu}
-
-\subsubsection{Zásobník volání funkcí}
 
 
 \subsection{Shrnutí}
@@ -1207,6 +1193,19 @@ Code Editor Example
 http://doc.trolltech.com/4.5/widgets-codeeditor.html
 
 \subsection{Debugger}
+
+
+\subsubsection{Vykonávání kódu}
+
+Recursive traversion of AST, mutexes
+
+
+\subsubsection{Zabudovaná funkce breakpoint()}
+
+\subsubsection{Proměnné skriptu}
+
+\subsubsection{Zásobník volání funkcí}
+
 
 \subsection{Vizualizace grafu}
 

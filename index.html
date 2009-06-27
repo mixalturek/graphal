@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 
 <head>
-<title>Interpret grafových algoritmů</title>
+<title>Graph Algorithms Interpreter</title>
 
 <style media="all">
 body
@@ -18,6 +18,7 @@ body
 
 h1		{ text-align: center; }
 h2		{ background-color: #ddddff; padding: 0.5em; text-align: center; border-top: 1px solid gray; margin-top: 3em; }
+#copyright	{ background-color: #ddddff; text-align: center; border-top: 1px solid gray; margin-top: 5em; font-size: 8pt; }
 table		{ margin: auto; max-width: 100%; }
 tr		{ background-color: rgb(230,230,230); }
 tr:hover	{ background-color: rgb(190,200,230); }
@@ -30,39 +31,56 @@ a:hover		{ color: red; }
 .todo:before	{ content: "TODO: "}
 pre		{ overflow: auto; line-height: 1.1em; max-height: 25em; border: 1px solid silver; padding: 1em; }
 pre:hover	{ border: 1px solid gray; }
+#screenshot	{ float: right; }
 </style>
 
 <style media="print">
 body		{ margin: 0%; }
+h2		{ text-align: left; border: none; }
+a		{ text-decoration: none; }
 </style>
 
 </head>
 
 <body>
 
-<h1>Diplomová práce: Interpret grafových algoritmů</h1>
-<p class="autor"><a href="http://woq.nipax.cz/">Michal Turek</a>, FEL ČVUT</p>
+<h1>Graph Algorithms Interpreter</h1>
+<p class="autor"><a href="http://woq.nipax.cz/">Michal Turek</a>, <a href="http://www.fel.cvut.cz/">FEL ČVUT Praha</a>, Diploma Thesis</p>
 
 
 <!-- /////////////////////////////////////////////////////////////////// -->
-<a id="obsah" href="#"></a>
-<h2>Obsah</h2>
+<a id="content" href="#"></a>
+<h2>Table of contents</h2>
+
+<div id="screenshot"><a href="img/2009-06-26_22-55-54.png"><img src="img/2009-06-26_22-55-54_sm.png" width="250" height="156" alt="screenshot" /></a></div>
 
 <ul>
-<li><a href="#obsah">Obsah</a></li>
+<li><a href="#content">Table of contents</a></li>
+<li><a href="#license">License</a></li>
 <li><a href="#download">Download</a></li>
-<li><a href="#nastroje">Vývojové nástroje, závislosti, verze</a></li>
-<li><a href="#kompilace">Kompilace</a></li>
-<li><a href="#spusteni">Spuštění</a></li>
-<li><a href="#gramatika">Gramatika, syntaxe, built-in funkce</a></li>
+<li><a href="#tools">Development tools, dependencies, versions</a></li>
+<li><a href="#compilation">Compilation</a></li>
+<li><a href="#execution">Execution</a></li>
+<li><a href="#grammar">Grammar, syntax, built-in functions</a></li>
 </ul>
+
+
+<!-- /////////////////////////////////////////////////////////////////// -->
+<a id="license" href="#"></a>
+<h2>License</h2>
+
+<p>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 2 of the License.</p>
+
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
+
+<p>You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.</p>
 
 
 <!-- /////////////////////////////////////////////////////////////////// -->
 <a id="download" href="#"></a>
 <h2>Download</h2>
 
-<p>ChangeLog a TODO soubory jsou uloženy v archivech.</p>
+<p>ChangeLog and TODO files are attached to the archives.</p>
 
 <ul>
 <li><a href="down/bbd_svn162.tar.gz">Thu, 11 Jun 09 11:58:59 +0800, svn v162</a> - IDE completed</li>
@@ -75,13 +93,13 @@ body		{ margin: 0%; }
 
 
 <!-- /////////////////////////////////////////////////////////////////// -->
-<a id="nastroje" href="#"></a>
-<h2>Vývojové nástroje, závislosti, verze</h2>
+<a id="tools" href="#"></a>
+<h2>Development tools, dependencies, versions</h2>
 
 
-<h3>Operační systémy</h3>
+<h3>Operating systems</h3>
 
-<p>Vývoj probíhá v Debian Lenny GNU/Linuxu, aplikace byla portována do MS Windows 2000 (VirtualBox) a MS Windows XP.</p>
+<p>The development is in Debian Lenny GNU/Linux, the application was ported to MS Windows 2000 (VirtualBox) and MS Windows XP.</p>
 
 <pre>
 [woq@evm bbd]$ <strong>uname -a</strong>
@@ -95,20 +113,12 @@ Linux evm 2.6.26-1-686 #1 SMP Wed Nov 26 19:14:11 UTC 2008 i686 GNU/Linux
 <p><a href="http://www.codeblocks.org/">http://www.codeblocks.org/</a></p>
 
 <pre>
-[woq@evm bbd]$ <strong>apt-cache search codeblocks</strong>
-codeblocks-dev - Code::Blocks development files (SDK)
-codeblocks - Code::Blocks integrated development environment (IDE)
-libcodeblocks0 - Code::Blocks shared library
-codeblocks-contrib - Contrib plugins for Code::Blocks IDE
-libwxsmithlib0-dev - wxSmith development files
-codeblocks-dbg - Code::Blocks debugging libraries
-libwxsmithlib0 - wxSmith shared library (wxSmith is a Code::Blocks plugin for RAD GUI editing)
 [woq@evm bbd]$ <strong>apt-cache show codeblocks | grep Version</strong>
 Version: 8.02
 [woq@evm bbd]$
 </pre>
 
-<p>Při instalaci pod MS Windows byla použita verze s integrovaným <em>GCC</em> a <em>GDB</em> (<em>codeblocks-8.02mingw-setup.exe</em>), v GNU/Linuxu verze z repozitáře.</p>
+<p>The version with integrated <em>GCC</em> and <em>GDB</em> (<em>codeblocks-8.02mingw-setup.exe</em>) was used under MS Windows.</p>
 
 
 <h3>Qt, Qt Creator</h3>
@@ -116,25 +126,19 @@ Version: 8.02
 <p><a href="http://www.qtsoftware.com/downloads">http://www.qtsoftware.com/downloads</a></p>
 
 <pre>
-[woq@evm ~]$ qtcreator -version 2>&amp;1 | grep Creator
+[woq@evm ~]$ <strong>qtcreator -version 2>&amp;1 | grep Creator</strong>
 Qt Creator 1.1.0 based on Qt 4.5.1
 [woq@evm ~]$
 </pre>
 
-<p>Při instalaci pod MS Windows byla použita verze <em>Qt libraries 4.5 for Windows (167 Mb)</em> (<em>qt-win-opensource-4.5.1-mingw.exe</em>). Instalátor nenastavuje systémovou proměnnou PATH, je třeba do ní <a href="http://vlaurie.com/computers2/Articles/environment.htm">přidat</a> cesty k adresářům C:/Qt/4.5.1/bin a C:/MinGW/bin.</p>
+<p>The version <em>Qt libraries 4.5 for Windows (167 Mb)</em> (<em>qt-win-opensource-4.5.1-mingw.exe</em>) was used under MS Windows. The installer doesn't set the <em>PATH</em> variable, paths to <em>C:/Qt/4.5.1/bin</em> and <em>C:/MinGW/bin</em> directories have to be <a href="http://vlaurie.com/computers2/Articles/environment.htm">added manually</a>. The installer installs whole Qt including the documentation and the code samples, this parts can be deleted to save disk space.</p>
 
 
 <h3>GNU Make</h3>
 
 <pre>
-[woq@evm bbd]$ <strong>make -v</strong>
+[woq@evm bbd]$ <strong>make -v | grep Make</strong>
 GNU Make 3.81
-Copyright (C) 2006  Free Software Foundation, Inc.
-This is free software; see the source for copying conditions.
-There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.
-
-This program built for i486-pc-linux-gnu
 [woq@evm bbd]$
 </pre>
 
@@ -142,12 +146,17 @@ This program built for i486-pc-linux-gnu
 <h3>GCC</h3>
 
 <pre>
-[woq@evm bbd]$ <strong>gcc -v</strong>
-Using built-in specs.
-Target: i486-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Debian 4.3.2-1.1' --with-bugurl=file:///usr/share/doc/gcc-4.3/README.Bugs --enable-languages=c,c++,fortran,objc,obj-c++ --prefix=/usr --enable-shared --with-system-zlib --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --enable-nls --with-gxx-include-dir=/usr/include/c++/4.3 --program-suffix=-4.3 --enable-clocale=gnu --enable-libstdcxx-debug --enable-objc-gc --enable-mpfr --enable-targets=all --enable-cld --enable-checking=release --build=i486-linux-gnu --host=i486-linux-gnu --target=i486-linux-gnu
-Thread model: posix
+[woq@evm bbd]$ <strong>gcc -v | grep version</strong>
 gcc version 4.3.2 (Debian 4.3.2-1.1)
+[woq@evm bbd]$
+</pre>
+
+
+<h3>bison</h3>
+
+<pre>
+[woq@evm bbd]$ <strong>bison -V | grep bison</strong>
+bison (GNU Bison) 2.3
 [woq@evm bbd]$
 </pre>
 
@@ -155,8 +164,6 @@ gcc version 4.3.2 (Debian 4.3.2-1.1)
 <h3>makedepend</h3>
 
 <pre>
-[woq@evm bbd]$ <strong>apt-cache search makedepend</strong>
-xutils-dev - X Window System utility programs for development
 [woq@evm bbd]$ <strong>apt-cache show xutils-dev | grep Version</strong>
 Version: 1:7.4+3
 [woq@evm bbd]$
@@ -166,19 +173,8 @@ Version: 1:7.4+3
 <h3>Perl</h3>
 
 <pre>
-[woq@evm bbd]$ <strong>perl -v</strong>
-
+[woq@evm bbd]$ <strong>perl -v | grep 'This is perl'</strong>
 This is perl, v5.10.0 built for i486-linux-gnu-thread-multi
-
-Copyright 1987-2007, Larry Wall
-
-Perl may be copied only under the terms of either the Artistic License or the
-GNU General Public License, which may be found in the Perl 5 source kit.
-
-Complete documentation for Perl, including FAQ lists, should be found on
-this system using "man perl" or "perldoc perl".  If you have access to the
-Internet, point your browser at http://www.perl.org/, the Perl Home Page.
-
 [woq@evm bbd]$
 </pre>
 
@@ -186,8 +182,6 @@ Internet, point your browser at http://www.perl.org/, the Perl Home Page.
 <h3>Meld</h3>
 
 <pre>
-[woq@evm bbd]$ <strong>apt-cache search meld</strong>
-meld - graphical tool to diff and merge files
 [woq@evm bbd]$ <strong>apt-cache show meld | grep Version</strong>
 Version: 1.1.5.1-2
 [woq@evm bbd]$
@@ -199,39 +193,22 @@ Version: 1.1.5.1-2
 <pre>
 [woq@evm bbd]$ <strong>svn --version | grep version</strong>
 svn, version 1.5.1 (r32289)
-Subversion is open source software, see http://subversion.tigris.org/
 [woq@evm bbd]$
 </pre>
 
 
 <!-- /////////////////////////////////////////////////////////////////// -->
-<a id="kompilace" href="#"></a>
-<h2>Kompilace</h2>
-
-<h3>Konfigurace</h3>
-
-<p>Zdrojový soubor <em>general.hpp</em> obsahuje základní konfiguraci a je inkludován do všech ostatních souborů. Je v něm možné zapnout debug/release konfiguraci (+ parametry kompilátoru v <em>Makefile</em>) a testování úniků paměti. Pro základní použití a vývoj není třeba cokoli měnit.</p>
+<a id="compilation" href="#"></a>
+<h2>Compilation</h2>
 
 
-<h3>Code::Blocks (CLI verze, bbd)</h3>
+<h3>Makefile (CLI version, bbd)</h3>
 
-<p>Otevřít projekt, v menu <em>Build</em> - <em>Build</em> (F9).</p>
+<p>If you didn't change anything in the source package, run <em>make</em> with no parameters to compile the application.</p>
 
-<p>Prostředí není nastaveno, aby volalo skripty na generování zdrojových kódů (<em>bison</em>, <em>gen_operators.pl</em>, <em>gen_builtin.pl</em>), vygenerované soubory už musí být na disku. Nejjednodušší cesta je po jejich změně spustit <em>make rebuild</em> a poté kompilovat ve vývojovém prostředí.</p>
+<p>Complete rebuild, including the sources code regeneration (<em>bison</em>, <em>gen_operators.pl</em>, <em>gen_builtin.pl</em>) and the settings of header files dependencies (<em>makedepend</em>), can be done using <em>make rebuild</em> command. Make sure that <a href="#tools">all necessary tools</a> are installed.</p>
 
-
-<h3>Qt Creator (GUI verze, bbdgui)</h3>
-
-<p>Otevřít projekt, v menu <em>Build</em> - <em>Build All</em> (Ctrl+Shift+B).</p>
-
-<p>Prostředí není nastaveno, aby volalo skripty na generování zdrojových kódů (<em>bison</em>, <em>gen_operators.pl</em>, <em>gen_builtin.pl</em>), vygenerované soubory už musí být na disku. Nejjednodušší cesta je po jejich změně spustit <em>make rebuild</em> a poté kompilovat ve vývojovém prostředí.</p>
-
-
-<h3>Makefile (CLI verze, bbd)</h3>
-
-<p>Kompletní rebuild, včetně generování zdrojových kódů (<em>bison</em>, <em>gen_operators.pl</em>, <em>gen_builtin.pl</em>) a závislostí mezi soubory (<em>makedepend</em>).</p>
-
-<p>Je možné samostatně spouštět i jednotlivé části kompilace (<em>make bison</em>, <em>make operators</em>, <em>make builtin</em> atd.), pro podrobnosti viz obsah souboru <em>Makefile</em>.</p>
+<p>You may execute particular parts of the compilation separately (<em>make bison</em>, <em>make operators</em>, <em>make builtin</em>, <em>make build</em> etc.). See the content of <em>Makefile</em> for details.</p>
 
 <pre>
 [woq@evm diplomka]$ <strong>cd bbd/</strong>
@@ -242,67 +219,66 @@ perl gen_operators.pl
 Generating NodeUnarySub
 Generating NodeUnaryNot
 ...
-Generating NodeBinaryAssDiv
-Generating NodeBinaryAssMod
 perl gen_builtin.pl
 Generating NodeBuiltinEcho
 Generating NodeBuiltinDump
-Generating NodeBuiltinArray
-Generating NodeBuiltinStruct
-Generating NodeBuiltinGraph
-Generating NodeBuiltinSize
-makedepend -Y -m baseobject.cpp context.cpp init_static_objects.cpp lexan.cpp lexaniterator.cpp lexaniteratorfile.cpp lexaniteratorstring.cpp logger.cpp main.cpp nodebinaryadd.cpp nodebinaryand.cpp nodebinaryassadd.cpp nodebinaryass.cpp nodebinaryassdiv.cpp nodebinaryassmod.cpp nodebinaryassmult.cpp nodebinaryasssub.cpp nodebinary.cpp nodebinarydiv.cpp nodebinaryeq.cpp nodebinaryge.cpp nodebinarygt.cpp nodebinaryindex.cpp nodebinaryle.cpp nodebinarylt.cpp nodebinarymember.cpp nodebinarymod.cpp nodebinarymult.cpp nodebinaryne.cpp nodebinaryor.cpp nodebinarysub.cpp nodeblock.cpp nodebuiltinarray.cpp nodebuiltindump.cpp nodebuiltinecho.cpp nodebuiltingraph.cpp nodebuiltinsize.cpp nodebuiltinstruct.cpp nodecondition.cpp node.cpp nodeemptycommand.cpp nodefunctionbuiltin.cpp nodefunctioncall.cpp nodefunction.cpp nodefunctionscript.cpp nodejumpbreak.cpp nodejumpcontinue.cpp nodeloop.cpp nodeunary.cpp nodeunarydecpost.cpp nodeunarydecpre.cpp nodeunaryincpost.cpp nodeunaryincpre.cpp nodeunarynot.cpp nodeunaryreturn.cpp nodeunarysub.cpp nodevalue.cpp parser.cpp stringtable.cpp tests.cpp valuearray.cpp valuebool.cpp value.cpp valueedge.cpp valueedgeset.cpp valuefloat.cpp valuegraph.cpp valueidentifier.cpp valueint.cpp valuenull.cpp valuereference.cpp valuestring.cpp valuestruct.cpp valuevertex.cpp valuevertexset.cpp 2>&1 | grep -v '\(cassert\|algorithm\|set\|stream\|fstream\|iostream\|map\|deque\|vector\|stack\|list\|typeinfo\|stdexcept\|cmath\)'
-makedepend: warning:  parser.cpp, line 324: cannot find include file "stddef.h"
+...
+makedepend -Y -m baseobject.cpp context.cpp ...
 g++ -c baseobject.cpp -std=c++98 -pedantic -Wall
 g++ -c context.cpp -std=c++98 -pedantic -Wall
 ...
-g++ -c valuevertex.cpp -std=c++98 -pedantic -Wall
-g++ -c valuevertexset.cpp -std=c++98 -pedantic -Wall
-g++ -o bbd baseobject.o context.o init_static_objects.o lexan.o lexaniterator.o lexaniteratorfile.o lexaniteratorstring.o logger.o main.o nodebinaryadd.o nodebinaryand.o nodebinaryassadd.o nodebinaryass.o nodebinaryassdiv.o nodebinaryassmod.o nodebinaryassmult.o nodebinaryasssub.o nodebinary.o nodebinarydiv.o nodebinaryeq.o nodebinaryge.o nodebinarygt.o nodebinaryindex.o nodebinaryle.o nodebinarylt.o nodebinarymember.o nodebinarymod.o nodebinarymult.o nodebinaryne.o nodebinaryor.o nodebinarysub.o nodeblock.o nodebuiltinarray.o nodebuiltindump.o nodebuiltinecho.o nodebuiltingraph.o nodebuiltinsize.o nodebuiltinstruct.o nodecondition.o node.o nodeemptycommand.o nodefunctionbuiltin.o nodefunctioncall.o nodefunction.o nodefunctionscript.o nodejumpbreak.o nodejumpcontinue.o nodeloop.o nodeunary.o nodeunarydecpost.o nodeunarydecpre.o nodeunaryincpost.o nodeunaryincpre.o nodeunarynot.o nodeunaryreturn.o nodeunarysub.o nodevalue.o parser.o stringtable.o tests.o valuearray.o valuebool.o value.o valueedge.o valueedgeset.o valuefloat.o valuegraph.o valueidentifier.o valueint.o valuenull.o valuereference.o valuestring.o valuestruct.o valuevertex.o valuevertexset.o
+g++ -o bbd baseobject.o context.o ...
 [woq@evm bbd]$
 </pre>
 
 
-<h3>Makefile (GUI verze, bbdgui)</h3>
+<h3>Code::Blocks (CLI version, bbd)</h3>
+
+<p>Open the project, click on <em>Build</em> - <em>Build</em> menu item.</p>
+
+<p>The environment is not set to call scripts for the source code generation, the files have to already exist. Run <em>make rebuild</em> and then build the application in Code::Blocks.</p>
+
+
+<h3>Makefile (GUI version, bbdgui)</h3>
 
 <pre>
 [woq@evm diplomka]$ <strong>cd bbdgui/</strong>
 [woq@evm bbdgui]$ <strong>make</strong>
 g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o main.o main.cpp
 g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o mainwindow.o mainwindow.cpp
-g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o texteditor.o texteditor.cpp
 ...
-g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o baseobject.o ../bbd/baseobject.cpp
-g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o objectfactory.o ../bbd/objectfactory.cpp
-g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o objectcreator.o ../bbd/objectcreator.cpp
-/usr/bin/moc-qt4 -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. mainwindow.h -o moc_mainwindow.cpp
-g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o moc_mainwindow.o moc_mainwindow.cpp
-/usr/bin/moc-qt4 -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. texteditor.h -o moc_texteditor.cpp
-g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o moc_texteditor.o moc_texteditor.cpp
-/usr/bin/moc-qt4 -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. dockscriptoutput.h -o moc_dockscriptoutput.cpp
-g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o moc_dockscriptoutput.o moc_dockscriptoutput.cpp
-/usr/bin/moc-qt4 -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. dockfiles.h -o moc_dockfiles.cpp
-g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o moc_dockfiles.o moc_dockfiles.cpp
-/usr/bin/moc-qt4 -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. guilogger.hpp -o moc_guilogger.cpp
-g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o moc_guilogger.o moc_guilogger.cpp
-/usr/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
-g++ -c -pipe -g -Wall -W -D_REENTRANT -DQTGUI -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../bbd -I. -I. -o qrc_resources.o qrc_resources.cpp
-g++  -o bbdgui main.o mainwindow.o texteditor.o settings.o scriptthread.o dockscriptoutput.o dockfiles.o guifactory.o guilogger.o logger.o lexaniteratorstring.o lexaniteratorfile.o lexaniterator.o lexan.o init_static_objects.o valuevertexset.o valuevertex.o valuestruct.o valuestring.o valuereference.o valuenull.o valueint.o valueidentifier.o valuegraph.o valuefloat.o valueedgeset.o valueedge.o valuebool.o valuearray.o value.o stringtable.o parser.o nodevalue.o nodeunarysub.o nodeunaryreturn.o nodeunarynot.o nodeunaryincpre.o nodeunaryincpost.o nodeunarydecpre.o nodeunarydecpost.o nodeunary.o nodeposition.o nodeloop.o nodejumpcontinue.o nodejumpbreak.o nodeglobal.o nodefunctionscript.o nodefunctioncall.o nodefunctionbuiltin.o nodefunction.o nodeforeach.o nodeemptycommand.o nodecondition.o nodebuiltinvertexset.o nodebuiltinverify.o nodebuiltinunion.o nodebuiltinstruct.o nodebuiltinsize.o nodebuiltinsetoriented.o nodebuiltinresetiterator.o nodebuiltinpushfront.o nodebuiltinpushback.o nodebuiltinprintstacktrace.o nodebuiltinpopfront.o nodebuiltinpopback.o nodebuiltinnext.o nodebuiltiniterator.o nodebuiltinisvertexset.o nodebuiltinisvertex.o nodebuiltinisstruct.o nodebuiltinisstring.o nodebuiltinisoriented.o nodebuiltinisnull.o nodebuiltinisint.o nodebuiltinisgraph.o nodebuiltinisfloat.o nodebuiltinisedgeset.o nodebuiltinisedge.o nodebuiltinisbool.o nodebuiltinisarray.o nodebuiltininvertedgesorientation.o nodebuiltinintersection.o nodebuiltinhasnext.o nodebuiltingraph.o nodebuiltingetvertices.o nodebuiltingetnumvertices.o nodebuiltingetnumedges.o nodebuiltingetneighbors.o nodebuiltingetendvertex.o nodebuiltingetedges.o nodebuiltingetdegree.o nodebuiltingetbeginvertex.o nodebuiltingeneratevertex.o nodebuiltingenerateedge.o nodebuiltinfront.o nodebuiltinexit.o nodebuiltinedgeset.o nodebuiltinecho.o nodebuiltindump.o nodebuiltindifference.o nodebuiltindeletevertex.o nodebuiltindeleteedge.o nodebuiltincontains.o nodebuiltinbreakpoint.o nodebuiltinback.o nodebuiltinassert.o nodebuiltinarray.o nodebuiltinadd.o nodebuiltin_inst.o nodeblock.o nodebinarysub.o nodebinaryor.o nodebinaryne.o nodebinarymult.o nodebinarymod.o nodebinarymember.o nodebinarylt.o nodebinaryle.o nodebinaryindex.o nodebinarygt.o nodebinaryge.o nodebinaryeq.o nodebinarydiv.o nodebinaryasssub.o nodebinaryassref.o nodebinaryassmult.o nodebinaryassmod.o nodebinaryassdiv.o nodebinaryassadd.o nodebinaryass.o nodebinaryand.o nodebinaryadd.o nodebinary.o node.o exitvalue.o context.o codeposition.o baseobject.o objectfactory.o objectcreator.o moc_mainwindow.o moc_texteditor.o moc_dockscriptoutput.o moc_dockfiles.o moc_guilogger.o qrc_resources.o    -L/usr/lib -lpthread -lQtGui -lQtCore
+g++  -o bbdgui main.o mainwindow.o ... -L/usr/lib -lpthread -lQtGui -lQtCore
 [woq@evm bbdgui]$
 </pre>
 
 
+<h3>Qt Creator (GUI version, bbdgui)</h3>
+
+<p>Open the project, click on <em>Build</em> - <em>Build All</em> menu item.</p>
+
+<p>The environment is not set to call scripts for the source code generation, the files have to already exist. Run <em>make rebuild</em> and then build the application in Qt Creator.</p>
+
+
 <!-- /////////////////////////////////////////////////////////////////// -->
-<a id="spusteni" href="#"></a>
-<h2>Spuštění</h2>
+<a id="execution" href="#"></a>
+<h2>Execution</h2>
 
 
-<h3>Parametry programu</h3>
+<h3>Graphic user interface, IDE</h3>
 
 <pre>
+[woq@evm diplomka]$ <strong>cd bbdgui/</strong>
+[woq@evm bbdgui]$ <strong>./bbdgui</strong>
+</pre>
+
+
+<h3>Command line interpreter parameters</h3>
+
+<pre>
+[woq@evm diplomka]$ <strong>cd bbd/</strong>
 [woq@evm bbd]$ <strong>./bbd</strong>
-[i] bbd [svn version 84]
-[i] Usage: ./bbd [-I&lt;directory&gt;] [--unit-tests] [--ast-dump] &lt;filename&gt;
+bbd [svn version 176]
+Usage: ./bbd [-I&lt;directory&gt;] [--unit-tests] [--ast-dump] &lt;filename&gt; [parameters]
 
         -I&lt;directory&gt;
                 Specify include directories (relative to the current working directory)
@@ -317,11 +293,14 @@ g++  -o bbdgui main.o mainwindow.o texteditor.o settings.o scriptthread.o docksc
         filename
                 File to be executed
 
+        parameters
+                Script parameters
+
 [woq@evm bbd]$
 </pre>
 
 
-<h3>Vykonání skriptu</h3>
+<h3>Script execution</h3>
 
 <pre>
 [woq@evm bbd]$ <strong>cat ../samples/01_factorial.txt</strong>
@@ -363,42 +342,30 @@ Factorial of 9 is 362880
 </pre>
 
 
-<h3>Unit testy</h3>
+<h3>Unit tests</h3>
 
 <pre>
-[woq@evm bbd]$ <strong>./bbd --unit-tests</strong>
-[i] bbd [svn version 79]
+[woq@evm bbd]$ <strong>./bbd --unit-tests ../samples/tests.txt</strong>
+bbd [svn version 176]
 [i] [ OK ]     testMemoryLeaks
 [i] [ OK ]     testDoubleDispatching
-[i] [ OK ]     testValueStruct
-[i] [ OK ]     testValueString
-[i] [ OK ]     testValueReference
-[i] [ OK ]     testValueIdentifier
-[i] [ OK ]     testValueArray
-[i] [ OK ]     testGraph
-[i] [ OK ]     testGraphSet
-[i] [ OK ]     testGraphInvertEdgesOrientation
-[i] [ OK ]     testLexanTerminalSymbols
-[i] [ OK ]     testLexanInt
-[i] [ OK ]     testLexanFloat
-[i] [ OK ]     testLexanString
-[i] [ OK ]     testLexanComments
-[i] [ OK ]     testLexanSourceCode
-[i] [ OK ]     testNodeUnary
-[i] [ OK ]     testNodeBinary
-[i] [ OK ]     testNodeBlock
-[i] [ OK ]     testNodeVariable
-[i] [ OK ]     testStringTable
-[i] [ OK ]     testCountPtr
-[i] [ OK ]     testNodeFunction
+...
 [i] Number of failed tests: 0
-[exception] lexaniteratorfile.cpp:33 function LexanIteratorFile()
-[e] Unable to open file: --unit-tests
+[i] *** ENTERING SCRIPT MAIN ***
+Executing unit tests...
+[ OK ]     testFactorial
+[ OK ]     testArray
+...
+Number of failed tests: 0
+[i] *** EXITING SCRIPT MAIN, OK ***
+[i] Return value: NULL
+[i] Number of memory leaks: 0
+[i] *** EXITING MAIN, OK ***
 [woq@evm bbd]$
 </pre>
 
 
-<h3>Dump abstract syntax tree</h3>
+<h3>Dump of script abstract syntax tree</h3>
 
 <pre>
 [woq@evm bbd]$ <strong>./bbd --ast-dump ../samples/01_factorial.txt</strong>
@@ -538,10 +505,10 @@ Factorial of 9 is 362880
 
 
 <!-- /////////////////////////////////////////////////////////////////// -->
-<a id="gramatika" href="#"></a>
-<h2>Gramatika, syntaxe, built-in funkce</h2>
+<a id="grammar" href="#"></a>
+<h2>Grammar, syntax, built-in functions</h2>
 
-<p>Gramatika viz soubor <em>parser.y</em>. Preprocesor má zabudované konstanty pro určení pozice v kódu, umí inkludovat soubory a definovat jednoduchá makra. Tyto programové konstrukce jsou zpracovávány v době překladu.</p>
+<p>See <em>parser.y</em> file for the language grammar. Preprocesor can include files and define simple macros, position in the source files can be passed to the script using predefined macros. All these constructs are processed during the script parsing.</p>
 
 <pre>
 __FILE__
@@ -552,7 +519,7 @@ include("filename");
 define("name", "value");
 
 
-// Příklad použití ze samples/tests.txt
+// Example of usage, samples/tests.txt
 define("tverify", "result = result &amp;&amp; verify");
 
 function testFactorial()
@@ -562,24 +529,22 @@ function testFactorial()
 	tverify(factorial(1) == 1);
 	tverify(factorial(2) == 2);
 	tverify(factorial(3) == 6);
-	tverify(factorial(4) == 24);
-	tverify(factorial(5) == 120);
 
 	return testResult(__FUNCTION__, result);
 }
 </pre>
 
 
-<p>Existují dva možné, ekvivalentní, způsoby volání funkcí. Pokud je funkce volána nad objektem pomocí tečkové notace, objekt se automaticky předává do prvního parametru.</p>
+<p>The functions can be called using two possible, equivalent, methods. If the dot notation is used, the object is automatically passed to the first parameter.</p>
 
 <pre>
-function fce(self, p2, p3)
+function func(par1, par2, par3)
 {
 	// Code
 }
 
-fce(obj, p2, p3);
-obj.fce(p2, p3);
+func(par1, par2, par3);
+par1.func(par2, par3);
 
 
 g = graph();
@@ -588,68 +553,22 @@ v2 = g.generateVertex();
 </pre>
 
 
-<p>Seznam built-in funkcí, jejich parametrů a návratových hodnot.</p>
+<p>The list of interpreter built-in functions, their parameters and return values can be displayed using <em>make listbuiltin</em> command.</p>
 
 <pre>
 [woq@evm bbd]$ <strong>make listbuiltin</strong>
-grep '\uncdecl =' gen_builtin.pl | sed "s/.*'\(.*\)'.*/\1/"
 echo(object) : object
 dump(object) : object
 exit(object) : null
-assert(object) : object
-verify(object) : bool
-breakpoint(object) : null
-isNull(object) : bool
-isBool(object) : bool
-isInt(object) : bool
-isFloat(object) : bool
-isString(object) : bool
-isStruct(object) : bool
-isArray(object) : bool
-isGraph(object) : bool
-isVertex(object) : bool
-isEdge(object) : bool
-isVertexSet(object) : bool
-isEdgeSet(object) : bool
-printStackTrace() : null
-iterator(object) : object
-hasNext(object) : bool
-next(object) : object
-resetIterator(object) : object
-array(int|bool|float) : array|null
-struct() : struct
-size(array|string) : int|null
-pushFront(array, object) : null
-pushBack(array, object) : null
-popFront(array) : null
-popBack(array) : null
-back(array) : object|null
-front(array) : object|null
-graph() : graph
-vertexset(graph) : vertexset|null
-edgeset(graph) : edgeset|null
-isOriented(graph) : bool|null
-setOriented(graph, bool|int) : bool|null
-invertEdgesOrientation(graph) : null
-generateVertex(graph) : vertex|null
-generateEdge(graph, vertex, vertex) : edge|null
-deleteVertex(graph|vertexset, vertex) : null
-deleteEdge(graph|edgeset, edge) : null
-getNumVertices(graph|vertexset) : int|null
-getNumEdges(graph|edgeset) : int|null
-getVertices(graph) : vertexset|null
-getEdges(graph) : edgeset|null
-getDegree(vertex) : int|null
-getNeighbors(vertex) : vertexset|null
-getBeginVertex(edge) : vertex|null
-getEndVertex(edge) : vertex|null
-add(vertexset|edgeset, vertex|edge) : null
-contains(graph|vertexset|edgeset, vertex|edge) : bool|null
-union(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
-intersection(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
-difference(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
+...
 [woq@evm bbd]$
 </pre>
+
+
+<div id="copyright">
+Copyright &copy; 2008, 2009 <a href="http://woq.nipax.cz/">Michal Turek</a>
+</div>
+
 
 </body>
 </html>
