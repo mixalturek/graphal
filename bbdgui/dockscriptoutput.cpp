@@ -84,19 +84,12 @@ void DockScriptOutput::anchorClicked(const QUrl& link)
 
 void DockScriptOutput::error(const QString& str)
 {
-	m_textEdit->setTextColor(QColor(255, 0, 0));
-	m_textEdit->insertPlainText(str);
-	m_textEdit->insertPlainText("\n");
-	m_textEdit->ensureCursorVisible();
+	append(str, QColor(255, 0, 0));
 }
 
 void DockScriptOutput::error(const QString& pos, const QString& str)
 {
-	m_textEdit->insertHtml("<a href=\"" + pos + "\">" + pos + "</a>: ");
-	m_textEdit->setTextColor(QColor(255, 0, 0));
-	m_textEdit->insertPlainText(str);
-	m_textEdit->insertPlainText("\n");
-	m_textEdit->ensureCursorVisible();
+	append(pos, str, QColor(255, 0, 0));
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -104,19 +97,12 @@ void DockScriptOutput::error(const QString& pos, const QString& str)
 
 void DockScriptOutput::warn(const QString& str)
 {
-	m_textEdit->setTextColor(QColor(255, 0, 0));
-	m_textEdit->insertPlainText(str);
-	m_textEdit->insertPlainText("\n");
-	m_textEdit->ensureCursorVisible();
+	append(str, QColor(255, 0, 0));
 }
 
 void DockScriptOutput::warn(const QString& pos, const QString& str)
 {
-	m_textEdit->insertHtml("<a href=\"" + pos + "\">" + pos + "</a>: ");
-	m_textEdit->setTextColor(QColor(255, 0, 0));
-	m_textEdit->insertPlainText(str);
-	m_textEdit->insertPlainText("\n");
-	m_textEdit->ensureCursorVisible();
+	append(pos, str, QColor(255, 0, 0));
 }
 
 
@@ -125,19 +111,12 @@ void DockScriptOutput::warn(const QString& pos, const QString& str)
 
 void DockScriptOutput::info(const QString& str)
 {
-	m_textEdit->setTextColor(QColor(130, 130, 130));
-	m_textEdit->insertPlainText(str);
-	m_textEdit->insertPlainText("\n");
-	m_textEdit->ensureCursorVisible();
+	append(str, QColor(130, 130, 130));
 }
 
 void DockScriptOutput::info(const QString& pos, const QString& str)
 {
-	m_textEdit->insertHtml("<a href=\"" + pos + "\">" + pos + "</a>: ");
-	m_textEdit->setTextColor(QColor(130, 130, 130));
-	m_textEdit->insertPlainText(str);
-	m_textEdit->insertPlainText("\n");
-	m_textEdit->ensureCursorVisible();
+	append(pos, str, QColor(130, 130, 130));
 }
 
 
@@ -146,7 +125,31 @@ void DockScriptOutput::info(const QString& pos, const QString& str)
 
 void DockScriptOutput::scriptStdout(const QString& str)
 {
+	m_textEdit->moveCursor(QTextCursor::End);
 	m_textEdit->setTextColor(QColor(0, 0, 0));
 	m_textEdit->insertPlainText(str);
+	m_textEdit->ensureCursorVisible();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void DockScriptOutput::append(const QString& str, const QColor& color)
+{
+	m_textEdit->moveCursor(QTextCursor::End);
+	m_textEdit->setTextColor(color);
+	m_textEdit->insertPlainText(str);
+	m_textEdit->insertPlainText("\n");
+	m_textEdit->ensureCursorVisible();
+}
+
+void DockScriptOutput::append(const QString& pos, const QString& str, const QColor& color)
+{
+	m_textEdit->moveCursor(QTextCursor::End);
+	m_textEdit->insertHtml("<a href=\"" + pos + "\">" + pos + "</a>: ");
+	m_textEdit->setTextColor(color);
+	m_textEdit->insertPlainText(str);
+	m_textEdit->insertPlainText("\n");
 	m_textEdit->ensureCursorVisible();
 }

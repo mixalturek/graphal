@@ -51,6 +51,8 @@ public slots:
 
 private slots:
 	void anchorClicked(const QUrl& link);
+	void append(const QString& str, const QColor& color);
+	void append(const QString& pos, const QString& str, const QColor& color);
 
 private:
 	QTextBrowser* m_textEdit;
