@@ -310,19 +310,6 @@ Autor při vývoji systémových aplikací preferuje C++ a má s ním také mnoh
 Grafické část aplikace bude naprogramována s použitím knihovny Qt. Je jednou z nejlépe navržených knihoven pro tvorbu GUI aplikací, přenositelná na všechny majoritní operační systémy a bezplatná pro nekomerční použití (licence GNU LGPL). Vizualizace grafů budou používat OpenGL, což je standard pro 3D grafiku. Druhá možná volba, Direct3D, není použitelná na ne-Microsoft platformách, a proto je zbytečné o ní byť i uvažovat.
 
 
-\section{Embedded Python}
-
-TODO: až bude internet ;-)
-
-\begin{verbatim}
-Python
-	naprogramovat grafové třídy v Pythonu a zkusit použít
-	http://www.python.org/doc/ext/embedding.html
-	http://docs.python.org/lib/module-pdb.html
-	jednoduché na implementaci, ale vlastní interpret jednodušší na použití
-\end{verbatim}
-
-
 \section{Návrh a specifikace vytvářeného jazyka}
 
 Jak už bylo zmíněno, syntaxe jazyka je z větší části založena na všeobecně známém C, což programátorům přináší výhodu rychlého učení. Jazyk rozlišuje malá a velká písmena, je procedurální a nepodporuje objektově orientované vlastnosti.
@@ -1086,7 +1073,7 @@ Je pravda, že výše uvedená ukázka je k chybě výrazně náchylnější ne�
 
 Jak už bylo zmíněno v kapitole \ref{double_dispatching_pattern} analýzy na straně \pageref{double_dispatching_pattern}, binární operace nad hodnotami ve skriptu jsou vykonávány s využitím návrhového vzoru Double dispatching.
 
-Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \texttt{ValueNull}, \texttt{Va\-lue\-Bool}, \texttt{ValueInt}, \texttt{ValueFloat}, atd. Každá ze zavedených tříd může být použita v libovolné operaci. Hodnota \texttt{null}, respektive \texttt{false} u logických operátorů, je vrácena v případě, kdy není operace nad danou kombinací typů definována.
+Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \texttt{ValueNull}, \texttt{Va\-lue\-Bool}, \texttt{ValueInt}, \texttt{ValueFloat} atd., každá ze zavedených tříd může být použita v libovolné operaci. Hodnota \texttt{null}, respektive \texttt{false} u logických operátorů, je vrácena v případě, kdy není operace nad danou kombinací typů definována.
 
 % \begin{enumerate}
 % \item aritmetické sčítání \texttt{+}, odčítání \texttt{-}, násobení \texttt{*}, dělení \texttt{/}, dělení modulo \texttt{\%}
@@ -1099,9 +1086,9 @@ Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \
 
 % Třída \texttt{Value} dále definuje metodu \texttt{toBool()}, jež umožňuje přetypování libovolného objektu na logickou hodnotu, využívána je především operátory AND a OR. Metoda \texttt{isNull()} slouží pro dotaz, zda se jedná o \textit{plnohodnotný} typ, či o \texttt{ValueNull} hodnotu. Konverzi na textovou reprezentaci zapouzdřené hodnoty je možné provést zavoláním metody \texttt{toString()}.
 
-K dotazu, zda je možné do daného objektu přiřadit jinou hodnotu, poslouží metoda \texttt{isLValue()}. Vlastní přiřazení je následně možné provést pomocí funkcí \texttt{assign()} a \texttt{assignRef()}.
+K dotazu, zda je možné do daného objektu přiřadit jinou hodnotu, poslouží metoda \texttt{isLValue()}. Vlastní přiřazení je následně možné provést pomocí funkcí \texttt{assign()} a \texttt{assignRef()} -- detaily viz kapitola \ref{valuereference_a_prirazovani_do_promennych} na straně \pageref{valuereference_a_prirazovani_do_promennych}.
 
-Iterování přes prvky složených datových typů je podporováno metodami \texttt{iterator()}, \texttt{hasNext()}, \texttt{next()} a \texttt{resetIterator()}. Jednoduché datové typy nejsou iterovatelné, a proto jakékoli pokusy o iteraci hned na začátku odmítnou.
+Iterování přes prvky složených datových typů je podporováno metodami \texttt{iterator()}, \texttt{hasNext()}, \texttt{next()} a \texttt{resetIterator()}. Jednoduché datové typy nejsou iterovatelné, a proto jakékoli pokusy o procházení hned na začátku odmítnou.
 
 Potomci, především grafové třídy, definují i další specifické metody. Ke konverzi z obecného \texttt{Value} ukazatele na konkrétní datový typ slouží skupina virtuálních funkcí \texttt{toValueBool()}, \texttt{toValueInt()} atd., které vracejí \texttt{NULL}, pokud se nejedná o daný datový typ. Použití leží především v zabudovaných funkcích interpretu, které v parametru předpokládají konkrétní datový typ a volají jeho specifické operace. Na tomto místě by šlo samozřejmě použít i RTTI přetypování \texttt{dynamic\_cast}, obě techniky jsou ekvivalentní.
 
@@ -1113,11 +1100,12 @@ Obě tyto třídy jsou definovány jako singleton a v kódu mohou být použív�
 Implementace pomocí singletonu byla zvolena z důvodu, aby nebylo nutné neustále vytvářet nové a nové ekvivalentní objekty.
 
 
-\subsubsection{ValueReference a přiřazování do proměnných}
+\subsubsection{Přiřazování do proměnných}
+\label{valuereference_a_prirazovani_do_promennych}
 
 Proměnné jsou ve skriptu reprezentovány třídou \texttt{ValueIdentifier}, která v sobě u\-cho\-vá\-vá identifikátor hodnoty odkazující do kontextu skriptu. Všechny operace se vykonávají stejně jako u ostatních tříd, rozdíl spočívá pouze v tom, že se neprovádějí přímo s daným objektem, ale s odkazovaným.
 
-Jelikož je navržený jazyk beztypový, proměnné musejí umět měnit nejen svou hodnotu, ale i datový typ, jedná se tedy o složitější operaci než je pouhá záměna jednoho čísla za jiné. Interpret tuto situaci řeší obalením vlastní hodnoty další třídou pojmenovanou \texttt{ValueReference}, přiřazení poté probíhá podle následujícího schématu.
+Jelikož je navržený jazyk beztypový, proměnné musejí umět měnit nejen svou hodnotu, ale i datový typ, jedná se tedy o složitější operaci, než je pouhá záměna jednoho čísla za jiné. Interpret tuto situaci řeší obalením vlastní hodnoty další třídou pojmenovanou \texttt{ValueReference}, přiřazení poté probíhá podle následujícího schématu.
 
 \begin{enumerate}
 \item Operátor přiřazení vyhodnotí výraz na své levé straně
@@ -1125,10 +1113,11 @@ Jelikož je navržený jazyk beztypový, proměnné musejí umět měnit nejen s
 	\item Proměnná požádá kontext o nalezení hodnoty uložené pod daným jménem
 	\item Pole poskytne prvek na daném indexu
 	\item Struktura najde prvek specifikovaného jména
+	\item Kombinace předchozích
 	\end{itemize}
 \item Výsledkem je vždy hodnota obalená ve třídě \texttt{ValueReference}
 \item Operátor přiřazení vyhodnotí výraz na své pravé straně
-\item \texttt{ValueReference} je požádáno o záměnu odkazované hodnoty za novou
+\item \texttt{ValueReference} je požádáno o záměnu obalené hodnoty za novou
 \end{enumerate}
 
 V případě, že proměnná daného jména, popř. položka struktury, ještě neexistuje, nově vytvořená \texttt{ValueReference} obaluje \texttt{ValueNull} hodnotu. Pole se při přístupu za své hranice automaticky nezvětšuje, je vypsána chyba.
@@ -1141,12 +1130,101 @@ TODO: nejspíš budou ještě nějaké změny
 
 \subsection{Abstraktní strom syntaxe, Node* hierarchie tříd}
 
+Abstraktní třída \texttt{Node} byla již představena v analýze, v kapitole \ref{abstraktni_strom_syntaxe} na straně \pageref{abstraktni_strom_syntaxe}. Z ní vycházázejí všechny ostatní třídy, jejichž objekty budou tvořit abstraktní strom syntaxe skriptu.
 
-\subsection{Funkce}
+Unární operátory jsou potomky třídy \texttt{NodeUnary}, která předpokládá jeden poduzel ve stromě, \texttt{NodeBinary} logicky dva. Ternální operátor je interně mapován na \texttt{if-else} větvení poskytované třídou \texttt{NodeCondition}. Dalšími podtřídami jsou například \texttt{Node\-Loop} a \texttt{NodeForeach} cykly, \texttt{NodeBlock} zapouzdřující skupinu příkazů, \texttt{Node\-Function\-Call} pro volání funkcí, či prázdný příkaz \texttt{NodeEmptyCommand} využívaný spíše interně.
 
-\subsubsection{Funkce zapsané ve skriptu}
 
-\subsubsection{Zabudované funkce}
+\subsubsection{Strukturované skoky}
+
+Strukturované skoky \texttt{break}, \texttt{continue} a \texttt{return} používají mechanismus výjimek, což je jedna z mála výraznějších daní za jednoduchost vykonávání skriptu pomocí rekurzivního volání metody \texttt{execute()}. Příkaz skoku, byť strukturovaný, musí být nějakým způsobem schopen opustit zanořené volání a vystoupat do požadovaného místa. Výjimky jsou zde opravdu tou nejelegantnější cestou k naprogramování této funkcionality.
+
+Vlastní skok spočívá v jediném řádku obsahujícím \texttt{throw}, například pro \texttt{break} vypadá kód následovně.
+
+\begin{verbatim}
+CountPtr<Value> NodeJumpBreak::execute(void)
+{
+    throw this;
+}
+\end{verbatim}
+
+Místo, kde se má skok zastavit je definováno strukturou objektů ve stromu. Například výše uvedený příkaz \texttt{break} by se měl zastavit za koncem nejzanořenějšího cyklu. V případě \texttt{continue} se samozřejmě jedná o návrat na začátek před další iteraci. Přesně podle této definice funguje \texttt{NodeLoop} uzel, výjimka typu \texttt{NodeJumpBreak} je zachytávána za tělem cyklu, \texttt{NodeJumpContinue} uvnitř.
+
+\begin{verbatim}
+CountPtr<Value> NodeLoop::execute(void)
+{
+    m_init->execute();
+
+    try
+    {
+        while(m_condition->execute()->toBool())
+        {
+            try
+            {
+                m_body->execute();
+            }
+            catch(NodeJumpContinue* ex) { }
+
+            m_inc->execute();
+        }
+    }
+    catch(NodeJumpBreak* ex) { }
+}
+\end{verbatim}
+
+Protože volání cyklů probíhá od vnějších k vnitřním, je případná výjimka vždy zachycena v nejvnitřnějším cyklu. Výkonostní poměry u těchto typů konstrukcí příliš neutrpí, \texttt{break} a \texttt{continue} se v reálných programech vyskytují spíše zřídka.
+
+U návratových hodnot je situace opačná, \texttt{return} se vyskytuje téměř v každé z funkcí. Ano, zde jsou výjimky bolestné, ale z druhé strany pohledu ne tak moc jako implementace bez jejich služeb.
+
+Bylo by možné, aby příkaz \texttt{return} nastavil hodnotu nějaké sdílené proměnné v kontextu na výstupní hodnotu z funkce a zároveň v další proměnné signalizoval, že probíhá návrat z funkce. Metoda \texttt{execute()} by u naprosto všech tříd musela testovat tuto signalizační proměnnou, a v době mezi \texttt{return} až do ukončení těla by se nezanořovala do dalších příkazů. Obrovské množství těchto větvení by jiště přesáhlo režii jedné nastanuvší výjimky.
+
+
+\subsubsection{Funkce}
+
+Funkce, potomci třídy \texttt{NodeFunction} se dělí na dvě skupiny -- na zapsané ve skriptu a na zabudované do interpretu. Každou z nich identifikuje jméno a parametry, při volání se ovšem používá pouze jméno. První typ funkcí také očekává tělo s příkazy a pozici ve zdrojových kódech, kde je definována. U zabudovaných funkcí, potomků \texttt{Node\-Function\-Builtin}, tyto informace nemají význam, tělo je specifikováno přímo C++ kódem metody \texttt{execute()}.
+
+Všechny definované, a tudíž i volatelné, funkce ukládá kontext skriptu. Není třeba, aby věděl, o který z obou typů se jedná, samotné objekty to ví a díky polymorfismu se budou volat správné metody.
+
+\begin{verbatim}
+map<identifier, NodeFunction*> m_functions;
+\end{verbatim}
+
+Kód funkce umí zavolat třída \texttt{NodeFunctionCall}. Ta se ji nejdříve pokusí pomocí uloženého jména najít a zkontroluje počty deklarovaných a předaných parametrů. Pokud vše souhlasí, vyhodnotí parametry, vloží na zásobník volání novou položku, podle specifikovaných jmen parametrů definuje požadované proměnné a spustí tělo funkce.
+
+
+\subsection{Generátory zdrojových kódů}
+
+Interpret obsahuje několik skupin tříd, jejichž kód je velice podobný, typickým příkladem jsou třídy aritmetických a logických operátorů. Vezměme si třeba operátory pro sčítání a odčítání, jejich výkonná část se liší jediným příkazem. Sčítání volá metodu \texttt{add()} a odčítání logicky \texttt{sub()}, jinak je celý kód identický.
+
+\begin{verbatim}
+    return m_left->execute()->add(*(m_right->execute()));
+    return m_left->execute()->sub(*(m_right->execute()));
+\end{verbatim}
+
+Kromě těchto dvou je třeba napsat dalších dvacet binárních operátorů, k tomu několik unárních operátorů a nesmí se zapomenout ani na zabudované funkce. Vytvářet všechny třídy ručně je zdlouhavé a neefektivní, v případě změn je třeba upravovat stejným způsobem mnoho souborů.
+
+Nepříliš vhodné řešení této situace je využítí C++ maker, jimiž lze vygenerovat kód tříd. Jedna z primitivnějších, ne moc hezkých, implementací by mohla vypadat například následovně.
+
+\begin{verbatim}
+#define BINARYOPERATOR(NAME, CODE)            \
+class NAME : public NodeBinary                \
+{                                             \
+public:                                       \
+    NAME(Node* next) : NodeBinary(next) { }   \
+    virtual ~NAME(void) { }                   \
+                                              \
+    virtual CountPtr<Value> execute(void)     \
+    {                                         \
+        CODE                                  \
+    }                                         \
+};
+\end{verbatim}
+
+Jedná se o plně funkční kód, v profesionální praxi běžně používaný, ale obecně špatný. Kvůli těmto konstrukcím není možný debugging a také nefunguje automatické do\-pl\-ňo\-vá\-ní ve vývojových prostředích, protože s podobným zápisem tvůrci žádného IDE zkrátka nepočítali. Počáteční úsporu a zrychlení velice rychle, při prvních problémech a neúspěšných pokusech o ladění, vystřídají myšlenky na kompletní přepsání.
+
+Řešením situace je sáhnout po externím skriptu, jehož jediným posláním bude podle připravené šablony generovat C++ soubory s definicí jednotlivých tříd. Pokud vznikne požadavek na úpravu, změní se šablona a skript všechny soubory během krátké chvíle automaticky přegeneruje.
+
+V aplikaci toto navržené řešení používají jednoduché, avšak výkonné, perlovské skripty \texttt{gen\_operators.pl} a \texttt{gen\_builtin.pl}, které generují C++ kód unárních i binárních operátorů a také zabudovaných funkcí.
 
 
 \subsection{Lexikální analyzátor}
@@ -1166,17 +1244,6 @@ http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
 
 \subsection{Gramatika, Bison}
 
-\subsubsection{Pozice ve skriptu a AST}
-
-
-\subsection{Generátory zdrojových kódů}
-
-\subsubsection{Operátory, zabudované funkce}
-
-\subsubsection{C makra}
-Great problems with debugging
-
-\subsubsection{Skripty pro generování zdrojových kódů}
 
 
 \subsection{Shrnutí}
@@ -1303,7 +1370,7 @@ base code for the application qt4/examples/mainwindows/mdi
 \item[OpenGL] Open Graphics Library
 \item[MDI] Multiple Document Interface
 \item[XML] eXtensible Markup Language
-\item[RTTI] Run Time Type Identification
+\item[RTTI] Run-Time Type Information
 \end{description}
 \vdots
 
