@@ -24,7 +24,8 @@
 %\usepackage{indentfirst} %1. odstavec jako v cestine.
 
 \usepackage{k336_thesis_macros}
-
+\usepackage{url}
+\DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
 
 \newcommand\TypeOfWork{Diplomová práce} % \typeout{Diplomova prace}
 %\newcommand\TypeOfWork{Master's Thesis}   \typeout{Master's Thesis}
@@ -562,11 +563,9 @@ Předpokládaná velikost grafů jsou miliony vrcholů a hran, čímž vznikají
 
 Existuje několik možností, jak reprezentovat graf v programu. V teorii grafů bývají nejčastěji zmi\-ňo\-vá\-ny maticové reprezentace a spojové seznamy, ale existují i další, méně obvyklé, způsoby.
 
-% TODO: znak x v matematice
-
 \begin{itemize}
-\item matice inicidence $|U|$ x $|H|$
-\item matice sousednosti $|U|$ x $|U|$
+\item matice inicidence $|U| \times |H|$
+\item matice sousednosti $|U| \times |U|$
 \item spojové seznamy -- seznam následníků apod.
 \item jiné reprezentace
 \end{itemize}
@@ -576,9 +575,7 @@ Cílem této části bude najít nejvhodnější reprezentaci grafu, kterou by b
 
 \subsubsection{Standardní maticové reprezentace}
 
-% TODO: znak x v matematice
-
-Matice sousednosti je v grafové teorii definována jako dvourozměrné pole $|U|$ x $|U|$. V jazyce C++ s použitím knihovny STL by mohly být atributy třídy grafu definovány například následovně.
+Matice sousednosti je v grafové teorii definována jako dvourozměrné pole $|U| \times |U|$. V jazyce C++ s použitím knihovny STL by mohly být atributy třídy grafu definovány například následovně.
 
 \begin{verbatim}
 class Graph
@@ -723,10 +720,7 @@ private:
 };
 \end{verbatim}
 
-Toto řešení je funkční, nicméně při více podporovaných datových typech a operacích začíná být extrémně nepřehledné a náchylné k chybám. Každá z funkcí implementujících například některou aritmetickou operaci musí obsahovat větvení podle typu, navíc, v případě binární operace, vnořené. Příkladem budiž ukázka části kódu sčítání z autorova dřívějšího interpretu.
-
-% TODO: literatura Borsch
-
+Toto řešení je funkční, nicméně při více podporovaných datových typech a operacích začíná být extrémně nepřehledné a náchylné k chybám. Každá z funkcí implementujících například některou aritmetickou operaci musí obsahovat větvení podle typu, navíc, v případě binární operace, vnořené. Příkladem budiž ukázka části kódu sčítání z autorova dřívějšího interpretu \cite{borsch}.
 
 \begin{verbatim}
 const CNodeValue CNodeValue::operator+(const CNodeValue& object) const
@@ -762,9 +756,7 @@ Navrhovaný jazyk předpokládá dvanáct různých datových typů (viz sekce \
 \subsection{Double dispatching pattern}
 \label{double_dispatching_pattern}
 
-% TODO: reference na Bruce Eckel: Thinking in C++ 2, Multiple dispatching, str. 459
-
-Odpovědí na všechny výše uvedené problémy je návrhový vzor \textit{Multiple dispatching}, který poskytuje možnost volání typových operací nad kombinací beztypových objektů. Základem je abstraktní třída \texttt{Value}, která deklaruje všechny potřebné operace -- pro každý datový typ a operaci jedna virtuální metoda, plus jedna čistě virtuální metoda pro neznámý datový typ.
+Odpovědí na všechny výše uvedené problémy je návrhový vzor \textit{Multiple dispatching} \cite{eckel}, který poskytuje možnost volání typových operací nad kombinací beztypových objektů. Základem je abstraktní třída \texttt{Value}, která deklaruje všechny potřebné operace -- pro každý datový typ a operaci jedna virtuální metoda, plus jedna čistě virtuální metoda pro neznámý datový typ.
 
 \begin{verbatim}
 class Value
@@ -1201,17 +1193,16 @@ Interpret obsahuje několik skupin tříd, jejichž kód je velice podobný, typ
     return m_left->execute()->sub(*(m_right->execute()));
 \end{verbatim}
 
-Kromě těchto dvou je třeba napsat dalších dvacet binárních operátorů, k tomu několik unárních operátorů a nesmí se zapomenout ani na zabudované funkce. Vytvářet všechny třídy ručně je zdlouhavé a neefektivní, v případě změn je třeba upravovat stejným způsobem mnoho souborů.
+Kromě těchto dvou je potřeba dalších dvacet binárních operátorů, k tomu několik unárních operátorů a nesmí se zapomenout ani na zabudované funkce. Vytvářet všechny třídy ručně je zdlouhavé a neefektivní, v případě změn je třeba upravovat stejným způsobem mnoho souborů.
 
-Nepříliš vhodné řešení této situace je využítí C++ maker, jimiž lze vygenerovat kód tříd. Jedna z primitivnějších, ne moc hezkých, implementací by mohla vypadat například následovně.
+Nepříliš vhodné řešení této situace je využítí C++ maker, jimiž lze generovat i kód tříd. Jedna z primitivnějších, ne moc hezkých, implementací by mohla vypadat například následovně.
 
 \begin{verbatim}
-#define BINARYOPERATOR(NAME, CODE)            \
+#define UNARYOPERATOR(NAME, CODE)             \
 class NAME : public NodeBinary                \
 {                                             \
 public:                                       \
-    NAME(Node* next) : NodeBinary(next) { }   \
-    virtual ~NAME(void) { }                   \
+    NAME(Node* next) : NodeUnary(next) { }    \
                                               \
     virtual CountPtr<Value> execute(void)     \
     {                                         \
@@ -1220,7 +1211,7 @@ public:                                       \
 };
 \end{verbatim}
 
-Jedná se o plně funkční kód, v profesionální praxi běžně používaný, ale obecně špatný. Kvůli těmto konstrukcím není možný debugging a také nefunguje automatické do\-pl\-ňo\-vá\-ní ve vývojových prostředích, protože s podobným zápisem tvůrci žádného IDE zkrátka nepočítali. Počáteční úsporu a zrychlení velice rychle, při prvních problémech a neúspěšných pokusech o ladění, vystřídají myšlenky na kompletní přepsání.
+Jedná se o plně funkční kód v profesionální praxi běžně používaný, ale obecně špatně navržený. Kvůli těmto konstrukcím není možný debugging a také nefunguje automatické do\-pl\-ňo\-vá\-ní, protože s podobným zápisem tvůrci žádného IDE zkrátka nepočítali. Počáteční úsporu a zrychlení velice rychle, při prvních problémech a neúspěšných pokusech o ladění, vystřídají myšlenky na kompletní přepsání.
 
 Řešením situace je sáhnout po externím skriptu, jehož jediným posláním bude podle připravené šablony generovat C++ soubory s definicí jednotlivých tříd. Pokud vznikne požadavek na úpravu, změní se šablona a skript všechny soubory během krátké chvíle automaticky přegeneruje.
 
@@ -1315,14 +1306,11 @@ Recursive traversion of AST, mutexes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
 
-%\bibliographystyle{abbrv}
-%bibliographystyle{plain}
-%\bibliographystyle{psc}
-%\bibliographystyle{alpha} % [AutorRok]
-%{
-%\def\CS{$\cal C\kern-0.1667em\lower.5ex\hbox{$\cal S$}\kern-0.075em $}
-%\bibliography{reference}
-%}
+\bibliographystyle{czechiso}
+{
+\def\CS{$\cal C\kern-0.1667em\lower.5ex\hbox{$\cal S$}\kern-0.075em $}
+\bibliography{reference}
+}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
