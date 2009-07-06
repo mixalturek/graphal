@@ -44,7 +44,7 @@ StringTable::~StringTable()
 
 identifier StringTable::getID(const string& str)
 {
-	vector<string>::iterator pos = find(m_data.begin(), m_data.end(), str);
+	vector<string>::const_iterator pos = find(m_data.begin(), m_data.end(), str);
 
 	if(pos == m_data.end())
 		m_data.push_back(str);

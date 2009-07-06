@@ -27,6 +27,8 @@
 \usepackage{url}
 \DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
 
+\usepackage[left=3.5cm,top=3.5cm,right=2cm,bottom=3cm]{geometry}
+
 \newcommand\TypeOfWork{Diplomová práce} % \typeout{Diplomova prace}
 %\newcommand\TypeOfWork{Master's Thesis}   \typeout{Master's Thesis}
 
@@ -117,7 +119,7 @@ unicode=true,
 \acknowledgements
 \noindent
 
-\noindent Rád bych poděkoval svému vedoucímu RNDr. Marku Genyk-Berezovskému za jeho připomínky a cené rady při tvoření práce. Druhou osobou zůstává Renat Rafisovič Kagirov, který se mě během studia na SibGAU v Krasnojarsku snažil přivést, bohužel neúspěšně, k psaní v angličtině. V této době vznikla podrobná osnova a úvodní kapitoly.
+\noindent Rád bych poděkoval svému vedoucímu RNDr. Marku Genyk-Berezovskému za jeho při\-po\-mín\-ky a cené rady při tvoření práce. Druhou osobou zůstává Renat Rafisovič Kagirov, který se mě během studia na SibGAU v Krasnojarsku snažil přivést, bohužel neúspěšně, k psaní v angličtině. V této době vznikla podrobná osnova a úvodní kapitoly.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,7 +141,7 @@ The core of this diploma thesis is design and implementation of a special langua
 \vspace{8ex}
 
 \noindent
-Jádrem diplomové práce je návrh a implementace speciálního programovacího jazyka založeného na syntaxi C, který slouží pro manipulaci s grafy. Dále bylo vytvořeno integrované vývojové prostředí sestávající z programátorsky zaměřeného textového editoru, debuggeru a vizualizačního okna, v němž je ve 3D zobrazován průběh interpretovaného algoritmu nad daným grafem.
+Jádrem diplomové práce je návrh a implementace speciálního programovacího jazyka za\-lo\-že\-né\-ho na syntaxi C, který slouží pro manipulaci s grafy. Dále bylo vytvořeno integrované vývojové prostředí sestávající z programátorsky zaměřeného textového editoru, debuggeru a vizualizačního okna, v němž je ve 3D zobrazován průběh interpretovaného algoritmu nad daným grafem.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -306,7 +308,7 @@ Na samém začátku je možné uvažovat tři běžně používané jazyky pro t
 
 Obrovskými výhodami Javy je její automatický správce paměti a spousta existujících knihoven a frameworků. Na druhou stranu naprostá většina kompilátorů a interpretů je psaná v C nebo C++ kvůli kompilaci do strojového kódu a z ní vyplývající rychlosti provádění.
 
-Autor při vývoji systémových aplikací preferuje C++ a má s ním také mnohem více zkušeností, a proto byl tento jazyk, spolu s knihovnou STL, zvolen pro implementaci aplikace. Žádná další knihovna nebude při tvorbě základního kódu použita, interpret pro příkazovou řádku by měl mít co nejméně externích závislostí. Díky tomu by měl být bez větších problémů portovatelný na všechny platformy, pro které existuje C++ kompilátor.
+Autor při vývoji systémových aplikací preferuje C++ a má s ním také mnohem více zku\-še\-no\-stí, a proto byl tento jazyk, spolu s knihovnou STL, zvolen pro implementaci aplikace. Žádná další knihovna nebude při tvorbě základního kódu použita, interpret pro příkazovou řádku by měl mít co nejméně externích závislostí. Díky tomu by měl být bez větších problémů portovatelný na všechny platformy, pro které existuje C++ kompilátor.
 
 Grafické část aplikace bude naprogramována s použitím knihovny Qt. Je jednou z nejlépe navržených knihoven pro tvorbu GUI aplikací, přenositelná na všechny majoritní operační systémy a bezplatná pro nekomerční použití (licence GNU LGPL). Vizualizace grafů budou používat OpenGL, což je standard pro 3D grafiku. Druhá možná volba, Direct3D, není použitelná na ne-Microsoft platformách, a proto je zbytečné o ní byť i uvažovat.
 
@@ -321,7 +323,7 @@ Jak už bylo zmíněno, syntaxe jazyka je z větší části založena na všeob
 
 Proměnné se nedeklarují a v průběhu vykonávání skriptu mohou libovolně měnit svůj datový typ. Uvnitř interpretu jsou rozlišovány typy \texttt{null}, \texttt{bool}, \texttt{int}, \texttt{float}, \texttt{string}, \texttt{struct}, \texttt{array}, \texttt{graph}, \texttt{vertex}, \texttt{vertexset}, \texttt{edge} a \texttt{edgeset}. Jazyk nepodporuje modifikátory typu, jako jsou například \texttt{unsigned} nebo \texttt{const}, protože nepřinášejí žádné výrazné vylepšení, programátor se bude muset obejít bez nich.
 
-Viditelnost proměnných je definována na úroveň funkcí, tudíž opuštění daného bloku (například cyklu) nezpůsobuje zrušení v něm používaných proměnných. Globální pro\-měn\-nou je možné ve funkci zpřístupnit po vzoru jazyka PHP klíčovým slovem \texttt{global}.
+Viditelnost proměnných je definována na úroveň funkcí, tudíž opuštění daného bloku (na\-pří\-klad cyklu) nezpůsobuje zrušení v něm používaných proměnných. Globální pro\-měn\-nou je možné ve funkci zpřístupnit po vzoru jazyka PHP klíčovým slovem \texttt{global}.
 
 \begin{verbatim}
 function example()
@@ -384,7 +386,7 @@ foreach(item; iterableObject)
 }
 \end{verbatim}
 
-Předčasné ukončení cyklu je možné klasicky pomocí strukturovaných skoků \texttt{break} a \texttt{continue}.
+Předčasné ukončení cyklu je možné provést klasicky pomocí strukturovaných skoků \texttt{break} a \texttt{continue}.
 
 
 \subsection{Funkce}
@@ -418,7 +420,7 @@ define("name", "value");
 
 \subsection{Datové kontejnery}
 
-Základními datovými kontejnery jsou pole a struktury, které se dají jednoduše rozšířit. Zásobník a fronta se z pole vytvoří definováním operací \texttt{pushFront()}, \texttt{push\-Back()}, \texttt{popFront()}, \texttt{popBack()}, \texttt{front()} a \texttt{back()}. Struktura se dá bez jakýchkoli změn po\-u\-ží\-vat i jako mapa (asociativní pole) a množina.
+Základními datovými kontejnery zůstávají pole a struktury, které se však dají jednoduše rozšířit. Zásobník a fronta se z pole vytvoří definováním operací \texttt{pushFront()}, \texttt{push\-Back()}, \texttt{popFront()}, \texttt{popBack()}, \texttt{front()} a \texttt{back()}. Struktura se dá bez jakýchkoli změn po\-u\-ží\-vat i jako mapa (asociativní pole) a množina.
 
 Na rozdíl od jiných skriptovacích jazyků není definována speciální syntaxe pro deklarace a vytváření. Pro zachování jednoduchosti stačí pouze zavolat zabudované funkce \texttt{array()} a \texttt{struct()}, které vrací nově vytvořený objekt daného datového typu, a ná\-sled\-ně je začít používat.
 
@@ -459,7 +461,7 @@ Pro vytváření množin vrcholů a hran slouží opět zabudované funkce.
 
 \subsection{Ukázka spustitelného skriptu}
 
-Příkladem kompletního skriptu zapsaného ve vytvářeném jazyce bude rekurzivní prohledávání grafu do hloubky. Parametrem uživatelsky definované funkce \texttt{dfs()} je libovolný vrchol grafu. Pokud už byl daný vrchol navštíven, větev procházeného stromu se ukončí, v opačném případě se označí vrchol za navštívený a funkce se rekurzivně zavolá nad všemi jeho sousedy.
+Příkladem kompletního skriptu zapsaného ve vytvářeném jazyce bude rekurzivní pro\-hle\-dá\-vá\-ní grafu do hloubky. Parametrem uživatelsky definované funkce \texttt{dfs()} je libovolný vrchol grafu. Pokud už byl daný vrchol navštíven, větev procházeného stromu se ukončí, v opačném případě se označí vrchol za navštívený a funkce se rekurzivně zavolá nad všemi jeho sousedy.
 
 \begin{verbatim}
 define("NEW", "0");
@@ -703,7 +705,7 @@ Výše uvedený kód může vypadat jako nežádoucí a jeho použití okrajové
 
 \subsection{Implementace operací větvením}
 
-Existují v zásadě dvě možnosti, jak implementovat sčítání, odčítání a ostatní operace nad hodnotami a proměnnými ve skriptu. První z nich předpokládá použití \texttt{unionu} a pomocné proměnné, která ukládá datový typ uložené hodnoty.
+Existují v zásadě dvě možnosti, jak implementovat sčítání, odčítání a ostatní operace nad hodnotami a proměnnými ve skriptu. První z nich předpokládá použití \texttt{unionu} a pomocné proměnné, která ukládá datový typ uložené hodnoty. Příkladem budiž ukázka z autorova dřívějšího interpretu \cite[třída \texttt{CNodeValue}]{borsch}.
 
 \begin{verbatim}
 class CNodeValue
@@ -713,14 +715,14 @@ private:
 
     union
     {
-    	bool m_b;
+        bool m_b;
         int m_i;
         float m_f;
     };
 };
 \end{verbatim}
 
-Toto řešení je funkční, nicméně při více podporovaných datových typech a operacích začíná být extrémně nepřehledné a náchylné k chybám. Každá z funkcí implementujících například některou aritmetickou operaci musí obsahovat větvení podle typu, navíc, v případě binární operace, vnořené. Příkladem budiž ukázka části kódu sčítání z autorova dřívějšího interpretu \cite{borsch}.
+Toto řešení je funkční, nicméně při více podporovaných datových typech a operacích začíná být extrémně nepřehledné a náchylné k chybám. Každá z funkcí implementujících například některou aritmetickou operaci musí obsahovat větvení podle typu, navíc, v případě binární operace, vnořené.
 
 \begin{verbatim}
 const CNodeValue CNodeValue::operator+(const CNodeValue& object) const
@@ -756,7 +758,7 @@ Navrhovaný jazyk předpokládá dvanáct různých datových typů (viz sekce \
 \subsection{Double dispatching pattern}
 \label{double_dispatching_pattern}
 
-Odpovědí na všechny výše uvedené problémy je návrhový vzor \textit{Multiple dispatching} \cite{eckel}, který poskytuje možnost volání typových operací nad kombinací beztypových objektů. Základem je abstraktní třída \texttt{Value}, která deklaruje všechny potřebné operace -- pro každý datový typ a operaci jedna virtuální metoda, plus jedna čistě virtuální metoda pro neznámý datový typ.
+Odpovědí na všechny výše uvedené problémy je návrhový vzor \textit{Multiple dispatching} \cite[str. 679]{eckel}, který poskytuje možnost volání typových operací nad kombinací beztypových objektů. Základem je abstraktní třída \texttt{Value}, která deklaruje všechny potřebné operace -- pro každý datový typ a operaci jedna virtuální metoda, plus jedna čistě virtuální metoda pro neznámý datový typ.
 
 \begin{verbatim}
 class Value
@@ -887,25 +889,18 @@ Z toho dále vyplývá, že se musí objekty vytvářet dynamicky a s tím souvi
 
 \subsubsection{Garbage collector}
 
-% TODO: odkaz na literaturu
+Jednou z možností je naprogramovat a poté používat \textit{Garbage collector} obdobný javovskému. Velkou výhodou by bylo vyřešení naprosto všech, současných i budoucích, problémů s u\-vol\-ňo\-vá\-ním dynamické paměti. Nevýhodou složitá implementace a dodatečná režie při vykonávání. V případě použití nějakého již existujícího garbage collectoru vzniká závislost na externí knihovně a s tím souvisí i nižší či složitější přenositelnost programu.
 
-Jednou z možností je naprogramovat a poté používat \textit{Garbage collector} obdobný javovskému. Velkou výhodou by bylo vyřešení naprosto všech, současných i budoucích, problémů s uvolňováním dynamické paměti. Nevýhodou složitá implementace a dodatečná režie při vykonávání.
-
-V tomto případě se zdá, že nevýhody převažují nad výhodami. Navíc se přece jedná o návratovou hodnotu \textit{výhradně} jedné funkce, možná by stačilo zapouzdřit ukazatel na návratovou hodnotu do další třídy, která by se následně postarala o smazání.
+V tomto případě se zdá, že nevýhody převažují nad výhodami. Navíc se přece jedná o ná\-vra\-to\-vou hodnotu \textit{výhradně} jedné funkce, možná by stačilo zapouzdřit ukazatel na návratovou hodnotu do další třídy, která by se následně postarala o smazání.
 
 
 \subsubsection{Chytré ukazatele}
 
-% TODO: odkaz na literaturu
-% http://www.davethehat.com/articles/smartp.htm
-% http://ootips.org/yonat/4dev/smart-pointers.html
-% http://www.josuttis.com/libbook/cont/countptr.hpp.html
-
 Nejjednodužší implementací chytrých ukazatelů je šablona \texttt{auto\_ptr} ze standardní kni\-hov\-ny. Bude stačit nebo bude potřeba silnější nástroj? Po požádání se \texttt{auto\_ptr} stává výhradním vlastníkem ukazatele a při své destrukci smaže i předanou dynamickou paměť. Výhradní vlastník znamená, že v jednom okamžiku může existovat právě jedna \texttt{auto\_ptr} reference, na danou paměť.
 
-Splnit tento požadavek bohužel nelze. Chceme-li například vrátit hodnotu uloženou v proměnné interpretovaného skriptu, první referencí bude původní proměnná a druhou vracená hodnota. Musíme tedy hledat silnější nástroj.
+Splnit tento požadavek bohužel nelze. Chceme-li například vrátit hodnotu uloženou v pro\-měn\-né interpretovaného skriptu, první referencí bude původní proměnná a druhou vracená hodnota. Musíme tedy hledat silnější nástroj.
 
-Pokud je jediným problémem \texttt{auto\_ptr} pouze možný větší počet odkazů, můžeme použít chytrý ukazatel na bázi čítání referencí. Ten zapouzdřuje ukazatel na dynamický objekt spolu s čítačem referencí, který se při vytvoření objektu nastaví na jedna a při každém zavolání kopíravacího konstruktoru nebo operátoru přiřazení inkrementuje. V destruktoru se naopak počet referencí dekrementuje a při dosažení nulové hodnoty se objekt smaže.
+Pokud je jediným problémem \texttt{auto\_ptr} pouze možný větší počet odkazů, můžeme použít chytrý ukazatel na bázi čítání referencí \cite{smartp}. Ten zapouzdřuje ukazatel na dynamický objekt spolu s čítačem referencí, který se při vytvoření objektu nastaví na jedna a při každém zavolání kopíravacího konstruktoru nebo operátoru přiřazení inkrementuje. V destruktoru se naopak počet referencí dekrementuje a při dosažení nulové hodnoty se objekt smaže.
 
 Toto řešení by mohlo fungovat, jen je třeba si dát pozor na cyklické reference, kdy první objekt odkazuje na druhý a zároveň druhý objekt odkazuje na první, paměť by se nikdy neuvolnila. Tato situace bohužel může v interpretu nastat, protože právě tímto způsobem je uložena struktura grafu (viz kapitola \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}). Vrcholy obsahují seznam incidujících hran a hrany odkaz na počáteční a koncový uzel.
 
@@ -914,22 +909,22 @@ Z toho plyne, že pokud nebude na tomto konkrétním místě chytrý ukazatel s 
 
 \section{Grafické uživatelské rozhraní}
 
-Grafické uživatelské rozhraní bude naprogramováno s použitím knihovny Qt. Sestává z hlavního okna aplikace \texttt{QMainWindow}, jehož centrálním widgetem bude textový editor pro programátory na bázi \texttt{QPlainTextEdit}. Jedná se o MDI aplikaci, jednotlivé editory je možné přepínat, po vzoru webových prohlížečů, pomocí panelů či listů. Menu, nástrojová lišta a stavový řádek jsou pro daný typ aplikace samozřejmostí.
+Grafické uživatelské rozhraní bude naprogramováno s použitím knihovny Qt. Sestává z hlav\-ní\-ho okna aplikace \texttt{QMainWindow}, jehož centrálním widgetem bude textový editor pro programátory na bázi \texttt{QPlainTextEdit}. Jedná se o MDI aplikaci, jednotlivé editory je možné přepínat, po vzoru webových prohlížečů, pomocí panelů či listů. Menu, nástrojová lišta a stavový řádek jsou pro daný typ aplikace samozřejmostí.
 
-Knihovna Qt poskytuje možnost vkládat do okrajů hlavního okna plovoucí panely \texttt{QDockWidget}, jež mohou být přesunuty na jiné místo a také \textit{vytrhnuty} do samostatného okna. Tato funkcionalita se určitě hodí u vizualizací, v případě jednoho monitoru budou panelem v hlavním okně aplikace, zároveň však existuje možnost zobrazit ho i v samostatném okně na druhém monitoru.
+Knihovna Qt poskytuje možnost vkládat do okrajů hlavního okna plovoucí panely, objekty třídy \texttt{QDockWidget}, jež mohou být přesunuty na jiné místo a také \textit{vytrhnuty} do samostatného okna. Tato funkcionalita se určitě hodí u vizualizací, v případě jednoho monitoru budou panelem v hlavním okně aplikace, zároveň však existuje možnost zobrazit ho i v samostatném okně na druhém monitoru.
 
 Panelů může být definováno libovolné množství, pro začátek se kromě vizualizací před\-po\-klá\-dá i zobrazování výstupu z vykonávaného skriptu, seznam definovaných proměnných spolu s jejich hodnotami a zásobník volání funkcí.
 
 
 \section{Shrnutí}
 
-V této kapitole byly definovány základní myšlenky a rozhodnutí pro tvorbu interpretu speciálního programovacího jazyka pro manipulaci s grafy. Aplikace bude naprogramována v C++ s využitím standardní knihovny STL, grafická část v Qt a OpenGL.
+V této kapitole byly definovány základní myšlenky a rozhodnutí pro tvorbu interpretu spe\-ci\-ál\-ní\-ho programovacího jazyka pro manipulaci s grafy. Aplikace bude naprogramována v C++ s využitím standardní knihovny STL, grafická část v Qt a OpenGL.
 
 Analýza odhalila nemožnost reprezentovat graf maticí sousednosti ani jinými technikami, ve kterých je struktura grafu uložena centrálně. Navržené řešení spočívá v obecných množinách uzlů a hran, kde si uzly udržují seznam incidujících hran a hrany odkazy na svůj počáteční a koncový uzel. Díky této technice může být podporován libovolný typ grafů bez jakéhokoli omezení a hlavně s rozumnými složitostmi vykonávání všech operací.
 
 Hodnoty a proměnné ve skriptu budou implementovány pomocí hierarchie tříd, jednotlivé operace budou pracovat na bázi návrhového vzoru Double dispatching.
 
-Skript bude v interpretu reprezentován abstraktním stromem syntaxe. Jeho vykonávání spočívá v rekurzivním volání metody \texttt{execute()} nad každým uzlem tohoto stromu. Návratovou hodnotou bude chytrý ukazatel na bázi čítání referencí zapouzdřující obecnou hodnotu. Skript může být v případě debuggingu pozastaven technikami ví\-ce\-vlák\-no\-vé\-ho programování.
+Skript bude v interpretu reprezentován abstraktním stromem syntaxe. Jeho vykonávání spočívá v rekurzivním volání metody \texttt{execute()} nad každým uzlem tohoto stromu. Ná\-vra\-to\-vou hodnotou bude chytrý ukazatel na bázi čítání referencí zapouzdřující obecnou hodnotu. Skript může být v případě debuggingu pozastaven technikami ví\-ce\-vlák\-no\-vé\-ho programování.
 
 Grafické uživatelské rozhraní bude zahrnovat hlavní okno s textovým editorem pro programátory a několika speciálními plovoucí panely, které mohou být uživatelem vytrnuty do samostatného okna.
 
@@ -1017,11 +1012,9 @@ Pozorný čtenář si pravděpodobně uvědomil, že nejsou kontrolovány pouze 
 
 \subsubsection{Pořadí inicializace statických objektů}
 
-% TODO: literatura?
+Učebnice jazyka C++ se pouze velice zřídka věnují tématu \textit{pořadí inicializace statických objektů} (v angličtině Static object initialization order), jednou z mála výjimek je \cite{industrial_strength_cpp}. Jedná se o situaci, kdy linker při spojování jednotlivých modulů může způsobit zásadí nefunkčnost naprosto správného kódu!
 
-Učebnice jazyka C++, či jiná literatura zabývající se podobným tématem, se pouze velice zřídka věnují tématu \textit{pořadí inicializace statických objektů}. Jedná se o situaci, kdy linker při spojování jednotlivých modulů může způsobit zásadí nefunkčnost naprosto správného kódu!
-
-Termín \textit{statický objekt} je zde používán ve významu atributu třídy deklarovaného s modifikátorem \texttt{static}, jenž způsobí sdílení mezi všemi objekty dané třídy. Druhým problémovým typem mohou teoreticky být i globálně deklarované proměnné, to však autor práce nemá nijak ověřeno. Jako praktickou ukázku nastavší chyby můžeme použít \texttt{BaseObject::m\_allocated\_objects} z kapitoly \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}.
+Termín \textit{statický objekt} je zde používán ve významu atributu třídy deklarovaného s modifikátorem \texttt{static}, jenž způsobí sdílení mezi všemi objekty dané třídy. Druhým problémovým typem mohou teoreticky být i globálně deklarované proměnné, to však autor práce nemá nijak ověřeno. Jako praktickou ukázku nastavší chyby můžeme použít statickou proměnnou \texttt{BaseObject::m\_allocated\_objects} z kapitoly \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}.
 
 Statický objekt je vytvářen a inicializovanám ještě před vlastním spuštěním funkce \texttt{main()}. Jazyk C++ pro inicializaci používá speciální konstrukci zapsanou vně všech funkcí a tříd.
 
@@ -1047,18 +1040,18 @@ private:
 Singleton Singleton::m_instance;
 \end{verbatim}
 
-A nyní přichází zásadní otázka. Bude \texttt{BaseObject::m\_allocated\_objects} inicializováno dříve než \texttt{Singleton::m\_instance}, či naopak? Jedná se o zásadní otázku, protože \texttt{Singleton} dědí od \texttt{BaseObject} a pracuje s \texttt{m\_allocated\_objects}, které v tuto chvíli ještě nemusí existovat.
+A nyní přichází otázka: Bude \texttt{BaseObject::m\_allocated\_objects} inicializováno dříve než \texttt{Singleton::m\_instance}, či naopak? Jedná se o zásadní otázku, protože \texttt{Singleton} dědí od \texttt{BaseObject} a pracuje s \texttt{m\_allocated\_objects}, které v tuto chvíli ještě nemusí existovat.
 
 Vše tedy závisí na linkeru, nevhodné pořadí spojování modulů může způsobit pád aplikace ještě před vlastním spuštěním funkce \texttt{main()} -- \textit{neoprávněný přístup do paměti}.
 
-Pokud nejde použití statických objektů v aplikaci zamezit nebo je jiné řešení silně nepraktické, existuje proti chybě relativně snadná obrana. Stačí založit nový soubor se zdrojovými kódy a do něj přesunout naprosto všechny statické inicializace. Nahoru je třeba zapsat ty, jenž se musejí provést nejdříve, a dolů ty, které na nich závisí. V naší demonstraci by obsah souboru vypadal následovně.
+Pokud nejde použití statických objektů v aplikaci zamezit nebo je jiné řešení silně nepraktické, existuje proti chybě relativně snadná obrana. Stačí založit nový soubor se zdrojovými kódy a do něj přesunout naprosto všechny statické inicializace. Jazyk C++ garantuje pořadí inicializace objektů v rámci jednotlivých modulů. Nahoru je tedy třeba zapsat ty, jenž se musejí provést nejdříve, a dolů ty, které na nich závisí. V naší demonstraci by obsah souboru vypadal následovně.
 
 \begin{verbatim}
 set<BaseObject*> BaseObject::m_allocated_objects;
 Singleton Singleton::m_instance;
 \end{verbatim}
 
-Je pravda, že výše uvedená ukázka je k chybě výrazně náchylnější než běžná použití statických objektů, nicméně autor se již v minulosti setkal s podobným problémem, který ovšem nezpůsoboval tak zásadní nefunkčnost. V obou případech se navíc jednalo o dva různé kompilátory -- Microsoft Visual Studio oproti GNU gcc.
+Je pravda, že výše uvedená ukázka je k chybě výrazně náchylnější než běžná použití statických objektů, nicméně autor se již v minulosti setkal s podobným problémem, který ovšem nezpůsoboval tak zásadní nefunkčnost. V obou případech se navíc jednalo o dva různé kompilátory -- Microsoft Visual Studio 2005 oproti GNU gcc.
 
 
 \subsection{Hodnoty a proměnné ve skriptu, Value* hierarchie tříd}
@@ -1078,16 +1071,16 @@ Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \
 
 % Třída \texttt{Value} dále definuje metodu \texttt{toBool()}, jež umožňuje přetypování libovolného objektu na logickou hodnotu, využívána je především operátory AND a OR. Metoda \texttt{isNull()} slouží pro dotaz, zda se jedná o \textit{plnohodnotný} typ, či o \texttt{ValueNull} hodnotu. Konverzi na textovou reprezentaci zapouzdřené hodnoty je možné provést zavoláním metody \texttt{toString()}.
 
-K dotazu, zda je možné do daného objektu přiřadit jinou hodnotu, poslouží metoda \texttt{isLValue()}. Vlastní přiřazení je následně možné provést pomocí funkcí \texttt{assign()} a \texttt{assignRef()} -- detaily viz kapitola \ref{valuereference_a_prirazovani_do_promennych} na straně \pageref{valuereference_a_prirazovani_do_promennych}.
+K dotazu, zda je možné do objektu přiřadit jinou hodnotu, poslouží metoda \texttt{isLValue()}. Vlastní přiřazení je následně možné provést pomocí funkcí \texttt{assign()} a \texttt{assignRef()} -- detaily viz kapitola \ref{valuereference_a_prirazovani_do_promennych} na straně \pageref{valuereference_a_prirazovani_do_promennych}.
 
-Iterování přes prvky složených datových typů je podporováno metodami \texttt{iterator()}, \texttt{hasNext()}, \texttt{next()} a \texttt{resetIterator()}. Jednoduché datové typy nejsou iterovatelné, a proto jakékoli pokusy o procházení hned na začátku odmítnou.
+Iterování přes prvky složených datových typů je podporováno čtyřmi metodami \texttt{iterator()}, \texttt{hasNext()}, \texttt{next()} a \texttt{resetIterator()}. Jednoduché datové typy nejsou iterovatelné, a proto jakékoli pokusy o procházení hned na začátku odmítnou.
 
 Potomci, především grafové třídy, definují i další specifické metody. Ke konverzi z obecného \texttt{Value} ukazatele na konkrétní datový typ slouží skupina virtuálních funkcí \texttt{toValueBool()}, \texttt{toValueInt()} atd., které vracejí \texttt{NULL}, pokud se nejedná o daný datový typ. Použití leží především v zabudovaných funkcích interpretu, které v parametru předpokládají konkrétní datový typ a volají jeho specifické operace. Na tomto místě by šlo samozřejmě použít i RTTI přetypování \texttt{dynamic\_cast}, obě techniky jsou ekvivalentní.
 
 
 \subsubsection{ValueNull a ValueBool}
 
-Obě tyto třídy jsou definovány jako singleton a v kódu mohou být používány pomocí zkráceného zápisu \texttt{VALUENULL}, \texttt{VALUEBOOL\_TRUE} a \texttt{VALUEBOOL\_FALSE}. Jedná se o makro, které volá statickou metodu \texttt{getInstance()}.
+Obě tyto třídy jsou definovány jako singleton a v kódu mohou být používány pomocí zkrá\-ce\-né\-ho zápisu \texttt{VALUENULL}, \texttt{VALUEBOOL\_TRUE} a \texttt{VALUEBOOL\_FALSE}. Jedná se o makro, které volá statickou metodu \texttt{getInstance()}.
 
 Implementace pomocí singletonu byla zvolena z důvodu, aby nebylo nutné neustále vytvářet nové a nové ekvivalentní objekty.
 
@@ -1211,26 +1204,61 @@ public:                                       \
 };
 \end{verbatim}
 
-Jedná se o plně funkční kód v profesionální praxi běžně používaný, ale obecně špatně navržený. Kvůli těmto konstrukcím není možný debugging a také nefunguje automatické do\-pl\-ňo\-vá\-ní, protože s podobným zápisem tvůrci žádného IDE zkrátka nepočítali. Počáteční úsporu a zrychlení velice rychle, při prvních problémech a neúspěšných pokusech o ladění, vystřídají myšlenky na kompletní přepsání.
+Jedná se o plně funkční kód v profesionální praxi běžně používaný, ale obecně špatně na\-vr\-že\-ný. Kvůli těmto konstrukcím není možný debugging a také nefunguje automatické do\-pl\-ňo\-vá\-ní, protože s podobným zápisem tvůrci žádného IDE zkrátka nepočítali. Počáteční úsporu a zrychlení velice rychle, při prvních problémech a neúspěšných pokusech o ladění, vystřídají myšlenky na kompletní přepsání.
 
-Řešením situace je sáhnout po externím skriptu, jehož jediným posláním bude podle připravené šablony generovat C++ soubory s definicí jednotlivých tříd. Pokud vznikne požadavek na úpravu, změní se šablona a skript všechny soubory během krátké chvíle automaticky přegeneruje.
+Řešením situace je sáhnout po externím skriptu, jehož jediným posláním bude podle při\-pra\-ve\-né šablony generovat C++ soubory s definicí jednotlivých tříd. Pokud vznikne požadavek na úpravu, změní se šablona a skript všechny soubory během krátké chvíle automaticky přegeneruje.
 
-V aplikaci toto navržené řešení používají jednoduché, avšak výkonné, perlovské skripty \texttt{gen\_operators.pl} a \texttt{gen\_builtin.pl}, které generují C++ kód unárních i binárních operátorů a také zabudovaných funkcí.
+V aplikaci toto navržené řešení používají jednoduché perlovské skripty \texttt{gen\_operators.pl} a \texttt{gen\_builtin.pl}, které generují C++ kód unárních i binárních operátorů a také zabudovaných funkcí.
 
 
 \subsection{Lexikální analyzátor}
 
-Z větší části převzatý Borsch a rozšířený
-http://woq.nipax.cz/borsch/devel.php
+Jako základ pro lexikální analyzátor byl použit zdrojový kód z předchozího autorova projektu \cite[třída \texttt{CLexan}]{borsch}. Jeho jádrem je rozsáhlý stavový automat, který zpracovává příchozí znaky a v závislosti na nich vrací lexikální tokeny.
+
+Analyzátor bere v úvahu konstanty \texttt{\_\_FILE\_\_}, \texttt{\_\_LINE\_\_} a \texttt{\_\_FUNCTION\_\_}, které se při svém použití automaticky nahrazují za pozice ve zdrojových kódech. Dalšími vnitřními příkazy jsou definování jednoduchých bezparametrických maker a vkládání externích souborů.
 
 \begin{verbatim}
-// Identifikatory, retezec -> id
-// Slozitost: generovani, pouziti id, zpetne dotazovani na retezce
-http://zdrojak.root.cz/clanky/javascript-implementace-v-prohlizecich/
-http://links.twibright.com/doc/projektova.pdf - links projektová
-	dokumentace
-http://links.twibright.com/doc/vyvojova.pdf - vývojová dokumentace
+define("name", "value");
+include("filename");
 \end{verbatim}
+
+
+\subsubsection{Procházení zdrojových dat}
+
+Makra i inkludované soubory se ve svém principu zpracovávají naprosto stejně. Lexikální analyzátor obsahuje zásobník objektů typu \texttt{LexanIterator}, který slouží pro zanoření se do další úrovně ve zdrojových kódech. Například při inkludování souboru se na vrcholu zásobníku vytvoří nová položka, při dokončení jeho zpracování se naopak odstraní. Překlad končí ve chvíli, kdy je zásobník vyprázdněn.
+
+Abstraktní třída \texttt{LexanIterator} definuje rozhraní pro nejnižší vrstvu -- vlastní čtení znaků. Jediný požadavek na potomky je specifikace metody \texttt{get()}, která má za úkol vrátit následující znak v pořadí a \texttt{unget()} sloužící pro návrat o znak zpátky. Třída dále ukládá pozici ve zdrojových kódech používanou především ve zprávách v případě chyby.
+
+Aktuálně jsou definováni pouze dva potomci. \texttt{LexanIteratorFile} má za úkol iterovat přes znaky v souboru, používá ho konstrukce \texttt{include} a \texttt{Le\-xan\-Ite\-ra\-tor\-String} zpracovává ře\-těz\-ce, slouží pro rozbalování \texttt{define} maker. V budoucnu je možné, bez větších zásahů do aplikace, přidat další zdroje, například soubory nahrávané z internetu.
+
+
+\subsubsection{Identifikátory}
+
+Řetězcové identifikátory, jména proměnných a funkcí, jsou během lexikální analýzy nahrazovány za celočíselné, stejnou myšlenku používá i interpret JavaScriptu ve webovém prohlížeči Links \cite[str. 25]{links}.
+
+Ve chvíli, kdy lexikální analyzátor narazí ve zdrojovém proudu na shluk znaků, který by mohl být identifikátorem, zkontroluje nejdříve, zda se nejedná o klíčové slovo. V případě negativního výsledku projde seznam skriptem definovaných maker a pokusí se je rozbalit. Neuspěje-li ani zde, použije makro \texttt{STR2ID(string)}, které požádá tabulku symbolů, třídu \texttt{StringTable}, o překlad řetězce na celočíselný identifikátor. Opačný směr umožňuje makro \texttt{ID2STR(identifier)}.
+
+Algoritmus překladu je velice jednoduchý. Tabulka symbolů obsahuje obyčejné pole, jehož jednotlivé položky ukládají řetězcovou reprezentaci, hodnota indexu představuje reprezentaci číselnou. Při žádosti o překlad z řetězce na identifikátor, zkusí třída najít a vrátit pozici již existujícího prvku. Pokud neuspěje, přidá řetězec na konec pole a vrátí jeho pozici. Složitost operace vychází v nejhorším případě lineární, musí se projít všechny prvky. Opačný směr představuje operaci s konstatní složitostí, identifikátor je současně indexem do pole.
+
+\begin{verbatim}
+identifier StringTable::getID(const string& str)
+{
+    vector<string>::iterator pos = find(m_data.begin(), m_data.end(), str);
+
+    if(pos == m_data.end())
+        m_data.push_back(str);
+
+    return pos - m_data.begin();
+}
+
+string& StringTable::getString(identifier id)
+{
+    assert(id < m_data.size());
+    return m_data[id];
+}
+\end{verbatim}
+
+Hlavní výhodou této techniky je vyšší rychlost interpretace, porovnání dvou čísel trvá mnohem kratší dobu než porovnání dvou řetězců. Úspora vzniká při každém přístupu k hodnotě proměnné a při volání funkcí. Druhá z výhod spočívá ve snížených paměťových nárocích, všechny řetězce jsou uloženy na jednom místě a ve skriptu je reprezentují pouze celočíselné hodnoty. Jak už bylo zmíněno, jediné zpomalení nastává při vytváření tabulky symbolů, je přímo úměrné počtu různých identifikátorů ve zdrojovém textu.
 
 
 \subsection{Gramatika, Bison}
@@ -1305,6 +1333,9 @@ Recursive traversion of AST, mutexes
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
+
+% http://www.fit.vutbr.cz/~martinek/latex/czechiso.html.cs.iso-8859-2
+% http://cs.wikipedia.org/wiki/BibTeX
 
 \bibliographystyle{czechiso}
 {
