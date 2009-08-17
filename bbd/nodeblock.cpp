@@ -18,6 +18,7 @@
  */
 
 
+#include <algorithm>
 #include "nodeblock.hpp"
 #include "valuenull.hpp"
 
@@ -41,14 +42,7 @@ NodeBlock::NodeBlock(Node* node)
 
 NodeBlock::~NodeBlock()
 {
-	list<Node*>::iterator it;
-
-	for(it = m_commands.begin(); it != m_commands.end(); it++)
-	{
-		delete (*it);
-		*it = NULL;
-	}
-
+	for_each(m_commands.begin(), m_commands.end(), DeleteObject());
 	m_commands.clear();
 }
 

@@ -77,4 +77,18 @@ inline string char2string(char ch)
 	return string(tmp);
 }
 
-#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//// 
+
+class DeleteObject
+{
+public:
+	template <typename TYPE> void operator()(const TYPE* ptr) const
+	{
+		delete ptr;
+		ptr = NULL;
+	}
+};
+
+#endif // __GENERAL_HPP__

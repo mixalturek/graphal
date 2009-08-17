@@ -18,6 +18,7 @@
  */
 
 
+#include <algorithm>
 #include "valuegraph.hpp"
 #include "logger.hpp"
 #include "valuebool.hpp"
@@ -43,19 +44,10 @@ ValueGraph::ValueGraph(bool oriented)
 
 ValueGraph::~ValueGraph()
 {
-	set<ValueVertex*>::const_iterator vit;
-	for(vit = m_vertices.begin(); vit != m_vertices.end(); vit++)
-		delete *vit;
-
-	set<ValueEdge*>::const_iterator eit;
-	for(eit = m_edges.begin(); eit != m_edges.end(); eit++)
-		delete *eit;
-
-	for(vit = m_vertices_deleted.begin(); vit != m_vertices_deleted.end(); vit++)
-		delete *vit;
-
-	for(eit = m_edges_deleted.begin(); eit != m_edges_deleted.end(); eit++)
-		delete *eit;
+	for_each(m_vertices.begin(), m_vertices.end(), DeleteObject());
+	for_each(m_edges.begin(), m_edges.end(), DeleteObject());
+	for_each(m_vertices_deleted.begin(), m_vertices_deleted.end(), DeleteObject());
+	for_each(m_edges_deleted.begin(), m_edges_deleted.end(), DeleteObject());
 }
 
 
