@@ -131,17 +131,20 @@ int main(int argc, char** argv)
 
 		generateBuiltinFunctions();
 
-		if(parseCode(argv[i]) == 0)
+		if(i < argc)
 		{
-			if(ast_dump)
-				CONTEXT.dump(cout, 0);
+			if(parseCode(argv[i]) == 0)
+			{
+				if(ast_dump)
+					CONTEXT.dump(cout, 0);
 
-			CONTEXT.executeScriptMain(argc-i, &argv[i]);
-		}
-		else
-		{
-			ERR(_("Error while parsing"));
-			error_occured = true;
+				CONTEXT.executeScriptMain(argc-i, &argv[i]);
+			}
+			else
+			{
+				ERR(_("Error while parsing"));
+				error_occured = true;
+			}
 		}
 	}
 	catch(runtime_error& ex)
