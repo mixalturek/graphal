@@ -9,10 +9,6 @@ error message "variable not defined" if not assigning
 create bbd library
 
 
-valgrind --leak-check=yes ./bbd --unit-tests ../samples/tests.txt
-	detects CountPtr::m_num memory leak which is caused by CountPtr::dontDeleteAutomatically()
-
-
 
 Bison
 	rewrite parser to C++ (it is in documentation)
@@ -33,6 +29,8 @@ gui
 		QPlainTextEdit::insertPlainText ( const QString & text )
 		edit->textCursor().insertText(text);
 	QFileDialog - default path, file types, save directory to the settings
+
+write doxygen documentation
 
 
 ////////////////////////////////////////////////////////////////////////////

@@ -32,14 +32,16 @@ template<class TYPE> class CountPtr
 public:
 	explicit CountPtr(TYPE* simpleptr)
 		: m_ptr(simpleptr),
-		m_num(new uint(1))
+		m_num(new uint(1)),
+		m_delete_automatically(new bool(true))
 	{
 		assert(simpleptr != NULL);
 	}
 
 	CountPtr(const CountPtr<TYPE>& cntptr)
 		: m_ptr(cntptr.m_ptr),
-		m_num(cntptr.m_num)
+		m_num(cntptr.m_num),
+		m_delete_automatically(cntptr.m_delete_automatically)
 	{
 		++*m_num;
 	}
@@ -56,6 +58,7 @@ public:
 			free();
 			m_ptr = cntptr.m_ptr;
 			m_num = cntptr.m_num;
+			m_delete_automatically = cntptr.m_delete_automatically;
 			++*m_num;
 		}
 
@@ -93,7 +96,7 @@ public:
 	// Vertices and Edges in ValueGraph
 	void dontDeleteAutomatically(void)
 	{
-		++*m_num;
+		*m_delete_automatically = false;
 	}
 
 
@@ -109,14 +112,21 @@ private:
 		{
 			delete m_num;
 			m_num = NULL;
-			delete m_ptr;
+
+			if(*m_delete_automatically == true)
+				delete m_ptr;
+
 			m_ptr = NULL;
+
+			delete m_delete_automatically;
+			m_delete_automatically = NULL;
 		}
 	}
 
 private:
 	TYPE* m_ptr;
 	uint* m_num;
+	bool* m_delete_automatically;
 };
 
 #endif // COUNTPTR_HPP
