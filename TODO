@@ -9,10 +9,8 @@ error message "variable not defined" if not assigning
 create bbd library
 
 
-valgrind --leak-check=yes ./bbd --unit-tests ../samples/01_factorial.txt
-	testGraph
-valgrind --leak-check=yes ./bbd ../samples/tests.txt
-	ValueGraph::deleteVertex()
+valgrind --leak-check=yes ./bbd --unit-tests ../samples/tests.txt
+	detects CountPtr::m_num memory leak which is caused by CountPtr::dontDeleteAutomatically()
 
 
 

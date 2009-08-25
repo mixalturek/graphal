@@ -80,10 +80,10 @@ ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end)
 
 void ValueGraph::deleteVertex(ValueVertex* vertex)
 {
-	set<ValueEdge*>* edges = vertex->getEdges();
+	set<ValueEdge*> edges = vertex->getEdgesCopy();
 
 	set<ValueEdge*>::iterator it;
-	for(it = edges->begin(); it != edges->end(); it++)
+	for(it = edges.begin(); it != edges.end(); it++)
 		deleteEdge(*it);
 
 	m_vertices.erase(vertex);
