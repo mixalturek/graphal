@@ -28,8 +28,7 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-
-ValueStruct::ValueStruct()
+ValueStruct::ValueStruct(void)
 	: Value(),
 	m_val(),
 	m_it()
@@ -37,10 +36,15 @@ ValueStruct::ValueStruct()
 
 }
 
-
-ValueStruct::~ValueStruct()
+ValueStruct::~ValueStruct(void)
 {
 
+}
+
+void ValueStruct::clear(void)
+{
+	m_val.clear();
+	resetIterator();
 }
 
 

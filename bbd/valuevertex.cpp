@@ -46,6 +46,11 @@ ValueVertex::~ValueVertex()
 	m_properties = NULL;
 }
 
+void ValueVertex::clear(void)
+{
+	m_properties->clear();
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////

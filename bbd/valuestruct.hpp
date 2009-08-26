@@ -31,8 +31,9 @@ class ValueReference;
 class ValueStruct: public Value
 {
 public:
-	ValueStruct();
-	virtual ~ValueStruct();
+	ValueStruct(void);
+	virtual ~ValueStruct(void);
+	void clear(void);
 
 public:
 	CountPtr<Value> setItem(identifier name, CountPtr<Value> val);

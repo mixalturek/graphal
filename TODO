@@ -7,7 +7,7 @@ g.setPropertyToAllVertices();
 g.setPropertyToAllEdges();
 error message "variable not defined" if not assigning
 create bbd library
-
+built-in function for adjacency matrix creation
 
 
 Bison

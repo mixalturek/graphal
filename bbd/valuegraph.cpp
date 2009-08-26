@@ -88,6 +88,7 @@ void ValueGraph::deleteVertex(ValueVertex* vertex)
 
 	m_vertices.erase(vertex);
 	m_vertices_deleted.insert(vertex);
+	vertex->clear();
 }
 
 void ValueGraph::deleteEdge(ValueEdge* edge)
@@ -96,6 +97,7 @@ void ValueGraph::deleteEdge(ValueEdge* edge)
 	edge->getEndVertex()->deleteEdge(edge);
 	m_edges.erase(edge);
 	m_edges_deleted.insert(edge);
+	edge->clear();
 }
 
 

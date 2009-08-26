@@ -39,9 +39,15 @@ ValueEdge::ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end)
 	assert(end != NULL);
 }
 
-ValueEdge::~ValueEdge()
+ValueEdge::~ValueEdge(void)
 {
 	delete m_properties;
+	m_properties = NULL;
+}
+
+void ValueEdge::clear(void)
+{
+	m_properties->clear();
 }
 
 

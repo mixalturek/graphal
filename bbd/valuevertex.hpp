@@ -36,6 +36,7 @@ public:
 	// Don't define copy constructor or operator=, shallow copy must be used!
 	ValueVertex(ValueGraph* graph);
 	virtual ~ValueVertex();
+	void clear(void);
 
 	virtual bool     toBool(void) const { return true; }
 	virtual string toString(void) const { return "#Vertex"; }

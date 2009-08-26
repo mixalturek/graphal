@@ -32,7 +32,8 @@ class ValueEdge : public Value
 public:
 	// Don't define copy constructor or operator=, shallow copy must be used!
 	ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end);
-	virtual ~ValueEdge();
+	virtual ~ValueEdge(void);
+	void clear(void);
 
 	virtual bool     toBool(void) const { return true; }
 	virtual string toString(void) const { return "#Edge"; }
