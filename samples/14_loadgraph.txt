@@ -1,0 +1,6 @@
+function main(argv)
+{
+	g = graph();
+	verify(g.loadFromFile("../graphs/00_simple.txt"));
+	g.dump();
+}

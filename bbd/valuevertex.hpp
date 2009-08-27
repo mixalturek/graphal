@@ -65,6 +65,7 @@ public:
 
 private:
 	friend ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end);
+	friend bool ValueGraph::loadFromFile(const string& filename);
 	void addEdge(ValueEdge* edge);
 
 	friend void ValueGraph::deleteEdge(ValueEdge* edge);

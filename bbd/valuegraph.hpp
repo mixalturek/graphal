@@ -41,6 +41,8 @@ public:
 	virtual bool     toBool(void) const { return !m_vertices.empty(); }
 	virtual string toString(void) const { return "#Graph"; }
 
+	bool loadFromFile(const string& filename);
+
 	bool isOriented(void) const { return m_oriented; }
 	bool setOriented(bool oriented) { bool ret = m_oriented; m_oriented = oriented; return ret; }
 	void invertEdgesOrientation(void);

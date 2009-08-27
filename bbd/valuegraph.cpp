@@ -18,6 +18,8 @@
  */
 
 
+#include <fstream>
+#include <vector>
 #include <algorithm>
 #include "valuegraph.hpp"
 #include "logger.hpp"
@@ -26,6 +28,9 @@
 #include "valueedge.hpp"
 #include "valuevertexset.hpp"
 #include "valueedgeset.hpp"
+#include "context.hpp"
+#include "valueint.hpp"
+#include "valuefloat.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -48,6 +53,131 @@ ValueGraph::~ValueGraph()
 	for_each(m_edges.begin(), m_edges.end(), DeleteObject());
 	for_each(m_vertices_deleted.begin(), m_vertices_deleted.end(), DeleteObject());
 	for_each(m_edges_deleted.begin(), m_edges_deleted.end(), DeleteObject());
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool ValueGraph::loadFromFile(const string& filename)
+{
+	ifstream is(filename.c_str());
+
+	if(!is.is_open())
+	{
+		WARN_P(_("File was not found or is not readable: ") + filename);
+		return false;
+	}
+
+	m_vertices.clear();
+	m_edges.clear();
+
+	int num_vertices = 0;
+	int num_edges = 0;
+	int num_vertices_props = 0;
+	int num_edges_props = 0;
+	vector<identifier> vertices_props;
+	vector<identifier> edges_props;
+	map<int, ValueVertex*> vertices;
+
+	// Is oriented flag, number of vertices, number of edges
+	is >> m_oriented;
+	is >> num_vertices;
+	is >> num_edges;
+
+	// Number of properties for vertices, names of properties for vertices
+	is >> num_vertices_props;
+	vertices_props.reserve(num_vertices_props);
+
+	for(int i = 0; i < num_vertices_props; i++)
+	{
+		string name;
+		is >> name;
+		vertices_props.push_back(STR2ID(name));
+	}
+
+	// Number of properties for edges, names of properties for edges
+	is >> num_edges_props;
+	edges_props.reserve(num_edges_props);
+
+	for(int i = 0; i < num_edges_props; i++)
+	{
+		string name;
+		is >> name;
+		edges_props.push_back(STR2ID(name));
+	}
+
+	// Vertices
+	for(int j = 0; j < num_vertices; j++)
+	{
+		int id = 0;
+		is >> id;
+
+		ValueVertex* vertex = new ValueVertex(this);
+		vertex->setItem(STR2ID("__id"), CountPtr<Value>(new ValueInt(id)));
+
+		for(int i = 0; i < num_vertices_props; i++)
+		{
+			float value = 0.0f;
+			is >> value;
+			vertex->setItem(vertices_props[i], CountPtr<Value>(new ValueFloat(value)));
+		}
+
+		m_vertices.insert(vertex);
+		vertices.insert(make_pair(id, vertex));
+	}
+
+	// Edges
+	for(int j = 0; j < num_edges; j++)
+	{
+		int id = 0;
+		is >> id;
+
+		ValueVertex* begin = vertices[id];
+		if(begin == NULL)
+		{
+			stringstream sstream;
+			sstream << _("Vertex with ID ") << id << _(" hasn't been defined");
+			WARN_P(sstream.str());
+			is.close();
+			return false;
+		}
+
+		is >> id;
+
+		ValueVertex* end = vertices[id];
+		if(end == NULL)
+		{
+			stringstream sstream;
+			sstream << _("Vertex with ID ") << id << _(" hasn't been defined");
+			WARN_P(sstream.str());
+			is.close();
+			return false;
+		}
+
+		ValueEdge* edge = new ValueEdge(this, begin, end);
+		begin->addEdge(edge);
+		end->addEdge(edge);
+
+		for(int i = 0; i < num_edges_props; i++)
+		{
+			float value = 0.0f;
+			is >> value;
+			edge->setItem(edges_props[i], CountPtr<Value>(new ValueFloat(value)));
+		}
+
+		m_edges.insert(edge);
+	}
+
+	if(!is.good())
+	{
+		WARN_P(_("An error occurred during the graph loading, stream state indicates problem"));
+		is.close();
+		return false;
+	}
+
+	is.close();
+	return true;
 }
 
 

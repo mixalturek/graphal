@@ -191,7 +191,10 @@ genBFClass('echo', 'NodeBuiltinEcho', 1, $code);
 $funcdecl = 'dump(object) : object';
 
 $code = <<END_OF_CODE;
-	par[0]->dump(cout, 0);// TODO: GUI???
+	ostringstream os;
+	par[0]->dump(os, 0);
+	SCRIPT_STDOUT(os.str());
+
 	return par[0];
 END_OF_CODE
 genBFClass('dump', 'NodeBuiltinDump', 1, $code);
@@ -748,6 +751,32 @@ genBFClass('front', 'NodeBuiltinFront', 1, $code, $include);
 $funcdecl = 'graph() : graph';
 
 genBFClass('graph', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");
+
+
+#############################################################################
+####
+
+$funcdecl = 'loadFromFile(graph, string) : bool';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+#include "valuestring.hpp"
+#include "valuebool.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+	ValueString* path = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL && (path = par[1]->toValueString()) != NULL)
+		return g->loadFromFile(path->getVal()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
+	else
+	{
+		WARN_P(_("Bad parameters type: $funcdecl"));
+		return VALUEBOOL_FALSE;
+	}
+END_OF_CODE
+genBFClass('loadFromFile', 'NodeBuiltinLoadFromFile', 2, $code, $include);
 
 
 #############################################################################

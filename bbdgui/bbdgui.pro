@@ -132,6 +132,7 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinassert.cpp \
     ../bbd/nodebuiltinarray.cpp \
     ../bbd/nodebuiltinadd.cpp \
+    ../bbd/nodebuiltinloadfromfile.cpp \
     ../bbd/nodebuiltin_inst.cpp \
     ../bbd/nodeblock.cpp \
     ../bbd/nodebinarysub.cpp \
@@ -287,6 +288,7 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinassert.hpp \
     ../bbd/nodebuiltinarray.hpp \
     ../bbd/nodebuiltinadd.hpp \
+    ../bbd/nodebuiltinloadfromfile.hpp \
     ../bbd/nodebuiltin_inst.hpp \
     ../bbd/nodeblock.hpp \
     ../bbd/nodebinarysub.hpp \
