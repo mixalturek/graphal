@@ -205,6 +205,8 @@
 		<Unit filename="nodebuiltinisvertexset.hpp" />
 		<Unit filename="nodebuiltiniterator.cpp" />
 		<Unit filename="nodebuiltiniterator.hpp" />
+		<Unit filename="nodebuiltinloadfromfile.cpp" />
+		<Unit filename="nodebuiltinloadfromfile.hpp" />
 		<Unit filename="nodebuiltinnext.cpp" />
 		<Unit filename="nodebuiltinnext.hpp" />
 		<Unit filename="nodebuiltinpopback.cpp" />
