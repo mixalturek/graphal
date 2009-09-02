@@ -30,7 +30,7 @@ class ValueIdentifier : public Value
 {
 public:
 	ValueIdentifier(identifier val);
-	virtual ~ValueIdentifier();
+	virtual ~ValueIdentifier(void);
 
 public:
 	identifier       getName(void) const { return m_val; }
@@ -277,7 +277,7 @@ public:
 	virtual PTR_Value logNOT(void)               const; // !
 
 private:
-	identifier m_val;
+	const identifier m_val;
 };
 
 ostream& operator<<(ostream& os, const ValueReference& node);

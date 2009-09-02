@@ -60,8 +60,8 @@ public:
 
 	void pushLocal(identifier function_name, const CodePosition* return_address);
 	void popLocal(void);
-	identifier getExecutedFunctionName(void) const { return m_call_stack.back().getFunctionName(); }
-	int getStackSize(void) const { return m_call_stack.size(); }
+	identifier getExecutedFunctionName(void) const;
+	int getStackSize(void) const;
 	void printStackTrace() const;
 	const deque<CallStackItem>& getCallStack(void) const { return m_call_stack; }
 
@@ -73,11 +73,11 @@ public:
 	// TODO: move to settings class
 	void addIncludeDirectory(const string& directory);
 	string getIncludeFullPath(const string& filename) const;
-	void clearIncludeDirectories(void) { m_include_dirs.clear(); }
+	void clearIncludeDirectories(void);
 
-	virtual void setPosition(const CodePosition* pos) { m_position = pos; }
-	virtual void setPositionEnterToFunction(const CodePosition* pos) { m_position = pos; }
-	virtual void setPositionReturnFromFunction(const CodePosition* pos) { m_position = pos; }
+	virtual void setPosition(const CodePosition* pos);
+	virtual void setPositionEnterToFunction(const CodePosition* pos);
+	virtual void setPositionReturnFromFunction(const CodePosition* pos);
 	const CodePosition* getPosition(void) const { return m_position; }
 
 	virtual void breakpoint(void);
@@ -85,8 +85,8 @@ public:
 	virtual void debugStep(void) { }
 	virtual void debugOver(void) { }
 	virtual void debugOut(void) { }
-	virtual void enableBreakpoints(bool enable) { m_breakpointsEnabled = enable; }
-	virtual bool isBreakpointsEnabled(void) { return m_breakpointsEnabled; }
+	virtual void enableBreakpoints(bool enable);
+	virtual bool isBreakpointsEnabled(void);
 
 private:
 	Context(const Context& object);

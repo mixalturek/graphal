@@ -21,6 +21,7 @@
 #include <cassert>
 #include <algorithm>
 #include "stringtable.hpp"
+#include "objectcreator.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -44,6 +45,7 @@ StringTable::~StringTable()
 
 identifier StringTable::getID(const string& str)
 {
+	ACCESS_MUTEX_LOCKER;
 	vector<string>::const_iterator pos = find(m_data.begin(), m_data.end(), str);
 
 	if(pos == m_data.end())
@@ -54,6 +56,7 @@ identifier StringTable::getID(const string& str)
 
 string& StringTable::getString(identifier id)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(id < m_data.size());
 	return m_data[id];
 }
@@ -64,6 +67,8 @@ string& StringTable::getString(identifier id)
 
 void StringTable::dump(ostream& os, uint indent) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	dumpIndent(os, indent);
 	os << "<StringTable>" << endl;
 
@@ -82,4 +87,24 @@ ostream& operator<<(ostream& os, const StringTable& node)
 {
 	node.dump(os, 0);
 	return os;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+uint StringTable::getNumStrings(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_data.size();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void StringTable::clear(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	m_data.clear();
 }

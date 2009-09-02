@@ -121,7 +121,7 @@ public:
 	virtual PTR_Value index(const ValueArray& left) const;
 
 private:
-	int m_val;
+	const int m_val;
 };
 
 ostream& operator<<(ostream& os, const ValueInt& node);

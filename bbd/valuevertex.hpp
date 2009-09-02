@@ -35,7 +35,7 @@ class ValueVertex : public Value
 public:
 	// Don't define copy constructor or operator=, shallow copy must be used!
 	ValueVertex(ValueGraph* graph);
-	virtual ~ValueVertex();
+	virtual ~ValueVertex(void);
 	void clear(void);
 
 	virtual bool     toBool(void) const { return true; }
@@ -49,7 +49,7 @@ public:
 	set<ValueEdge*>* getEdges(void) { return m_edges; }
 	set<ValueEdge*> getEdgesCopy(void) { return *m_edges; }
 
-	uint getDegree(void) const { return m_edges->size(); }
+	uint getDegree(void) const;
 	ValueVertexSet* getNeighbors(void);// Caller have to delete the memory
 
 	ValueGraph* getGraph(void) { return m_graph; }

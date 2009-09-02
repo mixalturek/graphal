@@ -33,19 +33,19 @@ class ValueEdgeSet : public Value
 public:
 	ValueEdgeSet(ValueGraph* graph);
 	ValueEdgeSet(ValueGraph* graph, const set<ValueEdge*>& edges);
-	virtual ~ValueEdgeSet();
+	virtual ~ValueEdgeSet(void);
 
 	virtual ValueEdgeSet*     toValueEdgeSet(void) { return this; }
 
 	virtual void dump(ostream& os, uint indent) const;
 
-	virtual bool     toBool(void) const { return !m_edges.empty(); }
+	virtual bool toBool(void) const;
 	virtual string toString(void) const { return "#EdgeSet"; }
 
 	void addEdge(ValueEdge* edge);
 	void deleteEdge(ValueEdge* edge);
-	uint getNumEdges(void) const { return m_edges.size(); }
-	bool contains(ValueEdge* edge) const { return m_edges.count(edge); }
+	uint getNumEdges(void) const;
+	bool contains(ValueEdge* edge) const;
 
 	CountPtr<Value> getUnion(const ValueEdgeSet& es) const;
 	CountPtr<Value> getIntersection(const ValueEdgeSet& es) const;

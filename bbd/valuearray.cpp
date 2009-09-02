@@ -57,6 +57,8 @@ ValueArray::~ValueArray()
 /*
 string ValueArray::toString(void) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	ostringstream os;
 	deque< CountPtr<Value> >::const_iterator it;
 
@@ -76,7 +78,9 @@ string ValueArray::toString(void) const
 
 void ValueArray::resize(uint newsize)
 {
-	// All references are the same object, assigning to a[5] causes assign to all indices
+	ACCESS_MUTEX_LOCKER;
+
+	// All references would be the same object, assigning to a[5] causes assign to all indices
 	// m_val.resize(newsize, CountPtr<Value>(new ValueReference(VALUENULL)));
 
 	if(newsize <= m_val.size())
@@ -90,8 +94,13 @@ void ValueArray::resize(uint newsize)
 }
 
 
+/////////////////////////////////////////////////////////////////////////////
+////
+
 CountPtr<Value> ValueArray::getItem(uint pos) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	if(pos < m_val.size())
 		return m_val[pos];
 	else
@@ -105,8 +114,14 @@ CountPtr<Value> ValueArray::getItem(uint pos) const
 	}
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 {
+	ACCESS_MUTEX_LOCKER;
+
 	if(pos >= m_val.size())
 	{
 		stringstream ss;
@@ -118,15 +133,11 @@ CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 	}
 
 	if(val->isLValue())
-	{
 		m_val[pos]->toValueReference()->assign(val->getReferredValue());
-		return val;
-	}
 	else
-	{
 		m_val[pos]->toValueReference()->assign(val);
-		return val;
-	}
+
+	return val;
 }
 
 
@@ -135,14 +146,20 @@ CountPtr<Value> ValueArray::setItem(uint pos, CountPtr<Value> val)
 
 void ValueArray::pushFront(CountPtr<Value>& val)
 {
+	ACCESS_MUTEX_LOCKER;
 	if(val->isLValue())
 		m_val.push_front(CountPtr<Value>(new ValueReference(val->getReferredValue())));
 	else
 		m_val.push_front(CountPtr<Value>(new ValueReference(val)));
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueArray::pushBack(CountPtr<Value>& val)
 {
+	ACCESS_MUTEX_LOCKER;
 	if(val->isLValue())
 		m_val.push_back(CountPtr<Value>(new ValueReference(val->getReferredValue())));
 	else
@@ -153,8 +170,51 @@ void ValueArray::pushBack(CountPtr<Value>& val)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+void ValueArray::popFront(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	if(m_val.size() != 0)
+		m_val.pop_front();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueArray::popBack(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	if(m_val.size() != 0)
+		m_val.pop_back();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueArray::front(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	return (m_val.size() == 0) ? VALUENULL : m_val.front();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueArray::back(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	return (m_val.size() == 0) ? VALUENULL : m_val.back();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 CountPtr<Value> ValueArray::iterator(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	ValueArray* tmp = new ValueArray();
 	tmp->m_val = m_val;
 	tmp->resetIterator();
@@ -164,11 +224,13 @@ CountPtr<Value> ValueArray::iterator(void) const
 
 CountPtr<Value> ValueArray::hasNext(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	return (m_it == m_val.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
 }
 
 CountPtr<Value> ValueArray::next(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	CountPtr<Value> ret(*m_it);
 	m_it++;
 	return ret;
@@ -176,6 +238,7 @@ CountPtr<Value> ValueArray::next(void)
 
 void ValueArray::resetIterator(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_it = m_val.begin();
 }
 
@@ -185,6 +248,8 @@ void ValueArray::resetIterator(void)
 
 void ValueArray::dump(ostream& os, uint indent) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	dumpIndent(os, indent);
 	os << "<ValueArray>" << endl;
 
@@ -241,4 +306,34 @@ Temporary fixed in Value::index() by dynamic_cast
 */
 PTR_Value ValueArray::index(const Value& right)   const { return right.index(*this); } // []
 
-PTR_Value ValueArray::logNOT(void)                const { return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
+PTR_Value ValueArray::logNOT(void)                const { ACCESS_MUTEX_LOCKER; return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+deque< CountPtr<Value> > ValueArray::getVal(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_val;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool ValueArray::toBool(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return !m_val.empty();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+uint ValueArray::getSize(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_val.size();
+}

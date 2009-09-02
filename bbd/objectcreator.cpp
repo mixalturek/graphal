@@ -23,6 +23,7 @@
 #include "objectfactory.hpp"
 #include "logger.hpp"
 #include "context.hpp"
+#include "mutex.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -30,32 +31,15 @@
 
 ObjectCreator::ObjectCreator(void)
 	: m_factory(NULL),
-	m_context(NULL)
+	m_accessMutex(NULL),
+	m_logger(NULL),
+	m_context(NULL),
+	m_builtin_declaration_pos(NULL)
 {
 
 }
 
 ObjectCreator::~ObjectCreator(void)
-{
-	destroy();
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void ObjectCreator::init(ObjectFactory* factory)
-{
-	assert(factory != NULL);
-	m_factory = factory;
-
-	m_logger = m_factory->newLogger();
-	m_context = m_factory->newContext();
-
-	m_builtin_declaration_pos = new CodePosition(STR2ID(_("built-in")), 0);
-}
-
-void ObjectCreator::destroy(void)
 {
 	if(m_factory != NULL)
 	{
@@ -80,5 +64,42 @@ void ObjectCreator::destroy(void)
 		delete m_builtin_declaration_pos;
 		m_builtin_declaration_pos = NULL;
 	}
+
+	if(m_accessMutex != NULL)
+	{
+		delete m_accessMutex;
+		m_accessMutex = NULL;
+	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ObjectCreator::initInstance(void)
+{
+	m_instance = new ObjectCreator();
+}
+
+void ObjectCreator::destroyInstance(void)
+{
+	delete m_instance;
+	m_instance = NULL;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ObjectCreator::init(ObjectFactory* factory)
+{
+	assert(factory != NULL);
+	m_factory = factory;
+	m_accessMutex = m_factory->newMutex();
+
+	m_logger = m_factory->newLogger();
+	m_context = m_factory->newContext();
+
+	m_builtin_declaration_pos = new CodePosition(STR2ID(_("built-in")), 0);
 }
 

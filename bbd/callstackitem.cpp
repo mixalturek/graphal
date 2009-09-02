@@ -47,6 +47,7 @@ CallStackItem::~CallStackItem(void)
 
 void CallStackItem::dump(ostream& os, uint indent) const
 {
+	ACCESS_MUTEX_LOCKER;
 	dumpIndent(os, indent);
 	os << "<CallStackItem function=\"" << ID2STR(m_function_name) << "\">" << endl;
 
@@ -63,11 +64,13 @@ void CallStackItem::dump(ostream& os, uint indent) const
 
 bool CallStackItem::isVariableSet(identifier name)
 {
+	ACCESS_MUTEX_LOCKER;
 	return m_local_variables.count(name);
 }
 
 CountPtr<Value> CallStackItem::getVariable(identifier name)
 {
+	ACCESS_MUTEX_LOCKER;
 	map<identifier, CountPtr<Value> >::iterator it = m_local_variables.find(name);
 
 	if(it != m_local_variables.end())
@@ -84,6 +87,7 @@ CountPtr<Value> CallStackItem::getVariable(identifier name)
 
 CountPtr<Value> CallStackItem::setVariable(identifier name, CountPtr<Value> val)
 {
+	ACCESS_MUTEX_LOCKER;
 	map<identifier, CountPtr<Value> >::iterator it = m_local_variables.find(name);
 	if(it != m_local_variables.end())
 	{
@@ -109,6 +113,7 @@ CountPtr<Value> CallStackItem::setVariable(identifier name, CountPtr<Value> val)
 
 CountPtr<Value> CallStackItem::setVariableAllowRef(identifier name, CountPtr<Value> val)
 {
+	ACCESS_MUTEX_LOCKER;
 	deleteVariable(name);
 
 	if(val->isLValue())
@@ -122,5 +127,6 @@ CountPtr<Value> CallStackItem::setVariableAllowRef(identifier name, CountPtr<Val
 
 void CallStackItem::deleteVariable(identifier name)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_local_variables.erase(name);
 }

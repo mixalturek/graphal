@@ -33,13 +33,16 @@ class ValueBool : public Value
 public:
 	static inline CountPtr<Value>& getInstanceTrue(void)
 	{
-		return m_instance_true;
+		return *m_instance_true;
 	}
 
 	static inline CountPtr<Value>& getInstanceFalse(void)
 	{
-		return m_instance_false;
+		return *m_instance_false;
 	}
+
+	static void initInstance(void);
+	static void destroyInstance(void);
 
 private:
 	ValueBool();
@@ -138,9 +141,9 @@ public:
 	virtual PTR_Value index(const ValueArray& left) const;
 
 private:
-	static CountPtr<Value> m_instance_true;
-	static CountPtr<Value> m_instance_false;
-	bool m_val;
+	static CountPtr<Value>* m_instance_true;
+	static CountPtr<Value>* m_instance_false;
+	const bool m_val;
 };
 
 ostream& operator<<(ostream& os, const ValueBool& node);

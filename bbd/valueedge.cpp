@@ -41,12 +41,14 @@ ValueEdge::ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end)
 
 ValueEdge::~ValueEdge(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	delete m_properties;
 	m_properties = NULL;
 }
 
 void ValueEdge::clear(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_properties->clear();
 }
 
@@ -56,6 +58,7 @@ void ValueEdge::clear(void)
 
 void ValueEdge::invertOrientation(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	ValueVertex* tmp = m_begin;
 	m_begin = m_end;
 	m_end = tmp;
@@ -67,6 +70,8 @@ void ValueEdge::invertOrientation(void)
 
 void ValueEdge::dump(ostream& os, uint indent) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	dumpIndent(os, indent);
 	os << "<ValueEdge>" << endl;
 	m_properties->dump(os, indent+1);

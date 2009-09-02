@@ -22,14 +22,23 @@
 #define OBJECTCREATOR_HPP
 
 #include "general.hpp"
+#include "mutexlocker.hpp"
 
 #define CREATOR ObjectCreator::getInstance()
 #define FACTORY ObjectCreator::getInstance().getFactory()
 #define LOGGER ObjectCreator::getInstance().getLogger()
 #define CONTEXT ObjectCreator::getInstance().getContext()
+#define ACCESS_MUTEX ObjectCreator::getInstance().getAccessMutex()
+
+#ifdef DISABLE_THREAD_SYNCHRONIZATION
+#define ACCESS_MUTEX_LOCKER
+#else
+#define ACCESS_MUTEX_LOCKER MutexLocker mutexLocker(ObjectCreator::getInstance().getAccessMutex())
+#endif
 
 
 class ObjectFactory;
+class Mutex;
 class Logger;
 class Context;
 class CodePosition;
@@ -40,13 +49,16 @@ class ObjectCreator
 public:
 	static inline ObjectCreator& getInstance(void)
 	{
-		return m_instance;
+		return *m_instance;
 	}
 
+	static void initInstance(void);
+	static void destroyInstance(void);
+
 	void init(ObjectFactory* factory);
-	void destroy(void);
 
 	ObjectFactory& getFactory(void) { return *m_factory; }
+	Mutex* getAccessMutex(void) { return m_accessMutex; }
 	Logger* getLogger(void) { return m_logger; }
 	Context& getContext(void) { return *m_context; }
 
@@ -59,9 +71,10 @@ private:
 	ObjectCreator& operator=(const ObjectCreator& object);
 
 private:
-	static ObjectCreator m_instance;
+	static ObjectCreator* m_instance;
 
 	ObjectFactory* m_factory;
+	Mutex* m_accessMutex;
 	Logger* m_logger;
 	Context* m_context;
 	const CodePosition* m_builtin_declaration_pos;

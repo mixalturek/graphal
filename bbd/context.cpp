@@ -59,6 +59,8 @@ Context::~Context()
 
 void Context::clear(void)
 {
+	ACCESS_MUTEX_LOCKER;
+
 	m_global_variables.clear();
 	m_call_stack.clear();
 
@@ -79,16 +81,20 @@ void Context::clear(void)
 
 void Context::pushLocal(identifier function_name, const CodePosition* return_address)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_call_stack.push_back(CallStackItem(function_name, return_address));
 }
 
 void Context::popLocal(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_call_stack.pop_back();
 }
 
 void Context::printStackTrace() const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	// TODO: position in the code
 	deque<CallStackItem>::const_iterator it;
 	for(it = m_call_stack.begin(); it != m_call_stack.end(); it++)
@@ -101,6 +107,8 @@ void Context::printStackTrace() const
 
 bool Context::isVariableSet(identifier name)
 {
+	ACCESS_MUTEX_LOCKER;
+
 	if(m_call_stack.empty())
 		return false;
 
@@ -109,6 +117,7 @@ bool Context::isVariableSet(identifier name)
 
 CountPtr<Value> Context::getLocalVariable(identifier name)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(!m_call_stack.empty());
 	return m_call_stack.back().getVariable(name);
 }
@@ -116,24 +125,28 @@ CountPtr<Value> Context::getLocalVariable(identifier name)
 
 CountPtr<Value> Context::setLocalVariable(identifier name, CountPtr<Value> val)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(!m_call_stack.empty());
 	return m_call_stack.back().setVariable(name, val);
 }
 
 CountPtr<Value> Context::setLocalVariableAllowRef(identifier name, CountPtr<Value> val)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(!m_call_stack.empty());
 	return m_call_stack.back().setVariableAllowRef(name, val);
 }
 
 void Context::deleteLocalVariable(identifier name)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(!m_call_stack.empty());
-	return m_call_stack.back().deleteVariable(name);
+	m_call_stack.back().deleteVariable(name);
 }
 
 CountPtr<Value> Context::propagateGlobalVariable(identifier name)
 {
+	ACCESS_MUTEX_LOCKER;
 	map<identifier, CountPtr<Value> >::iterator it = m_global_variables.find(name);
 	if(it != m_global_variables.end())
 	{
@@ -158,6 +171,7 @@ CountPtr<Value> Context::propagateGlobalVariable(identifier name)
 
 NodeFunction* Context::getFunction(identifier name)
 {
+	ACCESS_MUTEX_LOCKER;
 	map<identifier, NodeFunction*>::iterator it = m_functions.find(name);
 
 	if(it != m_functions.end())
@@ -168,6 +182,7 @@ NodeFunction* Context::getFunction(identifier name)
 
 void Context::addFunction(NodeFunction* function)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(function != NULL);
 
 	pair< map<identifier, NodeFunction*>::iterator, bool> ret
@@ -192,9 +207,10 @@ void Context::addFunction(NodeFunction* function)
 
 void Context::dump(ostream& os, uint indent) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	dumpIndent(os, indent);
 	os << "<Context>" << endl;
-
 
 	map<identifier, NodeFunction*>::const_iterator it;
 	for(it = m_functions.begin(); it != m_functions.end(); it++)
@@ -303,11 +319,14 @@ void Context::stopScript(void)
 
 void Context::addIncludeDirectory(const string& directory)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_include_dirs.insert(directory);
 }
 
 string Context::getIncludeFullPath(const string& filename) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	ifstream infile;
 
 	set<string>::const_iterator it;
@@ -332,10 +351,92 @@ string Context::getIncludeFullPath(const string& filename) const
 
 void Context::breakpoint(void)
 {
+	ACCESS_MUTEX_LOCKER;
+
 	// TODO: parse and execute specific commands here?
 	if(m_breakpointsEnabled)
 	{
 		INFO_P(_("Breakpoint, press any key..."));
 		getchar();
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+identifier Context::getExecutedFunctionName(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_call_stack.back().getFunctionName();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+int Context::getStackSize(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_call_stack.size();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Context::clearIncludeDirectories(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	m_include_dirs.clear();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Context::setPosition(const CodePosition* pos)
+{
+	ACCESS_MUTEX_LOCKER;
+	m_position = pos;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Context::setPositionEnterToFunction(const CodePosition* pos)
+{
+	ACCESS_MUTEX_LOCKER;
+	m_position = pos;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Context::setPositionReturnFromFunction(const CodePosition* pos)
+{
+	ACCESS_MUTEX_LOCKER;
+	m_position = pos;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Context::enableBreakpoints(bool enable)
+{
+	ACCESS_MUTEX_LOCKER;
+	m_breakpointsEnabled = enable;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool Context::isBreakpointsEnabled(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_breakpointsEnabled;
 }

@@ -46,7 +46,7 @@ ValueEdgeSet::ValueEdgeSet(ValueGraph* graph, const set<ValueEdge*>& edges)
 	assert(graph != NULL);
 }
 
-ValueEdgeSet::~ValueEdgeSet()
+ValueEdgeSet::~ValueEdgeSet(void)
 {
 
 }
@@ -57,6 +57,7 @@ ValueEdgeSet::~ValueEdgeSet()
 
 void ValueEdgeSet::addEdge(ValueEdge* edge)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(edge != NULL);
 
 	if(m_graph == edge->getGraph())
@@ -67,6 +68,7 @@ void ValueEdgeSet::addEdge(ValueEdge* edge)
 
 void ValueEdgeSet::deleteEdge(ValueEdge* edge)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(edge != NULL);
 	m_edges.erase(edge);
 }
@@ -77,6 +79,7 @@ void ValueEdgeSet::deleteEdge(ValueEdge* edge)
 
 CountPtr<Value> ValueEdgeSet::iterator(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	ValueEdgeSet* tmp = new ValueEdgeSet(m_graph);
 	tmp->m_edges = m_edges;
 	tmp->resetIterator();
@@ -86,11 +89,13 @@ CountPtr<Value> ValueEdgeSet::iterator(void) const
 
 CountPtr<Value> ValueEdgeSet::hasNext(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	return (m_it == m_edges.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
 }
 
 CountPtr<Value> ValueEdgeSet::next(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	CountPtr<Value> ret(*m_it);
 	ret.dontDeleteAutomatically();// TODO: is it needed?
 	m_it++;
@@ -99,6 +104,7 @@ CountPtr<Value> ValueEdgeSet::next(void)
 
 void ValueEdgeSet::resetIterator(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_it = m_edges.begin();
 }
 
@@ -108,6 +114,8 @@ void ValueEdgeSet::resetIterator(void)
 
 CountPtr<Value> ValueEdgeSet::getUnion(const ValueEdgeSet& es) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	if(m_graph != es.m_graph)
 	{
 		WARN_P(_("EdgeSet belongs to the different graph"));
@@ -129,6 +137,8 @@ CountPtr<Value> ValueEdgeSet::getUnion(const ValueEdgeSet& es) const
 
 CountPtr<Value> ValueEdgeSet::getIntersection(const ValueEdgeSet& es) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	if(m_graph != es.m_graph)
 	{
 		WARN_P(_("EdgeSet belongs to the different graph"));
@@ -150,6 +160,8 @@ CountPtr<Value> ValueEdgeSet::getIntersection(const ValueEdgeSet& es) const
 
 CountPtr<Value> ValueEdgeSet::getDifference(const ValueEdgeSet& es) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	if(m_graph != es.m_graph)
 	{
 		WARN_P(_("EdgeSet belongs to the different graph"));
@@ -172,8 +184,40 @@ CountPtr<Value> ValueEdgeSet::getDifference(const ValueEdgeSet& es) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+bool ValueEdgeSet::toBool(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return !m_edges.empty();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+uint ValueEdgeSet::getNumEdges(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_edges.size();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool ValueEdgeSet::contains(ValueEdge* edge) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_edges.count(edge);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueEdgeSet::dump(ostream& os, uint indent) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	dumpIndent(os, indent);
 	os << "<ValueEdgeSet>" << endl;
 
@@ -210,4 +254,4 @@ PTR_Value ValueEdgeSet::lt(const Value& right)       const { return right.lt(*th
 PTR_Value ValueEdgeSet::gt(const Value& right)       const { return right.gt(*this); } // >
 PTR_Value ValueEdgeSet::member(const Value& right)   const { return right.member(*this); } // .
 PTR_Value ValueEdgeSet::index(const Value& right)    const { return right.index(*this); } // []
-PTR_Value ValueEdgeSet::logNOT(void)                 const { return (m_edges.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
+PTR_Value ValueEdgeSet::logNOT(void)                 const { ACCESS_MUTEX_LOCKER; return (m_edges.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !

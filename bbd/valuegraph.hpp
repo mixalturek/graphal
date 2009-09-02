@@ -38,13 +38,13 @@ public:
 
 	virtual void dump(ostream& os, uint indent) const;
 
-	virtual bool     toBool(void) const { return !m_vertices.empty(); }
+	virtual bool toBool(void) const;
 	virtual string toString(void) const { return "#Graph"; }
 
 	bool loadFromFile(const string& filename);
 
-	bool isOriented(void) const { return m_oriented; }
-	bool setOriented(bool oriented) { bool ret = m_oriented; m_oriented = oriented; return ret; }
+	bool isOriented(void) const;
+	bool setOriented(bool oriented);
 	void invertEdgesOrientation(void);
 
 	ValueVertex* generateVertex(void);
@@ -53,11 +53,11 @@ public:
 	void deleteVertex(ValueVertex* vertex);
 	void deleteEdge(ValueEdge* edge);
 
-	uint getNumVertices(void) const { return m_vertices.size(); }
-	uint getNumEdges(void)    const { return m_edges.size(); }
+	uint getNumVertices(void) const;
+	uint getNumEdges(void) const;
 
-	bool contains(ValueVertex* vertex) const { return m_vertices.count(vertex); }
-	bool contains(ValueEdge* edge) const { return m_edges.count(edge); }
+	bool contains(ValueVertex* vertex) const;
+	bool contains(ValueEdge* edge) const;
 
 	CountPtr<Value> getVertices(void) const;// Returns ValueVertexSet
 	CountPtr<Value> getEdges(void) const;// Returns ValueEdgeSet

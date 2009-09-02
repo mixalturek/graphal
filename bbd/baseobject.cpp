@@ -32,6 +32,8 @@
 BaseObject::BaseObject(void)
 {
 #ifdef CHECK_MEMORY_LEAKS
+	// TODO: GUI doesn't check memory leaks and CLI doesn't use threads
+//	ACCESS_MUTEX_LOCKER;
 	m_allocated_objects.insert(this);
 #endif // CHECK_MEMORY_LEAKS
 }
@@ -39,6 +41,8 @@ BaseObject::BaseObject(void)
 BaseObject::~BaseObject(void)
 {
 #ifdef CHECK_MEMORY_LEAKS
+	// TODO: GUI doesn't check memory leaks and CLI doesn't use threads
+//	ACCESS_MUTEX_LOCKER;
 	m_allocated_objects.erase(this);
 #endif // CHECK_MEMORY_LEAKS
 }
@@ -49,6 +53,8 @@ BaseObject::~BaseObject(void)
 #ifdef CHECK_MEMORY_LEAKS
 void BaseObject::printMemoryLeaks(uint number_of_static_objects)
 {
+	// TODO: GUI doesn't check memory leaks and CLI doesn't use threads
+//	ACCESS_MUTEX_LOCKER;
 	uint num_of_leaks = m_allocated_objects.size() - number_of_static_objects;
 	stringstream ss;
 	ss << "Number of memory leaks: " << num_of_leaks;

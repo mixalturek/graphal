@@ -2,12 +2,13 @@ add error and warning messages if ValueNull is returned
 resolve all TODOs
 Context::isVariableSet() -> builtin
 handle break/continue in the parser to be only inside of a loop
-built-in function for loading/dumping graph from/to a file
 g.setPropertyToAllVertices();
 g.setPropertyToAllEdges();
 error message "variable not defined" if not assigning
 create bbd library
 built-in function for adjacency matrix creation
+
+replace TYPE object(); by TYPE object;
 
 
 Bison

@@ -24,6 +24,7 @@ SOURCES += main.cpp \
     guifactory.cpp \
     guilogger.cpp \
     guicontext.cpp \
+    guimutex.cpp \
     texteditor.cpp \
     texteditorprogrammers.cpp \
     texteditorlines.cpp \
@@ -165,7 +166,9 @@ SOURCES += main.cpp \
     ../bbd/baseobject.cpp \
     ../bbd/objectfactory.cpp \
     ../bbd/objectcreator.cpp \
-    ../bbd/callstackitem.cpp
+    ../bbd/callstackitem.cpp \
+    ../bbd/mutexlocker.cpp \
+    ../bbd/mutex.cpp
 HEADERS += mainwindow.h \
     settings.h \
     scriptthread.h \
@@ -178,6 +181,7 @@ HEADERS += mainwindow.h \
     guifactory.hpp \
     guilogger.hpp \
     guicontext.h \
+    guimutex.h \
     texteditor.h \
     texteditorprogrammers.h \
     texteditorlines.h \
@@ -322,7 +326,9 @@ HEADERS += mainwindow.h \
     ../bbd/baseobject.hpp \
     ../bbd/objectfactory.hpp \
     ../bbd/objectcreator.hpp \
-    ../bbd/callstackitem.hpp
+    ../bbd/callstackitem.hpp \
+    ../bbd/mutexlocker.hpp \
+    ../bbd/mutex.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
 FORMS += dialogincludedirs.ui \

@@ -18,24 +18,34 @@
  */
 
 
-#ifndef CLIFACTORY_HPP
-#define CLIFACTORY_HPP
-
-#include "general.hpp"
-#include "objectfactory.hpp"
+#include "guimutex.h"
 
 
-class CliFactory : public ObjectFactory
+/////////////////////////////////////////////////////////////////////////////
+////
+
+GuiMutex::GuiMutex(void)
+	: Mutex(),
+	m_mutex(QMutex::Recursive)
 {
-public:
-	CliFactory(void);
-	virtual ~CliFactory(void);
 
-	void dump(ostream& os, uint indent) const;
+}
 
-	virtual Logger* newLogger(void) const;
-	virtual Context* newContext(void) const;
-	virtual Mutex* newMutex(void) const;
-};
+GuiMutex::~GuiMutex(void)
+{
 
-#endif // CLIFACTORY_HPP
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void GuiMutex::lock(void)
+{
+	m_mutex.lock();
+}
+
+void GuiMutex::unlock(void)
+{
+	m_mutex.unlock();
+}

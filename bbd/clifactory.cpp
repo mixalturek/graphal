@@ -20,6 +20,7 @@
 
 #include "clifactory.hpp"
 #include "clilogger.hpp"
+#include "climutex.hpp"
 #include "context.hpp"
 
 
@@ -59,4 +60,9 @@ Logger* CliFactory::newLogger(void) const
 Context* CliFactory::newContext(void) const
 {
 	return new Context();
+}
+
+Mutex* CliFactory::newMutex(void) const
+{
+	return new CliMutex();
 }

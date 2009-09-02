@@ -1,5 +1,9 @@
 CountPtr<TYPE>
 ObjectCreator (singleton)
+Mutex (interface)
+	CliMutex
+	GuiMutex
+MutexLocker
 BaseObject
 	ObjectFactory (interface)
 		CliFactory

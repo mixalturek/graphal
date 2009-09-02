@@ -51,6 +51,9 @@ depend:
 run:
 	./$(TARGET)
 
+memoryleaks:
+	valgrind ./$(TARGET) --unit-tests ../samples/tests.txt
+
 clean:
 	rm -f $(TARGET) *.o core Makefile.bak
 

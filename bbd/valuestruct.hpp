@@ -41,7 +41,7 @@ public:
 	bool isItemSet(identifier name);
 
 public:
-	virtual bool     toBool(void) const { return !m_val.empty(); }
+	virtual bool     toBool(void) const;
 	virtual string   toString(void) const { return "#Struct"; }
 
 	virtual ValueStruct*       toValueStruct(void) { return this; }

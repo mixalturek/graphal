@@ -31,8 +31,8 @@ public:
 	virtual ~ValueString();
 
 public:
-	string           getVal(void) const { return m_val; }
-	virtual bool     toBool(void) const { return !m_val.empty(); }
+	const string& getVal(void) const { return m_val; }
+	virtual bool toBool(void) const { return !m_val.empty(); }
 	virtual string toString(void) const { return m_val; }
 
 	virtual ValueString*       toValueString(void) { return this; }
@@ -64,7 +64,7 @@ public:
 	virtual PTR_Value logNOT(void)                const; // !
 
 private:
-	string m_val;
+	const string m_val;
 };
 
 ostream& operator<<(ostream& os, const ValueString& node);

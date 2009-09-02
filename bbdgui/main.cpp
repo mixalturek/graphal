@@ -24,14 +24,34 @@
 #include "settings.h"
 #include "objectcreator.hpp"
 #include "guifactory.hpp"
+#include "valuenull.hpp"
+#include "valuebool.hpp"
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void init(void)
+{
+	ObjectCreator::initInstance();
+	ObjectCreator::getInstance().init(new GuiFactory());
+	ValueNull::initInstance();
+	ValueBool::initInstance();
+}
+
+void destroy(void)
+{
+	ValueBool::destroyInstance();
+	ValueNull::destroyInstance();
+	ObjectCreator::destroyInstance();
+}
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
 int main(int argc, char *argv[])
 {
-	CREATOR.init(new GuiFactory());
+	init();
 
 	Q_INIT_RESOURCE(resources);
 
@@ -47,6 +67,6 @@ int main(int argc, char *argv[])
 	mainWin.show();
 	int ret = app.exec();
 
-	CREATOR.destroy();
+	destroy();
 	return ret;
 }

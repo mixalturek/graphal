@@ -46,6 +46,8 @@
 		<Unit filename="clifactory.hpp" />
 		<Unit filename="clilogger.cpp" />
 		<Unit filename="clilogger.hpp" />
+		<Unit filename="climutex.cpp" />
+		<Unit filename="climutex.hpp" />
 		<Unit filename="codeposition.cpp" />
 		<Unit filename="codeposition.hpp" />
 		<Unit filename="context.cpp" />
@@ -69,6 +71,10 @@
 		<Unit filename="logger.cpp" />
 		<Unit filename="logger.hpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="mutex.cpp" />
+		<Unit filename="mutex.hpp" />
+		<Unit filename="mutexlocker.cpp" />
+		<Unit filename="mutexlocker.hpp" />
 		<Unit filename="node.cpp" />
 		<Unit filename="node.hpp" />
 		<Unit filename="nodebinary.cpp" />

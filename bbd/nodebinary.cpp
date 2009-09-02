@@ -37,9 +37,11 @@ NodeBinary::NodeBinary(Node* left, Node* right)
 
 NodeBinary::~NodeBinary()
 {
-	if(m_left != NULL)// see detachLeft()
-		delete m_left;
+	delete m_left;
+	m_left = NULL;
+
 	delete m_right;
+	m_right = NULL;
 }
 
 

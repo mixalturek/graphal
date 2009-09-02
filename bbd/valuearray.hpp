@@ -35,25 +35,25 @@ public:
 	virtual ~ValueArray();
 
 public:
-	deque< CountPtr<Value> >   getVal(void) const { return m_val; }
-	virtual bool     toBool(void) const { return !m_val.empty(); }
+	deque< CountPtr<Value> > getVal(void) const;
+	virtual bool toBool(void) const;
 	virtual string toString(void) const { return "#Array"; }
 
 	virtual ValueArray*         toValueArray(void) { return this; }
 
 	virtual void dump(ostream& os, uint indent) const;
 
-	uint getSize(void) const { return m_val.size(); }
+	uint getSize(void) const;
 	void resize(uint newsize);
 	CountPtr<Value> getItem(uint pos) const;
 	CountPtr<Value> setItem(uint pos, CountPtr<Value> val);
 
 	void pushFront(CountPtr<Value>& val);
 	void pushBack(CountPtr<Value>& val);
-	void popFront(void) { if(m_val.size() != 0) m_val.pop_front(); }
-	void popBack(void) { if(m_val.size() != 0) m_val.pop_back(); }
-	CountPtr<Value> front(void) { return (m_val.size() == 0) ? VALUENULL : m_val.front(); }
-	CountPtr<Value> back(void) { return (m_val.size() == 0) ? VALUENULL : m_val.back(); }
+	void popFront(void);
+	void popBack(void);
+	CountPtr<Value> front(void);
+	CountPtr<Value> back(void);
 
 	virtual CountPtr<Value> iterator(void) const;
 	virtual CountPtr<Value> hasNext(void) const;

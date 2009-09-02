@@ -21,6 +21,7 @@
 #include "guifactory.hpp"
 #include "guilogger.hpp"
 #include "guicontext.h"
+#include "guimutex.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -59,4 +60,9 @@ Logger* GuiFactory::newLogger(void) const
 Context* GuiFactory::newContext(void) const
 {
 	return new GuiContext();
+}
+
+Mutex* GuiFactory::newMutex(void) const
+{
+	return new GuiMutex();
 }

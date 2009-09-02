@@ -43,6 +43,7 @@ ValueStruct::~ValueStruct(void)
 
 void ValueStruct::clear(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_val.clear();
 	resetIterator();
 }
@@ -53,6 +54,7 @@ void ValueStruct::clear(void)
 /*
 string ValueStruct::toString(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	ostringstream os;
 	map<identifier, CountPtr<Value> >::const_iterator it;
 
@@ -72,40 +74,37 @@ string ValueStruct::toString(void) const
 
 CountPtr<Value> ValueStruct::setItem(identifier name, CountPtr<Value> val)
 {
-/*	if(val->isLValue())
-		return m_val[name] = val;
-	else
-		return m_val[name] = CountPtr<Value>(new ValueReference(val));
-*/
+	ACCESS_MUTEX_LOCKER;
 	map<identifier, CountPtr<Value> >::iterator it = m_val.find(name);
 	if(it != m_val.end())
 		m_val.erase(it);
 
 	if(val->isLValue())
-	{
-		m_val.insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(val->getReferredValue()))));
-		return val;
-	}
+		m_val.insert(pair<identifier, CountPtr<Value> >(name,
+			CountPtr<Value>(new ValueReference(val->getReferredValue()))));
 	else
-	{
-		m_val.insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(val))));
-		return val;
-	}
+		m_val.insert(pair<identifier, CountPtr<Value> >(name,
+			CountPtr<Value>(new ValueReference(val))));
+
+	return val;
 }
 
 
 CountPtr<Value> ValueStruct::getItem(identifier name)
 {
+	ACCESS_MUTEX_LOCKER;
 	map<identifier, CountPtr<Value> >::iterator it = m_val.find(name);
 
 	if(it != m_val.end())
 		return it->second;
 	else
-		return m_val.insert(pair<identifier, CountPtr<Value> >(name, CountPtr<Value>(new ValueReference(VALUENULL)))).first->second;
+		return m_val.insert(pair<identifier, CountPtr<Value> >(name,
+			CountPtr<Value>(new ValueReference(VALUENULL)))).first->second;
 }
 
 bool ValueStruct::isItemSet(identifier name)
 {
+	ACCESS_MUTEX_LOCKER;
 	return m_val.count(name);
 }
 
@@ -115,6 +114,7 @@ bool ValueStruct::isItemSet(identifier name)
 
 CountPtr<Value> ValueStruct::iterator(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	ValueStruct* tmp = new ValueStruct();
 	tmp->m_val = m_val;
 	tmp->resetIterator();
@@ -124,11 +124,13 @@ CountPtr<Value> ValueStruct::iterator(void) const
 
 CountPtr<Value> ValueStruct::hasNext(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	return (m_it == m_val.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
 }
 
 CountPtr<Value> ValueStruct::next(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	CountPtr<Value> ret(m_it->second);
 	m_it++;
 	return ret;
@@ -136,6 +138,7 @@ CountPtr<Value> ValueStruct::next(void)
 
 void ValueStruct::resetIterator(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_it = m_val.begin();
 }
 
@@ -145,6 +148,7 @@ void ValueStruct::resetIterator(void)
 
 void ValueStruct::dump(ostream& os, uint indent) const
 {
+	ACCESS_MUTEX_LOCKER;
 	dumpIndent(os, indent);
 	os << "<ValueStruct>" << endl;
 
@@ -187,4 +191,14 @@ PTR_Value ValueStruct::lt(const Value& right)      const { return right.lt(*this
 PTR_Value ValueStruct::gt(const Value& right)      const { return right.gt(*this); } // >
 PTR_Value ValueStruct::member(const Value& right)  const { return right.member(*this); } // .
 PTR_Value ValueStruct::index(const Value& right)   const { return right.index(*this); } // []
-PTR_Value ValueStruct::logNOT(void)                const { return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
+PTR_Value ValueStruct::logNOT(void)                const { ACCESS_MUTEX_LOCKER; return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool ValueStruct::toBool(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return !m_val.empty();
+}

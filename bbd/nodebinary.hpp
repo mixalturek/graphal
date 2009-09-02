@@ -1,6 +1,4 @@
 /*
- *      nodebinary.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -34,9 +32,6 @@ public:
 
 	Node* getLeft(void) { return m_left; }
 	Node* getRight(void) { return m_right; }
-
-	// Call this function only if you really know what you do!!!
-	void detachLeft(void) { m_left = NULL; }
 
 private:
 	NodeBinary(void);

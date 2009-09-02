@@ -65,7 +65,6 @@ signals:
 	void executionPaused(void);
 
 private:
-	QMutex m_accessMutex;
 	QMutex m_dbgMutex;
 	QWaitCondition m_waitCondition;
 	SteppingType m_steppingType;

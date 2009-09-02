@@ -36,10 +36,24 @@ ValueNull::ValueNull()
 
 }
 
-
 ValueNull::~ValueNull()
 {
 
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueNull::initInstance(void)
+{
+	m_instance = new CountPtr<Value>(new ValueNull());
+}
+
+void ValueNull::destroyInstance(void)
+{
+	delete m_instance;
+	m_instance = NULL;
 }
 
 

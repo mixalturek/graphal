@@ -71,7 +71,9 @@ PTR_Value Value::logOR(const Value& right) const
 CountPtr<Value> Value::assign(CountPtr<Value> /* val */)
 {
 	ERR_P(_("L-value is required as left operand of assignment: ") + toString());
-	// this->dump(SCRIPT_STDOUT, 1);// TODO: GUI???
+	ostringstream os;
+	this->dump(os, 1);
+	SCRIPT_STDOUT(os.str());
 
 	return VALUENULL;
 }
@@ -79,7 +81,9 @@ CountPtr<Value> Value::assign(CountPtr<Value> /* val */)
 CountPtr<Value> Value::assignRef(CountPtr<Value> /* val */)
 {
 	ERR_P(_("L-value is required as left operand of reference assignment: ") + toString());
-	// this->dump(SCRIPT_STDOUT, 1);// TODO: GUI???
+	ostringstream os;
+	this->dump(os, 1);
+	SCRIPT_STDOUT(os.str());
 
 	return VALUENULL;
 }
@@ -87,7 +91,9 @@ CountPtr<Value> Value::assignRef(CountPtr<Value> /* val */)
 CountPtr<Value> Value::getReferredValue(void) const
 {
 	ERR_P(_("Attemp to get referred value, but value is not reference: ") + toString());
-	// this->dump(SCRIPT_STDOUT, 1);// TODO: GUI???
+	ostringstream os;
+	this->dump(os, 1);
+	SCRIPT_STDOUT(os.str());
 
 	return VALUENULL;
 }
@@ -326,6 +332,8 @@ Temporary fixed in Value::index() by dynamic_cast
 PTR_Value Value::index(const ValueNull& /* left */)      const { return VALUENULL; }
 PTR_Value Value::index(const ValueBool& left)      const // { return VALUENULL; }
 {
+	ACCESS_MUTEX_LOCKER;
+
 	const ValueArray* tmp = dynamic_cast<const ValueArray*>(this);
 	if(tmp != NULL)
 		return tmp->getItem(left.getVal());
@@ -335,6 +343,8 @@ PTR_Value Value::index(const ValueBool& left)      const // { return VALUENULL; 
 
 PTR_Value Value::index(const ValueInt& left)       const // { return VALUENULL; }
 {
+	ACCESS_MUTEX_LOCKER;
+
 	const ValueArray* tmp = dynamic_cast<const ValueArray*>(this);
 	if(tmp != NULL)
 		return tmp->getItem(left.getVal());
@@ -344,6 +354,8 @@ PTR_Value Value::index(const ValueInt& left)       const // { return VALUENULL; 
 
 PTR_Value Value::index(const ValueFloat& left)     const // { return VALUENULL; }
 {
+	ACCESS_MUTEX_LOCKER;
+
 	const ValueArray* tmp = dynamic_cast<const ValueArray*>(this);
 	if(tmp != NULL)
 		return tmp->getItem((uint)left.getVal());

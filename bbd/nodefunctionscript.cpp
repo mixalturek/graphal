@@ -73,11 +73,11 @@ CountPtr<Value> NodeFunctionScript::execute(void)
 	}
 	catch(NodeJumpContinue* ex)
 	{
-		WARN_P(_("Continue occured outside of a loop"));
+		WARN_P(_("Continue occurred outside of a loop"));
 	}
 	catch(NodeJumpBreak* ex)
 	{
-		WARN_P(_("Break occured outside of a loop"));
+		WARN_P(_("Break occurred outside of a loop"));
 	}
 
 	return VALUENULL;

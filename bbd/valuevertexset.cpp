@@ -23,6 +23,7 @@
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
 #include "logger.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -46,7 +47,7 @@ ValueVertexSet::ValueVertexSet(ValueGraph* graph, const set<ValueVertex*>& verti
 	assert(graph != NULL);
 }
 
-ValueVertexSet::~ValueVertexSet()
+ValueVertexSet::~ValueVertexSet(void)
 {
 
 }
@@ -57,6 +58,7 @@ ValueVertexSet::~ValueVertexSet()
 
 void ValueVertexSet::addVertex(ValueVertex* vertex)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(vertex != NULL);
 
 	if(m_graph == vertex->getGraph())
@@ -67,6 +69,7 @@ void ValueVertexSet::addVertex(ValueVertex* vertex)
 
 void ValueVertexSet::deleteVertex(ValueVertex* vertex)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(vertex != NULL);
 	m_vertices.erase(vertex);
 }
@@ -77,6 +80,7 @@ void ValueVertexSet::deleteVertex(ValueVertex* vertex)
 
 CountPtr<Value> ValueVertexSet::iterator(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	ValueVertexSet* tmp = new ValueVertexSet(m_graph);
 	tmp->m_vertices = m_vertices;
 	tmp->resetIterator();
@@ -86,11 +90,13 @@ CountPtr<Value> ValueVertexSet::iterator(void) const
 
 CountPtr<Value> ValueVertexSet::hasNext(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	return (m_it == m_vertices.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
 }
 
 CountPtr<Value> ValueVertexSet::next(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	CountPtr<Value> ret(*m_it);
 	ret.dontDeleteAutomatically();// TODO: is it needed?
 	m_it++;
@@ -99,6 +105,7 @@ CountPtr<Value> ValueVertexSet::next(void)
 
 void ValueVertexSet::resetIterator(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_it = m_vertices.begin();
 }
 
@@ -108,6 +115,8 @@ void ValueVertexSet::resetIterator(void)
 
 CountPtr<Value> ValueVertexSet::getUnion(const ValueVertexSet& vs) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	if(m_graph != vs.m_graph)
 	{
 		WARN_P(_("VertexSet belongs to the different graph"));
@@ -128,6 +137,8 @@ CountPtr<Value> ValueVertexSet::getUnion(const ValueVertexSet& vs) const
 
 CountPtr<Value> ValueVertexSet::getIntersection(const ValueVertexSet& vs) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	if(m_graph != vs.m_graph)
 	{
 		WARN_P(_("VertexSet belongs to the different graph"));
@@ -149,6 +160,8 @@ CountPtr<Value> ValueVertexSet::getIntersection(const ValueVertexSet& vs) const
 
 CountPtr<Value> ValueVertexSet::getDifference(const ValueVertexSet& vs) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	if(m_graph != vs.m_graph)
 	{
 		WARN_P(_("VertexSet belongs to the different graph"));
@@ -171,8 +184,40 @@ CountPtr<Value> ValueVertexSet::getDifference(const ValueVertexSet& vs) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+bool ValueVertexSet::toBool(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return !m_vertices.empty();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+uint ValueVertexSet::getNumVertices(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_vertices.size();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool ValueVertexSet::contains(ValueVertex* vertex) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_vertices.count(vertex);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueVertexSet::dump(ostream& os, uint indent) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	dumpIndent(os, indent);
 	os << "<ValueVertexSet>" << endl;
 
@@ -209,5 +254,5 @@ PTR_Value ValueVertexSet::lt(const Value& right)         const { return right.lt
 PTR_Value ValueVertexSet::gt(const Value& right)         const { return right.gt(*this); } // >
 PTR_Value ValueVertexSet::member(const Value& right)     const { return right.member(*this); } // .
 PTR_Value ValueVertexSet::index(const Value& right)      const { return right.index(*this); } // []
-PTR_Value ValueVertexSet::logNOT(void)                   const { return (m_vertices.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
+PTR_Value ValueVertexSet::logNOT(void)                   const { ACCESS_MUTEX_LOCKER; return (m_vertices.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
 

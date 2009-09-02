@@ -26,7 +26,7 @@
 
 class Logger;
 class Context;
-
+class Mutex;
 
 class ObjectFactory : public BaseObject
 {
@@ -36,6 +36,7 @@ public:
 
 	virtual Logger* newLogger(void) const = 0;
 	virtual Context* newContext(void) const = 0;
+	virtual Mutex* newMutex(void) const = 0;
 
 private:
 	ObjectFactory(const ObjectFactory& object);

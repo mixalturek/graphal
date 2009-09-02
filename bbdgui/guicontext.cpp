@@ -27,7 +27,6 @@
 GuiContext::GuiContext(void)
 	: QObject(),
 	Context(),
-	m_accessMutex(),
 	m_dbgMutex(),
 	m_waitCondition(),
 	m_steppingType(ST_NONE),
@@ -44,6 +43,7 @@ GuiContext::~GuiContext(void)
 
 void GuiContext::clear(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	Context::clear();
 
 	m_steppingType = ST_NONE;
@@ -58,38 +58,42 @@ void GuiContext::setPosition(const CodePosition* pos)
 {
 	Context::setPosition(pos);
 
-	m_accessMutex.lock();
+	ACCESS_MUTEX->lock();
 	if(m_stopScript)
 	{
-		m_accessMutex.unlock();
+		ACCESS_MUTEX->unlock();
 		Context::stopScript();
 	}
 
 	switch(m_steppingType)
 	{
 	case ST_INTO:
-		m_accessMutex.unlock();
+		ACCESS_MUTEX->unlock();
 		pauseExecution();
 		break;
 
 	case ST_OVER:
-		m_accessMutex.unlock();
+		ACCESS_MUTEX->unlock();
 		if(getStackSize() <= m_callStackSize)
 			pauseExecution();
 		break;
 
 	case ST_OUT:
-		m_accessMutex.unlock();
+		ACCESS_MUTEX->unlock();
 		if(getStackSize() < m_callStackSize)
 			pauseExecution();
 		break;
 
 	case ST_NONE:
 	default:
-		m_accessMutex.unlock();
+		ACCESS_MUTEX->unlock();
 		break;
 	}
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
 
 void GuiContext::pauseExecution(void)
 {
@@ -101,8 +105,13 @@ void GuiContext::pauseExecution(void)
 }
 
 
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void GuiContext::breakpoint(void)
 {
+	ACCESS_MUTEX_LOCKER;
+
 	// Go outside of the breakpoint() inline function and pause
 	if(isBreakpointsEnabled())
 		debugStep();
@@ -113,39 +122,43 @@ void GuiContext::breakpoint(void)
 
 void GuiContext::debugRun(void)
 {
-	m_accessMutex.lock();
+	ACCESS_MUTEX_LOCKER;
 	m_steppingType = ST_NONE;
-	m_accessMutex.unlock();
-
 	m_waitCondition.wakeAll();
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
 
 void GuiContext::debugStep(void)
 {
-	m_accessMutex.lock();
+	ACCESS_MUTEX_LOCKER;
 	m_steppingType = ST_INTO;
-	m_accessMutex.unlock();
-
 	m_waitCondition.wakeAll();
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
 
 void GuiContext::debugOver(void)
 {
-	m_accessMutex.lock();
-		m_steppingType = ST_OVER;
-		m_callStackSize = getStackSize();
-	m_accessMutex.unlock();
-
+	ACCESS_MUTEX_LOCKER;
+	m_steppingType = ST_OVER;
+	m_callStackSize = getStackSize();
 	m_waitCondition.wakeAll();
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void GuiContext::debugOut(void)
 {
-	m_accessMutex.lock();
-		m_steppingType = ST_OUT;
-		m_callStackSize = getStackSize();
-	m_accessMutex.unlock();
-
+	ACCESS_MUTEX_LOCKER;
+	m_steppingType = ST_OUT;
+	m_callStackSize = getStackSize();
 	m_waitCondition.wakeAll();
 }
 
@@ -155,10 +168,8 @@ void GuiContext::debugOut(void)
 
 void GuiContext::stopScript(void)
 {
-	m_accessMutex.lock();
+	ACCESS_MUTEX_LOCKER;
 	m_stopScript = true;
-	m_accessMutex.unlock();
-
 	m_waitCondition.wakeAll();
 }
 
@@ -168,16 +179,12 @@ void GuiContext::stopScript(void)
 
 void GuiContext::enableBreakpoints(bool enable)
 {
-	m_accessMutex.lock();
+	ACCESS_MUTEX_LOCKER;
 	Context::enableBreakpoints(enable);
-	m_accessMutex.unlock();
 }
 
 bool GuiContext::isBreakpointsEnabled(void)
 {
-	m_accessMutex.lock();
-	bool enabled = Context::isBreakpointsEnabled();
-	m_accessMutex.unlock();
-
-	return enabled;
+	ACCESS_MUTEX_LOCKER;
+	return Context::isBreakpointsEnabled();
 }

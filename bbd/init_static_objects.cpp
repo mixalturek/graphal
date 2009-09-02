@@ -35,7 +35,7 @@
 /////////////////////////////////////////////////////////////////////////////
 //// ObjectCreator
 
-ObjectCreator ObjectCreator::m_instance;
+ObjectCreator* ObjectCreator::m_instance(NULL);
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -49,9 +49,9 @@ set<BaseObject*> BaseObject::m_allocated_objects;
 /////////////////////////////////////////////////////////////////////////////
 //// ValueNull, ValueBool
 
-CountPtr<Value> ValueNull::m_instance(new ValueNull());
-CountPtr<Value> ValueBool::m_instance_true(new ValueBool(true));
-CountPtr<Value> ValueBool::m_instance_false(new ValueBool(false));
+CountPtr<Value>* ValueNull::m_instance(NULL);
+CountPtr<Value>* ValueBool::m_instance_true(NULL);
+CountPtr<Value>* ValueBool::m_instance_false(NULL);
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -33,9 +33,9 @@ class ValueVertexSet : public Value
 public:
 	ValueVertexSet(ValueGraph* graph);
 	ValueVertexSet(ValueGraph* graph, const set<ValueVertex*>& vertices);
-	virtual ~ValueVertexSet();
+	virtual ~ValueVertexSet(void);
 
-	virtual bool     toBool(void) const { return !m_vertices.empty(); }
+	virtual bool toBool(void) const;
 	virtual string toString(void) const { return "#VertexSet"; }
 
 	virtual ValueVertexSet* toValueVertexSet(void) { return this; }
@@ -44,8 +44,8 @@ public:
 
 	void addVertex(ValueVertex* vertex);
 	void deleteVertex(ValueVertex* vertex);
-	uint getNumVertices(void) const { return m_vertices.size(); }
-	bool contains(ValueVertex* vertex) const { return m_vertices.count(vertex); }
+	uint getNumVertices(void) const;
+	bool contains(ValueVertex* vertex) const;
 
 	CountPtr<Value> getUnion(const ValueVertexSet& vs) const;
 	CountPtr<Value> getIntersection(const ValueVertexSet& vs) const;

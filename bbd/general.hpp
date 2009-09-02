@@ -28,6 +28,7 @@
 #define DEBUG
 #ifndef QTGUI
 #define CHECK_MEMORY_LEAKS
+#define DISABLE_THREAD_SYNCHRONIZATION
 #endif // QTGUI
 #endif // NDEBUG
 
@@ -79,7 +80,7 @@ inline string char2string(char ch)
 
 
 /////////////////////////////////////////////////////////////////////////////
-//// 
+////
 
 class DeleteObject
 {

@@ -1,6 +1,4 @@
 /*
- *      stringtable.hpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -39,9 +37,9 @@ public:
 	identifier getID(const string& str);
 	string& getString(identifier id);
 
-	uint getNumStrings(void) const { return m_data.size(); }
+	uint getNumStrings(void) const;
 
-	void clear(void) { m_data.clear(); }
+	void clear(void);
 
 private:
 	vector<string> m_data;

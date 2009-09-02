@@ -22,6 +22,7 @@
 
 #include <cassert>
 #include "general.hpp"
+#include "objectcreator.hpp"
 
 
 template<class TYPE> class CountPtr
@@ -39,10 +40,11 @@ public:
 	}
 
 	CountPtr(const CountPtr<TYPE>& cntptr)
-		: m_ptr(cntptr.m_ptr),
-		m_num(cntptr.m_num),
-		m_delete_automatically(cntptr.m_delete_automatically)
 	{
+		ACCESS_MUTEX_LOCKER;
+		m_ptr = cntptr.m_ptr;
+		m_num = cntptr.m_num;
+		m_delete_automatically = cntptr.m_delete_automatically;
 		++*m_num;
 	}
 
@@ -53,6 +55,8 @@ public:
 
 	CountPtr<TYPE>& operator= (const CountPtr<TYPE>& cntptr)
 	{
+		ACCESS_MUTEX_LOCKER;
+
 		if(this != &cntptr)
 		{
 			free();
@@ -71,16 +75,19 @@ public:
 
 	TYPE& operator*() const
 	{
+		ACCESS_MUTEX_LOCKER;
 		return *m_ptr;
 	}
 
 	TYPE* operator->() const
 	{
+		ACCESS_MUTEX_LOCKER;
 		return m_ptr;
 	}
 
 	const TYPE* getPtr(void) const
 	{
+		ACCESS_MUTEX_LOCKER;
 		return m_ptr;
 	}
 
@@ -90,12 +97,14 @@ public:
 
 	uint getNumRefs(void) const
 	{
+		ACCESS_MUTEX_LOCKER;
 		return *m_num;
 	}
 
 	// Vertices and Edges in ValueGraph
 	void dontDeleteAutomatically(void)
 	{
+		ACCESS_MUTEX_LOCKER;
 		*m_delete_automatically = false;
 	}
 
@@ -108,6 +117,7 @@ private:
 
 	void free()
 	{
+		ACCESS_MUTEX_LOCKER;
 		if(--*m_num == 0)
 		{
 			delete m_num;

@@ -32,8 +32,11 @@ class ValueNull : public Value
 public:
 	static inline CountPtr<Value>& getInstance(void)
 	{
-		return m_instance;
+		return *m_instance;
 	}
+
+	static void initInstance(void);
+	static void destroyInstance(void);
 
 private:
 	ValueNull();
@@ -66,7 +69,7 @@ public:
 	virtual PTR_Value logNOT(void)               const; // !
 
 private:
-	static CountPtr<Value> m_instance;
+	static CountPtr<Value>* m_instance;
 };
 
 ostream& operator<<(ostream& os, const ValueNull& node);

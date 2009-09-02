@@ -28,9 +28,15 @@
 #include "version.hpp"
 #include "objectcreator.hpp"
 #include "clifactory.hpp"
+#include "valuenull.hpp"
+#include "valuebool.hpp"
+
 
 int parseCode(const string& str);
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
 
 void runUnitTests(void)
 {
@@ -40,6 +46,9 @@ void runUnitTests(void)
 	tests = NULL;
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
 
 void usage(int /* argc */, char** argv)
 {
@@ -65,16 +74,38 @@ void usage(int /* argc */, char** argv)
 }
 
 
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void init(void)
+{
+	ObjectCreator::initInstance();
+	ObjectCreator::getInstance().init(new CliFactory());
+	ValueNull::initInstance();
+	ValueBool::initInstance();
+}
+
+void destroy(void)
+{
+	ValueBool::destroyInstance();
+	ValueNull::destroyInstance();
+	ObjectCreator::destroyInstance();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 int main(int argc, char** argv)
 {
-	CREATOR.init(new CliFactory());
+	init();
 
 	cout << "bbd [svn version " << SVN_VERSION << "]" << endl;
 
 	if(argc < 2)
 	{
 		usage(argc, argv);
-		CREATOR.destroy();
+		destroy();
 		return 1;
 	}
 
@@ -172,13 +203,13 @@ int main(int argc, char** argv)
 	if(error_occured)
 	{
 		INFO(_("*** EXITING MAIN, FAILED ***"));
-		CREATOR.destroy();
+		destroy();
 		return 1;
 	}
 	else
 	{
 		INFO(_("*** EXITING MAIN, OK ***"));
-		CREATOR.destroy();
+		destroy();
 		return 0;
 	}
 }

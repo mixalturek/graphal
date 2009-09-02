@@ -24,6 +24,7 @@
 #include "valuegraph.hpp"
 #include "valueedge.hpp"
 #include "valuevertexset.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -38,8 +39,9 @@ ValueVertex::ValueVertex(ValueGraph* graph)
 	assert(graph != NULL);
 }
 
-ValueVertex::~ValueVertex()
+ValueVertex::~ValueVertex(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	delete m_edges;
 	m_edges = NULL;
 	delete m_properties;
@@ -48,6 +50,7 @@ ValueVertex::~ValueVertex()
 
 void ValueVertex::clear(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	m_properties->clear();
 }
 
@@ -57,12 +60,14 @@ void ValueVertex::clear(void)
 
 void ValueVertex::addEdge(ValueEdge* edge)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(edge != NULL);
 	m_edges->insert(edge);
 }
 
 void ValueVertex::deleteEdge(ValueEdge* edge)
 {
+	ACCESS_MUTEX_LOCKER;
 	assert(edge != NULL);
 	m_edges->erase(edge);
 }
@@ -73,6 +78,7 @@ void ValueVertex::deleteEdge(ValueEdge* edge)
 
 ValueVertexSet* ValueVertex::getNeighbors(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	ValueVertexSet* ret = new ValueVertexSet(m_graph);
 	set<ValueEdge*>::iterator it;
 
@@ -102,8 +108,20 @@ ValueVertexSet* ValueVertex::getNeighbors(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+uint ValueVertex::getDegree(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_edges->size();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueVertex::dump(ostream& os, uint indent) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	dumpIndent(os, indent);
 	os << "<ValueVertex>" << endl;
 	m_properties->dump(os, indent+1);

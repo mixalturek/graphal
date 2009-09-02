@@ -49,6 +49,25 @@ ValueBool::~ValueBool()
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+void ValueBool::initInstance(void)
+{
+	m_instance_true = new CountPtr<Value>(new ValueBool(true));
+	m_instance_false = new CountPtr<Value>(new ValueBool(false));
+}
+
+void ValueBool::destroyInstance(void)
+{
+	delete m_instance_true;
+	m_instance_true = NULL;
+
+	delete m_instance_false;
+	m_instance_false = NULL;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueBool::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);

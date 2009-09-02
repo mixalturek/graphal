@@ -36,6 +36,7 @@
 #include "dialogscriptparameters.h"
 #include "dialogfind.h"
 #include "dialogreplace.h"
+#include "objectcreator.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1003,7 +1004,7 @@ void MainWindow::scriptFinished(void)
 
 void MainWindow::scriptPaused(void)
 {
-	// Access to CONTEXT members should be safe, breakpoint() waits QWaitCondition
+	ACCESS_MUTEX_LOCKER;
 
 	// Update position in the code
 	const CodePosition* pos = CONTEXT.getPosition();
@@ -1202,7 +1203,7 @@ void MainWindow::replaceDialog(void)
 
 void MainWindow::showLocation(void)
 {
-	// TODO: threads synchronization, is needed?
+	ACCESS_MUTEX_LOCKER;
 	const CodePosition* pos = CONTEXT.getPosition();
 	openAndScroll(QString::fromStdString(ID2STR(pos->getFile())), pos->getLine());
 }

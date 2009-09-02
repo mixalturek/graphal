@@ -1,6 +1,4 @@
 /*
- *      nodeunary.cpp
- *
  *      Copyright 2008 Michal Turek <http://woq.nipax.cz/>
  *
  *      This program is free software; you can redistribute it and/or modify
@@ -38,6 +36,7 @@ NodeUnary::NodeUnary(Node* next)
 NodeUnary::~NodeUnary()
 {
 	delete m_next;
+	m_next = NULL;
 }
 
 

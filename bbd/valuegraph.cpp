@@ -31,6 +31,7 @@
 #include "context.hpp"
 #include "valueint.hpp"
 #include "valuefloat.hpp"
+#include "objectcreator.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -49,6 +50,7 @@ ValueGraph::ValueGraph(bool oriented)
 
 ValueGraph::~ValueGraph()
 {
+	ACCESS_MUTEX_LOCKER;
 	for_each(m_vertices.begin(), m_vertices.end(), DeleteObject());
 	for_each(m_edges.begin(), m_edges.end(), DeleteObject());
 	for_each(m_vertices_deleted.begin(), m_vertices_deleted.end(), DeleteObject());
@@ -61,6 +63,8 @@ ValueGraph::~ValueGraph()
 
 bool ValueGraph::loadFromFile(const string& filename)
 {
+	ACCESS_MUTEX_LOCKER;
+
 	ifstream is(filename.c_str());
 
 	if(!is.is_open())
@@ -186,6 +190,7 @@ bool ValueGraph::loadFromFile(const string& filename)
 
 ValueVertex* ValueGraph::generateVertex(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	ValueVertex* vertex = new ValueVertex(this);
 	m_vertices.insert(vertex);
 	return vertex;
@@ -193,6 +198,7 @@ ValueVertex* ValueGraph::generateVertex(void)
 
 ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end)
 {
+	ACCESS_MUTEX_LOCKER;
 	if(!(begin->getGraph() == this && end->getGraph() == this))
 	{
 		WARN_P(_("Vertex belongs to the different graph"));
@@ -210,6 +216,7 @@ ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end)
 
 void ValueGraph::deleteVertex(ValueVertex* vertex)
 {
+	ACCESS_MUTEX_LOCKER;
 	set<ValueEdge*> edges = vertex->getEdgesCopy();
 
 	set<ValueEdge*>::iterator it;
@@ -223,6 +230,7 @@ void ValueGraph::deleteVertex(ValueVertex* vertex)
 
 void ValueGraph::deleteEdge(ValueEdge* edge)
 {
+	ACCESS_MUTEX_LOCKER;
 	edge->getBeginVertex()->deleteEdge(edge);
 	edge->getEndVertex()->deleteEdge(edge);
 	m_edges.erase(edge);
@@ -236,6 +244,7 @@ void ValueGraph::deleteEdge(ValueEdge* edge)
 
 void ValueGraph::invertEdgesOrientation(void)
 {
+	ACCESS_MUTEX_LOCKER;
 	set<ValueEdge*>::iterator eit;
 	for(eit = m_edges.begin(); eit != m_edges.end(); eit++)
 		(*eit)->invertOrientation();
@@ -247,12 +256,86 @@ void ValueGraph::invertEdgesOrientation(void)
 
 CountPtr<Value> ValueGraph::getVertices(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	return CountPtr<Value>(new ValueVertexSet(const_cast<ValueGraph*>(this), m_vertices));
 }
 
 CountPtr<Value> ValueGraph::getEdges(void) const
 {
+	ACCESS_MUTEX_LOCKER;
 	return CountPtr<Value>(new ValueEdgeSet(const_cast<ValueGraph*>(this), m_edges));
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool ValueGraph::toBool(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return !m_vertices.empty();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool ValueGraph::isOriented(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_oriented;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool ValueGraph::setOriented(bool oriented)
+{
+	ACCESS_MUTEX_LOCKER;
+	bool ret = m_oriented;
+	m_oriented = oriented;
+	return ret;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+uint ValueGraph::getNumVertices(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_vertices.size();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+uint ValueGraph::getNumEdges(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_edges.size();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool ValueGraph::contains(ValueVertex* vertex) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_vertices.count(vertex);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool ValueGraph::contains(ValueEdge* edge) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_edges.count(edge);
 }
 
 
@@ -261,6 +344,8 @@ CountPtr<Value> ValueGraph::getEdges(void) const
 
 void ValueGraph::dump(ostream& os, uint indent) const
 {
+	ACCESS_MUTEX_LOCKER;
+
 	dumpIndent(os, indent);
 	os << "<Graph>" << endl;
 
@@ -313,4 +398,4 @@ PTR_Value ValueGraph::lt(const Value& right)     const { return right.lt(*this);
 PTR_Value ValueGraph::gt(const Value& right)     const { return right.gt(*this); } // >
 PTR_Value ValueGraph::member(const Value& right) const { return right.member(*this); } // .
 PTR_Value ValueGraph::index(const Value& right)  const { return right.index(*this); } // []
-PTR_Value ValueGraph::logNOT(void)               const { return (m_vertices.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
+PTR_Value ValueGraph::logNOT(void)               const { ACCESS_MUTEX_LOCKER; return (m_vertices.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
