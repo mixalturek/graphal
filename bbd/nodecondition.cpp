@@ -32,7 +32,7 @@ NodeCondition::NodeCondition(Node* condition, Node* if_section, Node* else_secti
 	: Node(),
 	m_condition(condition),
 	m_if_section(if_section),
-	m_else_section((else_section != NULL) ? else_section : new NodeEmptyCommand())
+	m_else_section((else_section != NULL) ? else_section : new NodeEmptyCommand)
 {
 	assert(condition != NULL);
 	assert(if_section != NULL);

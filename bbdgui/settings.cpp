@@ -51,7 +51,7 @@ Settings::~Settings()
 void Settings::initSingleton(void)
 {
 	assert(m_settings == NULL);// Verify initSingleton() is called just once
-	m_settings = new QSettings();
+	m_settings = new QSettings;
 }
 
 

@@ -40,7 +40,7 @@ int parseCode(const string& str);
 
 void runUnitTests(void)
 {
-	Tests* tests = new Tests();
+	Tests* tests = new Tests;
 	tests->run();
 	delete tests;
 	tests = NULL;
@@ -80,7 +80,7 @@ void usage(int /* argc */, char** argv)
 void init(void)
 {
 	ObjectCreator::initInstance();
-	ObjectCreator::getInstance().init(new CliFactory());
+	ObjectCreator::getInstance().init(new CliFactory);
 	ValueNull::initInstance();
 	ValueBool::initInstance();
 }

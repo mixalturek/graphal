@@ -33,10 +33,10 @@
 
 NodeLoop::NodeLoop(Node* init, Node* condition, Node* inc, Node* body)
 	: Node(),
-	m_init((init != NULL) ? init : new NodeEmptyCommand()),
+	m_init((init != NULL) ? init : new NodeEmptyCommand),
 	m_condition((condition != NULL) ? condition : new NodeValue(VALUEBOOL_TRUE)),
-	m_inc((inc != NULL) ? inc : new NodeEmptyCommand()),
-	m_body((body != NULL) ? body : new NodeEmptyCommand())
+	m_inc((inc != NULL) ? inc : new NodeEmptyCommand),
+	m_body((body != NULL) ? body : new NodeEmptyCommand)
 {
 
 }

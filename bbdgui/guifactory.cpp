@@ -54,15 +54,15 @@ void GuiFactory::dump(ostream& os, uint indent) const
 
 Logger* GuiFactory::newLogger(void) const
 {
-	return new GuiLogger();
+	return new GuiLogger;
 }
 
 Context* GuiFactory::newContext(void) const
 {
-	return new GuiContext();
+	return new GuiContext;
 }
 
 Mutex* GuiFactory::newMutex(void) const
 {
-	return new GuiMutex();
+	return new GuiMutex;
 }

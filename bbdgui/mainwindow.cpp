@@ -44,7 +44,7 @@
 
 MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 	: QMainWindow(parent, flags),
-	m_scriptThread(new ScriptThread()),
+	m_scriptThread(new ScriptThread),
 	m_findText(""),
 	m_findFlags(0),
 	m_replaceFind(""),

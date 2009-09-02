@@ -47,7 +47,7 @@ ValueNull::~ValueNull()
 
 void ValueNull::initInstance(void)
 {
-	m_instance = new CountPtr<Value>(new ValueNull());
+	m_instance = new CountPtr<Value>(new ValueNull);
 }
 
 void ValueNull::destroyInstance(void)

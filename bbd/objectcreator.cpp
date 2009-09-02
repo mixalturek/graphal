@@ -78,7 +78,7 @@ ObjectCreator::~ObjectCreator(void)
 
 void ObjectCreator::initInstance(void)
 {
-	m_instance = new ObjectCreator();
+	m_instance = new ObjectCreator;
 }
 
 void ObjectCreator::destroyInstance(void)

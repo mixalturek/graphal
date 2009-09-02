@@ -34,7 +34,7 @@ NodeForeach::NodeForeach(identifier var_name, Node* iterable, Node* body)
 	: Node(),
 	m_var_name(var_name),
 	m_iterable(iterable),
-	m_body((body != NULL) ? body : new NodeEmptyCommand())
+	m_body((body != NULL) ? body : new NodeEmptyCommand)
 {
 	assert(iterable != NULL);
 }

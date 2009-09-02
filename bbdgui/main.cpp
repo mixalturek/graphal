@@ -34,7 +34,7 @@
 void init(void)
 {
 	ObjectCreator::initInstance();
-	ObjectCreator::getInstance().init(new GuiFactory());
+	ObjectCreator::getInstance().init(new GuiFactory);
 	ValueNull::initInstance();
 	ValueBool::initInstance();
 }

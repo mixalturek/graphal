@@ -176,7 +176,7 @@ primary_expression
 postfix_expression
 	: primary_expression { $$ = $1; }
 	| postfix_expression '[' expression ']' { $$ = new NodeBinaryIndex($1, $3); }
-	| LEX_IDENTIFIER '(' ')' { $$ = new NodeFunctionCall($1, new NodeBlock(), new CodePosition(@1.FILE, @1.LINE)); }
+	| LEX_IDENTIFIER '(' ')' { $$ = new NodeFunctionCall($1, new NodeBlock, new CodePosition(@1.FILE, @1.LINE)); }
 	| LEX_IDENTIFIER '(' argument_expression_list ')' { $$ = new NodeFunctionCall($1, $3, new CodePosition(@1.FILE, @1.LINE)); }
 	| postfix_expression '.' LEX_IDENTIFIER { $$ = new NodeBinaryMember($1, new NodeValue(new ValueIdentifier($3))); }
 	| postfix_expression '.' LEX_IDENTIFIER '(' ')' { $$ = new NodeFunctionCall($3, new NodeBlock($1), new CodePosition(@3.FILE, @3.LINE)); }
@@ -260,26 +260,26 @@ statement
 	: compound_statement { $$ = $1; }
 	| expression_statement { $$ = new NodePosition($1, new CodePosition(@1.FILE, @1.LINE)); }
 	/* "parser.y: conflicts: 1 shift/reduce" is ok */
-	| LEX_IF '(' expression ')' statement { $$ = new NodeCondition(new NodePosition($3, new CodePosition(@3.FILE, @3.LINE)), $5, new NodeEmptyCommand()); }
+	| LEX_IF '(' expression ')' statement { $$ = new NodeCondition(new NodePosition($3, new CodePosition(@3.FILE, @3.LINE)), $5, new NodeEmptyCommand); }
 	| LEX_IF '(' expression ')' statement LEX_ELSE statement { $$ = new NodeCondition(new NodePosition($3, new CodePosition(@3.FILE, @3.LINE)), $5, $7); }
-	| LEX_WHILE '(' expression ')' statement { $$ = new NodeLoop(new NodeEmptyCommand(), new NodePosition($3, new CodePosition(@3.FILE, @3.LINE)), new NodeEmptyCommand(), $5); }
-	| LEX_FOR '(' expression_statement expression_statement ')' statement { $$ = new NodeLoop($3, new NodePosition($4, new CodePosition(@4.FILE, @4.LINE)), new NodeEmptyCommand(), $6); }
+	| LEX_WHILE '(' expression ')' statement { $$ = new NodeLoop(new NodeEmptyCommand, new NodePosition($3, new CodePosition(@3.FILE, @3.LINE)), new NodeEmptyCommand, $5); }
+	| LEX_FOR '(' expression_statement expression_statement ')' statement { $$ = new NodeLoop($3, new NodePosition($4, new CodePosition(@4.FILE, @4.LINE)), new NodeEmptyCommand, $6); }
 	| LEX_FOR '(' expression_statement expression_statement expression ')' statement { $$ = new NodeLoop($3, new NodePosition($4, new CodePosition(@4.FILE, @4.LINE)), $5, $7); }
 	| LEX_FOREACH '(' LEX_IDENTIFIER ';' expression ')' statement { $$ = new NodeForeach($3, new NodePosition($5, new CodePosition(@5.FILE, @5.LINE)), $7); }
-	| LEX_BREAK ';' { $$ = new NodePosition(new NodeJumpBreak(), new CodePosition(@2.FILE, @2.LINE)); }
-	| LEX_CONTINUE ';' { $$ = new NodePosition(new NodeJumpContinue(), new CodePosition(@2.FILE, @2.LINE)); }
-	| LEX_RETURN ';' { $$ = new NodePosition(new NodeUnaryReturn(new NodeEmptyCommand()), new CodePosition(@2.FILE, @2.LINE)); }
+	| LEX_BREAK ';' { $$ = new NodePosition(new NodeJumpBreak, new CodePosition(@2.FILE, @2.LINE)); }
+	| LEX_CONTINUE ';' { $$ = new NodePosition(new NodeJumpContinue, new CodePosition(@2.FILE, @2.LINE)); }
+	| LEX_RETURN ';' { $$ = new NodePosition(new NodeUnaryReturn(new NodeEmptyCommand), new CodePosition(@2.FILE, @2.LINE)); }
 	| LEX_RETURN expression ';' { $$ = new NodePosition(new NodeUnaryReturn($2), new CodePosition(@3.FILE, @3.LINE)); }
 	| LEX_GLOBAL LEX_IDENTIFIER ';' { $$ = new NodePosition(new NodeGlobal($2), new CodePosition(@3.FILE, @3.LINE)); }
 	;
 
 expression_statement
-	: ';' { $$ = new NodeEmptyCommand(); }
+	: ';' { $$ = new NodeEmptyCommand; }
 	| expression ';' { $$ = $1; }
 	;
 
 compound_statement
-	: '{' '}' { $$ = new NodeEmptyCommand(); }
+	: '{' '}' { $$ = new NodeEmptyCommand; }
 	| '{' block_item_list '}' { $$ = $2; }
 	;
 
@@ -290,7 +290,7 @@ block_item_list
 
 function_definition
 	: function_and_name '(' parameter_list ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($1, $3, $5, new CodePosition(@1.FILE, @1.LINE))); }
-	| function_and_name '(' ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($1, new list<identifier>(), $4, new CodePosition(@1.FILE, @1.LINE))); }
+	| function_and_name '(' ')' compound_statement { CONTEXT.addFunction(new NodeFunctionScript($1, new list<identifier>, $4, new CodePosition(@1.FILE, @1.LINE))); }
 	;
 
 function_and_name
@@ -298,7 +298,7 @@ function_and_name
 	;
 
 parameter_list
-	: LEX_IDENTIFIER { $$ = new list<identifier>(); $$->push_back($1); }
+	: LEX_IDENTIFIER { $$ = new list<identifier>; $$->push_back($1); }
 	| parameter_list ',' LEX_IDENTIFIER { $1->push_back($3); $$ = $1; }
 	;
 

@@ -32,7 +32,7 @@ ValueEdge::ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end)
 	m_graph(graph),
 	m_begin(begin),
 	m_end(end),
-	m_properties(new ValueStruct())
+	m_properties(new ValueStruct)
 {
 	assert(graph != NULL);
 	assert(begin != NULL);

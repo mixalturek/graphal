@@ -564,7 +564,7 @@ genBFClass('array', 'NodeBuiltinArray', 1, $code, $include);
 
 $funcdecl = 'struct() : struct';
 
-genBFClass('struct', 'NodeBuiltinStruct', 0, "\treturn CountPtr<Value>(new ValueStruct());", "#include \"valuestruct.hpp\"");
+genBFClass('struct', 'NodeBuiltinStruct', 0, "\treturn CountPtr<Value>(new ValueStruct);", "#include \"valuestruct.hpp\"");
 
 
 #############################################################################
@@ -750,7 +750,7 @@ genBFClass('front', 'NodeBuiltinFront', 1, $code, $include);
 
 $funcdecl = 'graph() : graph';
 
-genBFClass('graph', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph());", "#include \"valuegraph.hpp\"");
+genBFClass('graph', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph);", "#include \"valuegraph.hpp\"");
 
 
 #############################################################################

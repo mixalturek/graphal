@@ -27,7 +27,7 @@
 
 NodeFunction::NodeFunction(identifier name, list<identifier>* parameters)
 	: Node(),
-	m_parameters((parameters != NULL) ? parameters : new list<identifier>()),
+	m_parameters((parameters != NULL) ? parameters : new list<identifier>),
 	m_name(name)
 {
 

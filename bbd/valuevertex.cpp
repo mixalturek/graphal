@@ -33,8 +33,8 @@
 ValueVertex::ValueVertex(ValueGraph* graph)
 	: Value(),
 	m_graph(graph),
-	m_edges(new set<ValueEdge*>()),
-	m_properties(new ValueStruct())
+	m_edges(new set<ValueEdge*>),
+	m_properties(new ValueStruct)
 {
 	assert(graph != NULL);
 }

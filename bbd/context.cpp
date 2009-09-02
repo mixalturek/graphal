@@ -259,7 +259,7 @@ int Context::executeScriptMain(const deque<string>& parameters)
 
 	setPosition(maintest->declarationPos());
 
-	ValueArray* argv_array = new ValueArray();
+	ValueArray* argv_array = new ValueArray;
 	argv_array->resize(parameters.size());
 
 	for(uint i = 0; i < parameters.size(); i++)

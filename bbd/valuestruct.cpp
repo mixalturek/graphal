@@ -115,7 +115,7 @@ bool ValueStruct::isItemSet(identifier name)
 CountPtr<Value> ValueStruct::iterator(void) const
 {
 	ACCESS_MUTEX_LOCKER;
-	ValueStruct* tmp = new ValueStruct();
+	ValueStruct* tmp = new ValueStruct;
 	tmp->m_val = m_val;
 	tmp->resetIterator();
 

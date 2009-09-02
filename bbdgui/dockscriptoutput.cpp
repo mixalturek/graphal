@@ -49,7 +49,7 @@ void DockScriptOutput::reinit(void)
 		m_textEdit = NULL;
 	}
 
-	m_textEdit = new QTextBrowser();
+	m_textEdit = new QTextBrowser;
 
 	m_textEdit->setUndoRedoEnabled(false);
 	m_textEdit->setReadOnly(true);
