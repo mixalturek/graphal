@@ -30,6 +30,8 @@ public:
 	DockVisualization(QWidget* parent = 0, Qt::WindowFlags flags = 0);
 	~DockVisualization(void);
 
+	Visualization* getVisualization(void) { return m_visualization; }
+
 private:
 	Visualization* m_visualization;
 };

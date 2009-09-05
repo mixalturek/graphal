@@ -18,16 +18,25 @@
  */
 
 
+#include <set>
 #include <QMetaType>
 #include "visualization.h"
 #include "guivisualizationconnector.h"
+#include "valuevertex.hpp"
+#include "valueedge.hpp"
+#include "valuevertexset.hpp"
+#include "valueedgeset.hpp"
+#include "valuefloat.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
 Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::WindowFlags flags)
-	: QGLWidget(parent, shareWidget, flags)
+	: QGLWidget(parent, shareWidget, flags),
+	m_vertexSets(),
+	m_edgeSets()
 {
 	GuiVisualizationConnector* viscon = dynamic_cast<GuiVisualizationConnector*>(VISUALIZATION_CONNECTOR);
 
@@ -38,6 +47,12 @@ Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::
 Visualization::~Visualization(void)
 {
 
+}
+
+void Visualization::clear(void)
+{
+	m_vertexSets.clear();
+	m_edgeSets.clear();
 }
 
 
@@ -52,6 +67,8 @@ void Visualization::initializeGL(void)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+	glPointSize(10.0f);// TODO: add to settings
 }
 
 
@@ -77,10 +94,91 @@ void Visualization::resizeGL(int width, int height)
 
 void Visualization::paintGL(void)
 {
+	ACCESS_MUTEX_LOCKER;
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	glTranslatef(-1.5f,0.0f,-10.0f);
+	identifier id_x = STR2ID("__x");
+	identifier id_y = STR2ID("__y");
+	identifier id_z = STR2ID("__z");
+//	identifier id_w = STR2ID("__w");
+
+	glBegin(GL_POINTS);
+	DATA_CONTAINER::iterator its;
+	for(its = m_vertexSets.begin(); its != m_vertexSets.end(); ++its)
+	{
+		QColor color(its->getColor());
+		glColor3ub(color.red(), color.green(), color.blue());
+
+		set<ValueVertex*>& vertices = its->getValue()->toValueVertexSet()->getVertices();
+		assert(its->getValue()->toValueVertexSet() != NULL);
+
+		set<ValueVertex*>::iterator it;
+		for(it = vertices.begin(); it != vertices.end(); ++it)
+		{
+			ValueVertex* vertex = (*it)->toValueVertex();
+			assert(vertex != NULL);
+
+			ValueFloat* val_x = vertex->getItem(id_x)->toValueFloat();
+			ValueFloat* val_y = vertex->getItem(id_y)->toValueFloat();
+			ValueFloat* val_z = vertex->getItem(id_z)->toValueFloat();
+
+			if(val_x != NULL && val_y != NULL && val_z != NULL)
+				glVertex3f(val_x->getVal(), val_y->getVal(), val_z->getVal());
+		}
+	}
+	glEnd();
+
+
+	glBegin(GL_LINES);
+	for(its = m_edgeSets.begin(); its != m_edgeSets.end(); ++its)
+	{
+		QColor color(its->getColor());
+		glColor3ub(color.red(), color.green(), color.blue());
+
+		set<ValueEdge*>& edges = its->getValue()->toValueEdgeSet()->getEdges();
+		assert(its->getValue()->toValueEdgeSet() != NULL);
+		set<ValueEdge*>::iterator it;
+
+		for(it = edges.begin(); it != edges.end(); ++it)
+		{
+			ValueEdge* edge = (*it)->toValueEdge();
+			assert(edge != NULL);
+
+			ValueVertex* begin = edge->getBeginVertex();
+			ValueVertex* end = edge->getEndVertex();
+
+//			ValueFloat* val_w = edge->getItem(id_w)->toValueFloat();
+			ValueFloat* val_begin_x = begin->getItem(id_x)->toValueFloat();
+			ValueFloat* val_begin_y = begin->getItem(id_y)->toValueFloat();
+			ValueFloat* val_begin_z = begin->getItem(id_z)->toValueFloat();
+			ValueFloat* val_end_x = end->getItem(id_x)->toValueFloat();
+			ValueFloat* val_end_y = end->getItem(id_y)->toValueFloat();
+			ValueFloat* val_end_z = end->getItem(id_z)->toValueFloat();
+
+			if(val_begin_x != NULL && val_begin_y != NULL && val_begin_z != NULL
+				&& val_end_x != NULL && val_end_y != NULL && val_end_z != NULL)
+			{
+//				if(val_w != NULL)
+//					glLineWidth(val_w->getVal());
+
+//				glBegin(GL_LINES);
+				if(begin->getGraph()->isOriented())
+					glColor3ub(0, 0, 0);
+				glVertex3f(val_begin_x->getVal(), val_begin_y->getVal(), val_begin_z->getVal());
+
+				if(begin->getGraph()->isOriented())
+					glColor3ub(color.red(), color.green(), color.blue());
+				glVertex3f(val_end_x->getVal(), val_end_y->getVal(), val_end_z->getVal());
+//				glEnd();
+			}
+		}
+	}
+	glEnd();
+
+
+/*	glTranslatef(-1.5f,0.0f,-10.0f);
 
 	glBegin(GL_TRIANGLES);
 		glColor3f(1.0f, 0.0f, 0.0f); glVertex3f( 0.0f, 1.0f, 0.0f);
@@ -97,6 +195,7 @@ void Visualization::paintGL(void)
 		glVertex3f( 1.0f,-1.0f, 0.0f);
 		glVertex3f(-1.0f,-1.0f, 0.0f);
 	glEnd();
+*/
 }
 
 
@@ -105,6 +204,8 @@ void Visualization::paintGL(void)
 
 void Visualization::visRegister(CountPtr<Value> object)
 {
-	// TODO:
-	cout << object->toString() << endl;
+	if(object->toValueVertexSet() != NULL)
+		m_vertexSets.push_back(ITEM(object, QColor(255, 0, 0)));// TODO: color
+	else if(object->toValueEdgeSet() != NULL)
+		m_edgeSets.push_back(ITEM(object, QColor(0, 255, 0)));// TODO: color
 }

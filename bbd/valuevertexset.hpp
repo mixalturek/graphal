@@ -58,6 +58,8 @@ public:
 	virtual CountPtr<Value> next(void);
 	virtual void resetIterator(void);
 
+	set<ValueVertex*>& getVertices(void) { return m_vertices; }
+
 private:
 	ValueGraph* m_graph;
 	set<ValueVertex*> m_vertices;

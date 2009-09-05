@@ -1,0 +1,39 @@
+define("ZPOS", "-10.0");
+
+function main(argv)
+{
+	g = graph();
+	g.setOriented(true);
+
+	v0 = g.generateVertex(); v0.__x = -1.0; v0.__y =  1.0; v0.__z = ZPOS;
+	v1 = g.generateVertex(); v1.__x =  1.0; v1.__y =  1.0; v1.__z = ZPOS;
+	v2 = g.generateVertex(); v2.__x =  1.0; v2.__y = -1.0; v2.__z = ZPOS;
+	v3 = g.generateVertex(); v3.__x = -1.0; v3.__y = -1.0; v3.__z = ZPOS;
+	v4 = g.generateVertex(); v4.__x =  0.0; v4.__y =  2.0; v4.__z = ZPOS;
+	e0 = g.generateEdge(v3, v0);
+	e1 = g.generateEdge(v0, v1);
+	e2 = g.generateEdge(v1, v3);
+	e3 = g.generateEdge(v3, v2);
+	e4 = g.generateEdge(v2, v0);
+	e5 = g.generateEdge(v0, v4);
+	e6 = g.generateEdge(v4, v1);
+	e7 = g.generateEdge(v1, v2);
+	
+	edges = edgeset(g);
+	visRegister(edges);
+
+	// Use "step over" debugging now
+	breakpoint(true);
+	visRegister(g.getVertices());
+	edges.add(e0);
+	edges.add(e1);
+	edges.add(e2);
+	edges.add(e3);
+	edges.add(e4);
+	edges.add(e5);
+	edges.add(e6);
+	edges.add(e7);
+	g.setOriented(false);
+	
+	return;
+}

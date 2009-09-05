@@ -1426,7 +1426,7 @@ genBFClass('difference', 'NodeBuiltinDifference', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'visRegister(graph|vertexset|edgeset) : null';
+$funcdecl = 'visRegister(vertexset|edgeset) : null';
 
 $include = <<END_OF_CODE;
 #include "objectcreator.hpp"
@@ -1434,7 +1434,7 @@ $include = <<END_OF_CODE;
 END_OF_CODE
 
 $code = <<END_OF_CODE;
-	if(par[0]->toValueGraph() != NULL || par[0]->toValueVertexSet() != NULL || par[0]->toValueEdgeSet() != NULL)
+	if(par[0]->toValueVertexSet() != NULL || par[0]->toValueEdgeSet() != NULL)
 		VISUALIZATION_CONNECTOR->visRegister(par[0]);
 	else
 		WARN_P(_("Bad parameters type: $funcdecl"));

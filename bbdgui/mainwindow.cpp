@@ -997,6 +997,8 @@ void MainWindow::scriptFinished(void)
 	m_debugLocationAct->setEnabled(false);
 	m_dockCallStack->clear();
 	m_dockVariables->clear();
+	m_dockVisualization->getVisualization()->clear();
+	m_dockVisualization->getVisualization()->updateGL();
 }
 
 
@@ -1037,6 +1039,9 @@ void MainWindow::scriptPaused(void)
 			QString::fromStdString(itv->second->toString())
 		);
 	}
+
+	// Update visualization window
+	m_dockVisualization->getVisualization()->updateGL();
 }
 
 

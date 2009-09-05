@@ -25,6 +25,20 @@
 #include "countptr.hpp"
 #include "value.hpp"
 
+class ITEM
+{
+public:
+	ITEM(CountPtr<Value> value, const QColor& color) : m_value(value), m_color(color) {}
+	CountPtr<Value> getValue(void) const { return m_value; }
+	QColor getColor(void) const { return m_color; }
+
+private:
+	CountPtr<Value> m_value;
+	QColor m_color;
+};
+
+#define DATA_CONTAINER vector<ITEM>
+
 class Visualization : public QGLWidget
 {
 	Q_OBJECT
@@ -33,6 +47,8 @@ public:
 	Visualization(QWidget* parent = 0, const QGLWidget* shareWidget = 0, Qt::WindowFlags flags = 0);
 	virtual ~Visualization(void);
 
+	void clear(void);
+
 public slots:
 	void visRegister(CountPtr<Value> object);
 
@@ -40,6 +56,10 @@ protected:
 	void initializeGL(void);
 	void resizeGL(int width, int height);
 	void paintGL(void);
+
+private:
+	DATA_CONTAINER m_vertexSets;
+	DATA_CONTAINER m_edgeSets;
 };
 
 #endif // VISUALIZATION_H

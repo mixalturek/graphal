@@ -58,6 +58,8 @@ public:
 	virtual CountPtr<Value> next(void);
 	virtual void resetIterator(void);
 
+	set<ValueEdge*>& getEdges(void) { return m_edges; }
+
 private:
 	ValueGraph* m_graph;
 	set<ValueEdge*> m_edges;
