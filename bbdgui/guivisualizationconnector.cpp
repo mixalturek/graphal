@@ -18,23 +18,19 @@
  */
 
 
-#include "guifactory.hpp"
-#include "guilogger.hpp"
-#include "guicontext.h"
-#include "guimutex.h"
 #include "guivisualizationconnector.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-GuiFactory::GuiFactory(void)
-	: ObjectFactory()
+GuiVisualizationConnector::GuiVisualizationConnector(void)
+	: VisualizationConnector()
 {
 
 }
 
-GuiFactory::~GuiFactory(void)
+GuiVisualizationConnector::~GuiVisualizationConnector(void)
 {
 
 }
@@ -43,32 +39,8 @@ GuiFactory::~GuiFactory(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void GuiFactory::dump(ostream& os, uint indent) const
+void GuiVisualizationConnector::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
-	os << "<GuiFactory />" << endl;
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-Logger* GuiFactory::newLogger(void) const
-{
-	return new GuiLogger;
-}
-
-Context* GuiFactory::newContext(void) const
-{
-	return new GuiContext;
-}
-
-Mutex* GuiFactory::newMutex(void) const
-{
-	return new GuiMutex;
-}
-
-VisualizationConnector* GuiFactory::newVisualizationConnector(void) const
-{
-	return new GuiVisualizationConnector;
+	os << "<GuiVisualizationConnector />" << endl;
 }

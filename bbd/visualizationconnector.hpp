@@ -18,31 +18,22 @@
  */
 
 
-#ifndef OBJECTFACTORY_HPP
-#define OBJECTFACTORY_HPP
+#ifndef VISUALIZATIONCONNECTOR_HPP
+#define VISUALIZATIONCONNECTOR_HPP
+
 
 #include "general.hpp"
 #include "baseobject.hpp"
 
-class Logger;
-class Context;
-class Mutex;
-class VisualizationConnector;
 
-class ObjectFactory : public BaseObject
+class VisualizationConnector : public BaseObject
 {
 public:
-	ObjectFactory(void);
-	virtual ~ObjectFactory(void);
+	VisualizationConnector(void);
+	virtual ~VisualizationConnector(void);
 
-	virtual Logger* newLogger(void) const = 0;
-	virtual Context* newContext(void) const = 0;
-	virtual Mutex* newMutex(void) const = 0;
-	virtual VisualizationConnector* newVisualizationConnector(void) const = 0;
+	virtual void dump(ostream& os, uint indent) const;
 
-private:
-	ObjectFactory(const ObjectFactory& object);
-	ObjectFactory& operator=(const ObjectFactory& object);
 };
 
-#endif // OBJECTFACTORY_HPP
+#endif // VISUALIZATIONCONNECTOR_HPP

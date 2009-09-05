@@ -21,6 +21,7 @@ SOURCES += main.cpp \
     dockvariables.cpp \
     dockvisualization.cpp \
     visualization.cpp \
+    guivisualizationconnector.cpp
     guifactory.cpp \
     guilogger.cpp \
     guicontext.cpp \
@@ -168,7 +169,8 @@ SOURCES += main.cpp \
     ../bbd/objectcreator.cpp \
     ../bbd/callstackitem.cpp \
     ../bbd/mutexlocker.cpp \
-    ../bbd/mutex.cpp
+    ../bbd/mutex.cpp \
+    ../bbd/visualizationconnector.cpp
 HEADERS += mainwindow.h \
     settings.h \
     scriptthread.h \
@@ -178,6 +180,7 @@ HEADERS += mainwindow.h \
     dockvariables.h \
     dockvisualization.h \
     visualization.h \
+    guivisualizationconnector.h
     guifactory.hpp \
     guilogger.hpp \
     guicontext.h \
@@ -328,7 +331,8 @@ HEADERS += mainwindow.h \
     ../bbd/objectcreator.hpp \
     ../bbd/callstackitem.hpp \
     ../bbd/mutexlocker.hpp \
-    ../bbd/mutex.hpp
+    ../bbd/mutex.hpp \
+    ../bbd/visualizationconnector.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
 FORMS += dialogincludedirs.ui \

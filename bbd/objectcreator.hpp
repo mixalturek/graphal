@@ -28,6 +28,7 @@
 #define FACTORY ObjectCreator::getInstance().getFactory()
 #define LOGGER ObjectCreator::getInstance().getLogger()
 #define CONTEXT ObjectCreator::getInstance().getContext()
+#define VISUALIZATION_CONNECTOR ObjectCreator::getInstance().getVisualizationConnector()
 #define ACCESS_MUTEX ObjectCreator::getInstance().getAccessMutex()
 
 #ifdef DISABLE_THREAD_SYNCHRONIZATION
@@ -42,6 +43,7 @@ class Mutex;
 class Logger;
 class Context;
 class CodePosition;
+class VisualizationConnector;
 
 
 class ObjectCreator
@@ -61,6 +63,7 @@ public:
 	Mutex* getAccessMutex(void) { return m_accessMutex; }
 	Logger* getLogger(void) { return m_logger; }
 	Context& getContext(void) { return *m_context; }
+	VisualizationConnector* getVisualizationConnector(void) { return m_visualization_connector; }
 
 	const CodePosition* getBuiltinDeclarationPos(void) const { return m_builtin_declaration_pos; }
 
@@ -77,6 +80,7 @@ private:
 	Mutex* m_accessMutex;
 	Logger* m_logger;
 	Context* m_context;
+	VisualizationConnector* m_visualization_connector;
 	const CodePosition* m_builtin_declaration_pos;
 };
 

@@ -36,6 +36,7 @@ public:
 	virtual Logger* newLogger(void) const;
 	virtual Context* newContext(void) const;
 	virtual Mutex* newMutex(void) const;
+	virtual VisualizationConnector* newVisualizationConnector(void) const;
 };
 
 #endif // CLIFACTORY_HPP

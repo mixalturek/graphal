@@ -21,6 +21,7 @@
 #include "clifactory.hpp"
 #include "clilogger.hpp"
 #include "climutex.hpp"
+#include "visualizationconnector.hpp"
 #include "context.hpp"
 
 
@@ -54,15 +55,20 @@ void CliFactory::dump(ostream& os, uint indent) const
 
 Logger* CliFactory::newLogger(void) const
 {
-	return new CliLogger();
+	return new CliLogger;
 }
 
 Context* CliFactory::newContext(void) const
 {
-	return new Context();
+	return new Context;
 }
 
 Mutex* CliFactory::newMutex(void) const
 {
-	return new CliMutex();
+	return new CliMutex;
+}
+
+VisualizationConnector* CliFactory::newVisualizationConnector(void) const
+{
+	return new VisualizationConnector;
 }

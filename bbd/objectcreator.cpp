@@ -23,6 +23,7 @@
 #include "objectfactory.hpp"
 #include "logger.hpp"
 #include "context.hpp"
+#include "visualizationconnector.hpp"
 #include "mutex.hpp"
 
 
@@ -34,6 +35,7 @@ ObjectCreator::ObjectCreator(void)
 	m_accessMutex(NULL),
 	m_logger(NULL),
 	m_context(NULL),
+	m_visualization_connector(NULL),
 	m_builtin_declaration_pos(NULL)
 {
 
@@ -57,6 +59,12 @@ ObjectCreator::~ObjectCreator(void)
 	{
 		delete m_context;
 		m_context = NULL;
+	}
+
+	if(m_visualization_connector != NULL)
+	{
+		delete m_visualization_connector;
+		m_visualization_connector = NULL;
 	}
 
 	if(m_builtin_declaration_pos != NULL)
@@ -99,6 +107,7 @@ void ObjectCreator::init(ObjectFactory* factory)
 
 	m_logger = m_factory->newLogger();
 	m_context = m_factory->newContext();
+	m_visualization_connector = m_factory->newVisualizationConnector();
 
 	m_builtin_declaration_pos = new CodePosition(STR2ID(_("built-in")), 0);
 }

@@ -8,6 +8,8 @@ BaseObject
 	ObjectFactory (interface)
 		CliFactory
 		GuiFactory
+	VisualizationConnector
+		GuiVisualizationConnector
 	Context
 		GuiContext (+ QObject)
 	CallStackItem

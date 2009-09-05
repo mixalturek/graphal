@@ -18,31 +18,19 @@
  */
 
 
-#ifndef OBJECTFACTORY_HPP
-#define OBJECTFACTORY_HPP
+#ifndef GUIVISUALIZATIONCONNECTOR_H
+#define GUIVISUALIZATIONCONNECTOR_H
 
 #include "general.hpp"
-#include "baseobject.hpp"
+#include "visualizationconnector.hpp"
 
-class Logger;
-class Context;
-class Mutex;
-class VisualizationConnector;
-
-class ObjectFactory : public BaseObject
+class GuiVisualizationConnector : public VisualizationConnector
 {
 public:
-	ObjectFactory(void);
-	virtual ~ObjectFactory(void);
+	GuiVisualizationConnector(void);
+	~GuiVisualizationConnector(void);
 
-	virtual Logger* newLogger(void) const = 0;
-	virtual Context* newContext(void) const = 0;
-	virtual Mutex* newMutex(void) const = 0;
-	virtual VisualizationConnector* newVisualizationConnector(void) const = 0;
-
-private:
-	ObjectFactory(const ObjectFactory& object);
-	ObjectFactory& operator=(const ObjectFactory& object);
+	virtual void dump(ostream& os, uint indent) const;
 };
 
-#endif // OBJECTFACTORY_HPP
+#endif // GUIVISUALIZATIONCONNECTOR_H

@@ -8,7 +8,6 @@ error message "variable not defined" if not assigning
 create bbd library
 built-in function for adjacency matrix creation
 
-replace TYPE object(); by TYPE object;
 
 
 Bison
