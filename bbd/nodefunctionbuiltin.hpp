@@ -24,7 +24,7 @@
 #include <vector>
 #include "general.hpp"
 #include "nodefunction.hpp"
-#include "objectcreator.hpp"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ public:
 	virtual ~NodeFunctionBuiltin();
 
 	virtual void dump(ostream& os, uint indent) const;
-	virtual const CodePosition* declarationPos(void) const { return CREATOR.getBuiltinDeclarationPos(); }
+	virtual const CodePosition* declarationPos(void) const { return CONTEXT.getBuiltinDeclarationPos(); }
 	virtual bool isBuiltIn(void) const { return true; }
 
 	vector< CountPtr<Value> > getParametersValues(void) const;

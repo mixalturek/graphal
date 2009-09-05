@@ -45,7 +45,8 @@ Context::Context()
 	m_position(NULL),
 	m_stringtable(),
 	m_include_dirs(),
-	m_breakpointsEnabled(true)
+	m_breakpointsEnabled(true),
+	m_builtin_declaration_pos(new CodePosition(m_stringtable.getID(_("built-in function")), 0))
 {
 
 }
@@ -54,6 +55,12 @@ Context::Context()
 Context::~Context()
 {
 	clear();
+
+	if(m_builtin_declaration_pos != NULL)
+	{
+		delete m_builtin_declaration_pos;
+		m_builtin_declaration_pos = NULL;
+	}
 }
 
 
@@ -73,6 +80,12 @@ void Context::clear(void)
 
 	m_stringtable.clear();
 	m_functions.clear();
+
+	if(m_builtin_declaration_pos != NULL)
+	{
+		delete m_builtin_declaration_pos;
+		m_builtin_declaration_pos = new CodePosition(m_stringtable.getID(_("built-in function")), 0);
+	}
 }
 
 

@@ -88,6 +88,8 @@ public:
 	virtual void enableBreakpoints(bool enable);
 	virtual bool isBreakpointsEnabled(void);
 
+	const CodePosition* getBuiltinDeclarationPos(void) const { return m_builtin_declaration_pos; }
+
 private:
 	Context(const Context& object);
 	Context& operator=(const Context& object);
@@ -101,6 +103,8 @@ private:
 
 	set<string> m_include_dirs;
 	bool m_breakpointsEnabled;
+
+	const CodePosition* m_builtin_declaration_pos;
 };
 
 ostream& operator<<(ostream& os, const Context& node);

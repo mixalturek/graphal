@@ -34,6 +34,12 @@ public:
 	~GuiVisualizationConnector(void);
 
 	virtual void dump(ostream& os, uint indent) const;
+
+signals:
+	void visRegisterSig(CountPtr<Value>);
+
+public:
+	virtual void visRegister(CountPtr<Value> object);
 };
 
 #endif // GUIVISUALIZATIONCONNECTOR_H

@@ -239,6 +239,8 @@
 		<Unit filename="nodebuiltinverify.hpp" />
 		<Unit filename="nodebuiltinvertexset.cpp" />
 		<Unit filename="nodebuiltinvertexset.hpp" />
+		<Unit filename="nodebuiltinvisregister.cpp" />
+		<Unit filename="nodebuiltinvisregister.hpp" />
 		<Unit filename="nodecondition.cpp" />
 		<Unit filename="nodecondition.hpp" />
 		<Unit filename="nodeemptycommand.cpp" />

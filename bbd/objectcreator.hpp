@@ -65,8 +65,6 @@ public:
 	Context& getContext(void) { return *m_context; }
 	VisualizationConnector* getVisualizationConnector(void) { return m_visualization_connector; }
 
-	const CodePosition* getBuiltinDeclarationPos(void) const { return m_builtin_declaration_pos; }
-
 private:
 	ObjectCreator(void);
 	virtual ~ObjectCreator(void);
@@ -81,7 +79,6 @@ private:
 	Logger* m_logger;
 	Context* m_context;
 	VisualizationConnector* m_visualization_connector;
-	const CodePosition* m_builtin_declaration_pos;
 };
 
 #endif // OBJECTCREATOR_HPP

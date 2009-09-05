@@ -31,6 +31,15 @@ template<class TYPE> class CountPtr
 ////
 
 public:
+	// Don't use this constructor, Qt qRegisterMetaType() in visualization.cpp requires it
+	CountPtr(void)
+		: m_ptr(NULL),
+		m_num(new uint(1)),
+		m_delete_automatically(new bool(false))
+	{
+		assert(false);
+	}
+
 	explicit CountPtr(TYPE* simpleptr)
 		: m_ptr(simpleptr),
 		m_num(new uint(1)),
@@ -113,8 +122,6 @@ public:
 ////
 
 private:
-	CountPtr(void);
-
 	void free()
 	{
 		ACCESS_MUTEX_LOCKER;
@@ -123,7 +130,7 @@ private:
 			delete m_num;
 			m_num = NULL;
 
-			if(*m_delete_automatically == true)
+			if(*m_delete_automatically == true && m_ptr != NULL)
 				delete m_ptr;
 
 			m_ptr = NULL;

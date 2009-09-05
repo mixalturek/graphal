@@ -19,12 +19,14 @@
 
 
 #include "visualizationconnector.hpp"
+#include "logger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
 VisualizationConnector::VisualizationConnector(void)
+	: BaseObject()
 {
 
 }
@@ -42,4 +44,13 @@ void VisualizationConnector::dump(ostream& os, uint indent) const
 {
 	dumpIndent(os, indent);
 	os << "<VisualizationConnector />" << endl;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void VisualizationConnector::visRegister(CountPtr<Value> /* object */)
+{
+	WARN_P(_("Operation is not supported."));
 }

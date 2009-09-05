@@ -147,7 +147,8 @@ void MainWindow::open()
 
 bool MainWindow::open(const QString& fileName, bool warnIfNotFound)
 {
-	if(!fileName.isEmpty())
+	QFileInfo info(fileName);
+	if(info.isFile())
 	{
 		QMdiSubWindow* window = findTextEditor(fileName);
 

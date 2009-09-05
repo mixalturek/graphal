@@ -22,12 +22,19 @@
 #define VISUALIZATION_H
 
 #include <QGLWidget>
+#include "countptr.hpp"
+#include "value.hpp"
 
 class Visualization : public QGLWidget
 {
+	Q_OBJECT
+
 public:
 	Visualization(QWidget* parent = 0, const QGLWidget* shareWidget = 0, Qt::WindowFlags flags = 0);
-	~Visualization(void);
+	virtual ~Visualization(void);
+
+public slots:
+	void visRegister(CountPtr<Value> object);
 
 protected:
 	void initializeGL(void);

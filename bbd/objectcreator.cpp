@@ -35,8 +35,7 @@ ObjectCreator::ObjectCreator(void)
 	m_accessMutex(NULL),
 	m_logger(NULL),
 	m_context(NULL),
-	m_visualization_connector(NULL),
-	m_builtin_declaration_pos(NULL)
+	m_visualization_connector(NULL)
 {
 
 }
@@ -65,12 +64,6 @@ ObjectCreator::~ObjectCreator(void)
 	{
 		delete m_visualization_connector;
 		m_visualization_connector = NULL;
-	}
-
-	if(m_builtin_declaration_pos != NULL)
-	{
-		delete m_builtin_declaration_pos;
-		m_builtin_declaration_pos = NULL;
 	}
 
 	if(m_accessMutex != NULL)
@@ -108,7 +101,5 @@ void ObjectCreator::init(ObjectFactory* factory)
 	m_logger = m_factory->newLogger();
 	m_context = m_factory->newContext();
 	m_visualization_connector = m_factory->newVisualizationConnector();
-
-	m_builtin_declaration_pos = new CodePosition(STR2ID(_("built-in")), 0);
 }
 

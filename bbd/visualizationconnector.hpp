@@ -21,9 +21,10 @@
 #ifndef VISUALIZATIONCONNECTOR_HPP
 #define VISUALIZATIONCONNECTOR_HPP
 
-
 #include "general.hpp"
 #include "baseobject.hpp"
+#include "countptr.hpp"
+#include "value.hpp"
 
 
 class VisualizationConnector : public BaseObject
@@ -34,6 +35,8 @@ public:
 
 	virtual void dump(ostream& os, uint indent) const;
 
+public:
+	virtual void visRegister(CountPtr<Value> object);
 };
 
 #endif // VISUALIZATIONCONNECTOR_HPP

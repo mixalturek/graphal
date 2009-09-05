@@ -18,7 +18,9 @@
  */
 
 
+#include <QMetaType>
 #include "visualization.h"
+#include "guivisualizationconnector.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -27,7 +29,10 @@
 Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::WindowFlags flags)
 	: QGLWidget(parent, shareWidget, flags)
 {
+	GuiVisualizationConnector* viscon = dynamic_cast<GuiVisualizationConnector*>(VISUALIZATION_CONNECTOR);
 
+	qRegisterMetaType< CountPtr<Value> >("CountPtr<Value>");
+	connect(viscon, SIGNAL(visRegisterSig(CountPtr<Value>)), this, SLOT(visRegister(CountPtr<Value>)));
 }
 
 Visualization::~Visualization(void)
@@ -92,4 +97,14 @@ void Visualization::paintGL(void)
 		glVertex3f( 1.0f,-1.0f, 0.0f);
 		glVertex3f(-1.0f,-1.0f, 0.0f);
 	glEnd();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Visualization::visRegister(CountPtr<Value> object)
+{
+	// TODO:
+	cout << object->toString() << endl;
 }

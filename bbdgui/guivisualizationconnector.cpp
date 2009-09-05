@@ -45,3 +45,12 @@ void GuiVisualizationConnector::dump(ostream& os, uint indent) const
 	dumpIndent(os, indent);
 	os << "<GuiVisualizationConnector />" << endl;
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void GuiVisualizationConnector::visRegister(CountPtr<Value> object)
+{
+	emit visRegisterSig(object);
+}
