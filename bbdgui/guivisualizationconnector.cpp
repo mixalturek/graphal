@@ -25,7 +25,8 @@
 ////
 
 GuiVisualizationConnector::GuiVisualizationConnector(void)
-	: VisualizationConnector()
+	: QObject(),
+	VisualizationConnector()
 {
 
 }

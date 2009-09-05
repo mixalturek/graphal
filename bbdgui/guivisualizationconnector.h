@@ -21,11 +21,14 @@
 #ifndef GUIVISUALIZATIONCONNECTOR_H
 #define GUIVISUALIZATIONCONNECTOR_H
 
+#include <QObject>
 #include "general.hpp"
 #include "visualizationconnector.hpp"
 
-class GuiVisualizationConnector : public VisualizationConnector
+class GuiVisualizationConnector : public QObject, public VisualizationConnector
 {
+		Q_OBJECT
+
 public:
 	GuiVisualizationConnector(void);
 	~GuiVisualizationConnector(void);

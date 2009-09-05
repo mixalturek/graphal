@@ -21,7 +21,7 @@ SOURCES += main.cpp \
     dockvariables.cpp \
     dockvisualization.cpp \
     visualization.cpp \
-    guivisualizationconnector.cpp
+    guivisualizationconnector.cpp \
     guifactory.cpp \
     guilogger.cpp \
     guicontext.cpp \
@@ -180,7 +180,7 @@ HEADERS += mainwindow.h \
     dockvariables.h \
     dockvisualization.h \
     visualization.h \
-    guivisualizationconnector.h
+    guivisualizationconnector.h \
     guifactory.hpp \
     guilogger.hpp \
     guicontext.h \
