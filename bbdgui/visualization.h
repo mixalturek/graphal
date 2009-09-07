@@ -57,9 +57,20 @@ protected:
 	void resizeGL(int width, int height);
 	void paintGL(void);
 
+	void mousePressEvent(QMouseEvent* event);
+	void mouseMoveEvent(QMouseEvent* event);
+	void wheelEvent(QWheelEvent* event);
+
 private:
 	DATA_CONTAINER m_vertexSets;
 	DATA_CONTAINER m_edgeSets;
+
+	QPoint m_lastMousePos;
+	float m_posx;
+	float m_posy;
+	float m_posz;
+	float m_rotx;
+	float m_roty;
 };
 
 #endif // VISUALIZATION_H

@@ -1,4 +1,4 @@
-define("ZPOS", "-10.0");
+define("ZPOS", "0.0");
 
 function main(argv)
 {

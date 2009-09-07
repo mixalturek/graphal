@@ -20,6 +20,7 @@
 
 #include <set>
 #include <QMetaType>
+#include <QMouseEvent>
 #include "visualization.h"
 #include "guivisualizationconnector.h"
 #include "valuevertex.hpp"
@@ -36,7 +37,13 @@
 Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::WindowFlags flags)
 	: QGLWidget(parent, shareWidget, flags),
 	m_vertexSets(),
-	m_edgeSets()
+	m_edgeSets(),
+	m_lastMousePos(),
+	m_posx(0.0f),
+	m_posy(0.0f),
+	m_posz(0.0f),
+	m_rotx(0.0f),
+	m_roty(0.0f)
 {
 	GuiVisualizationConnector* viscon = dynamic_cast<GuiVisualizationConnector*>(VISUALIZATION_CONNECTOR);
 
@@ -53,6 +60,11 @@ void Visualization::clear(void)
 {
 	m_vertexSets.clear();
 	m_edgeSets.clear();
+	m_posx = 0.0f;
+	m_posy = 0.0f;
+	m_posz = 0.0f;
+	m_rotx = 0.0f;
+	m_roty = 0.0f;
 }
 
 
@@ -98,6 +110,11 @@ void Visualization::paintGL(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+
+	glTranslatef(m_posx, m_posy, m_posz - 10.0f);
+	glRotatef(m_rotx, 1.0f, 0.0f, 0.0f);
+	glRotatef(m_roty, 0.0f, 1.0f, 0.0f);
+
 
 	identifier id_x = STR2ID("__x");
 	identifier id_y = STR2ID("__y");
@@ -208,4 +225,64 @@ void Visualization::visRegister(CountPtr<Value> object)
 		m_vertexSets.push_back(ITEM(object, QColor(255, 0, 0)));// TODO: color
 	else if(object->toValueEdgeSet() != NULL)
 		m_edgeSets.push_back(ITEM(object, QColor(0, 255, 0)));// TODO: color
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Visualization::mousePressEvent(QMouseEvent* event)
+{
+	m_lastMousePos = event->pos();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Visualization::mouseMoveEvent(QMouseEvent* event)
+{
+	if(event->buttons() & Qt::LeftButton)
+	{
+		// TODO: The coeficients depend on the depth of the object in the scene
+		QPoint diff = (m_lastMousePos - event->pos());
+
+		m_posx -= diff.x() / 60.0f;
+		m_posy += diff.y() / 60.0f;
+
+
+		updateGL();
+	}
+
+	if(event->buttons() & Qt::RightButton)
+	{
+		QPoint diff = (m_lastMousePos - event->pos());
+
+		if(event->modifiers() & Qt::ControlModifier)
+			m_rotx -= diff.y();
+		else if(event->modifiers() & Qt::ShiftModifier)
+			m_roty -= diff.x();
+		else
+		{
+			m_rotx -= diff.y();
+			m_roty -= diff.x();
+		}
+
+		updateGL();
+	}
+
+	m_lastMousePos = event->pos();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Visualization::wheelEvent(QWheelEvent* event)
+{
+	if(event->orientation() == Qt::Vertical)
+	{
+		m_posz += event->delta() / 120;
+		updateGL();
+	}
 }
