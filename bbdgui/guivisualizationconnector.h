@@ -24,6 +24,7 @@
 #include <QObject>
 #include "general.hpp"
 #include "visualizationconnector.hpp"
+#include "visualizationitemdata.h"
 
 class GuiVisualizationConnector : public QObject, public VisualizationConnector
 {
@@ -36,10 +37,10 @@ public:
 	virtual void dump(ostream& os, uint indent) const;
 
 signals:
-	void visRegisterSig(CountPtr<Value>);
+	void visRegisterSig(VisualizationItemData);
 
 public:
-	virtual void visRegister(CountPtr<Value> object);
+	virtual void visRegister(CountPtr<Value> object, const string& name, int r, int g, int b);
 };
 
 #endif // GUIVISUALIZATIONCONNECTOR_H

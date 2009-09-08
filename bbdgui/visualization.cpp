@@ -47,8 +47,9 @@ Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::
 {
 	GuiVisualizationConnector* viscon = dynamic_cast<GuiVisualizationConnector*>(VISUALIZATION_CONNECTOR);
 
-	qRegisterMetaType< CountPtr<Value> >("CountPtr<Value>");
-	connect(viscon, SIGNAL(visRegisterSig(CountPtr<Value>)), this, SLOT(visRegister(CountPtr<Value>)));
+	qRegisterMetaType<VisualizationItemData>("VisualizationItemData");
+	connect(viscon, SIGNAL(visRegisterSig(VisualizationItemData)),
+			this, SLOT(visRegister(VisualizationItemData)));
 }
 
 Visualization::~Visualization(void)
@@ -65,6 +66,8 @@ void Visualization::clear(void)
 	m_posz = 0.0f;
 	m_rotx = 0.0f;
 	m_roty = 0.0f;
+
+	emit containersChanged();
 }
 
 
@@ -122,9 +125,12 @@ void Visualization::paintGL(void)
 //	identifier id_w = STR2ID("__w");
 
 	glBegin(GL_POINTS);
-	DATA_CONTAINER::iterator its;
+	VIS_DATA_CONTAINER::iterator its;
 	for(its = m_vertexSets.begin(); its != m_vertexSets.end(); ++its)
 	{
+		if(!its->isEnabled())
+			continue;
+
 		QColor color(its->getColor());
 		glColor3ub(color.red(), color.green(), color.blue());
 
@@ -151,6 +157,9 @@ void Visualization::paintGL(void)
 	glBegin(GL_LINES);
 	for(its = m_edgeSets.begin(); its != m_edgeSets.end(); ++its)
 	{
+		if(!its->isEnabled())
+			continue;
+
 		QColor color(its->getColor());
 		glColor3ub(color.red(), color.green(), color.blue());
 
@@ -219,12 +228,14 @@ void Visualization::paintGL(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void Visualization::visRegister(CountPtr<Value> object)
+void Visualization::visRegister(const VisualizationItemData& item)
 {
-	if(object->toValueVertexSet() != NULL)
-		m_vertexSets.push_back(ITEM(object, QColor(255, 0, 0)));// TODO: color
-	else if(object->toValueEdgeSet() != NULL)
-		m_edgeSets.push_back(ITEM(object, QColor(0, 255, 0)));// TODO: color
+	if(item.getValue()->toValueVertexSet() != NULL)
+		m_vertexSets.push_back(item);
+	else if(item.getValue()->toValueEdgeSet() != NULL)
+		m_edgeSets.push_back(item);
+
+	emit containersChanged();
 }
 
 

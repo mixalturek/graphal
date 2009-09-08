@@ -18,40 +18,54 @@
  */
 
 
-#include "visualizationconnector.hpp"
-#include "logger.hpp"
+#include "visualizationitemdata.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-VisualizationConnector::VisualizationConnector(void)
-	: BaseObject()
+
+
+VisualizationItemData::VisualizationItemData(CountPtr<Value> value, identifier name, const QColor& color)
+	: QObject(),
+	m_value(value),
+	m_name(name),
+	m_color(color),
+	m_enabled(true)
 {
 
 }
 
-VisualizationConnector::~VisualizationConnector(void)
+VisualizationItemData::~VisualizationItemData(void)
 {
 
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void VisualizationConnector::dump(ostream& os, uint indent) const
-{
-	dumpIndent(os, indent);
-	os << "<VisualizationConnector />" << endl;
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void VisualizationConnector::visRegister(CountPtr<Value> /* object */,
-	const string& /* name */, int /* r */, int /* g */, int /* b */)
+VisualizationItemData::VisualizationItemData(void)
 {
-	WARN_P(_("Operation is not supported."));
+
+}
+
+VisualizationItemData::VisualizationItemData(const VisualizationItemData& object)
+	: QObject(),
+	m_value(object.m_value),
+	m_name(object.m_name),
+	m_color(object.m_color),
+	m_enabled(object.m_enabled)
+{
+
+}
+
+VisualizationItemData& VisualizationItemData::operator= (const VisualizationItemData& object)
+{
+	m_value = object.m_value;
+	m_name = object.m_name;
+	m_color = object.m_color;
+	m_enabled = object.m_enabled;
+
+	return *this;
 }

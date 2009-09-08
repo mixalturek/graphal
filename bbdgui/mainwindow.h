@@ -73,6 +73,7 @@ private slots:
 	void about();
 	void updateMenus();
 	void updateWindowMenu();
+	void updateVisualizationMenu(void);
 	void runScript();
 	void includeDirectories(void);
 	void scriptParameters(void);
@@ -94,6 +95,7 @@ private slots:
 	void scriptFinished(void);
 	void scriptPaused(void);
 	void showLocation(void);
+	void repaintVisualization(void);
 
 private:
 	void createActions();
@@ -113,6 +115,7 @@ private:
 	QMenu* m_editMenu;
 	QMenu* m_viewMenu;
 	QMenu* m_scriptMenu;
+	QMenu* m_visualizationMenu;
 	QMenu* m_windowMenu;
 	QMenu* m_helpMenu;
 	QToolBar* m_fileToolBar;

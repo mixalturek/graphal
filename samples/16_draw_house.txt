@@ -20,11 +20,11 @@ function main(argv)
 	e7 = g.generateEdge(v1, v2);
 	
 	edges = edgeset(g);
-	visRegister(edges);
+	visRegister(edges, "edges", 0, 255, 0);
 
 	// Use "step over" debugging now
 	breakpoint(true);
-	visRegister(g.getVertices());
+	visRegister(g.getVertices(), "vertices", 255, 0, 0);
 	edges.add(e0);
 	edges.add(e1);
 	edges.add(e2);

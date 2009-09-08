@@ -307,6 +307,10 @@ void MainWindow::updateMenus()
 	m_copyAct->setEnabled(hasSelection);
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void MainWindow::updateWindowMenu()
 {
 	m_windowMenu->clear();
@@ -338,6 +342,58 @@ void MainWindow::updateWindowMenu()
 
 		connect(action, SIGNAL(triggered()), m_windowMapper, SLOT(map()));
 		m_windowMapper->setMapping(action, windows.at(i));
+	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::updateVisualizationMenu(void)
+{
+	Visualization* vis = m_dockVisualization->getVisualization();
+
+	if(!vis->hasVertices() && !vis->hasEdges())
+	{
+		m_visualizationMenu->setEnabled(false);
+		return;
+	}
+	else
+		m_visualizationMenu->setEnabled(true);
+
+
+	m_visualizationMenu->clear();
+
+//	if(vis->hasVertices())
+//		m_visualizationMenu->addSeparator();
+
+	VIS_DATA_CONTAINER::const_iterator it;
+	QAction* action = NULL;
+
+	const VIS_DATA_CONTAINER& dataVertices = vis->getVertexSets();
+	for(it = dataVertices.begin(); it != dataVertices.end(); ++it)
+	{
+		action = m_visualizationMenu->addAction(QString::fromStdString(ID2STR(it->getName())));
+		action->setStatusTip(tr("Toogle painting of this vertex set"));
+		action->setCheckable(true);
+		action->setChecked(it->isEnabled());
+		connect(action, SIGNAL(toggled(bool)), it->getMe(), SLOT(setEnabled(bool)));
+		connect(action, SIGNAL(toggled(bool)), this, SLOT(repaintVisualization()));
+	}
+
+//	if(vis->hasEdges())
+	if(vis->hasVertices() && vis->hasEdges())
+		m_visualizationMenu->addSeparator();
+
+	const VIS_DATA_CONTAINER& dataEdges = vis->getEdgeSets();
+	for(it = dataEdges.begin(); it != dataEdges.end(); ++it)
+	{
+		action = m_visualizationMenu->addAction(QString::fromStdString(ID2STR(it->getName())));
+		action->setStatusTip(tr("Toogle painting of this edge set"));
+		action->setCheckable(true);
+		action->setChecked(it->isEnabled());
+		connect(action, SIGNAL(toggled(bool)), it->getMe(), SLOT(setEnabled(bool)));
+		connect(action, SIGNAL(toggled(bool)), this, SLOT(repaintVisualization()));
 	}
 }
 
@@ -652,6 +708,13 @@ void MainWindow::createMenus()
 	m_scriptMenu->addSeparator();
 	m_scriptMenu->addAction(m_scriptParametersAct);
 	m_scriptMenu->addAction(m_includeDirectoriesAct);
+
+
+	// Visualization
+	m_visualizationMenu = menuBar()->addMenu(tr("&Visualization"));
+	updateVisualizationMenu();
+	connect(m_dockVisualization->getVisualization(), SIGNAL(containersChanged()),
+			this, SLOT(updateVisualizationMenu()));
 
 
 	// Window
@@ -1041,6 +1104,15 @@ void MainWindow::scriptPaused(void)
 	}
 
 	// Update visualization window
+	repaintVisualization();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::repaintVisualization(void)
+{
 	m_dockVisualization->getVisualization()->updateGL();
 }
 

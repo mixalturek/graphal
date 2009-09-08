@@ -22,22 +22,10 @@
 #define VISUALIZATION_H
 
 #include <QGLWidget>
-#include "countptr.hpp"
-#include "value.hpp"
+#include "visualizationitemdata.h"
 
-class ITEM
-{
-public:
-	ITEM(CountPtr<Value> value, const QColor& color) : m_value(value), m_color(color) {}
-	CountPtr<Value> getValue(void) const { return m_value; }
-	QColor getColor(void) const { return m_color; }
 
-private:
-	CountPtr<Value> m_value;
-	QColor m_color;
-};
-
-#define DATA_CONTAINER vector<ITEM>
+#define VIS_DATA_CONTAINER vector<VisualizationItemData>
 
 class Visualization : public QGLWidget
 {
@@ -48,9 +36,16 @@ public:
 	virtual ~Visualization(void);
 
 	void clear(void);
+	bool hasVertices(void) const { return !m_vertexSets.empty(); }
+	bool hasEdges(void) const { return !m_edgeSets.empty(); }
+	const VIS_DATA_CONTAINER& getVertexSets(void) const { return m_vertexSets; }
+	const VIS_DATA_CONTAINER& getEdgeSets(void) const { return m_edgeSets; }
+
+signals:
+	void containersChanged(void);
 
 public slots:
-	void visRegister(CountPtr<Value> object);
+	void visRegister(const VisualizationItemData& item);
 
 protected:
 	void initializeGL(void);
@@ -62,8 +57,8 @@ protected:
 	void wheelEvent(QWheelEvent* event);
 
 private:
-	DATA_CONTAINER m_vertexSets;
-	DATA_CONTAINER m_edgeSets;
+	VIS_DATA_CONTAINER m_vertexSets;
+	VIS_DATA_CONTAINER m_edgeSets;
 
 	QPoint m_lastMousePos;
 	float m_posx;

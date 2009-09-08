@@ -19,6 +19,7 @@
 
 
 #include "guivisualizationconnector.h"
+#include "context.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -50,7 +51,9 @@ void GuiVisualizationConnector::dump(ostream& os, uint indent) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void GuiVisualizationConnector::visRegister(CountPtr<Value> object)
+void GuiVisualizationConnector::visRegister(CountPtr<Value> object,
+	const string& name, int r, int g, int b)
 {
-	emit visRegisterSig(object);
+	emit visRegisterSig(VisualizationItemData(object,
+		STR2ID(name), QColor(r, g, b)));
 }

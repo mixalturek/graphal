@@ -40,12 +40,14 @@ void generateBuiltinFunctions(void)
 	params.push_back(STR2ID("c"));
 	params.push_back(STR2ID("d"));
 	params.push_back(STR2ID("e"));
+	params.push_back(STR2ID("f"));
 
 	list<identifier>::iterator p0 = params.begin();
 	list<identifier>::iterator p1 = ++p0;
 	list<identifier>::iterator p2 = ++p0;
 	list<identifier>::iterator p3 = ++p0;
 	list<identifier>::iterator p4 = ++p0;
+	list<identifier>::iterator p5 = ++p0;
 	p0 = params.begin();
 
 END_OF_CODE
@@ -1426,22 +1428,33 @@ genBFClass('difference', 'NodeBuiltinDifference', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'visRegister(vertexset|edgeset) : null';
+$funcdecl = 'visRegister(vertexset|edgeset, string, int, int, int) : null';
 
 $include = <<END_OF_CODE;
 #include "objectcreator.hpp"
 #include "visualizationconnector.hpp"
+#include "valueint.hpp"
+#include "valuestring.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
-	if(par[0]->toValueVertexSet() != NULL || par[0]->toValueEdgeSet() != NULL)
-		VISUALIZATION_CONNECTOR->visRegister(par[0]);
+	ValueString* name = NULL;
+	ValueInt* r = NULL;
+	ValueInt* g = NULL;
+	ValueInt* b = NULL;
+
+	if((par[0]->toValueVertexSet() != NULL || par[0]->toValueEdgeSet() != NULL)
+			&& (name = par[1]->toValueString()) != NULL
+			&& (r = par[2]->toValueInt()) != NULL
+			&& (g = par[3]->toValueInt()) != NULL
+			&& (b = par[4]->toValueInt()) != NULL)
+		VISUALIZATION_CONNECTOR->visRegister(par[0], name->getVal(), r->getVal(), g->getVal(), b->getVal());
 	else
 		WARN_P(_("Bad parameters type: $funcdecl"));
 
 	return VALUENULL;
 END_OF_CODE
-genBFClass('visRegister', 'NodeBuiltinVisRegister', 1, $code, $include);
+genBFClass('visRegister', 'NodeBuiltinVisRegister', 5, $code, $include);
 
 
 #############################################################################

@@ -36,7 +36,7 @@ public:
 	virtual void dump(ostream& os, uint indent) const;
 
 public:
-	virtual void visRegister(CountPtr<Value> object);
+	virtual void visRegister(CountPtr<Value> object, const string& name, int r, int g, int b);
 };
 
 #endif // VISUALIZATIONCONNECTOR_HPP
