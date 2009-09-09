@@ -23,9 +23,11 @@
 
 #include <QGLWidget>
 #include "visualizationitemdata.h"
+#include "visualizationview.h"
 
 
 #define VIS_DATA_CONTAINER vector<VisualizationItemData>
+#define VIS_VIEW_CONTAINER vector<VisualizationView>
 
 class Visualization : public QGLWidget
 {
@@ -41,11 +43,17 @@ public:
 	const VIS_DATA_CONTAINER& getVertexSets(void) const { return m_vertexSets; }
 	const VIS_DATA_CONTAINER& getEdgeSets(void) const { return m_edgeSets; }
 
+	bool hasViews(void) const { return !m_views.empty(); }
+	void setCurrentView(const VisualizationView& view) { m_currentView = view; }
+	void saveCurrentView(const QString& name);
+	const VIS_VIEW_CONTAINER& getViews(void) const { return m_views; }
+
 signals:
 	void containersChanged(void);
 
 public slots:
 	void visRegister(const VisualizationItemData& item);
+	void resetView(void) { m_currentView.clear(); updateGL(); }
 
 protected:
 	void initializeGL(void);
@@ -61,11 +69,8 @@ private:
 	VIS_DATA_CONTAINER m_edgeSets;
 
 	QPoint m_lastMousePos;
-	float m_posx;
-	float m_posy;
-	float m_posz;
-	float m_rotx;
-	float m_roty;
+	VisualizationView m_currentView;
+	VIS_VIEW_CONTAINER m_views;
 };
 
 #endif // VISUALIZATION_H

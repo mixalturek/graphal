@@ -81,6 +81,8 @@ private slots:
 	void editorFont(void);
 	void visualizationPointSize(void);
 	void visualizationLineWidth(void);
+	void saveCurrentView(void);
+	void resetView(void);
 
 	void saveLayout();
 	void loadLayout();
@@ -171,6 +173,8 @@ private:
 	QAction* m_editorFontAct;
 	QAction* m_visualizationPointSizeAct;
 	QAction* m_visualizationLineWidthAct;
+	QAction* m_saveCurrentViewAct;
+	QAction* m_resetViewAct;
 
 	ScriptThread* m_scriptThread;
 

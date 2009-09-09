@@ -6,9 +6,11 @@ g.setPropertyToAllVertices();
 g.setPropertyToAllEdges();
 error message "variable not defined" if not assigning
 create bbd library
-built-in function for adjacency matrix creation
 
-
+built-in functions
+	adjacencyMatrix(graph)
+	visSetPos(vertex)
+	visSetColor(vertex|edge)
 
 Bison
 	rewrite parser to C++ (it is in documentation)

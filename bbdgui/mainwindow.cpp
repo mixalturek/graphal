@@ -352,23 +352,42 @@ void MainWindow::updateWindowMenu()
 void MainWindow::updateVisualizationMenu(void)
 {
 	Visualization* vis = m_dockVisualization->getVisualization();
+	QAction* action = NULL;
 
-	if(!vis->hasVertices() && !vis->hasEdges())
+
+	// Enable/disable
+/*	if(!vis->hasVertices() && !vis->hasEdges())
 	{
 		m_visualizationMenu->setEnabled(false);
 		return;
 	}
 	else
 		m_visualizationMenu->setEnabled(true);
+*/
 
-
+	// Clear and rebuild
 	m_visualizationMenu->clear();
+	m_visualizationMenu->addAction(m_saveCurrentViewAct);
+	m_visualizationMenu->addAction(m_resetViewAct);
 
-//	if(vis->hasVertices())
-//		m_visualizationMenu->addSeparator();
+
+	// Views
+	const VIS_VIEW_CONTAINER& views = vis->getViews();
+	VIS_VIEW_CONTAINER::const_iterator itv;
+	for(itv = views.begin(); itv != views.end(); ++itv)
+	{
+		action = m_visualizationMenu->addAction(itv->getName());
+		action->setStatusTip(tr("Make this view the current view"));
+		connect(action, SIGNAL(triggered()), itv->getMe(), SLOT(selected()));
+		connect(action, SIGNAL(triggered()), this, SLOT(repaintVisualization()));
+	}
+
+
+	// Vertex sets
+	if(vis->hasVertices())
+		m_visualizationMenu->addSeparator();
 
 	VIS_DATA_CONTAINER::const_iterator it;
-	QAction* action = NULL;
 
 	const VIS_DATA_CONTAINER& dataVertices = vis->getVertexSets();
 	for(it = dataVertices.begin(); it != dataVertices.end(); ++it)
@@ -381,8 +400,9 @@ void MainWindow::updateVisualizationMenu(void)
 		connect(action, SIGNAL(toggled(bool)), this, SLOT(repaintVisualization()));
 	}
 
-//	if(vis->hasEdges())
-	if(vis->hasVertices() && vis->hasEdges())
+
+	// Edge sets
+	if(vis->hasEdges())
 		m_visualizationMenu->addSeparator();
 
 	const VIS_DATA_CONTAINER& dataEdges = vis->getEdgeSets();
@@ -613,9 +633,17 @@ void MainWindow::createActions()
 	m_visualizationPointSizeAct->setStatusTip(tr("Set the point size for vertices"));
 	connect(m_visualizationPointSizeAct, SIGNAL(triggered()), this, SLOT(visualizationPointSize()));
 
-	m_visualizationLineWidthAct = new QAction(QIcon(":/images/linewidth.png"),tr("&Edges width"), this);
+	m_visualizationLineWidthAct = new QAction(QIcon(":/images/linewidth.png"), tr("&Edges width"), this);
 	m_visualizationLineWidthAct->setStatusTip(tr("Set the line width for edges"));
 	connect(m_visualizationLineWidthAct, SIGNAL(triggered()), this, SLOT(visualizationLineWidth()));
+
+	m_saveCurrentViewAct = new QAction(QIcon(":/images/add.png"), tr("&Save current view"), this);
+	m_saveCurrentViewAct->setStatusTip(tr("Save the current visualization view"));
+	connect(m_saveCurrentViewAct, SIGNAL(triggered()), this, SLOT(saveCurrentView()));
+
+	m_resetViewAct = new QAction(QIcon(":/images/button_cancel.png"), tr("&Reset view"), this);
+	m_resetViewAct->setStatusTip(tr("Reset the visualization view"));
+	connect(m_resetViewAct, SIGNAL(triggered()), this, SLOT(resetView()));
 }
 
 
@@ -1336,6 +1364,10 @@ void MainWindow::visualizationPointSize(void)
 	}
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void MainWindow::visualizationLineWidth(void)
 {
 	bool ok;
@@ -1346,4 +1378,28 @@ void MainWindow::visualizationLineWidth(void)
 		SETTINGS.setVisualizationLineWidth(size);
 		repaintVisualization();
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::saveCurrentView(void)
+{
+	bool ok;
+
+	QString text = QInputDialog::getText(this, tr("Save current view"), tr("View name"),
+		QLineEdit::Normal, "", &ok);
+
+	if(ok && !text.isEmpty())
+		m_dockVisualization->getVisualization()->saveCurrentView(text);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::resetView(void)
+{
+	m_dockVisualization->getVisualization()->resetView();
 }

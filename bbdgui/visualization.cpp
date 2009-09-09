@@ -40,17 +40,16 @@ Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::
 	m_vertexSets(),
 	m_edgeSets(),
 	m_lastMousePos(),
-	m_posx(0.0f),
-	m_posy(0.0f),
-	m_posz(0.0f),
-	m_rotx(0.0f),
-	m_roty(0.0f)
+	m_currentView(),
+	m_views()
 {
 	GuiVisualizationConnector* viscon = dynamic_cast<GuiVisualizationConnector*>(VISUALIZATION_CONNECTOR);
 
 	qRegisterMetaType<VisualizationItemData>("VisualizationItemData");
 	connect(viscon, SIGNAL(visRegisterSig(VisualizationItemData)),
 			this, SLOT(visRegister(VisualizationItemData)));
+
+	VisualizationView::initInstance(this);
 }
 
 Visualization::~Visualization(void)
@@ -62,11 +61,7 @@ void Visualization::clear(void)
 {
 	m_vertexSets.clear();
 	m_edgeSets.clear();
-	m_posx = 0.0f;
-	m_posy = 0.0f;
-	m_posz = 0.0f;
-	m_rotx = 0.0f;
-	m_roty = 0.0f;
+	m_currentView.clear();
 
 	emit containersChanged();
 }
@@ -118,9 +113,9 @@ void Visualization::paintGL(void)
 	glPointSize(SETTINGS.getVisualizationPointSize());
 	glLineWidth(SETTINGS.getVisualizationLineWidth());
 
-	glTranslatef(m_posx, m_posy, m_posz - 10.0f);
-	glRotatef(m_rotx, 1.0f, 0.0f, 0.0f);
-	glRotatef(m_roty, 0.0f, 1.0f, 0.0f);
+	glTranslatef(m_currentView.getPosX(), m_currentView.getPosY(), m_currentView.getPosZ() - 10.0f);
+	glRotatef(m_currentView.getRotX(), 1.0f, 0.0f, 0.0f);
+	glRotatef(m_currentView.getRotY(), 0.0f, 1.0f, 0.0f);
 
 
 	identifier id_x = STR2ID("__x");
@@ -262,9 +257,8 @@ void Visualization::mouseMoveEvent(QMouseEvent* event)
 		// TODO: The coeficients depend on the depth of the object in the scene
 		QPoint diff = (m_lastMousePos - event->pos());
 
-		m_posx -= diff.x() / 60.0f;
-		m_posy += diff.y() / 60.0f;
-
+		m_currentView.getPosX() -= diff.x() / 60.0f;
+		m_currentView.getPosY() += diff.y() / 60.0f;
 
 		updateGL();
 	}
@@ -274,13 +268,13 @@ void Visualization::mouseMoveEvent(QMouseEvent* event)
 		QPoint diff = (m_lastMousePos - event->pos());
 
 		if(event->modifiers() & Qt::ControlModifier)
-			m_rotx -= diff.y();
+			m_currentView.getRotX() -= diff.y();
 		else if(event->modifiers() & Qt::ShiftModifier)
-			m_roty -= diff.x();
+			m_currentView.getRotY() -= diff.x();
 		else
 		{
-			m_rotx -= diff.y();
-			m_roty -= diff.x();
+			m_currentView.getRotX() -= diff.y();
+			m_currentView.getRotY() -= diff.x();
 		}
 
 		updateGL();
@@ -297,7 +291,18 @@ void Visualization::wheelEvent(QWheelEvent* event)
 {
 	if(event->orientation() == Qt::Vertical)
 	{
-		m_posz += event->delta() / 120;
+		m_currentView.getPosZ() += event->delta() / 120;
 		updateGL();
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Visualization::saveCurrentView(const QString& name)
+{
+	m_currentView.setName(name);
+	m_views.push_back(m_currentView);
+	emit containersChanged();
 }

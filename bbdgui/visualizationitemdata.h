@@ -37,7 +37,7 @@ public:
 
 	VisualizationItemData& operator= (const VisualizationItemData& object);
 
-	// Hack for connect() ;-)
+	// Hack for connect()
 	const VisualizationItemData* getMe(void) const { return this; }
 
 	CountPtr<Value> getValue(void) const { return m_value; }

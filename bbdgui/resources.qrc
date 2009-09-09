@@ -27,5 +27,7 @@
         <file>images/fonts.png</file>
         <file>images/pointsize.png</file>
         <file>images/linewidth.png</file>
+        <file>images/add.png</file>
+        <file>images/button_cancel.png</file>
     </qresource>
 </RCC>
