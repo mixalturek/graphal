@@ -24,5 +24,8 @@
         <file>images/dbgstepout.png</file>
         <file>images/breakpointstoggle.png</file>
         <file>images/location.png</file>
+        <file>images/fonts.png</file>
+        <file>images/pointsize.png</file>
+        <file>images/linewidth.png</file>
     </qresource>
 </RCC>

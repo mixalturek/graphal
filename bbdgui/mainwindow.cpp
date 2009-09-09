@@ -605,9 +605,17 @@ void MainWindow::createActions()
 	m_gotoLineAct->setStatusTip(tr("Go to the specified line in the document"));
 	connect(m_gotoLineAct, SIGNAL(triggered()), this, SLOT(gotoLine()));
 
-	m_editorFontAct = new QAction(tr("&Editor font"), this);
+	m_editorFontAct = new QAction(QIcon(":/images/fonts.png"), tr("&Editor font"), this);
 	m_editorFontAct->setStatusTip(tr("Set the editor font"));
 	connect(m_editorFontAct, SIGNAL(triggered()), this, SLOT(editorFont()));
+
+	m_visualizationPointSizeAct = new QAction(QIcon(":/images/pointsize.png"), tr("&Vertices size"), this);
+	m_visualizationPointSizeAct->setStatusTip(tr("Set the point size for vertices"));
+	connect(m_visualizationPointSizeAct, SIGNAL(triggered()), this, SLOT(visualizationPointSize()));
+
+	m_visualizationLineWidthAct = new QAction(QIcon(":/images/linewidth.png"),tr("&Edges width"), this);
+	m_visualizationLineWidthAct->setStatusTip(tr("Set the line width for edges"));
+	connect(m_visualizationLineWidthAct, SIGNAL(triggered()), this, SLOT(visualizationLineWidth()));
 }
 
 
@@ -689,9 +697,6 @@ void MainWindow::createMenus()
 	tmp->setText(tmp->text() + tr(" toolbar"));
 	m_viewMenu->addAction(tmp);
 
-	m_viewMenu->addSeparator();
-	m_viewMenu->addAction(m_editorFontAct);
-
 
 	// Script
 	m_scriptMenu = menuBar()->addMenu(tr("&Script"));
@@ -715,6 +720,14 @@ void MainWindow::createMenus()
 	updateVisualizationMenu();
 	connect(m_dockVisualization->getVisualization(), SIGNAL(containersChanged()),
 			this, SLOT(updateVisualizationMenu()));
+
+
+	// Settings
+	m_settingsMenu = menuBar()->addMenu(tr("&Settings"));
+	m_settingsMenu->addAction(m_editorFontAct);
+	m_settingsMenu->addSeparator();
+	m_settingsMenu->addAction(m_visualizationPointSizeAct);
+	m_settingsMenu->addAction(m_visualizationLineWidthAct);
 
 
 	// Window
@@ -1305,4 +1318,32 @@ void MainWindow::editorFont(void)
 	}
 
 	m_dockScriptOutput->getTextBrowser()->setFont(font);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::visualizationPointSize(void)
+{
+	bool ok;
+	double size = QInputDialog::getDouble(this, tr("Vertices size"),
+		tr("The size of the points"), SETTINGS.getVisualizationPointSize(), 1.0, 100.0, 1, &ok);
+	if(ok)
+	{
+		SETTINGS.setVisualizationPointSize(size);
+		repaintVisualization();
+	}
+}
+
+void MainWindow::visualizationLineWidth(void)
+{
+	bool ok;
+	double size = QInputDialog::getDouble(this, tr("Edges width"),
+		tr("The width of the lines"), SETTINGS.getVisualizationLineWidth(), 1.0, 100.0, 1, &ok);
+	if(ok)
+	{
+		SETTINGS.setVisualizationLineWidth(size);
+		repaintVisualization();
+	}
 }

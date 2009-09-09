@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 	app.setApplicationName("bbdgui");
 	app.setWindowIcon(QIcon(":/applogo.png"));
 
-	SETTINGS.initSingleton();
+	SETTINGS.init();
 
 	MainWindow mainWin;
 	mainWin.show();

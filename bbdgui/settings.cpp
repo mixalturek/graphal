@@ -36,123 +36,145 @@ Settings Settings::m_instance;
 ////
 
 Settings::Settings()
-	: m_settings(NULL)
+	: m_applicationGeometry(),
+	m_aplicationState(),
+	m_dockFilesPath(""),
+	m_openedFiles(),
+	m_includeDirectories(),
+	m_scriptParameters(),
+	m_editorFont(),
+	m_visualizationPointSize(10.0f),
+	m_visualizationLineWidth(1.0f)
 {
 
 }
 
 Settings::~Settings()
 {
-	assert(m_settings != NULL);
-	delete m_settings;
-	m_settings = NULL;
+
 }
 
-void Settings::initSingleton(void)
+void Settings::init(void)
 {
-	assert(m_settings == NULL);// Verify initSingleton() is called just once
-	m_settings = new QSettings;
+	QSettings settings;
+	bool ok;
+
+	m_applicationGeometry = settings.value("geometry", QByteArray()).toByteArray();
+	m_aplicationState = settings.value("state", QByteArray()).toByteArray();
+	m_dockFilesPath = settings.value("dockfilespath", QDir::homePath()).toString();
+	m_openedFiles = settings.value("openedfiles", QStringList()).toStringList();
+	m_includeDirectories = settings.value("includedirectories", QStringList()).toStringList();
+	m_scriptParameters = settings.value("scriptparameters", QStringList()).toStringList();
+
+	m_editorFont = QFont(settings.value("editorfontfamily", "Monospace").toString(),
+		settings.value("editorfontpointsize", 9).toInt());
+	m_editorFont.setStyleHint(QFont::TypeWriter);
+
+	m_visualizationPointSize = settings.value("visualizationpointsize", 10.0f).toDouble(&ok);
+	if(!ok)
+		m_visualizationPointSize = 10.0f;
+
+	m_visualizationLineWidth = settings.value("visualizationlinewidth", 1.0f).toDouble(&ok);
+	if(!ok)
+		m_visualizationLineWidth = 1.0f;
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
-
-QByteArray Settings::getApplicationGeometry(void)
-{
-	return m_settings->value("geometry", QByteArray()).toByteArray();
-}
 
 void Settings::setApplicationGeometry(const QByteArray& geometry)
 {
-	m_settings->setValue("geometry", geometry);
+	QSettings settings;
+	m_applicationGeometry = geometry;
+	settings.setValue("geometry", geometry);
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
-
-QByteArray Settings::getApplicationState(void)
-{
-	return m_settings->value("state", QByteArray()).toByteArray();
-}
 
 void Settings::setApplicationState(const QByteArray& state)
 {
-	m_settings->setValue("state", state);
+	QSettings settings;
+	m_aplicationState = state;
+	settings.setValue("state", state);
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
-
-QString Settings::getDockFilesPath(void)
-{
-	return m_settings->value("dockfilespath", QDir::homePath()).toString();
-}
 
 void Settings::setDockFilesPath(const QString& path)
 {
-	m_settings->setValue("dockfilespath", path);
+	QSettings settings;
+	m_dockFilesPath = path;
+	settings.setValue("dockfilespath", path);
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
-
-QStringList Settings::getOpenedFiles(void)
-{
-	return m_settings->value("openedfiles", QStringList()).toStringList();
-}
 
 void Settings::setOpenedFiles(const QStringList& files)
 {
-	m_settings->setValue("openedfiles", files);
+	QSettings settings;
+	m_openedFiles = files;
+	settings.setValue("openedfiles", files);
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
-
-QStringList Settings::getIncludeDirectories(void)
-{
-	return m_settings->value("includedirectories", QStringList()).toStringList();
-}
 
 void Settings::setIncludeDirectories(const QStringList& dirs)
 {
-	m_settings->setValue("includedirectories", dirs);
+	QSettings settings;
+	m_includeDirectories = dirs;
+	settings.setValue("includedirectories", dirs);
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
-
-QStringList Settings::getScriptParameters(void)
-{
-	return m_settings->value("scriptparameters", QStringList()).toStringList();
-}
 
 void Settings::setScriptParameters(const QStringList& parameters)
 {
-	m_settings->setValue("scriptparameters", parameters);
+	QSettings settings;
+	m_scriptParameters = parameters;
+	settings.setValue("scriptparameters", parameters);
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-QFont Settings::getEditorFont(void)
-{
-	QFont font(m_settings->value("editorfontfamily", "Monospace").toString(),
-		m_settings->value("editorfontpointsize", 9).toInt());
-
-	font.setStyleHint(QFont::TypeWriter);
-	return font;
-}
-
 void Settings::setEditorFont(const QFont& font)
 {
-	m_settings->setValue("editorfontfamily", font.family());
-	m_settings->setValue("editorfontpointsize", font.pointSize());
+	QSettings settings;
+	m_editorFont = font;
+	settings.setValue("editorfontfamily", font.family());
+	settings.setValue("editorfontpointsize", font.pointSize());
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Settings::setVisualizationPointSize(float size)
+{
+	QSettings settings;
+	m_visualizationPointSize = size;
+	settings.setValue("visualizationpointsize", size);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Settings::setVisualizationLineWidth(float width)
+{
+	QSettings settings;
+	m_visualizationLineWidth = width;
+	settings.setValue("visualizationlinewidth", width);
 }

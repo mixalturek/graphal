@@ -23,6 +23,7 @@
 #include <QMouseEvent>
 #include "visualization.h"
 #include "guivisualizationconnector.h"
+#include "settings.h"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
 #include "valuevertexset.hpp"
@@ -82,8 +83,8 @@ void Visualization::initializeGL(void)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
-	glPointSize(10.0f);// TODO: add to settings
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_POINT_SMOOTH);
 }
 
 
@@ -113,6 +114,9 @@ void Visualization::paintGL(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+
+	glPointSize(SETTINGS.getVisualizationPointSize());
+	glLineWidth(SETTINGS.getVisualizationLineWidth());
 
 	glTranslatef(m_posx, m_posy, m_posz - 10.0f);
 	glRotatef(m_rotx, 1.0f, 0.0f, 0.0f);

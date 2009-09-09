@@ -20,10 +20,9 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#define SETTINGS Settings::getInstance()
+#include <QFont>
 
-class QSettings;
-class QFont;
+#define SETTINGS Settings::getInstance()
 
 // Singleton
 class Settings
@@ -34,28 +33,34 @@ public:
 		return m_instance;
 	}
 
-	void initSingleton(void);
+	void init(void);
 
-	QByteArray getApplicationGeometry(void);
+	const QByteArray& getApplicationGeometry(void) const { return m_applicationGeometry; }
 	void setApplicationGeometry(const QByteArray& geometry);
 
-	QByteArray getApplicationState(void);
+	const QByteArray& getApplicationState(void) const { return m_aplicationState; }
 	void setApplicationState(const QByteArray& state);
 
-	QString getDockFilesPath(void);
+	const QString& getDockFilesPath(void) const { return m_dockFilesPath; }
 	void setDockFilesPath(const QString& path);
 
-	QStringList getOpenedFiles(void);
+	const QStringList& getOpenedFiles(void) const { return m_openedFiles; }
 	void setOpenedFiles(const QStringList& files);
 
-	QStringList getIncludeDirectories(void);
+	const QStringList& getIncludeDirectories(void) const { return m_includeDirectories; }
 	void setIncludeDirectories(const QStringList& dirs);
 
-	QStringList getScriptParameters(void);
+	const QStringList& getScriptParameters(void) const { return m_scriptParameters; }
 	void setScriptParameters(const QStringList& parameters);
 
-	QFont getEditorFont(void);
+	const QFont& getEditorFont(void) const { return m_editorFont; }
 	void setEditorFont(const QFont& font);
+
+	float getVisualizationPointSize(void) const { return m_visualizationPointSize; }
+	void setVisualizationPointSize(float size);
+
+	float getVisualizationLineWidth(void) const { return m_visualizationLineWidth; }
+	void setVisualizationLineWidth(float width);
 
 private:
 	Settings(void);
@@ -66,7 +71,16 @@ private:
 
 private:
 	static Settings m_instance;
-	QSettings* m_settings;
+
+	QByteArray m_applicationGeometry;
+	QByteArray m_aplicationState;
+	QString m_dockFilesPath;
+	QStringList m_openedFiles;
+	QStringList m_includeDirectories;
+	QStringList m_scriptParameters;
+	QFont m_editorFont;
+	float m_visualizationPointSize;
+	float m_visualizationLineWidth;
 };
 
 #endif // SETTINGS_H

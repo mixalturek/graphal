@@ -79,6 +79,8 @@ private slots:
 	void scriptParameters(void);
 	void gotoLine(void);
 	void editorFont(void);
+	void visualizationPointSize(void);
+	void visualizationLineWidth(void);
 
 	void saveLayout();
 	void loadLayout();
@@ -116,6 +118,7 @@ private:
 	QMenu* m_viewMenu;
 	QMenu* m_scriptMenu;
 	QMenu* m_visualizationMenu;
+	QMenu* m_settingsMenu;
 	QMenu* m_windowMenu;
 	QMenu* m_helpMenu;
 	QToolBar* m_fileToolBar;
@@ -166,6 +169,8 @@ private:
 	QAction* m_scriptParametersAct;
 	QAction* m_gotoLineAct;
 	QAction* m_editorFontAct;
+	QAction* m_visualizationPointSizeAct;
+	QAction* m_visualizationLineWidthAct;
 
 	ScriptThread* m_scriptThread;
 
