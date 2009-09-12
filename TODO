@@ -11,6 +11,7 @@ built-in functions
 	adjacencyMatrix(graph)
 	visSetPos(vertex)
 	visSetColor(vertex|edge)
+	visRegister(graph)
 
 Bison
 	rewrite parser to C++ (it is in documentation)

@@ -1,0 +1,20 @@
+Dobry den,
+
+posilam grafove soubory, z prilozeneho obrazku je patrna struktura grafu
+(odvozen z ctvercove mrizky obohacene o treti rozmer).
+Cislovani vrcholu rovnez naznaceno, cislovani hran postupne
+"stena" za "stenou", nejprve hrany v kazde  "stene" v rovine x-z
+pak hrany kazde "stene" v rovine y-z, steny probirany nejprve v x pak v y poradi.
+
+Kazdy vrchol a kazda hrana ohodnocena jednim realnym cislem,
+prozatim jsem dal nahodna cisla z (0,1), odvozeni z konkretnich
+obrazku pozdeji.
+
+Prolozenym kodem vygenerovany prilozene grafy,  mozno libovolne
+generovat dalsi, staci zadat tri parametry velikosti ve smeru osy  x, y a z.
+
+Kdyby neco neklapalo, piste.
+
+Srdecne
+
+M.B.
