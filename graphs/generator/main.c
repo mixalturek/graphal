@@ -29,6 +29,10 @@ int writeGraph(int xsize, int ysize, int zsize)
 	int nedges = ((xsize-1)*ysize + xsize*(ysize-1))*zsize*zsize;
 	int layersize = xsize*ysize;
 
+	int xmax = (xsize % 2 == 0) ? xsize/2 : xsize/2 + 1;
+	int ymax = (ysize % 2 == 0) ? ysize/2 : ysize/2 + 1;
+	int zmax = (zsize % 2 == 0) ? zsize/2 : zsize/2 + 1;
+
 	// write is_oriented
 	printf("0\n\n");
 
@@ -43,11 +47,11 @@ int writeGraph(int xsize, int ysize, int zsize)
 
 	// for each vertex write vertex_id & values_of_properties
 	id = 0;
-	for (iz = 0; iz < zsize; iz++)
+	for (iz = -zsize/2; iz < zmax; iz++)
 	{
-		for (iy = 0; iy < ysize; iy++)
+		for (iy = -ysize/2; iy < ymax; iy++)
 		{
-			for (ix = 0; ix < xsize; ix++)
+			for (ix = -xsize/2; ix < xmax; ix++)
 			{
 				gt = (double)rand()/(double)RAND_MAX;
 				printf("%d\t%d %d %d\t%0.4f\n", id, ix, iy, iz, gt);
