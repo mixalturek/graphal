@@ -1532,6 +1532,49 @@ genBFClass('visSetColor', 'NodeBuiltinVisSetColor', 4, $code, $include);
 #############################################################################
 ####
 
+$funcdecl = 'visSetView(number, number, number, number, number) : null';
+
+$include = <<END_OF_CODE;
+#include "objectcreator.hpp"
+#include "visualizationconnector.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	if(par[0]->isNumeric() && par[1]->isNumeric() && par[2]->isNumeric()
+			&& par[3]->isNumeric() && par[4]->isNumeric())
+	{
+		VISUALIZATION_CONNECTOR->visSetView(par[0]->toFloat(),
+			par[1]->toFloat(), par[2]->toFloat(),
+			par[3]->toFloat(), par[4]->toFloat());
+	}
+	else
+		WARN_P(_("Bad parameters type: $funcdecl"));
+
+	return VALUENULL;
+END_OF_CODE
+genBFClass('visSetView', 'NodeBuiltinVisSetView', 5, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'visUseWeightWhenPaintingEdges(bool) : null';
+
+$include = <<END_OF_CODE;
+#include "objectcreator.hpp"
+#include "visualizationconnector.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	VISUALIZATION_CONNECTOR->visUseWeightWhenPaintingEdges(par[0]->toBool());
+	return VALUENULL;
+END_OF_CODE
+genBFClass('visUseWeightWhenPaintingEdges', 'NodeBuiltinVisUseWeightWhenPaintingEdges', 1, $code, $include);
+
+
+#############################################################################
+####
+
 print "Generating generateBuiltinFunctions()\n";
 
 open(FILE_HPP, ">nodebuiltin_inst.hpp") or die "Cannot open output file: nodebuiltin_inst.hpp\n";

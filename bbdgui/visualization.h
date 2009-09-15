@@ -54,6 +54,8 @@ signals:
 public slots:
 	void visRegister(const VisualizationItemData& item);
 	void resetView(void) { m_currentView.clear(); updateGL(); }
+	void visSetView(float x, float y, float z, float rotx, float roty);
+	void useWeightWhenPaintingEdges(bool enable);
 
 protected:
 	void initializeGL(void);
@@ -71,6 +73,7 @@ private:
 	QPoint m_lastMousePos;
 	VisualizationView m_currentView;
 	VIS_VIEW_CONTAINER m_views;
+	bool m_useWeightWhenPaintingEdges;
 };
 
 #endif // VISUALIZATION_H

@@ -57,3 +57,21 @@ void GuiVisualizationConnector::visRegister(CountPtr<Value> object,
 	emit visRegisterSig(VisualizationItemData(object,
 		STR2ID(name), QColor(r, g, b)));
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void GuiVisualizationConnector::visSetView(float x, float y, float z, float rotx, float roty)
+{
+	emit visSetViewSig(x, y, z, rotx, roty);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void GuiVisualizationConnector::visUseWeightWhenPaintingEdges(bool enable)
+{
+	emit useWeightWhenPaintingEdges(enable);
+}

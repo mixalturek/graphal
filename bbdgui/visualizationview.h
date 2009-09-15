@@ -47,6 +47,7 @@ public:
 	float& getRotX(void) { return m_rotx; }
 	float& getRotY(void) { return m_roty; }
 
+	void setAll(float x, float y, float z, float rotx, float roty);
 	void setPosX(float pos) { m_posx = pos; }
 	void setPosY(float pos) { m_posy = pos; }
 	void setPosZ(float pos) { m_posz = pos; }

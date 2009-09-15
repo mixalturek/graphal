@@ -39,10 +39,14 @@ public:
 signals:
 	void visRegisterSig(VisualizationItemData);
 	void repaintRequest(void);
+	void visSetViewSig(float, float, float, float, float);
+	void useWeightWhenPaintingEdges(bool);
 
 public:
 	virtual void visRegister(CountPtr<Value> object, const string& name, int r, int g, int b);
 	virtual void repaintVisualization(void) { emit repaintRequest(); }
+	virtual void visSetView(float x, float y, float z, float rotx, float roty);
+	virtual void visUseWeightWhenPaintingEdges(bool enable);
 };
 
 #endif // GUIVISUALIZATIONCONNECTOR_H

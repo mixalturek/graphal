@@ -18,28 +18,20 @@
  */
 
 
-#ifndef VISUALIZATIONCONNECTOR_HPP
-#define VISUALIZATIONCONNECTOR_HPP
+#ifndef MUTEXLOCKER_HPP
+#define MUTEXLOCKER_HPP
 
 #include "general.hpp"
-#include "baseobject.hpp"
-#include "countptr.hpp"
-#include "value.hpp"
+#include "mutex.hpp"
 
-
-class VisualizationConnector : public BaseObject
+class MutexLocker
 {
 public:
-	VisualizationConnector(void);
-	virtual ~VisualizationConnector(void);
+	MutexLocker(Mutex* mutex);
+	~MutexLocker(void);
 
-	virtual void dump(ostream& os, uint indent) const;
-
-public:
-	virtual void visRegister(CountPtr<Value> object, const string& name, int r, int g, int b);
-	virtual void repaintVisualization(void) { }
-	virtual void visSetView(float x, float y, float z, float rotx, float roty);
-	virtual void visUseWeightWhenPaintingEdges(bool enable);
+private:
+	Mutex* m_mutex;
 };
 
-#endif // VISUALIZATIONCONNECTOR_HPP
+#endif // MUTEXLOCKER_HPP

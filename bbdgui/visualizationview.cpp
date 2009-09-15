@@ -100,3 +100,17 @@ void VisualizationView::selected(void)
 	assert(m_visualization != NULL);
 	m_visualization->setCurrentView(*this);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void VisualizationView::setAll(float x, float y, float z, float rotx, float roty)
+{
+	m_name = "";
+	m_posx = x;
+	m_posy = y;
+	m_posz = z;
+	m_rotx = rotx;
+	m_roty = roty;
+}

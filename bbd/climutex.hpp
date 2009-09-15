@@ -18,28 +18,20 @@
  */
 
 
-#ifndef VISUALIZATIONCONNECTOR_HPP
-#define VISUALIZATIONCONNECTOR_HPP
+#ifndef CLIMUTEX_HPP
+#define CLIMUTEX_HPP
 
 #include "general.hpp"
-#include "baseobject.hpp"
-#include "countptr.hpp"
-#include "value.hpp"
+#include "mutex.hpp"
 
-
-class VisualizationConnector : public BaseObject
+class CliMutex : public Mutex
 {
 public:
-	VisualizationConnector(void);
-	virtual ~VisualizationConnector(void);
+	CliMutex(void);
+	virtual ~CliMutex(void);
 
-	virtual void dump(ostream& os, uint indent) const;
-
-public:
-	virtual void visRegister(CountPtr<Value> object, const string& name, int r, int g, int b);
-	virtual void repaintVisualization(void) { }
-	virtual void visSetView(float x, float y, float z, float rotx, float roty);
-	virtual void visUseWeightWhenPaintingEdges(bool enable);
+	virtual void lock(void) { }
+	virtual void unlock(void) { }
 };
 
-#endif // VISUALIZATIONCONNECTOR_HPP
+#endif // CLIMUTEX_HPP

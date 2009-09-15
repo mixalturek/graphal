@@ -40,10 +40,10 @@ int writeGraph(int xsize, int ysize, int zsize)
 	printf("%d %d \n\n", nvertices, nedges);
 
 	// write_number_of_properties_for_vertices & names_of_properties_for_vertices
-	printf("4\t__x __y __z  __gt\n");  // __gt is the value of the vertex
+	printf("4\t__x __y __z __w\n");  // __gt is the value of the vertex
 						// __x is the x coord of the vertex, etc.
 	// write_number_of_properties_for_edges & names_of_properties_for_edges
-	printf("1\t__gtt\n\n");  // __gtt is the value of the edge
+	printf("1\t__w\n\n");  // __gtt is the value of the edge
 
 	// for each vertex write vertex_id & values_of_properties
 	id = 0;

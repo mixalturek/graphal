@@ -41,7 +41,8 @@ Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::
 	m_edgeSets(),
 	m_lastMousePos(),
 	m_currentView(),
-	m_views()
+	m_views(),
+	m_useWeightWhenPaintingEdges(false)
 {
 	GuiVisualizationConnector* viscon = dynamic_cast<GuiVisualizationConnector*>(VISUALIZATION_CONNECTOR);
 
@@ -50,6 +51,10 @@ Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::
 			this, SLOT(visRegister(VisualizationItemData)));
 
 	connect(viscon, SIGNAL(repaintRequest()), this, SLOT(updateGL()));
+	connect(viscon, SIGNAL(visSetViewSig(float, float, float, float, float)),
+			this, SLOT(visSetView(float, float, float, float, float)));
+	connect(viscon, SIGNAL(useWeightWhenPaintingEdge(bool)),
+			this, SLOT(useWeightWhenPaintingEdge(bool)));
 
 	VisualizationView::initInstance(this);
 }
@@ -64,6 +69,7 @@ void Visualization::clear(void)
 	m_vertexSets.clear();
 	m_edgeSets.clear();
 	m_currentView.clear();
+	m_useWeightWhenPaintingEdges = false;
 
 	emit containersChanged();
 }
@@ -126,7 +132,7 @@ void Visualization::paintGL(void)
 	identifier id_r = STR2ID("__r");
 	identifier id_g = STR2ID("__g");
 	identifier id_b = STR2ID("__b");
-//	identifier id_w = STR2ID("__w");
+	identifier id_w = STR2ID("__w");
 
 	glBegin(GL_POINTS);
 	VIS_DATA_CONTAINER::iterator its;
@@ -186,7 +192,7 @@ void Visualization::paintGL(void)
 			ValueVertex* begin = edge->getBeginVertex();
 			ValueVertex* end = edge->getEndVertex();
 
-//			ValueFloat* val_w = edge->getItem(id_w)->toValueFloat();
+			CountPtr<Value> val_w = edge->getItem(id_w);
 			CountPtr<Value> val_begin_x = begin->getItem(id_x);
 			CountPtr<Value> val_begin_y = begin->getItem(id_y);
 			CountPtr<Value> val_begin_z = begin->getItem(id_z);
@@ -197,14 +203,10 @@ void Visualization::paintGL(void)
 			if(val_begin_x->isNumeric() && val_begin_y->isNumeric() && val_begin_z->isNumeric()
 				&& val_end_x->isNumeric() && val_end_y->isNumeric() && val_end_z->isNumeric())
 			{
-//				if(val_w != NULL)
-//					glLineWidth(val_w->getVal());
-
-//				glBegin(GL_LINES);
-
 				CountPtr<Value> val_r = edge->getItem(id_r);
 				CountPtr<Value> val_g = edge->getItem(id_g);
 				CountPtr<Value> val_b = edge->getItem(id_b);
+
 
 				if(begin->getGraph()->isOriented())
 					glColor3ub(0, 0, 0);
@@ -213,7 +215,11 @@ void Visualization::paintGL(void)
 				else
 					glColor3ub(color.red(), color.green(), color.blue());
 
-				glVertex3f(val_begin_x->toFloat(), val_begin_y->toFloat(), val_begin_z->toFloat());
+
+				if(m_useWeightWhenPaintingEdges && val_w->isNumeric())
+					glVertex3f(val_begin_x->toFloat(), val_begin_y->toFloat(), val_begin_z->toFloat() + val_w->toFloat());
+				else
+					glVertex3f(val_begin_x->toFloat(), val_begin_y->toFloat(), val_begin_z->toFloat());
 
 
 				if(val_r->isNumeric() && val_g->isNumeric() && val_b->isNumeric())
@@ -221,8 +227,11 @@ void Visualization::paintGL(void)
 				else
 					glColor3ub(color.red(), color.green(), color.blue());
 
-				glVertex3f(val_end_x->toFloat(), val_end_y->toFloat(), val_end_z->toFloat());
-//				glEnd();
+
+				if(m_useWeightWhenPaintingEdges && val_w->isNumeric())
+					glVertex3f(val_end_x->toFloat(), val_end_y->toFloat(), val_end_z->toFloat() + val_w->toFloat());
+				else
+					glVertex3f(val_end_x->toFloat(), val_end_y->toFloat(), val_end_z->toFloat());
 			}
 		}
 	}
@@ -311,4 +320,24 @@ void Visualization::saveCurrentView(const QString& name)
 	m_currentView.setName(name);
 	m_views.push_back(m_currentView);
 	emit containersChanged();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Visualization::visSetView(float x, float y, float z, float rotx, float roty)
+{
+	m_currentView.setAll(x, y, z, rotx, roty);
+	updateGL();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Visualization::useWeightWhenPaintingEdges(bool enable)
+{
+	m_useWeightWhenPaintingEdge = enable;
+	updateGL();
 }
