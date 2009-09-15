@@ -38,9 +38,11 @@ public:
 
 signals:
 	void visRegisterSig(VisualizationItemData);
+	void repaintRequest(void);
 
 public:
 	virtual void visRegister(CountPtr<Value> object, const string& name, int r, int g, int b);
+	virtual void repaintVisualization(void) { emit repaintRequest(); }
 };
 
 #endif // GUIVISUALIZATIONCONNECTOR_H

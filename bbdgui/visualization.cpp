@@ -49,6 +49,8 @@ Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::
 	connect(viscon, SIGNAL(visRegisterSig(VisualizationItemData)),
 			this, SLOT(visRegister(VisualizationItemData)));
 
+	connect(viscon, SIGNAL(repaintRequest()), this, SLOT(updateGL()));
+
 	VisualizationView::initInstance(this);
 }
 
@@ -121,6 +123,9 @@ void Visualization::paintGL(void)
 	identifier id_x = STR2ID("__x");
 	identifier id_y = STR2ID("__y");
 	identifier id_z = STR2ID("__z");
+	identifier id_r = STR2ID("__r");
+	identifier id_g = STR2ID("__g");
+	identifier id_b = STR2ID("__b");
 //	identifier id_w = STR2ID("__w");
 
 	glBegin(GL_POINTS);
@@ -130,8 +135,7 @@ void Visualization::paintGL(void)
 		if(!its->isEnabled())
 			continue;
 
-		QColor color(its->getColor());
-		glColor3ub(color.red(), color.green(), color.blue());
+		const QColor& color(its->getColor());
 
 		set<ValueVertex*>& vertices = its->getValue()->toValueVertexSet()->getVertices();
 		assert(its->getValue()->toValueVertexSet() != NULL);
@@ -142,12 +146,21 @@ void Visualization::paintGL(void)
 			ValueVertex* vertex = (*it)->toValueVertex();
 			assert(vertex != NULL);
 
-			ValueFloat* val_x = vertex->getItem(id_x)->toValueFloat();
-			ValueFloat* val_y = vertex->getItem(id_y)->toValueFloat();
-			ValueFloat* val_z = vertex->getItem(id_z)->toValueFloat();
+			CountPtr<Value> val_r = vertex->getItem(id_r);
+			CountPtr<Value> val_g = vertex->getItem(id_g);
+			CountPtr<Value> val_b = vertex->getItem(id_b);
 
-			if(val_x != NULL && val_y != NULL && val_z != NULL)
-				glVertex3f(val_x->getVal(), val_y->getVal(), val_z->getVal());
+			if(val_r->isNumeric() && val_g->isNumeric() && val_b->isNumeric())
+				glColor3ub(val_r->toInt(), val_g->toInt(), val_b->toInt());
+			else
+				glColor3ub(color.red(), color.green(), color.blue());
+
+			CountPtr<Value> val_x = vertex->getItem(id_x);
+			CountPtr<Value> val_y = vertex->getItem(id_y);
+			CountPtr<Value> val_z = vertex->getItem(id_z);
+
+			if(val_x->isNumeric() && val_y->isNumeric() && val_z->isNumeric())
+				glVertex3f(val_x->toFloat(), val_y->toFloat(), val_z->toFloat());
 		}
 	}
 	glEnd();
@@ -159,8 +172,7 @@ void Visualization::paintGL(void)
 		if(!its->isEnabled())
 			continue;
 
-		QColor color(its->getColor());
-		glColor3ub(color.red(), color.green(), color.blue());
+		const QColor& color(its->getColor());
 
 		set<ValueEdge*>& edges = its->getValue()->toValueEdgeSet()->getEdges();
 		assert(its->getValue()->toValueEdgeSet() != NULL);
@@ -175,52 +187,46 @@ void Visualization::paintGL(void)
 			ValueVertex* end = edge->getEndVertex();
 
 //			ValueFloat* val_w = edge->getItem(id_w)->toValueFloat();
-			ValueFloat* val_begin_x = begin->getItem(id_x)->toValueFloat();
-			ValueFloat* val_begin_y = begin->getItem(id_y)->toValueFloat();
-			ValueFloat* val_begin_z = begin->getItem(id_z)->toValueFloat();
-			ValueFloat* val_end_x = end->getItem(id_x)->toValueFloat();
-			ValueFloat* val_end_y = end->getItem(id_y)->toValueFloat();
-			ValueFloat* val_end_z = end->getItem(id_z)->toValueFloat();
+			CountPtr<Value> val_begin_x = begin->getItem(id_x);
+			CountPtr<Value> val_begin_y = begin->getItem(id_y);
+			CountPtr<Value> val_begin_z = begin->getItem(id_z);
+			CountPtr<Value> val_end_x = end->getItem(id_x);
+			CountPtr<Value> val_end_y = end->getItem(id_y);
+			CountPtr<Value> val_end_z = end->getItem(id_z);
 
-			if(val_begin_x != NULL && val_begin_y != NULL && val_begin_z != NULL
-				&& val_end_x != NULL && val_end_y != NULL && val_end_z != NULL)
+			if(val_begin_x->isNumeric() && val_begin_y->isNumeric() && val_begin_z->isNumeric()
+				&& val_end_x->isNumeric() && val_end_y->isNumeric() && val_end_z->isNumeric())
 			{
 //				if(val_w != NULL)
 //					glLineWidth(val_w->getVal());
 
 //				glBegin(GL_LINES);
-				if(begin->getGraph()->isOriented())
-					glColor3ub(0, 0, 0);
-				glVertex3f(val_begin_x->getVal(), val_begin_y->getVal(), val_begin_z->getVal());
+
+				CountPtr<Value> val_r = edge->getItem(id_r);
+				CountPtr<Value> val_g = edge->getItem(id_g);
+				CountPtr<Value> val_b = edge->getItem(id_b);
 
 				if(begin->getGraph()->isOriented())
+					glColor3ub(0, 0, 0);
+				else if(val_r->isNumeric() && val_g->isNumeric() && val_b->isNumeric())
+					glColor3ub(val_r->toInt(), val_g->toInt(), val_b->toInt());
+				else
 					glColor3ub(color.red(), color.green(), color.blue());
-				glVertex3f(val_end_x->getVal(), val_end_y->getVal(), val_end_z->getVal());
+
+				glVertex3f(val_begin_x->toFloat(), val_begin_y->toFloat(), val_begin_z->toFloat());
+
+
+				if(val_r->isNumeric() && val_g->isNumeric() && val_b->isNumeric())
+					glColor3ub(val_r->toInt(), val_g->toInt(), val_b->toInt());
+				else
+					glColor3ub(color.red(), color.green(), color.blue());
+
+				glVertex3f(val_end_x->toFloat(), val_end_y->toFloat(), val_end_z->toFloat());
 //				glEnd();
 			}
 		}
 	}
 	glEnd();
-
-
-/*	glTranslatef(-1.5f,0.0f,-10.0f);
-
-	glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 0.0f, 0.0f); glVertex3f( 0.0f, 1.0f, 0.0f);
-		glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(-1.0f,-1.0f, 0.0f);
-		glColor3f(0.0f, 0.0f, 1.0f); glVertex3f( 1.0f,-1.0f, 0.0f);
-	glEnd();
-
-	glTranslatef(3.0f,0.0f,0.0f);
-	glColor3f(0.5f,0.5f,1.0f);
-
-	glBegin(GL_QUADS);
-		glVertex3f(-1.0f, 1.0f, 0.0f);
-		glVertex3f( 1.0f, 1.0f, 0.0f);
-		glVertex3f( 1.0f,-1.0f, 0.0f);
-		glVertex3f(-1.0f,-1.0f, 0.0f);
-	glEnd();
-*/
 }
 
 

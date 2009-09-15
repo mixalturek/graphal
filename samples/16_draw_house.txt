@@ -5,11 +5,12 @@ function main(argv)
 	g = graph();
 	g.setOriented(true);
 
-	v0 = g.generateVertex(); v0.__x = -1.0; v0.__y =  1.0; v0.__z = ZPOS;
-	v1 = g.generateVertex(); v1.__x =  1.0; v1.__y =  1.0; v1.__z = ZPOS;
-	v2 = g.generateVertex(); v2.__x =  1.0; v2.__y = -1.0; v2.__z = ZPOS;
-	v3 = g.generateVertex(); v3.__x = -1.0; v3.__y = -1.0; v3.__z = ZPOS;
-	v4 = g.generateVertex(); v4.__x =  0.0; v4.__y =  2.0; v4.__z = ZPOS;
+	v0 = g.generateVertex(); v0.visSetPos(-1,  1, ZPOS);
+	v1 = g.generateVertex(); v1.visSetPos( 1,  1, ZPOS);
+	v2 = g.generateVertex(); v2.visSetPos( 1, -1, ZPOS);
+	v3 = g.generateVertex(); v3.visSetPos(-1, -1, ZPOS);
+	v4 = g.generateVertex(); v4.visSetPos( 0,  2, ZPOS);
+
 	e0 = g.generateEdge(v3, v0);
 	e1 = g.generateEdge(v0, v1);
 	e2 = g.generateEdge(v1, v3);

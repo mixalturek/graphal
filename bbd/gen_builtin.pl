@@ -1428,33 +1428,105 @@ genBFClass('difference', 'NodeBuiltinDifference', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'visRegister(vertexset|edgeset, string, int, int, int) : null';
+$funcdecl = 'visRegister(vertexset|edgeset, string, number, number, number) : null';
 
 $include = <<END_OF_CODE;
 #include "objectcreator.hpp"
 #include "visualizationconnector.hpp"
-#include "valueint.hpp"
 #include "valuestring.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueString* name = NULL;
-	ValueInt* r = NULL;
-	ValueInt* g = NULL;
-	ValueInt* b = NULL;
 
 	if((par[0]->toValueVertexSet() != NULL || par[0]->toValueEdgeSet() != NULL)
 			&& (name = par[1]->toValueString()) != NULL
-			&& (r = par[2]->toValueInt()) != NULL
-			&& (g = par[3]->toValueInt()) != NULL
-			&& (b = par[4]->toValueInt()) != NULL)
-		VISUALIZATION_CONNECTOR->visRegister(par[0], name->getVal(), r->getVal(), g->getVal(), b->getVal());
+			&& par[2]->isNumeric()
+			&& par[3]->isNumeric()
+			&& par[4]->isNumeric())
+		VISUALIZATION_CONNECTOR->visRegister(par[0], name->getVal(), par[2]->toInt(), par[3]->toInt(), par[4]->toInt());
 	else
 		WARN_P(_("Bad parameters type: $funcdecl"));
 
 	return VALUENULL;
 END_OF_CODE
 genBFClass('visRegister', 'NodeBuiltinVisRegister', 5, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'visSetPos(vertex, number, number, number) : null';
+
+$include = <<END_OF_CODE;
+#include "objectcreator.hpp"
+#include "visualizationconnector.hpp"
+#include "valuevertex.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueVertex* v = NULL;
+
+	if((v = par[0]->toValueVertex()) != NULL
+			&& par[1]->isNumeric()
+			&& par[2]->isNumeric()
+			&& par[3]->isNumeric())
+	{
+		v->setItem(STR2ID("__x"), par[1]);
+		v->setItem(STR2ID("__y"), par[2]);
+		v->setItem(STR2ID("__z"), par[3]);
+		VISUALIZATION_CONNECTOR->repaintVisualization();
+	}
+	else
+		WARN_P(_("Bad parameters type: $funcdecl"));
+
+	return VALUENULL;
+END_OF_CODE
+genBFClass('visSetPos', 'NodeBuiltinVisSetPos', 4, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'visSetColor(vertex|edge, number, number, number) : null';
+
+$include = <<END_OF_CODE;
+#include "objectcreator.hpp"
+#include "visualizationconnector.hpp"
+#include "valuevertex.hpp"
+#include "valueedge.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueVertex* v = NULL;
+	ValueEdge*   e = NULL;
+
+	if((v = par[0]->toValueVertex()) != NULL
+			&& par[1]->isNumeric()
+			&& par[2]->isNumeric()
+			&& par[3]->isNumeric())
+	{
+		v->setItem(STR2ID("__r"), par[1]);
+		v->setItem(STR2ID("__g"), par[2]);
+		v->setItem(STR2ID("__b"), par[3]);
+		VISUALIZATION_CONNECTOR->repaintVisualization();
+	}
+	else if((e = par[0]->toValueEdge()) != NULL
+			&& par[1]->isNumeric()
+			&& par[2]->isNumeric()
+			&& par[3]->isNumeric())
+	{
+		e->setItem(STR2ID("__r"), par[1]);
+		e->setItem(STR2ID("__g"), par[2]);
+		e->setItem(STR2ID("__b"), par[3]);
+		VISUALIZATION_CONNECTOR->repaintVisualization();
+	}
+	else
+		WARN_P(_("Bad parameters type: $funcdecl"));
+
+	return VALUENULL;
+END_OF_CODE
+genBFClass('visSetColor', 'NodeBuiltinVisSetColor', 4, $code, $include);
 
 
 #############################################################################

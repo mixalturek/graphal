@@ -39,6 +39,9 @@ public:
 	virtual bool      isNull(void) const { return CONTEXT.getLocalVariable(m_val)->isNull(); }
 	virtual bool    isLValue(void) const { return true; }
 	virtual string  toString(void) const { return CONTEXT.getLocalVariable(m_val)->toString(); }
+	virtual bool   isNumeric(void) const { return CONTEXT.getLocalVariable(m_val)->isNumeric(); }
+	virtual float      toInt(void) const { return CONTEXT.getLocalVariable(m_val)->toInt(); }
+	virtual float    toFloat(void) const { return CONTEXT.getLocalVariable(m_val)->toFloat(); }
 
 	virtual ValueBool*           toValueBool(void) { return CONTEXT.getLocalVariable(m_val)->toValueBool(); }
 	virtual ValueInt*             toValueInt(void) { return CONTEXT.getLocalVariable(m_val)->toValueInt(); }

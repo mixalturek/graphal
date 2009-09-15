@@ -241,6 +241,10 @@
 		<Unit filename="nodebuiltinvertexset.hpp" />
 		<Unit filename="nodebuiltinvisregister.cpp" />
 		<Unit filename="nodebuiltinvisregister.hpp" />
+		<Unit filename="nodebuiltinvissetcolor.cpp" />
+		<Unit filename="nodebuiltinvissetcolor.hpp" />
+		<Unit filename="nodebuiltinvissetpos.cpp" />
+		<Unit filename="nodebuiltinvissetpos.hpp" />
 		<Unit filename="nodecondition.cpp" />
 		<Unit filename="nodecondition.hpp" />
 		<Unit filename="nodeemptycommand.cpp" />

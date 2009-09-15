@@ -1,3 +1,14 @@
+Odlišení vrcholů - barva, tvar
+Odlišení hran - Z souřadnice
+export scény do souboru (png, jpg)
+	tlačítko
+	built-in funkce
+	visScreenshot("file" + promenna + ".png");
+built-in funkce pro nastavení pohledu
+built-in funkce pro zobrazení speciálního objektu (šipka) do scény
+
+
+
 add error and warning messages if ValueNull is returned
 resolve all TODOs
 Context::isVariableSet() -> builtin
@@ -9,8 +20,6 @@ create bbd library
 
 built-in functions
 	adjacencyMatrix(graph)
-	visSetPos(vertex)
-	visSetColor(vertex|edge)
 	visRegister(graph)
 
 Bison

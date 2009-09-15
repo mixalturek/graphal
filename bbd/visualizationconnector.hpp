@@ -37,6 +37,7 @@ public:
 
 public:
 	virtual void visRegister(CountPtr<Value> object, const string& name, int r, int g, int b);
+	virtual void repaintVisualization(void) { }
 };
 
 #endif // VISUALIZATIONCONNECTOR_HPP

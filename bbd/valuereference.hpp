@@ -38,6 +38,9 @@ public:
 	virtual bool      isNull(void) const { return m_val->isNull(); }
 	virtual bool    isLValue(void) const { return true; }
 	virtual string  toString(void) const { return m_val->toString(); }
+	virtual bool   isNumeric(void) const { return m_val->isNumeric(); }
+	virtual float      toInt(void) const { return m_val->toInt(); }
+	virtual float    toFloat(void) const { return m_val->toFloat(); }
 
 	virtual ValueBool*           toValueBool(void) { return m_val->toValueBool(); }
 	virtual ValueInt*             toValueInt(void) { return m_val->toValueInt(); }

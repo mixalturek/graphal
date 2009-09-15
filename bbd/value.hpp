@@ -55,7 +55,10 @@ public:
 	virtual bool toBool(void)      const = 0;
 	virtual bool isNull(void)      const { return false; }
 	virtual bool isLValue(void)    const { return false; }
+	virtual bool isNumeric(void)   const { return false; }
 	virtual string toString(void)  const = 0;
+	virtual float toInt(void)      const { return 0; }
+	virtual float toFloat(void)    const { return 0.0f; }
 
 	virtual ValueBool*           toValueBool(void) { return NULL; }
 	virtual ValueInt*             toValueInt(void) { return NULL; }

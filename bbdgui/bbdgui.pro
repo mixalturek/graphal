@@ -173,7 +173,9 @@ SOURCES += main.cpp \
     ../bbd/callstackitem.cpp \
     ../bbd/mutexlocker.cpp \
     ../bbd/mutex.cpp \
-    ../bbd/visualizationconnector.cpp
+    ../bbd/visualizationconnector.cpp \
+    ../bbd/nodebuiltinvissetpos.cpp \
+    ../bbd/nodebuiltinvissetcolor.cpp
 HEADERS += mainwindow.h \
     settings.h \
     scriptthread.h \
@@ -338,7 +340,9 @@ HEADERS += mainwindow.h \
     ../bbd/callstackitem.hpp \
     ../bbd/mutexlocker.hpp \
     ../bbd/mutex.hpp \
-    ../bbd/visualizationconnector.hpp
+    ../bbd/visualizationconnector.hpp \
+    ../bbd/nodebuiltinvissetpos.hpp \
+    ../bbd/nodebuiltinvissetcolor.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
 FORMS += dialogincludedirs.ui \
