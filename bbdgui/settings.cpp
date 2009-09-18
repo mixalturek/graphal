@@ -44,7 +44,8 @@ Settings::Settings()
 	m_scriptParameters(),
 	m_editorFont(),
 	m_visualizationPointSize(10.0f),
-	m_visualizationLineWidth(1.0f)
+	m_visualizationLineWidth(1.0f),
+	m_screenshotsDirectory("")
 {
 
 }
@@ -77,6 +78,8 @@ void Settings::init(void)
 	m_visualizationLineWidth = settings.value("visualizationlinewidth", 1.0f).toDouble(&ok);
 	if(!ok)
 		m_visualizationLineWidth = 1.0f;
+
+	m_screenshotsDirectory = settings.value("screenshotsdirectory", QDir::homePath()).toString();
 }
 
 
@@ -177,4 +180,15 @@ void Settings::setVisualizationLineWidth(float width)
 	QSettings settings;
 	m_visualizationLineWidth = width;
 	settings.setValue("visualizationlinewidth", width);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Settings::setScreenshotsDirectory(const QString& directory)
+{
+	QSettings settings;
+	m_screenshotsDirectory = directory;
+	settings.setValue("screenshotsdirectory", directory);
 }

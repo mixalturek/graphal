@@ -50,6 +50,9 @@ public:
 	virtual void setPositionEnterToFunction(const CodePosition* pos) { setPosition(pos); }
 	virtual void setPositionReturnFromFunction(const CodePosition* pos) { setPosition(pos); }
 
+	void screenshotBegin(void);
+	void screenshotEnd(void);
+
 public slots:
 	void pauseExecution(void);
 	virtual void stopScript(void);

@@ -74,3 +74,12 @@ void VisualizationConnector::visUseWeightWhenPaintingEdges(bool /* enable */)
 {
 	WARN_P(_("Operation is not supported."));
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void VisualizationConnector::visScreenshot(const string& /* path */)
+{
+	WARN_P(_("Operation is not supported."));
+}

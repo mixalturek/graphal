@@ -40,6 +40,7 @@ public:
 	virtual void repaintVisualization(void) { }
 	virtual void visSetView(float x, float y, float z, float rotx, float roty);
 	virtual void visUseWeightWhenPaintingEdges(bool enable);
+	virtual void visScreenshot(const string& path);
 };
 
 #endif // VISUALIZATIONCONNECTOR_HPP

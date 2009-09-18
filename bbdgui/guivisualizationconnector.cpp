@@ -19,7 +19,7 @@
 
 
 #include "guivisualizationconnector.h"
-#include "context.hpp"
+#include "guicontext.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@ void GuiVisualizationConnector::visRegister(CountPtr<Value> object,
 
 void GuiVisualizationConnector::visSetView(float x, float y, float z, float rotx, float roty)
 {
-	emit visSetViewSig(x, y, z, rotx, roty);
+	emit setView(x, y, z, rotx, roty);
 }
 
 
@@ -74,4 +74,18 @@ void GuiVisualizationConnector::visSetView(float x, float y, float z, float rotx
 void GuiVisualizationConnector::visUseWeightWhenPaintingEdges(bool enable)
 {
 	emit useWeightWhenPaintingEdges(enable);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void GuiVisualizationConnector::visScreenshot(const string& path)
+{
+	emit repaintRequest();
+	emit screenshot(QString::fromStdString(path));
+
+	GuiContext* context = dynamic_cast<GuiContext*>(&CONTEXT);
+	assert(context != NULL);
+	context->screenshotBegin();
 }

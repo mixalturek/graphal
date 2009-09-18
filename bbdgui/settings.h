@@ -62,6 +62,9 @@ public:
 	float getVisualizationLineWidth(void) const { return m_visualizationLineWidth; }
 	void setVisualizationLineWidth(float width);
 
+	const QString& getScreenshotsDirectory(void) const { return m_screenshotsDirectory; }
+	void setScreenshotsDirectory(const QString& directory);
+
 private:
 	Settings(void);
 	~Settings(void);
@@ -81,6 +84,7 @@ private:
 	QFont m_editorFont;
 	float m_visualizationPointSize;
 	float m_visualizationLineWidth;
+	QString m_screenshotsDirectory;
 };
 
 #endif // SETTINGS_H

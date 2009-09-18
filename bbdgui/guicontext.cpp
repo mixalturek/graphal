@@ -188,3 +188,19 @@ bool GuiContext::isBreakpointsEnabled(void)
 	ACCESS_MUTEX_LOCKER;
 	return Context::isBreakpointsEnabled();
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void GuiContext::screenshotBegin(void)
+{
+	m_dbgMutex.lock();
+	m_waitCondition.wait(&m_dbgMutex);
+	m_dbgMutex.unlock();
+}
+
+void GuiContext::screenshotEnd(void)
+{
+	m_waitCondition.wakeAll();
+}

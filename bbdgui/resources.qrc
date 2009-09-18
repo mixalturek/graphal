@@ -29,5 +29,6 @@
         <file>images/linewidth.png</file>
         <file>images/add.png</file>
         <file>images/button_cancel.png</file>
+        <file>images/ksnapshot.png</file>
     </qresource>
 </RCC>

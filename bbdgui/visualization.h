@@ -54,8 +54,9 @@ signals:
 public slots:
 	void visRegister(const VisualizationItemData& item);
 	void resetView(void) { m_currentView.clear(); updateGL(); }
-	void visSetView(float x, float y, float z, float rotx, float roty);
+	void setView(float x, float y, float z, float rotx, float roty);
 	void useWeightWhenPaintingEdges(bool enable);
+	void screenshot(const QString& filename);
 
 protected:
 	void initializeGL(void);

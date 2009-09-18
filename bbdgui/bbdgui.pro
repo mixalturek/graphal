@@ -177,7 +177,8 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinvissetpos.cpp \
     ../bbd/nodebuiltinvissetcolor.cpp \
     ../bbd/nodebuiltinvissetview.cpp \
-    ../bbd/nodebuiltinvisuseweightwhenpaintingedges.cpp
+    ../bbd/nodebuiltinvisuseweightwhenpaintingedges.cpp \
+    ../bbd/nodebuiltinvisscreenshot.cpp
 HEADERS += mainwindow.h \
     settings.h \
     scriptthread.h \
@@ -346,7 +347,8 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinvissetpos.hpp \
     ../bbd/nodebuiltinvissetcolor.hpp \
     ../bbd/nodebuiltinvissetview.hpp \
-    ../bbd/nodebuiltinvisuseweightwhenpaintingedges.hpp
+    ../bbd/nodebuiltinvisuseweightwhenpaintingedges.hpp \
+    ../bbd/nodebuiltinvisscreenshot.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
 FORMS += dialogincludedirs.ui \

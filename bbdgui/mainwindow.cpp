@@ -415,6 +415,9 @@ void MainWindow::updateVisualizationMenu(void)
 		connect(action, SIGNAL(toggled(bool)), it->getMe(), SLOT(setEnabled(bool)));
 		connect(action, SIGNAL(toggled(bool)), this, SLOT(repaintVisualization()));
 	}
+
+	m_visualizationMenu->addSeparator();
+	m_visualizationMenu->addAction(m_screnshotAct);
 }
 
 
@@ -644,6 +647,15 @@ void MainWindow::createActions()
 	m_resetViewAct = new QAction(QIcon(":/images/button_cancel.png"), tr("&Reset view"), this);
 	m_resetViewAct->setStatusTip(tr("Reset the visualization view"));
 	connect(m_resetViewAct, SIGNAL(triggered()), this, SLOT(resetView()));
+
+	m_screnshotAct = new QAction(QIcon(":/images/ksnapshot.png"), tr("&Screenshot"), this);
+	m_screnshotAct->setShortcut(tr("Ctrl+H"));
+	m_screnshotAct->setStatusTip(tr("Save the rendered visualization scene to an image file"));
+	connect(m_screnshotAct, SIGNAL(triggered()), this, SLOT(screenshot()));
+
+	m_screenshotDirectoryAct = new QAction(QIcon(":/images/ksnapshot.png"), tr("&Screenshot directory"), this);
+	m_screenshotDirectoryAct->setStatusTip(tr("Set the directory for screenshots"));
+	connect(m_screenshotDirectoryAct, SIGNAL(triggered()), this, SLOT(screenshotDirectory()));
 }
 
 
@@ -756,6 +768,7 @@ void MainWindow::createMenus()
 	m_settingsMenu->addSeparator();
 	m_settingsMenu->addAction(m_visualizationPointSizeAct);
 	m_settingsMenu->addAction(m_visualizationLineWidthAct);
+	m_settingsMenu->addAction(m_screenshotDirectoryAct);
 
 
 	// Window
@@ -1402,4 +1415,38 @@ void MainWindow::saveCurrentView(void)
 void MainWindow::resetView(void)
 {
 	m_dockVisualization->getVisualization()->resetView();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::screenshot(void)
+{
+	QString directory = SETTINGS.getScreenshotsDirectory();
+
+	if(!directory.endsWith(QDir::separator()))
+		directory.append(QDir::separator());
+
+	int num = 0;
+	QString filename = directory + tr("screen_%1.png").arg(num);
+
+	while(QFile::exists(filename))
+		filename = directory + tr("screen_%1.png").arg(++num);
+
+	QPixmap pixmap = QPixmap::grabWindow(m_dockVisualization->getVisualization()->winId());
+	pixmap.save(filename);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::screenshotDirectory(void)
+{
+	QString directory = QFileDialog::getExistingDirectory(this, tr("Screnshot directory"),
+		SETTINGS.getScreenshotsDirectory());
+
+	if(!directory.isEmpty())
+		SETTINGS.setScreenshotsDirectory(directory);
 }

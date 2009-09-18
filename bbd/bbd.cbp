@@ -241,6 +241,8 @@
 		<Unit filename="nodebuiltinvertexset.hpp" />
 		<Unit filename="nodebuiltinvisregister.cpp" />
 		<Unit filename="nodebuiltinvisregister.hpp" />
+		<Unit filename="nodebuiltinvisscreenshot.cpp" />
+		<Unit filename="nodebuiltinvisscreenshot.hpp" />
 		<Unit filename="nodebuiltinvissetcolor.cpp" />
 		<Unit filename="nodebuiltinvissetcolor.hpp" />
 		<Unit filename="nodebuiltinvissetpos.cpp" />

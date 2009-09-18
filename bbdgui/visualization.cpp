@@ -29,7 +29,7 @@
 #include "valuevertexset.hpp"
 #include "valueedgeset.hpp"
 #include "valuefloat.hpp"
-#include "context.hpp"
+#include "guicontext.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -51,10 +51,11 @@ Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::
 			this, SLOT(visRegister(VisualizationItemData)));
 
 	connect(viscon, SIGNAL(repaintRequest()), this, SLOT(updateGL()));
-	connect(viscon, SIGNAL(visSetViewSig(float, float, float, float, float)),
-			this, SLOT(visSetView(float, float, float, float, float)));
-	connect(viscon, SIGNAL(useWeightWhenPaintingEdge(bool)),
-			this, SLOT(useWeightWhenPaintingEdge(bool)));
+	connect(viscon, SIGNAL(setView(float, float, float, float, float)),
+			this, SLOT(setView(float, float, float, float, float)));
+	connect(viscon, SIGNAL(useWeightWhenPaintingEdges(bool)),
+			this, SLOT(useWeightWhenPaintingEdges(bool)));
+	connect(viscon, SIGNAL(screenshot(QString)), this, SLOT(screenshot(QString)));
 
 	VisualizationView::initInstance(this);
 }
@@ -326,7 +327,7 @@ void Visualization::saveCurrentView(const QString& name)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void Visualization::visSetView(float x, float y, float z, float rotx, float roty)
+void Visualization::setView(float x, float y, float z, float rotx, float roty)
 {
 	m_currentView.setAll(x, y, z, rotx, roty);
 	updateGL();
@@ -338,6 +339,20 @@ void Visualization::visSetView(float x, float y, float z, float rotx, float roty
 
 void Visualization::useWeightWhenPaintingEdges(bool enable)
 {
-	m_useWeightWhenPaintingEdge = enable;
+	m_useWeightWhenPaintingEdges = enable;
 	updateGL();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Visualization::screenshot(const QString& filename)
+{
+	QPixmap pixmap = QPixmap::grabWindow(this->winId());
+	pixmap.save(filename);
+
+	GuiContext* context = dynamic_cast<GuiContext*>(&CONTEXT);
+	assert(context != NULL);
+	context->screenshotEnd();
 }

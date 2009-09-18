@@ -1575,6 +1575,23 @@ genBFClass('visUseWeightWhenPaintingEdges', 'NodeBuiltinVisUseWeightWhenPainting
 #############################################################################
 ####
 
+$funcdecl = 'visScreenshot(string) : null';
+
+$include = <<END_OF_CODE;
+#include "objectcreator.hpp"
+#include "visualizationconnector.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	VISUALIZATION_CONNECTOR->visScreenshot(par[0]->toString());
+	return VALUENULL;
+END_OF_CODE
+genBFClass('visScreenshot', 'NodeBuiltinVisScreenshot', 1, $code, $include);
+
+
+#############################################################################
+####
+
 print "Generating generateBuiltinFunctions()\n";
 
 open(FILE_HPP, ">nodebuiltin_inst.hpp") or die "Cannot open output file: nodebuiltin_inst.hpp\n";

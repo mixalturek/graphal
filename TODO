@@ -1,8 +1,4 @@
 Odlišení vrcholů - tvar
-export scény do souboru (png, jpg)
-	tlačítko
-	built-in funkce
-	visScreenshot("file" + promenna + ".png");
 built-in funkce pro zobrazení speciálního objektu (šipka) do scény
 
 

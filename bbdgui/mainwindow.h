@@ -83,6 +83,8 @@ private slots:
 	void visualizationLineWidth(void);
 	void saveCurrentView(void);
 	void resetView(void);
+	void screenshot(void);
+	void screenshotDirectory(void);
 
 	void saveLayout();
 	void loadLayout();
@@ -175,6 +177,8 @@ private:
 	QAction* m_visualizationLineWidthAct;
 	QAction* m_saveCurrentViewAct;
 	QAction* m_resetViewAct;
+	QAction* m_screnshotAct;
+	QAction* m_screenshotDirectoryAct;
 
 	ScriptThread* m_scriptThread;
 
