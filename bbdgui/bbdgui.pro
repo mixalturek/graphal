@@ -86,7 +86,7 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinunion.cpp \
     ../bbd/nodebuiltinstruct.cpp \
     ../bbd/nodebuiltinsize.cpp \
-    ../bbd/nodebuiltinsetoriented.cpp \
+    ../bbd/nodebuiltinsetdirected.cpp \
     ../bbd/nodebuiltinresetiterator.cpp \
     ../bbd/nodebuiltinpushfront.cpp \
     ../bbd/nodebuiltinpushback.cpp \
@@ -99,7 +99,7 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinisvertex.cpp \
     ../bbd/nodebuiltinisstruct.cpp \
     ../bbd/nodebuiltinisstring.cpp \
-    ../bbd/nodebuiltinisoriented.cpp \
+    ../bbd/nodebuiltinisdirected.cpp \
     ../bbd/nodebuiltinisnull.cpp \
     ../bbd/nodebuiltinisint.cpp \
     ../bbd/nodebuiltinisgraph.cpp \
@@ -108,7 +108,7 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinisedge.cpp \
     ../bbd/nodebuiltinisbool.cpp \
     ../bbd/nodebuiltinisarray.cpp \
-    ../bbd/nodebuiltininvertedgesorientation.cpp \
+    ../bbd/nodebuiltininvertedgesdirection.cpp \
     ../bbd/nodebuiltinintersection.cpp \
     ../bbd/nodebuiltinhasnext.cpp \
     ../bbd/nodebuiltingraph.cpp \
@@ -260,7 +260,7 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinunion.hpp \
     ../bbd/nodebuiltinstruct.hpp \
     ../bbd/nodebuiltinsize.hpp \
-    ../bbd/nodebuiltinsetoriented.hpp \
+    ../bbd/nodebuiltinsetdirected.hpp \
     ../bbd/nodebuiltinresetiterator.hpp \
     ../bbd/nodebuiltinpushfront.hpp \
     ../bbd/nodebuiltinpushback.hpp \
@@ -273,7 +273,7 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinisvertex.hpp \
     ../bbd/nodebuiltinisstruct.hpp \
     ../bbd/nodebuiltinisstring.hpp \
-    ../bbd/nodebuiltinisoriented.hpp \
+    ../bbd/nodebuiltinisdirectedted.hpp \
     ../bbd/nodebuiltinisnull.hpp \
     ../bbd/nodebuiltinisint.hpp \
     ../bbd/nodebuiltinisgraph.hpp \
@@ -282,7 +282,7 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinisedge.hpp \
     ../bbd/nodebuiltinisbool.hpp \
     ../bbd/nodebuiltinisarray.hpp \
-    ../bbd/nodebuiltininvertedgesorientation.hpp \
+    ../bbd/nodebuiltininvertedgesdirection.hpp \
     ../bbd/nodebuiltinintersection.hpp \
     ../bbd/nodebuiltinhasnext.hpp \
     ../bbd/nodebuiltingraph.hpp \

@@ -856,7 +856,7 @@ genBFClass('edgeset', 'NodeBuiltinEdgeSet', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isOriented(graph) : bool|null';
+$funcdecl = 'isDirected(graph) : bool|null';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -867,20 +867,20 @@ $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
 
 	if((g = par[0]->toValueGraph()) != NULL)
-		return CountPtr<Value>((g->isOriented()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
+		return CountPtr<Value>((g->isDirected()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 	else
 	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
 		return VALUENULL;
 	}
 END_OF_CODE
-genBFClass('isOriented', 'NodeBuiltinIsOriented', 1, $code, $include);
+genBFClass('isDirected', 'NodeBuiltinIsDirected', 1, $code, $include);
 
 
 #############################################################################
 ####
 
-$funcdecl = 'setOriented(graph, bool|int) : bool|null';
+$funcdecl = 'setDirected(graph, bool|int) : bool|null';
 
 $include = <<END_OF_CODE;
 #include "valuebool.hpp"
@@ -896,9 +896,9 @@ $code = <<END_OF_CODE;
 	if((g = par[0]->toValueGraph()) != NULL)
 	{
 		if((b = par[1]->toValueBool()) != NULL)
-			return CountPtr<Value>((g->setOriented(b->getVal())) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
+			return CountPtr<Value>((g->setDirected(b->getVal())) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 		if((i = par[1]->toValueInt()) != NULL)
-			return CountPtr<Value>((g->setOriented(i->getVal())) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
+			return CountPtr<Value>((g->setDirected(i->getVal())) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 		else
 		{
 			WARN_P(_("Bad parameters type: $funcdecl"));
@@ -911,13 +911,13 @@ $code = <<END_OF_CODE;
 		return VALUENULL;
 	}
 END_OF_CODE
-genBFClass('setOriented', 'NodeBuiltinSetOriented', 2, $code, $include);
+genBFClass('setDirected', 'NodeBuiltinSetDirected', 2, $code, $include);
 
 
 #############################################################################
 ####
 
-$funcdecl = 'invertEdgesOrientation(graph) : null';
+$funcdecl = 'invertEdgesDirection(graph) : null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -928,7 +928,7 @@ $code = <<END_OF_CODE;
 
 	if((g = par[0]->toValueGraph()) != NULL)
 	{
-		g->invertEdgesOrientation();
+		g->invertEdgesDirection();
 		return VALUENULL;
 	}
 	else
@@ -937,7 +937,7 @@ $code = <<END_OF_CODE;
 		return VALUENULL;
 	}
 END_OF_CODE
-genBFClass('invertEdgesOrientation', 'NodeBuiltinInvertEdgesOrientation', 1, $code, $include);
+genBFClass('invertEdgesDirection', 'NodeBuiltinInvertEdgesDirection', 1, $code, $include);
 
 
 #############################################################################

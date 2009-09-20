@@ -82,7 +82,7 @@ CountPtr<Value> ValueVertex::getNeighbors(void)
 	ValueVertexSet* ret = new ValueVertexSet(m_graph);
 	set<ValueEdge*>::iterator it;
 
-	if(m_graph->isOriented())
+	if(m_graph->isDirected())
 	{
 		for(it = m_edges->begin(); it != m_edges->end(); it++)
 		{

@@ -56,7 +56,7 @@ void ValueEdge::clear(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void ValueEdge::invertOrientation(void)
+void ValueEdge::invertDirection(void)
 {
 	ACCESS_MUTEX_LOCKER;
 	ValueVertex* tmp = m_begin;

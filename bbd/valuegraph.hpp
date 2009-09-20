@@ -31,7 +31,7 @@ class ValueEdge;
 class ValueGraph : public Value
 {
 public:
-	ValueGraph(bool oriented = false);
+	ValueGraph(bool directed = false);
 	virtual ~ValueGraph();
 
 	virtual ValueGraph*         toValueGraph(void) { return this; }
@@ -43,9 +43,9 @@ public:
 
 	bool loadFromFile(const string& filename);
 
-	bool isOriented(void) const;
-	bool setOriented(bool oriented);
-	void invertEdgesOrientation(void);
+	bool isDirected(void) const;
+	bool setDirected(bool directed);
+	void invertEdgesDirection(void);
 
 	ValueVertex* generateVertex(void);
 	ValueEdge* generateEdge(ValueVertex* begin, ValueVertex* end);
@@ -87,7 +87,7 @@ public:
 	virtual PTR_Value logNOT(void)                const; // !
 
 private:
-	bool m_oriented;
+	bool m_directed;
 	set<ValueVertex*> m_vertices;
 	set<ValueEdge*> m_edges;
 

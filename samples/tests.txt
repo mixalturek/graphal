@@ -735,7 +735,7 @@ function testAdjacencyMatrix()
 	e1 = g.generateEdge(v0, v1);
 	e2 = g.generateEdge(v1, v2);
 	e3 = g.generateEdge(v2, v3);
-	
+
 	vertices = g.getVertices();
 	id_v0 = vertex2pos(vertices, v0); tverify(id_v0 != -1);
 	id_v1 = vertex2pos(vertices, v1); tverify(id_v1 != -1);
@@ -745,7 +745,7 @@ function testAdjacencyMatrix()
 	// +---v0 ---- v1 ---- v2 ---- v3
 	// | e0 |  e1      e2      e3
 	// +----+
-	g.setOriented(false);
+	g.setDirected(false);
 	matrix = g.getAdjacencyMatrix();
 
 	tverify(matrix[id_v0][id_v0] == 2);
@@ -757,12 +757,12 @@ function testAdjacencyMatrix()
 	tverify(matrix[id_v1][id_v1] == 0);
 	tverify(matrix[id_v1][id_v2] == 1);
 	tverify(matrix[id_v1][id_v3] == 0);
-	
+
 	tverify(matrix[id_v2][id_v0] == 0);
 	tverify(matrix[id_v2][id_v1] == 1);
 	tverify(matrix[id_v2][id_v2] == 0);
 	tverify(matrix[id_v2][id_v3] == 1);
-	
+
 	tverify(matrix[id_v3][id_v0] == 0);
 	tverify(matrix[id_v3][id_v1] == 0);
 	tverify(matrix[id_v3][id_v2] == 1);
@@ -772,7 +772,7 @@ function testAdjacencyMatrix()
 	// +-->v0 ---> v1 ---> v2 ---> v3
 	// | e0 |  e1      e2      e3
 	// +----+
-	g.setOriented(true);
+	g.setDirected(true);
 	matrix = g.getAdjacencyMatrix();
 
 	tverify(matrix[id_v0][id_v0] == 1);
@@ -784,17 +784,17 @@ function testAdjacencyMatrix()
 	tverify(matrix[id_v1][id_v1] == 0);
 	tverify(matrix[id_v1][id_v2] == 1);
 	tverify(matrix[id_v1][id_v3] == 0);
-	
+
 	tverify(matrix[id_v2][id_v0] == 0);
 	tverify(matrix[id_v2][id_v1] == 0);
 	tverify(matrix[id_v2][id_v2] == 0);
 	tverify(matrix[id_v2][id_v3] == 1);
-	
+
 	tverify(matrix[id_v3][id_v0] == 0);
 	tverify(matrix[id_v3][id_v1] == 0);
 	tverify(matrix[id_v3][id_v2] == 0);
 	tverify(matrix[id_v3][id_v3] == 0);
-	
+
 	return testResult(__FUNCTION__, result);
 }
 
@@ -828,7 +828,7 @@ function testSetPropertyToAll()
 	tverify(v2.state == "new");
 	tverify(v3.state == "new");
 	tverify(v4.state == "new");
-	
+
 	tverify(e1.weight == null);
 	tverify(e2.weight == null);
 	tverify(e3.weight == null);
@@ -836,7 +836,7 @@ function testSetPropertyToAll()
 	tverify(e1.weight == 3.14);
 	tverify(e2.weight == 3.14);
 	tverify(e3.weight == 3.14);
-	
+
 	vs = vertexset(g);
 	vs.add(v1);
 	vs.add(v3);
@@ -845,7 +845,7 @@ function testSetPropertyToAll()
 	tverify(v2.state == "new");
 	tverify(v3.state == "open");
 	tverify(v4.state == "new");
-	
+
 	es = edgeset(g);
 	es.add(e1);
 	es.add(e3);
@@ -853,6 +853,6 @@ function testSetPropertyToAll()
 	tverify(e1.weight == 5);
 	tverify(e2.weight == 3.14);
 	tverify(e3.weight == 5);
-	
+
 	return testResult(__FUNCTION__, result);
 }

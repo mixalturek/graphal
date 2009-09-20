@@ -58,8 +58,8 @@ public:
 	virtual void resetIterator(void) { m_properties->resetIterator(); }
 
 private:
-	friend void ValueGraph::invertEdgesOrientation(void);
-	void invertOrientation(void);
+	friend void ValueGraph::invertEdgesDirection(void);
+	void invertDirection(void);
 
 public:
 	virtual PTR_Value add(const Value&   right) const; // +

@@ -38,9 +38,9 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-ValueGraph::ValueGraph(bool oriented)
+ValueGraph::ValueGraph(bool directed)
 	: Value(),
-	m_oriented(oriented),
+	m_directed(directed),
 	m_vertices(),
 	m_edges(),
 	m_vertices_deleted(),
@@ -85,8 +85,8 @@ bool ValueGraph::loadFromFile(const string& filename)
 	vector<identifier> edges_props;
 	map<int, ValueVertex*> vertices;
 
-	// Is oriented flag, number of vertices, number of edges
-	is >> m_oriented;
+	// Is directed flag, number of vertices, number of edges
+	is >> m_directed;
 	is >> num_vertices;
 	is >> num_edges;
 
@@ -243,12 +243,12 @@ void ValueGraph::deleteEdge(ValueEdge* edge)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void ValueGraph::invertEdgesOrientation(void)
+void ValueGraph::invertEdgesDirection(void)
 {
 	ACCESS_MUTEX_LOCKER;
 	set<ValueEdge*>::iterator eit;
 	for(eit = m_edges.begin(); eit != m_edges.end(); eit++)
-		(*eit)->invertOrientation();
+		(*eit)->invertDirection();
 }
 
 
@@ -281,21 +281,21 @@ bool ValueGraph::toBool(void) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-bool ValueGraph::isOriented(void) const
+bool ValueGraph::isDirected(void) const
 {
 	ACCESS_MUTEX_LOCKER;
-	return m_oriented;
+	return m_directed;
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-bool ValueGraph::setOriented(bool oriented)
+bool ValueGraph::setDirected(bool directed)
 {
 	ACCESS_MUTEX_LOCKER;
-	bool ret = m_oriented;
-	m_oriented = oriented;
+	bool ret = m_directed;
+	m_directed = directed;
 	return ret;
 }
 
@@ -367,7 +367,7 @@ CountPtr<Value> ValueGraph::getAdjacencyMatrix(void) const
 
 		for(vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
 		{
-			if(!isOriented() && *vertex == *it)
+			if(!isDirected() && *vertex == *it)
 				matrix[trans_table[*vertex]][trans_table[*it]] += 2;
 			else
 				++matrix[trans_table[*vertex]][trans_table[*it]];

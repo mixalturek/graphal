@@ -33,7 +33,7 @@ int writeGraph(int xsize, int ysize, int zsize)
 	int ymax = (ysize % 2 == 0) ? ysize/2 : ysize/2 + 1;
 	int zmax = (zsize % 2 == 0) ? zsize/2 : zsize/2 + 1;
 
-	// write is_oriented
+	// write is_directed
 	printf("0\n\n");
 
 	// write_number_of_vertices & number_of_edges

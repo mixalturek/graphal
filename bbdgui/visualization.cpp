@@ -209,7 +209,7 @@ void Visualization::paintGL(void)
 				CountPtr<Value> val_b = edge->getItem(id_b);
 
 
-				if(begin->getGraph()->isOriented())
+				if(begin->getGraph()->isDirected())
 					glColor3ub(0, 0, 0);
 				else if(val_r->isNumeric() && val_g->isNumeric() && val_b->isNumeric())
 					glColor3ub(val_r->toInt(), val_g->toInt(), val_b->toInt());

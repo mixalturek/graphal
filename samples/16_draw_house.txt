@@ -3,7 +3,7 @@ define("ZPOS", "0.0");
 function main(argv)
 {
 	g = graph();
-	g.setOriented(true);
+	g.setDirected(true);
 
 	v0 = g.generateVertex(); v0.visSetPos(-1,  1, ZPOS);
 	v1 = g.generateVertex(); v1.visSetPos( 1,  1, ZPOS);
@@ -19,7 +19,7 @@ function main(argv)
 	e5 = g.generateEdge(v0, v4);
 	e6 = g.generateEdge(v4, v1);
 	e7 = g.generateEdge(v1, v2);
-	
+
 	edges = edgeset(g);
 	visRegister(edges, "edges", 0, 255, 0);
 
@@ -34,7 +34,7 @@ function main(argv)
 	edges.add(e5);
 	edges.add(e6);
 	edges.add(e7);
-	g.setOriented(false);
-	
+	g.setDirected(false);
+
 	return;
 }

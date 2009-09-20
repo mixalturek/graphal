@@ -5,7 +5,7 @@ function main(argv)
 	breakpoint(true);
 	visRegister(g.getVertices(), "vertices", 255, 0, 0);
 	visRegister(g.getEdges(), "edges", 0, 255, 0);
-	g.setOriented(false);
+	g.setDirected(false);
 
 	return;
 }

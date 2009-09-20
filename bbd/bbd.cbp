@@ -183,8 +183,8 @@
 		<Unit filename="nodebuiltinhasnext.hpp" />
 		<Unit filename="nodebuiltinintersection.cpp" />
 		<Unit filename="nodebuiltinintersection.hpp" />
-		<Unit filename="nodebuiltininvertedgesorientation.cpp" />
-		<Unit filename="nodebuiltininvertedgesorientation.hpp" />
+		<Unit filename="nodebuiltininvertedgesdirection.cpp" />
+		<Unit filename="nodebuiltininvertedgesdirection.hpp" />
 		<Unit filename="nodebuiltinisarray.cpp" />
 		<Unit filename="nodebuiltinisarray.hpp" />
 		<Unit filename="nodebuiltinisbool.cpp" />
@@ -201,8 +201,8 @@
 		<Unit filename="nodebuiltinisint.hpp" />
 		<Unit filename="nodebuiltinisnull.cpp" />
 		<Unit filename="nodebuiltinisnull.hpp" />
-		<Unit filename="nodebuiltinisoriented.cpp" />
-		<Unit filename="nodebuiltinisoriented.hpp" />
+		<Unit filename="nodebuiltinisdirected.cpp" />
+		<Unit filename="nodebuiltinisdirected.hpp" />
 		<Unit filename="nodebuiltinisstring.cpp" />
 		<Unit filename="nodebuiltinisstring.hpp" />
 		<Unit filename="nodebuiltinisstruct.cpp" />
@@ -233,8 +233,8 @@
 		<Unit filename="nodebuiltinpushfront.hpp" />
 		<Unit filename="nodebuiltinresetiterator.cpp" />
 		<Unit filename="nodebuiltinresetiterator.hpp" />
-		<Unit filename="nodebuiltinsetoriented.cpp" />
-		<Unit filename="nodebuiltinsetoriented.hpp" />
+		<Unit filename="nodebuiltinsetdirected.cpp" />
+		<Unit filename="nodebuiltinsetdirected.hpp" />
 		<Unit filename="nodebuiltinsetpropertytoalledges.cpp" />
 		<Unit filename="nodebuiltinsetpropertytoalledges.hpp" />
 		<Unit filename="nodebuiltinsetpropertytoallvertices.cpp" />

@@ -462,7 +462,7 @@ bool Tests::testGraphSet(void)
 
 	// v1 ----> v2 ----> v3 ----> v4
 	//     e1       e2       e3
-	g.setOriented(true);
+	g.setDirected(true);
 
 	vvs = v1->getNeighbors();
 	verify(vvs->toValueVertexSet()->getNumVertices() == 1);
@@ -477,7 +477,7 @@ bool Tests::testGraphSet(void)
 	verify(!vvs->toValueVertexSet()->contains(v4));
 
 
-	g.setOriented(false);
+	g.setDirected(false);
 
 
 	ValueEdgeSet ves(&g);
@@ -524,7 +524,7 @@ bool Tests::testGraphInvertEdgesOrientation(void)
 
 	// v1 <---- v2 <---- v3 <---- v4
 	//      e1       e2       e3
-	g.invertEdgesOrientation();
+	g.invertEdgesDirection();
 
 	CountPtr<Value> vvs(v1->getNeighbors());
 
