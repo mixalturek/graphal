@@ -50,7 +50,7 @@ public:
 	set<ValueEdge*> getEdgesCopy(void) { return *m_edges; }
 
 	uint getDegree(void) const;
-	ValueVertexSet* getNeighbors(void);// Caller have to delete the memory
+	CountPtr<Value> getNeighbors(void);
 
 	ValueGraph* getGraph(void) { return m_graph; }
 

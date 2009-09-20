@@ -178,7 +178,8 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinvissetcolor.cpp \
     ../bbd/nodebuiltinvissetview.cpp \
     ../bbd/nodebuiltinvisuseweightwhenpaintingedges.cpp \
-    ../bbd/nodebuiltinvisscreenshot.cpp
+    ../bbd/nodebuiltinvisscreenshot.cpp \
+    ../bbd/nodebuiltingetadjacencymatrix.cpp
 HEADERS += mainwindow.h \
     settings.h \
     scriptthread.h \
@@ -348,7 +349,8 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinvissetcolor.hpp \
     ../bbd/nodebuiltinvissetview.hpp \
     ../bbd/nodebuiltinvisuseweightwhenpaintingedges.hpp \
-    ../bbd/nodebuiltinvisscreenshot.hpp
+    ../bbd/nodebuiltinvisscreenshot.hpp \
+    ../bbd/nodebuiltingetadjacencymatrix.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
 FORMS += dialogincludedirs.ui \

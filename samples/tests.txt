@@ -17,6 +17,7 @@ function main(argv)
 	failed += !testStackQueue();
 	failed += !testNotReferences();
 	failed += !testReferences();
+	failed += !testAdjacencyMatrix();
 
 	echo("Number of failed tests: " + failed + "\n");
 }
@@ -704,3 +705,94 @@ function testReferences()
 	return testResult(__FUNCTION__, result);
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function vertex2pos(vertices, vertex)
+{
+	pos = 0;
+	foreach(v; vertices.iterator())
+	{
+		if(vertex == v)
+			return pos;
+		++pos;
+	}
+	return -1;
+}
+
+function testAdjacencyMatrix()
+{
+	result = true;
+
+	g = graph();
+	v0 = g.generateVertex();
+	v1 = g.generateVertex();
+	v2 = g.generateVertex();
+	v3 = g.generateVertex();
+	e0 = g.generateEdge(v0, v0);// Loop
+	e1 = g.generateEdge(v0, v1);
+	e2 = g.generateEdge(v1, v2);
+	e3 = g.generateEdge(v2, v3);
+	
+	vertices = g.getVertices();
+	id_v0 = vertex2pos(vertices, v0); tverify(id_v0 != -1);
+	id_v1 = vertex2pos(vertices, v1); tverify(id_v1 != -1);
+	id_v2 = vertex2pos(vertices, v2); tverify(id_v2 != -1);
+	id_v3 = vertex2pos(vertices, v3); tverify(id_v3 != -1);
+
+	// +---v0 ---- v1 ---- v2 ---- v3
+	// | e0 |  e1      e2      e3
+	// +----+
+	g.setOriented(false);
+	matrix = g.getAdjacencyMatrix();
+
+	tverify(matrix[id_v0][id_v0] == 2);
+	tverify(matrix[id_v0][id_v1] == 1);
+	tverify(matrix[id_v0][id_v2] == 0);
+	tverify(matrix[id_v0][id_v3] == 0);
+
+	tverify(matrix[id_v1][id_v0] == 1);
+	tverify(matrix[id_v1][id_v1] == 0);
+	tverify(matrix[id_v1][id_v2] == 1);
+	tverify(matrix[id_v1][id_v3] == 0);
+	
+	tverify(matrix[id_v2][id_v0] == 0);
+	tverify(matrix[id_v2][id_v1] == 1);
+	tverify(matrix[id_v2][id_v2] == 0);
+	tverify(matrix[id_v2][id_v3] == 1);
+	
+	tverify(matrix[id_v3][id_v0] == 0);
+	tverify(matrix[id_v3][id_v1] == 0);
+	tverify(matrix[id_v3][id_v2] == 1);
+	tverify(matrix[id_v3][id_v3] == 0);
+
+
+	// +-->v0 ---> v1 ---> v2 ---> v3
+	// | e0 |  e1      e2      e3
+	// +----+
+	g.setOriented(true);
+	matrix = g.getAdjacencyMatrix();
+
+	tverify(matrix[id_v0][id_v0] == 1);
+	tverify(matrix[id_v0][id_v1] == 1);
+	tverify(matrix[id_v0][id_v2] == 0);
+	tverify(matrix[id_v0][id_v3] == 0);
+
+	tverify(matrix[id_v1][id_v0] == 0);
+	tverify(matrix[id_v1][id_v1] == 0);
+	tverify(matrix[id_v1][id_v2] == 1);
+	tverify(matrix[id_v1][id_v3] == 0);
+	
+	tverify(matrix[id_v2][id_v0] == 0);
+	tverify(matrix[id_v2][id_v1] == 0);
+	tverify(matrix[id_v2][id_v2] == 0);
+	tverify(matrix[id_v2][id_v3] == 1);
+	
+	tverify(matrix[id_v3][id_v0] == 0);
+	tverify(matrix[id_v3][id_v1] == 0);
+	tverify(matrix[id_v3][id_v2] == 0);
+	tverify(matrix[id_v3][id_v3] == 0);
+	
+	return testResult(__FUNCTION__, result);
+}

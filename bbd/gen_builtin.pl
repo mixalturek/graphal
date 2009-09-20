@@ -1189,7 +1189,7 @@ $code = <<END_OF_CODE;
 	ValueVertex* v = NULL;
 
 	if((v = par[0]->toValueVertex()) != NULL)
-		return CountPtr<Value>(v->getNeighbors());
+		return v->getNeighbors();
 	else
 	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
@@ -1423,6 +1423,29 @@ $code = <<END_OF_CODE;
 	}
 END_OF_CODE
 genBFClass('difference', 'NodeBuiltinDifference', 2, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'getAdjacencyMatrix(graph) : array';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL)
+		return g->getAdjacencyMatrix();
+	else
+	{
+		WARN_P(_("Bad parameters type: $funcdecl"));
+		return VALUENULL;
+	}
+END_OF_CODE
+genBFClass('getAdjacencyMatrix', 'NodeBuiltinGetAdjacencyMatrix', 1, $code, $include);
 
 
 #############################################################################

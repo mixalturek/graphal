@@ -12,8 +12,6 @@ g.setPropertyToAllEdges();
 error message "variable not defined" if not assigning
 create bbd library
 
-built-in functions
-	adjacencyMatrix(graph)
 
 Bison
 	rewrite parser to C++ (it is in documentation)

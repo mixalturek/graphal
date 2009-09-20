@@ -32,6 +32,7 @@
 #include "valueint.hpp"
 #include "valuefloat.hpp"
 #include "objectcreator.hpp"
+#include "valuearray.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -336,6 +337,55 @@ bool ValueGraph::contains(ValueEdge* edge) const
 {
 	ACCESS_MUTEX_LOCKER;
 	return m_edges.count(edge);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueGraph::getAdjacencyMatrix(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+
+	int size = m_vertices.size();
+	map<ValueVertex*, int> trans_table;
+	vector< vector<int> > matrix(size, vector<int>(size, 0));
+
+	// Array of indices
+	int pos = 0;
+	set<ValueVertex*>::const_iterator it;
+	for(it = m_vertices.begin(); it != m_vertices.end(); ++it)
+		trans_table[*it] = pos++;
+
+	// Adjacency Matrix
+	for(it = m_vertices.begin(); it != m_vertices.end(); ++it)
+	{
+		CountPtr<Value> neighbors = (*it)->getNeighbors();
+		assert(neighbors->toValueVertexSet() != NULL);
+		set<ValueVertex*>& vertices = neighbors->toValueVertexSet()->getVertices();
+		set<ValueVertex*>::const_iterator vertex;
+
+		for(vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
+		{
+			if(!isOriented() && *vertex == *it)
+				matrix[trans_table[*vertex]][trans_table[*it]] += 2;
+			else
+				++matrix[trans_table[*vertex]][trans_table[*it]];
+		}
+	}
+
+	// Convert the matrix to the script form
+	ValueArray* ret = new ValueArray(size);
+	for(int j = 0; j < size; j++)
+	{
+		ValueArray* line = new ValueArray(size);
+		ret->setItem(j, CountPtr<Value>(line));
+
+		for(int i = 0; i < size; i++)
+			line->setItem(i, CountPtr<Value>(new ValueInt(matrix[i][j])));
+	}
+
+	return CountPtr<Value>(ret);
 }
 
 

@@ -159,6 +159,8 @@
 		<Unit filename="nodebuiltingenerateedge.hpp" />
 		<Unit filename="nodebuiltingeneratevertex.cpp" />
 		<Unit filename="nodebuiltingeneratevertex.hpp" />
+		<Unit filename="nodebuiltingetadjacencymatrix.cpp" />
+		<Unit filename="nodebuiltingetadjacencymatrix.hpp" />
 		<Unit filename="nodebuiltingetbeginvertex.cpp" />
 		<Unit filename="nodebuiltingetbeginvertex.hpp" />
 		<Unit filename="nodebuiltingetdegree.cpp" />

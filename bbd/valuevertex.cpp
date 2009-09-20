@@ -76,7 +76,7 @@ void ValueVertex::deleteEdge(ValueEdge* edge)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-ValueVertexSet* ValueVertex::getNeighbors(void)
+CountPtr<Value> ValueVertex::getNeighbors(void)
 {
 	ACCESS_MUTEX_LOCKER;
 	ValueVertexSet* ret = new ValueVertexSet(m_graph);
@@ -101,7 +101,7 @@ ValueVertexSet* ValueVertex::getNeighbors(void)
 		}
 	}
 
-	return ret;
+	return CountPtr<Value>(ret);
 }
 
 
