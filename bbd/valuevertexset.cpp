@@ -214,6 +214,17 @@ bool ValueVertexSet::contains(ValueVertex* vertex) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+void ValueVertexSet::setPropertyToAllVertices(identifier name, CountPtr<Value> value)
+{
+	set<ValueVertex*>::iterator it;
+	for(it = m_vertices.begin(); it != m_vertices.end(); ++it)
+		(*it)->setItem(name, value);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueVertexSet::dump(ostream& os, uint indent) const
 {
 	ACCESS_MUTEX_LOCKER;

@@ -221,6 +221,10 @@
 		<Unit filename="nodebuiltinpopback.hpp" />
 		<Unit filename="nodebuiltinpopfront.cpp" />
 		<Unit filename="nodebuiltinpopfront.hpp" />
+		<Unit filename="nodebuiltinprint.cpp" />
+		<Unit filename="nodebuiltinprint.hpp" />
+		<Unit filename="nodebuiltinprintln.cpp" />
+		<Unit filename="nodebuiltinprintln.hpp" />
 		<Unit filename="nodebuiltinprintstacktrace.cpp" />
 		<Unit filename="nodebuiltinprintstacktrace.hpp" />
 		<Unit filename="nodebuiltinpushback.cpp" />
@@ -231,6 +235,10 @@
 		<Unit filename="nodebuiltinresetiterator.hpp" />
 		<Unit filename="nodebuiltinsetoriented.cpp" />
 		<Unit filename="nodebuiltinsetoriented.hpp" />
+		<Unit filename="nodebuiltinsetpropertytoalledges.cpp" />
+		<Unit filename="nodebuiltinsetpropertytoalledges.hpp" />
+		<Unit filename="nodebuiltinsetpropertytoallvertices.cpp" />
+		<Unit filename="nodebuiltinsetpropertytoallvertices.hpp" />
 		<Unit filename="nodebuiltinsize.cpp" />
 		<Unit filename="nodebuiltinsize.hpp" />
 		<Unit filename="nodebuiltinstruct.cpp" />

@@ -60,6 +60,8 @@ public:
 
 	set<ValueVertex*>& getVertices(void) { return m_vertices; }
 
+	void setPropertyToAllVertices(identifier name, CountPtr<Value> value);
+
 private:
 	ValueGraph* m_graph;
 	set<ValueVertex*> m_vertices;

@@ -392,6 +392,24 @@ CountPtr<Value> ValueGraph::getAdjacencyMatrix(void) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+void ValueGraph::setPropertyToAllVertices(identifier name, CountPtr<Value> value)
+{
+	set<ValueVertex*>::iterator it;
+	for(it = m_vertices.begin(); it != m_vertices.end(); ++it)
+		(*it)->setItem(name, value);
+}
+
+void ValueGraph::setPropertyToAllEdges(identifier name, CountPtr<Value> value)
+{
+	set<ValueEdge*>::iterator it;
+	for(it = m_edges.begin(); it != m_edges.end(); ++it)
+		(*it)->setItem(name, value);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueGraph::dump(ostream& os, uint indent) const
 {
 	ACCESS_MUTEX_LOCKER;

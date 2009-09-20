@@ -66,6 +66,8 @@ public:
 	// use getVertices() to get current vertices order
 	CountPtr<Value> getAdjacencyMatrix(void) const;
 
+	void setPropertyToAllVertices(identifier name, CountPtr<Value> value);
+	void setPropertyToAllEdges(identifier name, CountPtr<Value> value);
 
 	virtual PTR_Value add(const Value&     right) const; // +
 	virtual PTR_Value sub(const Value&     right) const; // -

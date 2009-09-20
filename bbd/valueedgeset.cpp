@@ -214,6 +214,17 @@ bool ValueEdgeSet::contains(ValueEdge* edge) const
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+void ValueEdgeSet::setPropertyToAllEdges(identifier name, CountPtr<Value> value)
+{
+	set<ValueEdge*>::iterator it;
+	for(it = m_edges.begin(); it != m_edges.end(); ++it)
+		(*it)->setItem(name, value);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueEdgeSet::dump(ostream& os, uint indent) const
 {
 	ACCESS_MUTEX_LOCKER;

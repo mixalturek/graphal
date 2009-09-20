@@ -179,7 +179,11 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinvissetview.cpp \
     ../bbd/nodebuiltinvisuseweightwhenpaintingedges.cpp \
     ../bbd/nodebuiltinvisscreenshot.cpp \
-    ../bbd/nodebuiltingetadjacencymatrix.cpp
+    ../bbd/nodebuiltingetadjacencymatrix.cpp \
+    ../bbd/nodebuiltinsetpropertytoallvertices.cpp \
+    ../bbd/nodebuiltinsetpropertytoalledges.cpp \
+    ../bbd/nodebuiltinprint.cpp \
+    ../bbd/nodebuiltinprintln.cpp
 HEADERS += mainwindow.h \
     settings.h \
     scriptthread.h \
@@ -350,7 +354,11 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinvissetview.hpp \
     ../bbd/nodebuiltinvisuseweightwhenpaintingedges.hpp \
     ../bbd/nodebuiltinvisscreenshot.hpp \
-    ../bbd/nodebuiltingetadjacencymatrix.hpp
+    ../bbd/nodebuiltingetadjacencymatrix.hpp \
+    ../bbd/nodebuiltinsetpropertytoallvertices.hpp \
+    ../bbd/nodebuiltinsetpropertytoalledges.hpp \
+    ../bbd/nodebuiltinprintln.hpp \
+    ../bbd/nodebuiltinprint.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
 FORMS += dialogincludedirs.ui \

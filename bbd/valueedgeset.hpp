@@ -60,6 +60,8 @@ public:
 
 	set<ValueEdge*>& getEdges(void) { return m_edges; }
 
+	void setPropertyToAllEdges(identifier name, CountPtr<Value> value);
+
 private:
 	ValueGraph* m_graph;
 	set<ValueEdge*> m_edges;

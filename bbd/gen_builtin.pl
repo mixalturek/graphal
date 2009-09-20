@@ -190,6 +190,30 @@ genBFClass('echo', 'NodeBuiltinEcho', 1, $code);
 #############################################################################
 ####
 
+$funcdecl = 'print(object) : object';
+
+$code = <<END_OF_CODE;
+	SCRIPT_STDOUT(par[0]->toString());
+	return par[0];
+END_OF_CODE
+genBFClass('print', 'NodeBuiltinPrint', 1, $code);
+
+
+#############################################################################
+####
+
+$funcdecl = 'println(object) : object';
+
+$code = <<END_OF_CODE;
+	SCRIPT_STDOUT(par[0]->toString() + '\\n');
+	return par[0];
+END_OF_CODE
+genBFClass('println', 'NodeBuiltinPrintln', 1, $code);
+
+
+#############################################################################
+####
+
 $funcdecl = 'dump(object) : object';
 
 $code = <<END_OF_CODE;
@@ -1446,6 +1470,62 @@ $code = <<END_OF_CODE;
 	}
 END_OF_CODE
 genBFClass('getAdjacencyMatrix', 'NodeBuiltinGetAdjacencyMatrix', 1, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'setPropertyToAllVertices(graph|vertexset, string, object) : null';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+#include "valuevertexset.hpp"
+#include "valuestring.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+	ValueVertexSet* vs = NULL;
+	ValueString* s = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL && (s = par[1]->toValueString()) != NULL)
+		g->setPropertyToAllVertices(STR2ID(s->getVal()), par[2]);
+	else if((vs = par[0]->toValueVertexSet()) != NULL && (s = par[1]->toValueString()) != NULL)
+		vs->setPropertyToAllVertices(STR2ID(s->getVal()), par[2]);
+	else
+		WARN_P(_("Bad parameters type: $funcdecl"));
+
+	return VALUENULL;
+END_OF_CODE
+genBFClass('setPropertyToAllVertices', 'NodeBuiltinSetPropertyToAllVertices', 3, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'setPropertyToAllEdges(graph|edgeset, string, object) : null';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+#include "valueedgeset.hpp"
+#include "valuestring.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueGraph* g = NULL;
+	ValueEdgeSet* es = NULL;
+	ValueString* s = NULL;
+
+	if((g = par[0]->toValueGraph()) != NULL && (s = par[1]->toValueString()) != NULL)
+		g->setPropertyToAllEdges(STR2ID(s->getVal()), par[2]);
+	else if((es = par[0]->toValueEdgeSet()) != NULL && (s = par[1]->toValueString()) != NULL)
+		es->setPropertyToAllEdges(STR2ID(s->getVal()), par[2]);
+	else
+		WARN_P(_("Bad parameters type: $funcdecl"));
+
+	return VALUENULL;
+END_OF_CODE
+genBFClass('setPropertyToAllEdges', 'NodeBuiltinSetPropertyToAllEdges', 3, $code, $include);
 
 
 #############################################################################
