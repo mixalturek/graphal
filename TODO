@@ -1,15 +1,11 @@
-Odlišení vrcholů - tvar
-built-in funkce pro zobrazení speciálního objektu (šipka) do scény
+different shapes of vertices
+built-in function to paint special objects to the scene
 settings dialog
 
-
-add error and warning messages if ValueNull is returned
 resolve all TODOs
-Context::isVariableSet() -> builtin
-handle break/continue in the parser to be only inside of a loop
-error message "variable not defined" if not assigning
 create bbd library
-
+resolve ?gcc bug? - Tests::testValueArray()
+QFileDialog - default path, file types, save directory to the settings
 
 Bison
 	rewrite parser to C++ (it is in documentation)
@@ -18,47 +14,4 @@ Bison
 		array(size) - array1()
 	add switch
 
-unit tests
-	add new for basic things
-	split to several files by groups (values, nodes, builtins ...)
-	resolve ?gcc bug? - Tests::testValueArray()
-
-gui
-	qtdemo - MainWindow
-	memory leaks in the gui part, does qt offer some tools for detection?
-	dock with predefined strings
-		QPlainTextEdit::insertPlainText ( const QString & text )
-		edit->textCursor().insertText(text);
-	QFileDialog - default path, file types, save directory to the settings
-
 write doxygen documentation
-
-
-////////////////////////////////////////////////////////////////////////////
-////
-
-Kdyz napisu funkci, ktera ma vstupu graf a napr. pocita, jaky je soucet
-vah vsech hran,
-tak tato funkce musi vedet v jake promenne (slozce hrany) jsou ty vahy ulozeny.
-(napr. e1.mojevaha == 23.2).
-Pokud bych pak teto funkci predlozil opet vazeny graf, ktery by ale mel
-vahy ulozeny v jineak nazvane promenne (e1.tanasevaha = 23.199),
-doslo by uz k nejake kolizi, totiz k syntakticke chybe?
-Prosim o vysvetleni teto zalezitosti.
-
->> Samozrejme, ze ano. Kdyz je v C/C++ struktura, ktera ma member
->> promennou urciteho jmena a druha struktura ma jine jmeno, tak
->> prejmenovani datovyho typu take nebude fungovat a musi se to
->> sjednotit. Je mozne si napsat mapovaci funkci, ktera si overi, jakeho
->> typu je promenna a podle ni vratit hodnotu, ale primo do jazyka (ve
->> stylu u vsech hran tohoto grafu prejmenuj tuto member promennou) bych
->> tyto veci zabudovavat nechtel. Tohle uz by byl spis "problem" cloveka,
->> co pise skript, nez muj...
->
-> Souhlas.
->
->> Zkusim se zamyslet, jak by to premapovani slo zaridit jednoduse, aby
->> se napriklad te funkci mohl predat dalsi parametr, ve kterem bude
->> jmeno member promenne.
->
-> Dobra, ale je to nepovinny pozadavek.

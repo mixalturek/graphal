@@ -90,7 +90,7 @@ CountPtr<Value> Value::assignRef(CountPtr<Value> /* val */)
 
 CountPtr<Value> Value::getReferredValue(void) const
 {
-	ERR_P(_("Attemp to get referred value, but value is not reference: ") + toString());
+	ERR_P(_("Attemp to get referred value, but the value is not reference: ") + toString());
 	ostringstream os;
 	this->dump(os, 1);
 	SCRIPT_STDOUT(os.str());

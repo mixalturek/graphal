@@ -2,9 +2,9 @@ function main(argv)
 {
 	g = graph();
 //	assert(g.loadFromFile("../graphs/02_graph_2_2_2.txt"));
-//	assert(g.loadFromFile("../graphs/02_graph_3_2_3.txt"));
+	assert(g.loadFromFile("../graphs/02_graph_3_2_3.txt"));
 //	assert(g.loadFromFile("../graphs/02_graph_4_3_2.txt"));
-	assert(g.loadFromFile("../graphs/02_graph_6_4_3.txt"));
+//	assert(g.loadFromFile("../graphs/02_graph_6_4_3.txt"));
 //	assert(g.loadFromFile("../graphs/02_graph_5_5_5.txt"));
 //	assert(g.loadFromFile("../graphs/02_graph_20_10_5.txt"));
 	

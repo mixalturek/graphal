@@ -76,8 +76,6 @@ ostream& operator<<(ostream& os, const ValueNull& node)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-// TODO: "Warning: Operation argument is NULL variable"
-
 PTR_Value ValueNull::add(const Value& right)   const { return right.add(*this); } // +
 PTR_Value ValueNull::sub(const Value& right)   const { return right.sub(*this); } // -
 PTR_Value ValueNull::mult(const Value& right)  const { return right.mult(*this); } // *

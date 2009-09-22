@@ -12,6 +12,9 @@ function f()
 	echo("fffffffff\n");
 	g();
 	echo("fffffffff\n");
+	
+	var = undf + 3;
+	variable = 3 + undefined;
 }
 
 function main(argv)
