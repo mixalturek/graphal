@@ -37,6 +37,7 @@
 #include "dialogfind.h"
 #include "dialogreplace.h"
 #include "objectcreator.hpp"
+#include "dialogsettings.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -628,18 +629,6 @@ void MainWindow::createActions()
 	m_gotoLineAct->setStatusTip(tr("Go to the specified line in the document"));
 	connect(m_gotoLineAct, SIGNAL(triggered()), this, SLOT(gotoLine()));
 
-	m_editorFontAct = new QAction(QIcon(":/images/fonts.png"), tr("&Editor font"), this);
-	m_editorFontAct->setStatusTip(tr("Set the editor font"));
-	connect(m_editorFontAct, SIGNAL(triggered()), this, SLOT(editorFont()));
-
-	m_visualizationPointSizeAct = new QAction(QIcon(":/images/pointsize.png"), tr("&Vertices size"), this);
-	m_visualizationPointSizeAct->setStatusTip(tr("Set the point size for vertices"));
-	connect(m_visualizationPointSizeAct, SIGNAL(triggered()), this, SLOT(visualizationPointSize()));
-
-	m_visualizationLineWidthAct = new QAction(QIcon(":/images/linewidth.png"), tr("&Edges width"), this);
-	m_visualizationLineWidthAct->setStatusTip(tr("Set the line width for edges"));
-	connect(m_visualizationLineWidthAct, SIGNAL(triggered()), this, SLOT(visualizationLineWidth()));
-
 	m_saveCurrentViewAct = new QAction(QIcon(":/images/add.png"), tr("&Save current view"), this);
 	m_saveCurrentViewAct->setStatusTip(tr("Save the current visualization view"));
 	connect(m_saveCurrentViewAct, SIGNAL(triggered()), this, SLOT(saveCurrentView()));
@@ -653,9 +642,9 @@ void MainWindow::createActions()
 	m_screnshotAct->setStatusTip(tr("Save the rendered visualization scene to an image file"));
 	connect(m_screnshotAct, SIGNAL(triggered()), this, SLOT(screenshot()));
 
-	m_screenshotDirectoryAct = new QAction(QIcon(":/images/ksnapshot.png"), tr("&Screenshot directory"), this);
-	m_screenshotDirectoryAct->setStatusTip(tr("Set the directory for screenshots"));
-	connect(m_screenshotDirectoryAct, SIGNAL(triggered()), this, SLOT(screenshotDirectory()));
+	m_settingsAct = new QAction(QIcon(":/images/package_settings.png"), tr("&Settings"), this);
+	m_settingsAct->setStatusTip(tr("Open the settings dialog"));
+	connect(m_settingsAct, SIGNAL(triggered()), this, SLOT(settings()));
 }
 
 
@@ -737,6 +726,9 @@ void MainWindow::createMenus()
 	tmp->setText(tmp->text() + tr(" toolbar"));
 	m_viewMenu->addAction(tmp);
 
+	m_viewMenu->addSeparator();
+	m_viewMenu->addAction(m_settingsAct);
+
 
 	// Script
 	m_scriptMenu = menuBar()->addMenu(tr("&Script"));
@@ -760,15 +752,6 @@ void MainWindow::createMenus()
 	updateVisualizationMenu();
 	connect(m_dockVisualization->getVisualization(), SIGNAL(containersChanged()),
 			this, SLOT(updateVisualizationMenu()));
-
-
-	// Settings
-	m_settingsMenu = menuBar()->addMenu(tr("&Settings"));
-	m_settingsMenu->addAction(m_editorFontAct);
-	m_settingsMenu->addSeparator();
-	m_settingsMenu->addAction(m_visualizationPointSizeAct);
-	m_settingsMenu->addAction(m_visualizationLineWidthAct);
-	m_settingsMenu->addAction(m_screenshotDirectoryAct);
 
 
 	// Window
@@ -1344,59 +1327,6 @@ void MainWindow::showLocation(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void MainWindow::editorFont(void)
-{
-	QList<QMdiSubWindow*> windowList(m_mdiArea->subWindowList());
-
-	QFont font(QFontDialog::getFont(0, SETTINGS.getEditorFont(), this));
-	SETTINGS.setEditorFont(font);
-
-	foreach(QMdiSubWindow* window, windowList)
-	{
-		TextEditor* editor = qobject_cast<TextEditor*>(window->widget());
-		assert(editor != NULL);
-		editor->setFont(font);
-	}
-
-	m_dockScriptOutput->getTextBrowser()->setFont(font);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void MainWindow::visualizationPointSize(void)
-{
-	bool ok;
-	double size = QInputDialog::getDouble(this, tr("Vertices size"),
-		tr("The size of the points"), SETTINGS.getVisualizationPointSize(), 1.0, 100.0, 1, &ok);
-	if(ok)
-	{
-		SETTINGS.setVisualizationPointSize(size);
-		repaintVisualization();
-	}
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-void MainWindow::visualizationLineWidth(void)
-{
-	bool ok;
-	double size = QInputDialog::getDouble(this, tr("Edges width"),
-		tr("The width of the lines"), SETTINGS.getVisualizationLineWidth(), 1.0, 100.0, 1, &ok);
-	if(ok)
-	{
-		SETTINGS.setVisualizationLineWidth(size);
-		repaintVisualization();
-	}
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
 void MainWindow::saveCurrentView(void)
 {
 	bool ok;
@@ -1442,11 +1372,25 @@ void MainWindow::screenshot(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void MainWindow::screenshotDirectory(void)
+void MainWindow::settings(void)
 {
-	QString directory = QFileDialog::getExistingDirectory(this, tr("Screnshot directory"),
-		SETTINGS.getScreenshotsDirectory());
+	DialogSettings* dlg = new DialogSettings(this);
+	dlg->exec();
+	delete dlg;
+	dlg = NULL;
 
-	if(!directory.isEmpty())
-		SETTINGS.setScreenshotsDirectory(directory);
+	// Update editors
+	QList<QMdiSubWindow*> windowList(m_mdiArea->subWindowList());
+	foreach(QMdiSubWindow* window, windowList)
+	{
+		TextEditor* editor = qobject_cast<TextEditor*>(window->widget());
+		assert(editor != NULL);
+		editor->setFont(SETTINGS.getEditorFont());
+	}
+
+	// Update script output dock
+	m_dockScriptOutput->getTextBrowser()->setFont(SETTINGS.getEditorFont());
+
+	// Update visualization window
+	repaintVisualization();
 }

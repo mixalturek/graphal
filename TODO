@@ -1,6 +1,7 @@
 different shapes of vertices
 built-in function to paint special objects to the scene
-settings dialog
+settings dialog, add new items
+save: remove spaces at the end of lines
 
 resolve all TODOs
 create bbd library
@@ -15,3 +16,4 @@ Bison
 	add switch
 
 write doxygen documentation
+write language documentation

@@ -78,13 +78,10 @@ private slots:
 	void includeDirectories(void);
 	void scriptParameters(void);
 	void gotoLine(void);
-	void editorFont(void);
-	void visualizationPointSize(void);
-	void visualizationLineWidth(void);
 	void saveCurrentView(void);
 	void resetView(void);
 	void screenshot(void);
-	void screenshotDirectory(void);
+	void settings(void);
 
 	void saveLayout();
 	void loadLayout();
@@ -122,7 +119,6 @@ private:
 	QMenu* m_viewMenu;
 	QMenu* m_scriptMenu;
 	QMenu* m_visualizationMenu;
-	QMenu* m_settingsMenu;
 	QMenu* m_windowMenu;
 	QMenu* m_helpMenu;
 	QToolBar* m_fileToolBar;
@@ -172,13 +168,10 @@ private:
 	QAction* m_includeDirectoriesAct;
 	QAction* m_scriptParametersAct;
 	QAction* m_gotoLineAct;
-	QAction* m_editorFontAct;
-	QAction* m_visualizationPointSizeAct;
-	QAction* m_visualizationLineWidthAct;
 	QAction* m_saveCurrentViewAct;
 	QAction* m_resetViewAct;
 	QAction* m_screnshotAct;
-	QAction* m_screenshotDirectoryAct;
+	QAction* m_settingsAct;
 
 	ScriptThread* m_scriptThread;
 
