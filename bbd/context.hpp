@@ -70,7 +70,6 @@ public:
 
 	StringTable* getStringTable(void) { return &m_stringtable; }
 
-	// TODO: move to settings class
 	void addIncludeDirectory(const string& directory);
 	string getIncludeFullPath(const string& filename) const;
 	void clearIncludeDirectories(void);

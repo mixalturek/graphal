@@ -108,10 +108,12 @@ void Context::printStackTrace() const
 {
 	ACCESS_MUTEX_LOCKER;
 
-	// TODO: position in the code
-	deque<CallStackItem>::const_iterator it;
-	for(it = m_call_stack.begin(); it != m_call_stack.end(); it++)
-		SCRIPT_STDOUT(ID2STR(it->getFunctionName()) + _("()\n"));
+	deque<CallStackItem>::const_reverse_iterator it;
+	for(it = m_call_stack.rbegin(); it != m_call_stack.rend(); ++it)
+	{
+		SCRIPT_STDOUT(ID2STR(it->getFunctionName()) + _("() from ")
+			+ it->getReturnAddress()->toString() + _("\n"));
+	}
 }
 
 

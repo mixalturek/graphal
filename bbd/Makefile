@@ -16,7 +16,6 @@ OBJECTS = $(shell ls *.cpp | sed 's/.cpp/.o/')
 .PHONY: bison
 .PHONY: operators
 .PHONY: builtin
-.PHONY: svnlog
 .PHONY: listbuiltin
 .PHONY: version
 #.PHONY: install
@@ -59,12 +58,6 @@ clean:
 
 todo:
 	grep -rI TODO . | grep -v './.svn/'
-
-lines:
-	cat *.hpp *.cpp | wc -l
-
-svnlog:
-	svn log --revision $(shell svnversion -c | tr 'A-Z' ' ') --verbose
 
 listbuiltin:
 	grep '\$funcdecl =' gen_builtin.pl | sed "s/.*'\(.*\)'.*/\1/"

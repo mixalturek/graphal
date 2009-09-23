@@ -52,7 +52,10 @@ void CallStackItem::dump(ostream& os, uint indent) const
 	os << "<CallStackItem function=\"" << ID2STR(m_function_name) << "\">" << endl;
 
 	m_return_address->dump(os, indent+1);
-	// TODO: variables?
+
+	map<identifier, CountPtr<Value> >::const_iterator it;
+	for(it = m_local_variables.begin(); it != m_local_variables.end(); ++it)
+		it->second->dump(os, indent+1);
 
 	dumpIndent(os, indent);
 	os << "</CallStackItem>" << endl;

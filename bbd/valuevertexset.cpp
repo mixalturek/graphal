@@ -98,7 +98,7 @@ CountPtr<Value> ValueVertexSet::next(void)
 {
 	ACCESS_MUTEX_LOCKER;
 	CountPtr<Value> ret(*m_it);
-	ret.dontDeleteAutomatically();// TODO: is it needed?
+	ret.dontDeleteAutomatically();
 	m_it++;
 	return ret;
 }
