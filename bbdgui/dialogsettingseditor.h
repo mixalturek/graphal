@@ -28,14 +28,14 @@ class DialogSettingsEditor : public QWidget
 	Q_OBJECT
 
 public:
-	DialogSettingsEditor(QWidget *parent = 0);
+	DialogSettingsEditor(QWidget* parent = 0);
 	~DialogSettingsEditor(void);
 
 public slots:
 	void selectFont(void);
 
 protected:
-	void changeEvent(QEvent *e);
+	void changeEvent(QEvent* event);
 
 private:
 	Ui::DialogSettingsEditor m_ui;

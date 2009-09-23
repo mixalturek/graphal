@@ -65,6 +65,18 @@ public:
 	const QString& getScreenshotsDirectory(void) const { return m_screenshotsDirectory; }
 	void setScreenshotsDirectory(const QString& directory);
 
+	int getTabStopWidth(void) const { return m_tabStopWidth; }
+	void setTabStopWidth(int width);
+
+	int getVertLinePos(void) const { return m_vertLinePos; }
+	void setVertLinePos(int pos);
+
+	bool getWrapLines(void) const { return m_wrapLines; }
+	void setWrapLines(bool wrap);
+
+	bool getUseSpaces(void) const { return m_useSpaces; }
+	void setUseSpaces(bool use);
+
 private:
 	Settings(void);
 	~Settings(void);
@@ -85,6 +97,10 @@ private:
 	float m_visualizationPointSize;
 	float m_visualizationLineWidth;
 	QString m_screenshotsDirectory;
+	int m_tabStopWidth;
+	int m_vertLinePos;// In characters
+	bool m_wrapLines;
+	bool m_useSpaces;
 };
 
 #endif // SETTINGS_H

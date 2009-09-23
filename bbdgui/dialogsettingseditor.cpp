@@ -26,7 +26,7 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-DialogSettingsEditor::DialogSettingsEditor(QWidget *parent)
+DialogSettingsEditor::DialogSettingsEditor(QWidget* parent)
 	: QWidget(parent)
 {
 	m_ui.setupUi(this);
@@ -34,6 +34,10 @@ DialogSettingsEditor::DialogSettingsEditor(QWidget *parent)
 	const QFont& font(SETTINGS.getEditorFont());
 	m_ui.m_fontName->setText(font.family());
 	m_ui.m_fontSize->setValue(font.pointSize());
+	m_ui.m_tabWidth->setValue(SETTINGS.getTabStopWidth());
+	m_ui.m_useSpaces->setChecked(SETTINGS.getUseSpaces());
+	m_ui.m_verticalLinePos->setValue(SETTINGS.getVertLinePos());
+	m_ui.m_wrapLines->setChecked(SETTINGS.getWrapLines());
 
 	connect(m_ui.m_selectFontButton, SIGNAL(clicked()), this, SLOT(selectFont()));
 }
@@ -42,16 +46,20 @@ DialogSettingsEditor::~DialogSettingsEditor(void)
 {
 	QFont font(m_ui.m_fontName->text(), m_ui.m_fontSize->value());
 	SETTINGS.setEditorFont(font);
+	SETTINGS.setTabStopWidth(m_ui.m_tabWidth->value());
+	SETTINGS.setUseSpaces(m_ui.m_useSpaces->isChecked());
+	SETTINGS.setVertLinePos(m_ui.m_verticalLinePos->value());
+	SETTINGS.setWrapLines(m_ui.m_wrapLines->isChecked());
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void DialogSettingsEditor::changeEvent(QEvent *e)
+void DialogSettingsEditor::changeEvent(QEvent* event)
 {
-	QWidget::changeEvent(e);
-	switch (e->type())
+	QWidget::changeEvent(event);
+	switch (event->type())
 	{
 	case QEvent::LanguageChange:
 		m_ui.retranslateUi(this);

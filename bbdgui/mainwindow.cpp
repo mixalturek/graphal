@@ -1385,7 +1385,7 @@ void MainWindow::settings(void)
 	{
 		TextEditor* editor = qobject_cast<TextEditor*>(window->widget());
 		assert(editor != NULL);
-		editor->setFont(SETTINGS.getEditorFont());
+		editor->updateSettings();
 	}
 
 	// Update script output dock

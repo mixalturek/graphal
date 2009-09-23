@@ -44,7 +44,11 @@ Settings::Settings()
 	m_editorFont(),
 	m_visualizationPointSize(10.0f),
 	m_visualizationLineWidth(1.0f),
-	m_screenshotsDirectory("")
+	m_screenshotsDirectory(""),
+	m_tabStopWidth(4),
+	m_vertLinePos(80),
+	m_wrapLines(false),
+	m_useSpaces(false)
 {
 
 }
@@ -79,6 +83,17 @@ void Settings::init(void)
 		m_visualizationLineWidth = 1.0f;
 
 	m_screenshotsDirectory = settings.value("screenshotsdirectory", QDir::homePath()).toString();
+
+	m_tabStopWidth = settings.value("tabstopwidth", 4).toInt(&ok);
+	if(!ok)
+		m_tabStopWidth = 4;
+
+	m_vertLinePos = settings.value("vertlinepos", 80).toInt(&ok);
+	if(!ok)
+		m_vertLinePos = 80;
+
+	m_wrapLines = settings.value("wraplines", false).toBool();
+	m_useSpaces = settings.value("usespaces", false).toBool();
 }
 
 
@@ -190,4 +205,48 @@ void Settings::setScreenshotsDirectory(const QString& directory)
 	QSettings settings;
 	m_screenshotsDirectory = directory;
 	settings.setValue("screenshotsdirectory", directory);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Settings::setTabStopWidth(int width)
+{
+	QSettings settings;
+	m_tabStopWidth = width;
+	settings.setValue("tabstopwidth", width);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Settings::setVertLinePos(int pos)
+{
+	QSettings settings;
+	m_vertLinePos = pos;
+	settings.setValue("vertlinepos", pos);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Settings::setWrapLines(bool wrap)
+{
+	QSettings settings;
+	m_wrapLines = wrap;
+	settings.setValue("wraplines", wrap);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Settings::setUseSpaces(bool use)
+{
+	QSettings settings;
+	m_useSpaces = use;
+	settings.setValue("usespaces", use);
 }

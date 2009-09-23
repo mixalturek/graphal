@@ -34,6 +34,8 @@ public:
 	void lineNumberAreaPaintEvent(QPaintEvent *event);
 	int lineNumberAreaWidth(void);
 
+	void updateSettings(void);
+
 private slots:
 	void updateLineNumberAreaWidth(int newBlockCount);
 	void highlightCurrentLine(void);
@@ -51,7 +53,6 @@ private:
 private:
 	QWidget* m_lineNumberArea;
 	TextEditorHighlighter* m_highlighter;
-	int m_vertLinePos;// In characters
 };
 
 #endif // TEXTEDITORPROGRAMMERS_H

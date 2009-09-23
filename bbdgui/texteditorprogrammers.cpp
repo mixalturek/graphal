@@ -33,15 +33,11 @@
 TextEditorProgrammers::TextEditorProgrammers(QWidget* parent)
 	: QPlainTextEdit(parent),
 	m_lineNumberArea(new TextEditorLines(this)),
-	m_highlighter(new TextEditorHighlighter(document())),
-	m_vertLinePos(80)
+	m_highlighter(new TextEditorHighlighter(document()))
 {
 	setFont(SETTINGS.getEditorFont());
 
-	// TODO: add to the settings
-	setTabStopWidth(fontMetrics().width(QLatin1Char(' ')) * 4);
-	setLineWrapMode(QPlainTextEdit::NoWrap);
-	// m_vertLinePos = 80;
+	updateSettings();
 
 	connect(this, SIGNAL(blockCountChanged(int)),
 			this, SLOT(updateLineNumberAreaWidth(int)));
@@ -117,7 +113,7 @@ void TextEditorProgrammers::highlightCurrentLine(void)
 	if(!isReadOnly())
 	{
 		QTextEdit::ExtraSelection selection;
-		selection.format.setBackground(QColor(233, 238, 244));// TODO: Add to the settings
+		selection.format.setBackground(QColor(233, 238, 244));
 		selection.format.setProperty(QTextFormat::FullWidthSelection, true);
 		selection.cursor = textCursor();
 		selection.cursor.clearSelection();
@@ -135,7 +131,7 @@ void TextEditorProgrammers::highlightCurrentLine(void)
 void TextEditorProgrammers::lineNumberAreaPaintEvent(QPaintEvent* event)
 {
 	QPainter painter(m_lineNumberArea);
-	painter.fillRect(event->rect(), QColor(230, 230, 230));// TODO: Add to the settings
+	painter.fillRect(event->rect(), QColor(230, 230, 230));
 
 	QTextBlock block = firstVisibleBlock();
 	int blockNumber = block.blockNumber();
@@ -147,7 +143,7 @@ void TextEditorProgrammers::lineNumberAreaPaintEvent(QPaintEvent* event)
 		if(block.isVisible() && bottom >= event->rect().top())
 		{
 			QString number = QString::number(blockNumber + 1);
-			painter.setPen(QColor(85, 85, 85));// TODO: Add to the settings
+			painter.setPen(QColor(85, 85, 85));
 			painter.drawText(-LR_LINES_MARGIN, top, m_lineNumberArea->width(),
 				fontMetrics().height(), Qt::AlignRight, number);
 		}
@@ -210,7 +206,12 @@ void TextEditorProgrammers::autoIndent(void)
 		textCursor().insertText(previousBlockText.left(num));
 
 	if(num < size && previousBlockText.at(num) == '{')
-		textCursor().insertText("\t");// TODO: allow spaces
+	{
+		if(SETTINGS.getUseSpaces())
+			textCursor().insertText(QString(SETTINGS.getTabStopWidth(), ' '));
+		else
+			textCursor().insertText("\t");
+	}
 }
 
 
@@ -249,13 +250,24 @@ void TextEditorProgrammers::paintEvent(QPaintEvent* event)
 	QPlainTextEdit::paintEvent(event);
 
 	// TODO: 4 is the space between the left border and the text, how to get it?
-	int x = fontMetrics().maxWidth() * m_vertLinePos + 4;
+	int x = fontMetrics().maxWidth() * SETTINGS.getVertLinePos() + 4;
 
 	if(x > event->rect().x() && x < event->rect().x() + event->rect().width())
 	{
 		int y = event->rect().y();
 		QPainter painter(viewport());
-		painter.setPen(Qt::gray);// TODO: Add to the settings
+		painter.setPen(Qt::gray);
 		painter.drawLine(x, y, x, y + event->rect().height());
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void TextEditorProgrammers::updateSettings(void)
+{
+	setFont(SETTINGS.getEditorFont());
+	setTabStopWidth(fontMetrics().width(QLatin1Char(' ')) * SETTINGS.getTabStopWidth());
+	setLineWrapMode(SETTINGS.getWrapLines() ? QPlainTextEdit::WidgetWidth : QPlainTextEdit::NoWrap);
 }
