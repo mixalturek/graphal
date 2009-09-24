@@ -24,7 +24,7 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-VisualizationItemData::VisualizationItemData(CountPtr<Value> value, identifier name, const QColor& color)
+VisualizationItemData::VisualizationItemData(CountPtr<Value> value, const QString& name, const QColor& color)
 	: QObject(),
 	m_value(value),
 	m_name(name),

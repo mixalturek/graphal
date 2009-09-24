@@ -55,7 +55,7 @@ void GuiVisualizationConnector::visRegister(CountPtr<Value> object,
 	const string& name, int r, int g, int b)
 {
 	emit visRegisterSig(VisualizationItemData(object,
-		STR2ID(name), QColor(r, g, b)));
+		QString::fromStdString(name), QColor(r, g, b)));
 }
 
 

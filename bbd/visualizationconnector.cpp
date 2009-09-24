@@ -53,7 +53,7 @@ void VisualizationConnector::dump(ostream& os, uint indent) const
 void VisualizationConnector::visRegister(CountPtr<Value> /* object */,
 	const string& /* name */, int /* r */, int /* g */, int /* b */)
 {
-	WARN_P(_("Operation is not supported."));
+//	WARN_P(_("Operation is not supported."));
 }
 
 
@@ -63,7 +63,7 @@ void VisualizationConnector::visRegister(CountPtr<Value> /* object */,
 void VisualizationConnector::visSetView(float /* x */, float /* y */, float /* z */,
 	float /* rotx */, float /* roty */)
 {
-	WARN_P(_("Operation is not supported."));
+//	WARN_P(_("Operation is not supported."));
 }
 
 
@@ -72,7 +72,7 @@ void VisualizationConnector::visSetView(float /* x */, float /* y */, float /* z
 
 void VisualizationConnector::visUseWeightWhenPaintingEdges(bool /* enable */)
 {
-	WARN_P(_("Operation is not supported."));
+//	WARN_P(_("Operation is not supported."));
 }
 
 
@@ -81,5 +81,5 @@ void VisualizationConnector::visUseWeightWhenPaintingEdges(bool /* enable */)
 
 void VisualizationConnector::visScreenshot(const string& /* path */)
 {
-	WARN_P(_("Operation is not supported."));
+//	WARN_P(_("Operation is not supported."));
 }

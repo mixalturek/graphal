@@ -385,16 +385,32 @@ void MainWindow::updateVisualizationMenu(void)
 	}
 
 
-	// Vertex sets
-	if(vis->hasVertices())
+	// Graphs
+	if(vis->hasGraphs())
 		m_visualizationMenu->addSeparator();
 
 	VIS_DATA_CONTAINER::const_iterator it;
 
+	const VIS_DATA_CONTAINER& dataGraphs = vis->getGraphs();
+	for(it = dataGraphs.begin(); it != dataGraphs.end(); ++it)
+	{
+		action = m_visualizationMenu->addAction(it->getName());
+		action->setStatusTip(tr("Toogle painting of this graph"));
+		action->setCheckable(true);
+		action->setChecked(it->isEnabled());
+		connect(action, SIGNAL(toggled(bool)), it->getMe(), SLOT(setEnabled(bool)));
+		connect(action, SIGNAL(toggled(bool)), this, SLOT(repaintVisualization()));
+	}
+
+
+	// Vertex sets
+	if(vis->hasVertices())
+		m_visualizationMenu->addSeparator();
+
 	const VIS_DATA_CONTAINER& dataVertices = vis->getVertexSets();
 	for(it = dataVertices.begin(); it != dataVertices.end(); ++it)
 	{
-		action = m_visualizationMenu->addAction(QString::fromStdString(ID2STR(it->getName())));
+		action = m_visualizationMenu->addAction(it->getName());
 		action->setStatusTip(tr("Toogle painting of this vertex set"));
 		action->setCheckable(true);
 		action->setChecked(it->isEnabled());
@@ -410,7 +426,7 @@ void MainWindow::updateVisualizationMenu(void)
 	const VIS_DATA_CONTAINER& dataEdges = vis->getEdgeSets();
 	for(it = dataEdges.begin(); it != dataEdges.end(); ++it)
 	{
-		action = m_visualizationMenu->addAction(QString::fromStdString(ID2STR(it->getName())));
+		action = m_visualizationMenu->addAction(it->getName());
 		action->setStatusTip(tr("Toogle painting of this edge set"));
 		action->setCheckable(true);
 		action->setChecked(it->isEnabled());

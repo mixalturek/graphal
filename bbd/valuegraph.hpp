@@ -62,6 +62,9 @@ public:
 	CountPtr<Value> getVertices(void) const;// Returns ValueVertexSet
 	CountPtr<Value> getEdges(void) const;// Returns ValueEdgeSet
 
+	const set<ValueVertex*>& getVerticesSet(void) const { return m_vertices; }
+	const set<ValueEdge*>& getEdgesSet(void) const { return m_edges; }
+
 	// Two calls can return different matrices (permutation of rows/lines),
 	// use getVertices() to get current vertices order
 	CountPtr<Value> getAdjacencyMatrix(void) const;

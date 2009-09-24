@@ -21,13 +21,14 @@
 #ifndef VISUALIZATION_H
 #define VISUALIZATION_H
 
+#include <set>
 #include <QGLWidget>
 #include "visualizationitemdata.h"
 #include "visualizationview.h"
 
 
-#define VIS_DATA_CONTAINER vector<VisualizationItemData>
-#define VIS_VIEW_CONTAINER vector<VisualizationView>
+typedef vector<VisualizationItemData> VIS_DATA_CONTAINER;
+typedef vector<VisualizationView> VIS_VIEW_CONTAINER;
 
 class Visualization : public QGLWidget
 {
@@ -38,8 +39,10 @@ public:
 	virtual ~Visualization(void);
 
 	void clear(void);
+	bool hasGraphs(void) const { return !m_graphs.empty(); }
 	bool hasVertices(void) const { return !m_vertexSets.empty(); }
 	bool hasEdges(void) const { return !m_edgeSets.empty(); }
+	const VIS_DATA_CONTAINER& getGraphs(void) const { return m_graphs; }
 	const VIS_DATA_CONTAINER& getVertexSets(void) const { return m_vertexSets; }
 	const VIS_DATA_CONTAINER& getEdgeSets(void) const { return m_edgeSets; }
 
@@ -62,12 +65,15 @@ protected:
 	void initializeGL(void);
 	void resizeGL(int width, int height);
 	void paintGL(void);
+	void paintVertices(const set<ValueVertex*>& vertices, const QColor& color);
+	void paintEdges(const set<ValueEdge*>& edges, const QColor& color);
 
 	void mousePressEvent(QMouseEvent* event);
 	void mouseMoveEvent(QMouseEvent* event);
 	void wheelEvent(QWheelEvent* event);
 
 private:
+	VIS_DATA_CONTAINER m_graphs;
 	VIS_DATA_CONTAINER m_vertexSets;
 	VIS_DATA_CONTAINER m_edgeSets;
 

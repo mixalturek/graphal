@@ -1531,7 +1531,7 @@ genBFClass('setPropertyToAllEdges', 'NodeBuiltinSetPropertyToAllEdges', 3, $code
 #############################################################################
 ####
 
-$funcdecl = 'visRegister(vertexset|edgeset, string, number, number, number) : null';
+$funcdecl = 'visRegister(graph|vertexset|edgeset, string, number, number, number) : null';
 
 $include = <<END_OF_CODE;
 #include "objectcreator.hpp"
@@ -1542,7 +1542,7 @@ END_OF_CODE
 $code = <<END_OF_CODE;
 	ValueString* name = NULL;
 
-	if((par[0]->toValueVertexSet() != NULL || par[0]->toValueEdgeSet() != NULL)
+	if((par[0]->toValueGraph() != NULL || par[0]->toValueVertexSet() != NULL || par[0]->toValueEdgeSet() != NULL)
 			&& (name = par[1]->toValueString()) != NULL
 			&& par[2]->isNumeric()
 			&& par[3]->isNumeric()

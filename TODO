@@ -4,6 +4,8 @@ built-in function to paint special objects to the scene
 create bbd library
 resolve ?gcc bug? - Tests::testValueArray()
 QFileDialog - default path, file types, save directory to the settings
+visGetGraph()
+--disable-breakpoints
 
 Bison
 	rewrite parser to C++ (it is in documentation)

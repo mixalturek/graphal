@@ -31,7 +31,7 @@ class VisualizationItemData : public QObject
 
 public:
 	VisualizationItemData(void);
-	VisualizationItemData(CountPtr<Value> value, identifier name, const QColor& color);
+	VisualizationItemData(CountPtr<Value> value, const QString& name, const QColor& color);
 	VisualizationItemData(const VisualizationItemData& object);
 	~VisualizationItemData(void);
 
@@ -41,7 +41,7 @@ public:
 	const VisualizationItemData* getMe(void) const { return this; }
 
 	CountPtr<Value> getValue(void) const { return m_value; }
-	identifier getName(void) const { return m_name; }
+	const QString& getName(void) const { return m_name; }
 	const QColor& getColor(void) const { return m_color; }
 	bool isEnabled(void) const { return m_enabled; }
 
@@ -50,7 +50,7 @@ public slots:
 
 private:
 	CountPtr<Value> m_value;
-	identifier m_name;
+	QString m_name;
 	QColor m_color;
 	bool m_enabled;
 };

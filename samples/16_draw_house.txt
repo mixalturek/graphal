@@ -11,6 +11,9 @@ function main(argv)
 	v3 = g.generateVertex(); v3.visSetPos(-1, -1, ZPOS);
 	v4 = g.generateVertex(); v4.visSetPos( 0,  2, ZPOS);
 
+	// Use "step over" debugging now
+	breakpoint(true);
+	visRegister(g, "graph", 0, 255, 0);
 	e0 = g.generateEdge(v3, v0);
 	e1 = g.generateEdge(v0, v1);
 	e2 = g.generateEdge(v1, v3);
@@ -19,21 +22,6 @@ function main(argv)
 	e5 = g.generateEdge(v0, v4);
 	e6 = g.generateEdge(v4, v1);
 	e7 = g.generateEdge(v1, v2);
-
-	edges = edgeset(g);
-	visRegister(edges, "edges", 0, 255, 0);
-
-	// Use "step over" debugging now
-	breakpoint(true);
-	visRegister(g.getVertices(), "vertices", 255, 0, 0);
-	edges.add(e0);
-	edges.add(e1);
-	edges.add(e2);
-	edges.add(e3);
-	edges.add(e4);
-	edges.add(e5);
-	edges.add(e6);
-	edges.add(e7);
 	g.setDirected(false);
 
 	return;
