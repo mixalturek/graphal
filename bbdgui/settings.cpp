@@ -48,7 +48,8 @@ Settings::Settings()
 	m_tabStopWidth(4),
 	m_vertLinePos(80),
 	m_wrapLines(false),
-	m_useSpaces(false)
+	m_useSpaces(false),
+	m_removeTrailingSpaces(true)
 {
 
 }
@@ -94,6 +95,7 @@ void Settings::init(void)
 
 	m_wrapLines = settings.value("wraplines", false).toBool();
 	m_useSpaces = settings.value("usespaces", false).toBool();
+	m_removeTrailingSpaces = settings.value("removetrailingspaces", true).toBool();
 }
 
 
@@ -249,4 +251,15 @@ void Settings::setUseSpaces(bool use)
 	QSettings settings;
 	m_useSpaces = use;
 	settings.setValue("usespaces", use);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void Settings::setRemoveTrailingSpaces(bool remove)
+{
+	QSettings settings;
+	m_removeTrailingSpaces = remove;
+	settings.setValue("removetrailingspaces", remove);
 }

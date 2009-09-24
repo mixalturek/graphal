@@ -270,7 +270,6 @@ void Visualization::mouseMoveEvent(QMouseEvent* event)
 {
 	if(event->buttons() & Qt::LeftButton)
 	{
-		// TODO: The coeficients depend on the depth of the object in the scene
 		QPoint diff = (m_lastMousePos - event->pos());
 
 		m_currentView.getPosX() -= diff.x() / 60.0f;

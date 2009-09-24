@@ -39,7 +39,6 @@ TextEditorHighlighter::TextEditorHighlighter(QTextDocument* parent)
 	QTextCharFormat formatNumberFloat;
 	QTextCharFormat formatFunction;
 
-	// TODO: add to the settings
 	formatKeyword.setFontWeight(QFont::Bold);
 	formatKeywordPreprocessor.setFontWeight(QFont::Bold);
 	formatKeywordPreprocessor.setForeground(QColor(0, 0, 255));

@@ -35,6 +35,7 @@ public:
 	int lineNumberAreaWidth(void);
 
 	void updateSettings(void);
+	void removeTrailingSpaces(void);
 
 private slots:
 	void updateLineNumberAreaWidth(int newBlockCount);

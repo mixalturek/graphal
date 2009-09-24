@@ -1,9 +1,6 @@
 different shapes of vertices
 built-in function to paint special objects to the scene
-settings dialog, add new items
-save: remove spaces at the end of lines
 
-resolve all TODOs
 create bbd library
 resolve ?gcc bug? - Tests::testValueArray()
 QFileDialog - default path, file types, save directory to the settings

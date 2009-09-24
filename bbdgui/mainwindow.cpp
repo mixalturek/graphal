@@ -63,7 +63,6 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 	connect(m_windowMapper, SIGNAL(mapped(QWidget *)),
 			this, SLOT(setActiveSubWindow(QWidget *)));
 
-	// TODO: add to the settings
 	setIconSize(QSize(22, 22));
 	setAnimated(false);
 	setDockNestingEnabled(true);
@@ -93,7 +92,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 
 MainWindow::~MainWindow()
 {
-	m_scriptThread->wait();// TODO: timeout and then terminate()?
+	m_scriptThread->wait();
 	delete m_scriptThread;
 	m_scriptThread = NULL;
 }
@@ -104,7 +103,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-	// TODO: MessageBox("terminate?")
 	if(m_scriptThread->isRunning())
 	{
 		CONTEXT.stopScript();
@@ -268,10 +266,13 @@ void MainWindow::selectAll(void)
 
 void MainWindow::about()
 {
-	// TODO: update text, version
 	QMessageBox::about(this, tr("About bbdgui"),
-		tr("Graph algorithms interpreter<br />SVN version ")
-		+ QString::number(SVN_VERSION));
+		tr("Graph algorithms interpreter<br />"
+			"<br />"
+			"Web: <a href=\"http://woq.nipax.cz/dip/\">http://woq.nipax.cz/dip/</a><br />"
+			"Author: <a href=\"http://woq.nipax.cz/\">Michal Turek</a><br />"
+			"License: GNU GPL<br />"
+			"SVN version: ") + QString::number(SVN_VERSION));
 }
 
 

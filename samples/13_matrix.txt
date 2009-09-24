@@ -12,7 +12,7 @@ function createMatrix(size)
 		foreach(item; row)
 			item = num++;
 	}
-	
+
 	return matrix;
 }
 

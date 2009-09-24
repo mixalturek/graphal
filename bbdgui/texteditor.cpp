@@ -128,6 +128,8 @@ bool TextEditor::saveFile(const QString &fileName)
 		return false;
 	}
 
+	removeTrailingSpaces();
+
 	QTextStream out(&file);
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	out << toPlainText();

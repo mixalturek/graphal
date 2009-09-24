@@ -271,3 +271,37 @@ void TextEditorProgrammers::updateSettings(void)
 	setTabStopWidth(fontMetrics().width(QLatin1Char(' ')) * SETTINGS.getTabStopWidth());
 	setLineWrapMode(SETTINGS.getWrapLines() ? QPlainTextEdit::WidgetWidth : QPlainTextEdit::NoWrap);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void TextEditorProgrammers::removeTrailingSpaces(void)
+{
+	if(!SETTINGS.getRemoveTrailingSpaces())
+		return;
+
+	QTextDocument* doc = document();
+
+	for(int i = 0; i < doc->blockCount(); i++)
+	{
+		QTextBlock block = doc->findBlockByNumber(i);
+		QString str = block.text();
+		int pos = str.length()-1;
+
+		while(pos >= 0)
+		{
+			if(!str.at(pos).isSpace())
+				break;
+			--pos;
+		}
+
+		if(pos < str.length()-1)
+		{
+			QTextCursor cursor(block);
+			cursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
+			cursor.movePosition(QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor, str.length()-1-pos);
+			cursor.removeSelectedText();
+		}
+	}
+}

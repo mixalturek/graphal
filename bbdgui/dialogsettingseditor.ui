@@ -49,6 +49,13 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="m_removeTrailingSpaces">
+     <property name="text">
+      <string>&amp;Remove trailing spaces when saving</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="m_wrapLines">
      <property name="text">
       <string>&amp;Wrap lines</string>

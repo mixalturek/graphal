@@ -77,6 +77,9 @@ public:
 	bool getUseSpaces(void) const { return m_useSpaces; }
 	void setUseSpaces(bool use);
 
+	bool getRemoveTrailingSpaces(void) const { return m_removeTrailingSpaces; }
+	void setRemoveTrailingSpaces(bool remove);
+
 private:
 	Settings(void);
 	~Settings(void);
@@ -101,6 +104,7 @@ private:
 	int m_vertLinePos;// In characters
 	bool m_wrapLines;
 	bool m_useSpaces;
+	bool m_removeTrailingSpaces;
 };
 
 #endif // SETTINGS_H

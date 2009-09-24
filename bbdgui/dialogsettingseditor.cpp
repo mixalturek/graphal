@@ -38,6 +38,7 @@ DialogSettingsEditor::DialogSettingsEditor(QWidget* parent)
 	m_ui.m_useSpaces->setChecked(SETTINGS.getUseSpaces());
 	m_ui.m_verticalLinePos->setValue(SETTINGS.getVertLinePos());
 	m_ui.m_wrapLines->setChecked(SETTINGS.getWrapLines());
+	m_ui.m_removeTrailingSpaces->setChecked(SETTINGS.getRemoveTrailingSpaces());
 
 	connect(m_ui.m_selectFontButton, SIGNAL(clicked()), this, SLOT(selectFont()));
 }
@@ -50,6 +51,7 @@ DialogSettingsEditor::~DialogSettingsEditor(void)
 	SETTINGS.setUseSpaces(m_ui.m_useSpaces->isChecked());
 	SETTINGS.setVertLinePos(m_ui.m_verticalLinePos->value());
 	SETTINGS.setWrapLines(m_ui.m_wrapLines->isChecked());
+	SETTINGS.setRemoveTrailingSpaces(m_ui.m_removeTrailingSpaces->isChecked());
 }
 
 
