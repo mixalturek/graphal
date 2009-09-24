@@ -52,17 +52,20 @@ void runUnitTests(void)
 
 void usage(int /* argc */, char** argv)
 {
-	cout << _("Usage: ") << argv[0] << " [-I<directory>] [--unit-tests] [--ast-dump] " << _("<filename> [parameters]") << endl
+	cout << _("Usage: ") << argv[0] << " [-I<directory>] [-u | --unit-tests] [-a | --ast-dump] [-b | --enable-breakpoints]" << _("<filename> [parameters]") << endl
 		<< endl
 		<< "\t-I<directory>" << endl
 		<< "\t\tSpecify include directories (relative to the current working directory)" << endl
 		<< "\t\t-I<directory_1> -I<directory_2> ... -I<directory_N>" << endl
 		<< endl
-		<< "\t--unit-tests" << endl
+		<< "\t-u | --unit-tests" << endl
 		<< "\t\tRun unit tests" << endl
 		<< endl
-		<< "\t--ast-dump" << endl
+		<< "\t-a | --ast-dump" << endl
 		<< "\t\tDump abstract syntax tree of the script" << endl
+		<< endl
+		<< "\t-b | --breakpoints" << endl
+		<< "\t\tEnable breakpoints" << endl
 		<< endl
 		<< "\tfilename" << endl
 		<< "\t\tFile to be executed" << endl
@@ -119,16 +122,19 @@ int main(int argc, char** argv)
 	{
 		bool unit_tests = false;
 		bool ast_dump = false;
+		bool breakpoints_enabled = false;
 		int i = 0;
 
 		for(i = 1; i < argc; i++)
 		{
 			string param(argv[i]);
 
-			if(!unit_tests && param == "--unit-tests")
+			if(!unit_tests && (param == "--unit-tests" || param == "-u"))
 				unit_tests = true;
-			else if(!ast_dump && param == "--ast-dump")
+			else if(!ast_dump && (param == "--ast-dump" || param == "-a"))
 				ast_dump = true;
+			else if(!breakpoints_enabled && (param == "--breakpoints" || param == "-b"))
+				breakpoints_enabled = true;
 			else if(param.find("-I") == 0)
 			{
 				param.erase(0, 2);
@@ -169,6 +175,7 @@ int main(int argc, char** argv)
 				if(ast_dump)
 					CONTEXT.dump(cout, 0);
 
+				CONTEXT.enableBreakpoints(breakpoints_enabled);
 				CONTEXT.executeScriptMain(argc-i, &argv[i]);
 			}
 			else
