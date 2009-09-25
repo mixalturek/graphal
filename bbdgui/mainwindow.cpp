@@ -666,7 +666,7 @@ void MainWindow::createActions()
 	connect(m_settingsAct, SIGNAL(triggered()), this, SLOT(settings()));
 
 	m_loadGraphAct = new QAction(QIcon(":/images/attach.png"), tr("&Load graph"), this);
-	m_loadGraphAct->setStatusTip(tr("Load graph to the application"));
+	m_loadGraphAct->setStatusTip(tr("Load graph path to the application"));
 	connect(m_loadGraphAct, SIGNAL(triggered()), this, SLOT(loadGraph()));
 }
 
@@ -1430,5 +1430,6 @@ void MainWindow::loadGraph(void)
 		GuiVisualizationConnector* viscon = dynamic_cast<GuiVisualizationConnector*>(VISUALIZATION_CONNECTOR);
 		assert(viscon != NULL);
 		viscon->setGraphPath(path);
+		statusBarMessage(tr("Use visGetGraph() to load the specified graph to the script"));
 	}
 }
