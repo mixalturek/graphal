@@ -20,6 +20,8 @@
 
 #include "guivisualizationconnector.h"
 #include "guicontext.h"
+#include "valuenull.hpp"
+#include "valuegraph.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -27,7 +29,8 @@
 
 GuiVisualizationConnector::GuiVisualizationConnector(void)
 	: QObject(),
-	VisualizationConnector()
+	VisualizationConnector(),
+	m_graphPath("")
 {
 
 }
@@ -88,4 +91,25 @@ void GuiVisualizationConnector::visScreenshot(const string& path)
 	GuiContext* context = dynamic_cast<GuiContext*>(&CONTEXT);
 	assert(context != NULL);
 	context->screenshotBegin();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> GuiVisualizationConnector::visGetGraph(void)
+{
+	if(!m_graphPath.isEmpty())
+	{
+		ValueGraph* graph = new ValueGraph();
+		if(graph->loadFromFile(m_graphPath.toStdString()))
+			return CountPtr<Value>(graph);
+		else
+		{
+			delete graph;
+			graph = NULL;
+		}
+	}
+
+	return VALUENULL;
 }

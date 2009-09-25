@@ -38,6 +38,7 @@
 #include "dialogreplace.h"
 #include "objectcreator.hpp"
 #include "dialogsettings.h"
+#include "guivisualizationconnector.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -435,6 +436,7 @@ void MainWindow::updateVisualizationMenu(void)
 	}
 
 	m_visualizationMenu->addSeparator();
+	m_visualizationMenu->addAction(m_loadGraphAct);
 	m_visualizationMenu->addAction(m_screnshotAct);
 }
 
@@ -662,6 +664,10 @@ void MainWindow::createActions()
 	m_settingsAct = new QAction(QIcon(":/images/package_settings.png"), tr("&Settings"), this);
 	m_settingsAct->setStatusTip(tr("Open the settings dialog"));
 	connect(m_settingsAct, SIGNAL(triggered()), this, SLOT(settings()));
+
+	m_loadGraphAct = new QAction(QIcon(":/images/attach.png"), tr("&Load graph"), this);
+	m_loadGraphAct->setStatusTip(tr("Load graph to the application"));
+	connect(m_loadGraphAct, SIGNAL(triggered()), this, SLOT(loadGraph()));
 }
 
 
@@ -1410,4 +1416,19 @@ void MainWindow::settings(void)
 
 	// Update visualization window
 	repaintVisualization();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void MainWindow::loadGraph(void)
+{
+	QString path = QFileDialog::getOpenFileName(this, tr("Load graph"));
+	if(!path.isEmpty())
+	{
+		GuiVisualizationConnector* viscon = dynamic_cast<GuiVisualizationConnector*>(VISUALIZATION_CONNECTOR);
+		assert(viscon != NULL);
+		viscon->setGraphPath(path);
+	}
 }

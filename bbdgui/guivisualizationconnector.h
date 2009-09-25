@@ -35,6 +35,7 @@ public:
 	~GuiVisualizationConnector(void);
 
 	virtual void dump(ostream& os, uint indent) const;
+	void setGraphPath(const QString& path) { m_graphPath = path; }
 
 signals:
 	void visRegisterSig(VisualizationItemData);
@@ -49,6 +50,10 @@ public:
 	virtual void visSetView(float x, float y, float z, float rotx, float roty);
 	virtual void visUseWeightWhenPaintingEdges(bool enable);
 	virtual void visScreenshot(const string& path);
+	virtual CountPtr<Value> visGetGraph(void);
+
+private:
+	QString m_graphPath;
 };
 
 #endif // GUIVISUALIZATIONCONNECTOR_H

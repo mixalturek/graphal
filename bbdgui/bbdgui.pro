@@ -37,7 +37,7 @@ SOURCES += main.cpp \
     dialogreplace.cpp \
     dialogreplaceconfirmation.cpp \
     dialogscriptparameters.cpp \
-	dialogsettings.cpp \
+    dialogsettings.cpp \
     dialogsettingsvisualization.cpp \
     dialogsettingseditor.cpp \
     ../bbd/logger.cpp \
@@ -186,7 +186,8 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinsetpropertytoallvertices.cpp \
     ../bbd/nodebuiltinsetpropertytoalledges.cpp \
     ../bbd/nodebuiltinprint.cpp \
-    ../bbd/nodebuiltinprintln.cpp
+    ../bbd/nodebuiltinprintln.cpp \
+    ../bbd/nodebuiltinvisgetgraph.cpp
 HEADERS += mainwindow.h \
     settings.h \
     scriptthread.h \
@@ -364,7 +365,8 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinsetpropertytoallvertices.hpp \
     ../bbd/nodebuiltinsetpropertytoalledges.hpp \
     ../bbd/nodebuiltinprintln.hpp \
-    ../bbd/nodebuiltinprint.hpp
+    ../bbd/nodebuiltinprint.hpp \
+    ../bbd/nodebuiltinvisgetgraph.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
 FORMS += dialogincludedirs.ui \

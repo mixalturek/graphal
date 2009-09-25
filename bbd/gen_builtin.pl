@@ -1695,6 +1695,22 @@ genBFClass('visScreenshot', 'NodeBuiltinVisScreenshot', 1, $code, $include);
 #############################################################################
 ####
 
+$funcdecl = 'visGetGraph() : graph|null';
+
+$include = <<END_OF_CODE;
+#include "objectcreator.hpp"
+#include "visualizationconnector.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	return VISUALIZATION_CONNECTOR->visGetGraph();
+END_OF_CODE
+genBFClass('visGetGraph', 'NodeBuiltinVisGetGraph', 0, $code, $include);
+
+
+#############################################################################
+####
+
 print "Generating generateBuiltinFunctions()\n";
 
 open(FILE_HPP, ">nodebuiltin_inst.hpp") or die "Cannot open output file: nodebuiltin_inst.hpp\n";

@@ -82,6 +82,7 @@ private slots:
 	void resetView(void);
 	void screenshot(void);
 	void settings(void);
+	void loadGraph(void);
 
 	void saveLayout();
 	void loadLayout();
@@ -172,6 +173,7 @@ private:
 	QAction* m_resetViewAct;
 	QAction* m_screnshotAct;
 	QAction* m_settingsAct;
+	QAction* m_loadGraphAct;
 
 	ScriptThread* m_scriptThread;
 

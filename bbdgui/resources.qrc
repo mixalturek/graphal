@@ -28,5 +28,6 @@
         <file>images/button_cancel.png</file>
         <file>images/ksnapshot.png</file>
         <file>images/package_settings.png</file>
+        <file>images/attach.png</file>
     </qresource>
 </RCC>

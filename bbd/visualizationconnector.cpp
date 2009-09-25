@@ -20,6 +20,7 @@
 
 #include "visualizationconnector.hpp"
 #include "logger.hpp"
+#include "valuenull.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -82,4 +83,14 @@ void VisualizationConnector::visUseWeightWhenPaintingEdges(bool /* enable */)
 void VisualizationConnector::visScreenshot(const string& /* path */)
 {
 //	WARN_P(_("Operation is not supported."));
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> VisualizationConnector::visGetGraph(void)
+{
+//	WARN_P(_("Operation is not supported."));
+	return VALUENULL;
 }

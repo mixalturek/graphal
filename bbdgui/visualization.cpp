@@ -46,6 +46,7 @@ Visualization::Visualization(QWidget* parent, const QGLWidget* shareWidget, Qt::
 	m_useWeightWhenPaintingEdges(false)
 {
 	GuiVisualizationConnector* viscon = dynamic_cast<GuiVisualizationConnector*>(VISUALIZATION_CONNECTOR);
+	assert(viscon != NULL);
 
 	qRegisterMetaType<VisualizationItemData>("VisualizationItemData");
 	connect(viscon, SIGNAL(visRegisterSig(VisualizationItemData)),

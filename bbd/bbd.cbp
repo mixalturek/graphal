@@ -189,6 +189,8 @@
 		<Unit filename="nodebuiltinisarray.hpp" />
 		<Unit filename="nodebuiltinisbool.cpp" />
 		<Unit filename="nodebuiltinisbool.hpp" />
+		<Unit filename="nodebuiltinisdirected.cpp" />
+		<Unit filename="nodebuiltinisdirected.hpp" />
 		<Unit filename="nodebuiltinisedge.cpp" />
 		<Unit filename="nodebuiltinisedge.hpp" />
 		<Unit filename="nodebuiltinisedgeset.cpp" />
@@ -201,8 +203,6 @@
 		<Unit filename="nodebuiltinisint.hpp" />
 		<Unit filename="nodebuiltinisnull.cpp" />
 		<Unit filename="nodebuiltinisnull.hpp" />
-		<Unit filename="nodebuiltinisdirected.cpp" />
-		<Unit filename="nodebuiltinisdirected.hpp" />
 		<Unit filename="nodebuiltinisstring.cpp" />
 		<Unit filename="nodebuiltinisstring.hpp" />
 		<Unit filename="nodebuiltinisstruct.cpp" />
@@ -249,6 +249,8 @@
 		<Unit filename="nodebuiltinverify.hpp" />
 		<Unit filename="nodebuiltinvertexset.cpp" />
 		<Unit filename="nodebuiltinvertexset.hpp" />
+		<Unit filename="nodebuiltinvisgetgraph.cpp" />
+		<Unit filename="nodebuiltinvisgetgraph.hpp" />
 		<Unit filename="nodebuiltinvisregister.cpp" />
 		<Unit filename="nodebuiltinvisregister.hpp" />
 		<Unit filename="nodebuiltinvisscreenshot.cpp" />
