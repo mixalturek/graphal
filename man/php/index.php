@@ -8,6 +8,8 @@ include 'p_begin.php';
 
 <h3>Features</h3>
 
+<div id="screenshot"><?php Img('images/screenshot/2009-09-09_23-35-04_sm.png', 'Screenshot'); ?></div>
+
 <ul>
 <li>The code is very similar to C language</li>
 <li>CLI application was written in C++ with STL, clear OOP</li>

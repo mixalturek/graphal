@@ -16,6 +16,7 @@ body
 #page		{ margin: 0px 3% 50px 20%; }
 
 #sidebar ul		{ margin-left: 1.5em; padding: 0px; }
+#screenshot		{ float: right; }
 
 
 p			{ margin-bottom: 1em; }
@@ -31,6 +32,7 @@ a:hover, .m:hover	{ text-decoration: underline; }
 .todo:before		{ /*content: "TODO: ";*/ }
 .invalid_link		{ color: green; }
 .cleaner		{ clear: both; }
+.img			{ text-align: center; font-style: italic; }
 
 pre
 {
