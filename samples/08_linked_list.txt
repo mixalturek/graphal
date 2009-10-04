@@ -36,9 +36,9 @@ function main(argv)
 	a[2] = "bagr";
 	list = list.listPushFront(a);
 
-	echo("Dumping list...\n");
-	list.dump();
+//	echo("Dumping list...\n");
+//	list.dump();
 
-	echo("Displaying list...\n");
+//	echo("Displaying list...\n");
 	list.listDisplay();
 }

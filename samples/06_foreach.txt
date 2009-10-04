@@ -9,7 +9,7 @@ function main(argv)
 
 	echo("--- array items ---\n");
 	foreach(var ; arr)
-		echo("" + var + "\n");
+		println(var);
 
 	// Struct
 	st = struct();
@@ -19,12 +19,12 @@ function main(argv)
 
 	echo("--- struct items ---\n");
 	foreach(var ; st)
-		echo("" + var + "\n");
+		println(var);
 
 	echo("--- struct items using iterator ---\n");
 	it = st.iterator();
 	while(it.hasNext())
-		echo("" + it.next() + "\n");
+		println(it.next());
 
 	// Graph
 	g = graph();

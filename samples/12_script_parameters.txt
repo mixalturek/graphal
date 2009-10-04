@@ -3,4 +3,7 @@ function main(argv)
 	num = argv.size();
 	for(i = 0; i < num; i++)
 		echo("argv[" + i + "]: " + argv[i] + "\n");
+
+//	foreach(arg; argv)
+//		println(arg);
 }

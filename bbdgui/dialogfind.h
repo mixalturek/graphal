@@ -31,7 +31,7 @@ public:
 	DialogFind(QWidget* parent = 0, Qt::WindowFlags flags = 0);
 
 	QString getText(void) const { return ui.editText->text(); }
-	void setText(const QString& text) { ui.editText->setText(text); }
+	void setText(const QString& text) { ui.editText->setText(text); ui.editText->selectAll(); }
 
 	QTextDocument::FindFlags getFlags(void) const;
 	void setFlags(QTextDocument::FindFlags flags);

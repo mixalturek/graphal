@@ -26,7 +26,7 @@ lines:
 	cat ./bbd/*.hpp ./bbd/*.cpp ./bbdgui/*.hpp ./bbdgui/*.cpp | wc -l
 
 svnlog:
-	svn log --revision $(shell svnversion -c | tr 'A-Z' ' ') --verbose
+	svn log -v > ChangeLog
 
 statsvn:
 	svn log -v --xml > logfile.log

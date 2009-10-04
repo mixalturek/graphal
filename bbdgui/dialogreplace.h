@@ -31,7 +31,7 @@ public:
 	DialogReplace(QWidget* parent = 0, Qt::WindowFlags flags = 0);
 
 	QString getTextFind(void) const { return ui.editFind->text(); }
-	void setTextFind(const QString& text) { ui.editFind->setText(text); }
+	void setTextFind(const QString& text) { ui.editFind->setText(text); ui.editFind->selectAll(); }
 
 	QString getTextReplace(void) const { return ui.editReplace->text(); }
 	void setTextReplace(const QString& text) { ui.editReplace->setText(text); }

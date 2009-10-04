@@ -15,7 +15,7 @@ function dfs(v)
 		dfs(neighbor);
 }
 
-
+// Generate testing graph and run DFS
 function main(argv)
 {
 //	o ----- o ----- o ----- ...

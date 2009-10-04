@@ -52,7 +52,9 @@ void runUnitTests(void)
 
 void usage(int /* argc */, char** argv)
 {
-	cout << _("Usage: ") << argv[0] << " [-I<directory>] [-u | --unit-tests] [-a | --ast-dump] [-b | --enable-breakpoints]" << _("<filename> [parameters]") << endl
+	cout << _("Usage: ") << argv[0]
+		<< _(" [-I<directory>] [-u | --unit-tests] [-a | --ast-dump] [-b | --enable-breakpoints] ")
+		<< _("<filename> [parameters]") << endl
 		<< endl
 		<< "\t-I<directory>" << endl
 		<< "\t\tSpecify include directories (relative to the current working directory)" << endl

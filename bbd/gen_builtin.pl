@@ -247,17 +247,20 @@ genBFClass('exit', 'NodeBuiltinExit', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'assert(object) : object';
+$funcdecl = 'assert(object) : null';
 
 $include = <<END_OF_CODE;
-#include <stdexcept>
+#include "exitvalue.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	if(!par[0]->toBool())
-		throw runtime_error(_("Assertion failed"));
+	{
+		ERR_P(_("Assert: Operation was not successful"));
+		throw new ExitValue(par[0]);
+	}
 
-	return par[0];
+	return VALUENULL;
 END_OF_CODE
 genBFClass('assert', 'NodeBuiltinAssert', 1, $code, $include);
 
@@ -556,26 +559,15 @@ genBFClass('resetIterator', 'NodeBuiltinResetIterator', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'array(int|bool|float) : array|null';
+$funcdecl = 'array(number) : array|null';
 
 $include = <<END_OF_CODE;
 #include "valuearray.hpp"
-#include "valuebool.hpp"
-#include "valueint.hpp"
-#include "valuefloat.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
-	ValueBool* b = NULL;
-	ValueInt* i = NULL;
-	ValueFloat* f = NULL;
-
-	if((b = par[0]->toValueBool()) != NULL)
-		return CountPtr<Value>(new ValueArray(b->getVal()));
-	if((i = par[0]->toValueInt()) != NULL)
-		return CountPtr<Value>(new ValueArray(i->getVal()));
-	if((f = par[0]->toValueFloat()) != NULL)
-		return CountPtr<Value>(new ValueArray((uint)f->getVal()));
+	if(par[0]->isNumeric())
+		return CountPtr<Value>(new ValueArray(par[0]->toInt()));
 	else
 	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
@@ -880,31 +872,18 @@ genBFClass('isDirected', 'NodeBuiltinIsDirected', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'setDirected(graph, bool|int) : bool|null';
+$funcdecl = 'setDirected(graph, number) : bool|null';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
-#include "valueint.hpp"
 #include "valuegraph.hpp"
+#include "valuebool.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
-	ValueBool* b = NULL;
-	ValueInt* i = NULL;
 
-	if((g = par[0]->toValueGraph()) != NULL)
-	{
-		if((b = par[1]->toValueBool()) != NULL)
-			return CountPtr<Value>((g->setDirected(b->getVal())) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
-		if((i = par[1]->toValueInt()) != NULL)
-			return CountPtr<Value>((g->setDirected(i->getVal())) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
-		else
-		{
-			WARN_P(_("Bad parameters type: $funcdecl"));
-			return VALUENULL;
-		}
-	}
+	if((g = par[0]->toValueGraph()) != NULL && par[1]->isNumeric())
+		return CountPtr<Value>(g->setDirected(par[1]->toBool()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 	else
 	{
 		WARN_P(_("Bad parameters type: $funcdecl"));

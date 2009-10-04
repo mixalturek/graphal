@@ -24,7 +24,7 @@ build: $(TARGET)
 
 rebuild: clean all
 
-all: version bison operators builtin depend $(TARGET)
+all: bison operators builtin depend $(TARGET)
 
 %.o: %.cpp
 	$(CC) -c $< $(CFLAGS)
