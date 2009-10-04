@@ -12,6 +12,7 @@ build:
 	make -C ./bbdgui/
 	make -C ./benchmarks/
 	make -C ./graphs/generator/
+	make -C ./man/
 	make -C ./text/
 
 install: build
@@ -40,5 +41,6 @@ clean:
 	rm ./bbdgui/bbdgui
 	make -C ./benchmarks/ clean
 	make -C ./graphs/generator/ clean
+	make -C ./man/ clean
 	rm -rf ./statsvn/
 	make -C ./text/ clean

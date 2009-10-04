@@ -27,9 +27,9 @@ function Web($addr, $text, $title = '')
 	if(file_exists($addr.'.php'))
 		if(isset($_GET['offline']))
 			if($title != '')
-				echo "<a href=\"$addr.htm\" title=\"$title\">$text</a>";
+				echo "<a href=\"$addr.html\" title=\"$title\">$text</a>";
 			else
-				echo "<a href=\"$addr.htm\">$text</a>";
+				echo "<a href=\"$addr.html\">$text</a>";
 		else
 			if($title != '')
 				echo "<a href=\"$addr.php\" title=\"$title\">$text</a>";
