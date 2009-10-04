@@ -1,14 +1,14 @@
-#header, #sidebar, #footer, .nehe_maly, .nehe_velky, .okolni_lekce, .zdroj_kody, .zdroj_kody_nadpis, .netisk, .google_ads
+#header, #sidebar, #footer
 {
 	display: none;
 }
 
-body, table, .src, .src0, .src1, .src2, .src3, .src4, .src5, .src6, .src7, .src8, .src9, .src10, .kom, .key, a, a:active, a:link, a:visited, .m, h1, h2, h3, h4, h5, .warning, .transform_email, pre
+body, table, a, a:active, a:link, a:visited, .m, h1, h2, h3, h4, h5, .warning, pre, pre.spec, pre.code, pre.screen
 {
 	color: black;
 	background-color: white;
 	background-image: none;
-	border: 0px;
+	border: none;
 }
 
 #page
@@ -18,14 +18,6 @@ body, table, .src, .src0, .src1, .src2, .src3, .src4, .src5, .src6, .src7, .src8
 	border: none;
 }
 
-h1
-{
-	padding-top: 0px;
-	margin-top: 0px;
-	padding-bottom: 0px;
-}
-
-hr		{ color: black; background-color: black; }
 a		{ text-decoration: underline; }
 a.blank:after	{ content: ""; }
 a.down:after	{ content: ""; }
