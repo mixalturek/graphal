@@ -18,6 +18,7 @@
  */
 
 
+#include <cstdio>
 #include "lexaniteratorstring.hpp"
 #include "context.hpp"
 
