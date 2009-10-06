@@ -3,6 +3,7 @@ PREFIX = /usr/local/bin
 .PHONY: build
 .PHONY: install
 .PHONY: lines
+.PHONY: doc
 .PHONY: svnlog
 .PHONY: statsvn
 .PHONY: clean
@@ -26,6 +27,9 @@ uninstall:
 lines:
 	cat ./bbd/*.hpp ./bbd/*.cpp ./bbdgui/*.hpp ./bbdgui/*.cpp | wc -l
 
+doc:
+	doxygen Doxyfile
+
 svnlog:
 	svn log -v > ChangeLog
 
@@ -38,9 +42,10 @@ clean:
 	make -C ./bbd/ clean
 	rm -rf ./bbd/bin/ ./bbd/obj/
 	make -C ./bbdgui/ clean
-	rm ./bbdgui/bbdgui
+	rm -f ./bbdgui/bbdgui
 	make -C ./benchmarks/ clean
 	make -C ./graphs/generator/ clean
 	make -C ./man/ clean
+	rm -rf ./doc/
 	rm -rf ./statsvn/
 	make -C ./text/ clean

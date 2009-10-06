@@ -85,11 +85,24 @@ This is perl, v5.10.0 built for i486-linux-gnu-thread-multi
 </pre>
 
 
-<h3>SVN</h3>
+<h3>Doxygen</h3>
+
+<pre class="screen">
+[woq@evm bbd]$ <strong>doxygen --versionn</strong>
+1.5.6
+[woq@evm bbd]$ <strong>apt-cache show graphviz | grep Version</strong>
+Version: 2.20.2-3
+[woq@evm bbd]$
+</pre>
+
+
+<h3>SVN, StatSVN</h3>
 
 <pre class="screen">
 [woq@evm bbd]$ <strong>svn --version | grep version</strong>
 svn, version 1.5.1 (r32289)
+[woq@evm bbd]$ <strong>apt-cache show statsvn | grep Version</strong>
+Version: 0.4.0.dfsg-1
 [woq@evm bbd]$
 </pre>
 
