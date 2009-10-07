@@ -33,6 +33,7 @@ if(!isset($_GET['offline']))
 	</li>
 	</ul>
 </li>
+<li><?php MenuItem('visualizations', 'Vizualizations'); ?></li>
 <li><?php MenuItem('graphs_format', 'Graphs file format'); ?></li>
 <li><?php MenuItem('devel_new_builtin', 'Add built-in function'); ?></li>
 </ul>

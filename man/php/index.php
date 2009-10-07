@@ -3,7 +3,7 @@ $g_title = 'Graph algorithms interpreter';
 include 'p_begin.php';
 ?>
 
-<p>The core of this diploma thesis is design and implementation of a special language based on C, which will be used for the graph manipulations. Integrated development environment was developed, it consists of the text editor for programmers, debugger and visualization window, in which the progress of the interpreted algorithm and graph can be displayed using 3D graphics.</p>
+<p>The core of this diploma thesis is design and implementation of a special language based on C, which will be used for the graph manipulations. Integrated development environment was developed, it consists of a text editor for programmers, debugger and visualization window. The progress of the interpreted graph algorithm can be displayed using 3D graphics.</p>
 
 
 <h3>Features</h3>
