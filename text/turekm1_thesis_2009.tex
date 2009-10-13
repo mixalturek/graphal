@@ -119,7 +119,7 @@ unicode=true,
 \acknowledgements
 \noindent
 
-\noindent Rád bych poděkoval svému vedoucímu RNDr. Marku Genyk-Berezovskému za jeho při\-po\-mín\-ky a cené rady při tvoření práce. Druhou osobou zůstává Renat Rafisovič Kagirov, který se mě během studia na SibGAU v Krasnojarsku snažil přivést, bohužel neúspěšně, k psaní v angličtině. V této době vznikla podrobná osnova a úvodní kapitoly.
+\noindent Rád bych poděkoval svému vedoucímu RNDr. Marku Genyk-Berezovskému za jeho při\-po\-mín\-ky a cené rady při tvoření práce.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -133,7 +133,7 @@ unicode=true,
 %%%%
 
 \abstractpage
-The core of this diploma thesis is design and implementation of a special language based on C, which will be used for the graph manipulations. Integrated development environment was developed, it consists of the text editor for programmers, debugger and visualization window, in which the progress of the interpreted algorithm and graph can be displayed using 3D graphics.
+The core of this diploma thesis is design and implementation of a special language based on C, which will be used for the graph manipulations. Integrated development environment was developed, it consists of a text editor for programmers, debugger and visualization window. The progress of the interpreted graph algorithm can be displayed using 3D graphics.
 
 \vglue60mm
 
@@ -141,7 +141,7 @@ The core of this diploma thesis is design and implementation of a special langua
 \vspace{8ex}
 
 \noindent
-Jádrem diplomové práce je návrh a implementace speciálního programovacího jazyka za\-lo\-že\-né\-ho na syntaxi C, který slouží pro manipulaci s grafy. Dále bylo vytvořeno integrované vývojové prostředí sestávající z programátorsky zaměřeného textového editoru, debuggeru a vizualizačního okna, v němž je ve 3D zobrazován průběh interpretovaného algoritmu nad daným grafem.
+Jádrem diplomové práce je návrh a implementace speciálního programovacího jazyka za\-lo\-že\-né\-ho na syntaxi C, který slouží pro manipulaci s grafy. Bylo vytvořeno integrované vývojové prostředí sestávající z programátorsky zaměřeného textového editoru, debuggeru a vizualizačního okna. Průběh interpretovaného grafového algoritmu může být zobrazován pomocí 3D grafiky.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -166,17 +166,17 @@ Jádrem diplomové práce je návrh a implementace speciálního programovacího
 
 \chapter{Úvod}
 
-Algoritmy \textit{difuze} slouží pro zpracování obrazů. Každý ví, že fungují, ale nikdo neví, jakým způsobem \textit{přesně} fungují. Výstupem tohoto projektu bude integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
+Algoritmy \textit{difuze} slouží pro zpracování obrazů. Každý, kdo se jimi zabývá, ví, že fungují, ale nikdo neví, jakým způsobem \textit{přesně} fungují. Výstupem tohoto projektu bude integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
 
-Vstupními daty je obrázek a výstupem například, ve které jeho části se nachází objekt, kde je pozadí a podobně. Obrázek je převeden na speciální graf s několika vrcholy pro každý pixel a pospojovanými ohodnocenými hranami. Difuzní algoritmus pracuje s lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Zadání může být tedy zobecněno z práce s obrázky na jednoduché grafové operace.
+Vstupními daty je obrázek a výstupem například, ve které jeho části se nachází objekt s definovanými vlastnostmi, kde se vyskytuje pozadí a podobně. Obrázek je převeden na speciální graf s několika vrcholy pro každý pixel a pospojovanými ohodnocenými hranami. Difuzní algoritmus pracuje s lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Zadání může být tedy zobecněno z práce s obrázky na jednoduché grafové operace.
 
-Cílem diplomové práce je návrh a implementace jazyka založeného na syntaxi C, který slouží pro manipulaci s grafy. Jazyk má podporu pro základní datové typy, jako jsou celá a desetinná čísla, řetězce, pole a struktury. Proměnné mohou být lokální i globální, bez deklarací. Výčet kontrolních struktur sestává z \texttt{if-else} podmínek, \texttt{for}, \texttt{while} a \texttt{foreach} cyklů, deklarace funkcí a jejich volání. \texttt{Include} a \texttt{define} direktivy preprocesoru jsou implementované na úrovni lexikálního analyzátoru. Jazyk nepodporuje ukazatele ani objektově orientované programování.
+Cílem diplomové práce byl návrh a implementace jazyka založeného na syntaxi C, který slouží pro manipulaci s grafy. Jazyk má podporu pro základní datové typy, jako jsou celá a desetinná čísla, řetězce, pole a struktury. Proměnné mohou být lokální i globální, bez deklarací. Výčet kontrolních struktur sestává z \texttt{if-else} podmínek, \texttt{for}, \texttt{while} a \texttt{foreach} cyklů, deklarace funkcí a jejich volání. \texttt{Include} a \texttt{define} direktivy preprocesoru jsou implementovány na úrovni lexikálního analyzátoru. Jazyk nepodporuje ukazatele ani objektově orientované programování.
 
-Speciální datové typy zahrnují grafy, vrcholy, hrany, množiny vrcholů a množiny hran. Interpret obsahuje zabudované funkce pro vytváření a rušení těchto proměnných, vracení sousedů daného vrcholu a další. Každému vrcholu a hraně může být přiřazen libovolný počet dalších hodnot, k přístupu k nim složí jméno předávané tečkovou notací \texttt{objekt.vlastnost}. Speciální řídící stuktury pro zpracování komplexních proměnných jsou implementovány na bázi iterátorů, jež jsou interně volané i ve \texttt{foreach} cyklu.
+Speciální datové typy zahrnují grafy, vrcholy, hrany, množiny vrcholů a množiny hran. Interpret obsahuje zabudované funkce pro vytváření a rušení těchto proměnných, vracení sousedů daného vrcholu a další. Každému vrcholu a hraně může být přiřazen libovolný počet dalších hodnot, k přístupu k nim slouží jméno předávané tečkovou notací \texttt{objekt.vlastnost}. Speciální řídící stuktury pro zpracování komplexních proměnných jsou implementovány na bázi iterátorů, jež jsou interně volané i ve \texttt{foreach} cyklu.
 
-Grafické uživatelské rozhraní sestává především z programátorsky zaměřeného textového editoru se zvýrazňováním syntaxe, číslováním řádků, zvýrazněním aktuálního řádku, automatickým odsazováním a inteligentní klávesou \texttt{Home}. Všechny ostatní části aplikace jsou tvořeny panely, které mohou být uživatelem přesunuty na jiné místo, skryty a také \textit{vytrhnuty} z hlavního do samostatného okna, což je výhodné především v případě dvou monitorů. Mimo jiné je v nich možné zobrazit textový výstup z parsování a interpretace skriptu, zásobník volání funkcí, seznam definovaných proměnných a vizualizační okno.
+Grafické uživatelské rozhraní sestává především z programátorsky zaměřeného textového editoru, který poskytuje zvýrazňování syntaxe, číslování řádků, zvýraznění aktuálního řádku, automatické odsazování a inteligentní klávesu \texttt{Home}. Všechny ostatní části aplikace jsou tvořeny panely, které mohou být uživatelem libovolně přesunuty na jiné místo, skryty a nebo také \textit{vytrhnuty} z hlavního do samostatného okna. To je výhodné především při používání dvou monitorů. V panelech je možné zobrazit výstup z parsování a interpretace skriptu, zásobník volání funkcí, seznam definovaných proměnných a vizualizační okno.
 
-Vizualizace jsou přímo propojené s krokováním skriptu či, přesněji řečeno, s debuggingem. Vykonávání může být pozastaveno breakpointem a poté krokováno s možností vstupu do funkcí, opuštění dané funkce či její vykonání a opětovné pozastavení. Při každém zastavení skriptu se aktualizuje panel zásobníku volání funkcí, seznam definovaných proměnných a vizualazace grafu, s níž se dá následně otáčet, přibližovat, oddalovat a provádět další 3D operace. Graf může být nahrán jak kódem skriptu, tak uživatelem ve vizualizačním okně.
+Vizualizace jsou přímo propojené s debuggingem skriptu. Vykonávání kódu může být pozastaveno breakpointem a poté krokováno s možností vstupování do funkcí (step in), opuštění dané funkce (step out) či její vykonání a opětovné pozastavení (step over). Při každém zastavení skriptu se aktualizuje panel zásobníku volání funkcí, seznam definovaných proměnných a vizualizace grafu, s níž se dá následně otáčet, přibližovat, oddalovat a provádět další 3D operace. Graf může být nahrán jak kódem skriptu, tak uživatelem ve vizualizačním okně.
 
 Základní kód interpretu a rozhraní pro příkazovou řádku je napsáno v jazyce C++ s využitím parser generátoru Bison (LALR gramatika) a nezávisí na žádné externí knihovně kromě standardního STL. Tato část je tudíž zkompilovatelná na libovolné platformě, pro kterou existuje C++ kompilátor. Grafická část aplikace používá knihovnu Qt a vizualizace OpenGL, obě jsou dostupné na všech majoritních operačních systémech.
 
@@ -196,19 +196,19 @@ Základní kód interpretu a rozhraní pro příkazovou řádku je napsáno v ja
 
 \section{Požadavky na aplikaci}
 
-Navrhněte a implementujte interpret jazyka, který bude zaměřen na manipulaci s grafy. Jazyk bude obsahovat základní datové struktury nezbytné pro manipulaci s grafy a bude tak podporovat efektivní zápis grafových algoritmů. Interpret vybavte uživatelským rozhraním skládajícím se z editoru pro zápis algoritmu a dále grafickým oknem zobrazujícím interaktivně průběh algoritmu na konkrétním grafu. V grafické části aplikace využijte knihoven OpenGL.
+Navrhněte a implementujte interpret jazyka, který bude zaměřen na manipulaci s grafy. Jazyk bude obsahovat základní datové struktury nezbytné pro manipulaci s grafy a bude tak podporovat efektivní zápis grafových algoritmů. Interpret vybavte uživatelským rozhraním skládajícím se z editoru pro zápis algoritmu a dále grafickým oknem zobrazujícím interaktivně průběh algoritmu na konkrétním grafu. V grafické části aplikace využijte knihovnu OpenGL.
 
 Zásadní jsou neorientované grafy, implementace orientovaných je volitelná.
 
 \subsection{Navrhovaný jazyk}
 
-Jazykové konstrukce by měly být podobné jazyku C. Zahrnují základní datové typy, datové a řídící struktury.
+Jazykové konstrukce by měly být podobné jazyku C. Zahrnují základní datové typy, datové a řídící struktury
 
 \begin{itemize}
 \item celá a desetinná čísla
 \item pole
 \item podmínky, cykly, deklarace a volání funkcí
-\item výstup textu na vlastní konzolu
+\item výstup textu na vlastní konzoli
 \item direktiva \texttt{include} v jednoduché verzi, tj. nikoli hlavičky, ale celé soubory
 
 \item zvažte
@@ -224,7 +224,8 @@ Jazykové konstrukce by měly být podobné jazyku C. Zahrnují základní datov
 	\begin{itemize}
 	\item primitivní typy
 		\begin{itemize}
-		\item graf, vrchol, hrana, množina vrcholů, množina hran
+		\item graf, vrchol, hrana
+		\item množina vrcholů, množina hran
 		\end{itemize}
 	\item základní funkce
 		\begin{itemize}
@@ -251,14 +252,14 @@ Textový editor by měl být programátorsky zaměřený, zvýrazňování synta
 
 \subsection{Zobrazovací jednotka, vizualizace}
 
-Vizualizační jednotka zobrazuje aktuálně zpracovávaný graf ve 3D, nemusí to být editor, ve kterém je možné grafy editovat. Uživatel má interaktivní možnost graf natáčet, přibližovat, oddalovat a posouvat v libovolném směru. Dále vůže zapnout a vypnout zobrazování jednotlivých částí grafu, aby bylo možné dosáhnout méně přeplněného výstupu.
+Vizualizační jednotka zobrazuje aktuálně zpracovávaný graf ve 3D, nemusí to být editor, ve kterém je možné měnit strukturu grafu. Uživatel má možnost graf interaktivně natáčet, přibližovat, oddalovat a posouvat v libovolném směru. Dále vůže zapnout a vypnout zobrazování jednotlivých částí grafu, aby bylo možné dosáhnout méně přeplněného výstupu.
 
-Pokud bude v jazyce možnost přidávat barevné (texturové?) atributy vrcholům, hranám nebo jejich množinám, promítaly by se i do zobrazení. Zobrazovací okno má vlastní možnost načtení grafu, aplikace umožní volit, zda má algoritmus pracovat s grafem, který je v grafickém okně nebo zda si jej načte sám podle zápisu v kódu.
+Pokud bude v jazyce možnost přidávat barevné (texturové) atributy vrcholům, hranám nebo jejich množinám, promítaly by se i do zobrazení. Zobrazovací okno má vlastní možnost načtení grafu, aplikace umožní volit, zda má algoritmus pracovat s grafem, který je v grafickém okně nebo zda si jej načte sám podle zápisu v kódu.
 
 
 \subsection{Manipulace s grafem, debugger}
 
-Interpretace kódu může být krokována, po provedení jednoho příkazu se ve vizualizačním okně zobrazí aktuální stav zpracování grafu. V něm je možné následně měnit pohled na graf, dokud není vydán příkaz k dalšímu kroku. Parametry samotného grafu během průběhu programu není vhodné měnit, parametry zobrazení nejspíše ano (barvy, měřítka a podobně). Debugging není třeba nijak zvlášť podporovat, postačí konzole, kam si programátor může vypsat ladící a trasovací tisky.
+Interpretace kódu může být krokována, při jejím pozastavení se překreslí vizualizační okno a tím se aktualizauje i pohled na graf. Dokud není vydán příkaz k dalšímu kroku, je možné s grafem posouvat, natáčet ho a podobně. Parametry samotného grafu během průběhu programu není vhodné měnit, avšak parametry zobrazení nejspíše ano (barvy, měřítka a podobně). Debugging není třeba nijak zvlášť podporovat, postačí konzole, kam si programátor může vypsat ladící a trasovací tisky.
 
 
 \subsection{Systémové požadavky}
@@ -291,26 +292,27 @@ Interpretace kódu může být krokována, po provedení jednoho příkazu se ve
 
 \section{Obecný postup řešení}
 
-Základním cílem tohoto projektu je vyvinout integrované vývojové prostředí pro programovací jazyk orientovaný na manipulace s grafy. Tato komplexní úloha může být rozdělena na několik více méně oddělených částí, které budou řešeny v následujícím pořadí.
+Základním cílem tohoto projektu je vyvinout integrované vývojové prostředí pro programovací jazyk orientovaný na manipulace s grafy. Tato komplexní úloha může být rozdělena na několik oddělených částí, které budou řešeny v následujícím pořadí.
 
 \begin{enumerate}
 \item Návrh jazyka pro manipulace s grafy, který odpovídá všem požadavkům
 \item Návrh reprezentace grafů v aplikaci, jak k nim bude přistupováno z interpretu
 \item Implementace lexikálního analyzátoru a parseru
 \item Implementace interpretu pro příkazovou řádku
-\item Návrh a implementace grafického vývojového prostředí a vizualizací
+\item Návrh a implementace grafického vývojového prostředí
+\item Implementace vizualizačního okna, propojení s interpretem
 \end{enumerate}
 
 
 \section{Volba jazyka a knihoven pro implementaci}
 
-Na samém začátku je možné uvažovat tři běžně používané jazyky pro tvorbu sys\-té\-mo\-vých aplikací: C++, Javu a C\#. Třetí z nich může být automaticky vyškrtnut, protože neodpovídá zásadnímu požadavku na přenositelnost a především odporu autora práce. Jazyk C++ je portovatelný na úrovni zdrojových kódů a Java na úrovni byte kódu. Žádné skriptovací jazyky, jako například Perl a Python, nejsou uvažovány. Ačkoli mnoho vývojářů může tvrdit přesný opak, nejsou příliš vhodné pro tak velkou aplikaci a psát interpret v interpretovaném jazyce nevypadá hezky.
+Na samém začátku je možné uvažovat tři běžně používané jazyky pro tvorbu sys\-té\-mo\-vých aplikací: C++, Javu a C\#. Třetí z nich může být automaticky vyškrtnut, protože neodpovídá zásadnímu požadavku na přenositelnost a především odporu autora práce. Jazyk C++ je portovatelný na úrovni zdrojových kódů a Java na úrovni byte kódu. Žádné skriptovací jazyky, jako například Perl a Python, nejsou uvažovány. Ačkoli mnoho vývojářů může tvrdit přesný opak, nejsou příliš vhodné pro tak velkou aplikaci a psát interpret v interpretovaném jazyce není příliš vhodné.
 
 Obrovskými výhodami Javy je její automatický správce paměti a spousta existujících knihoven a frameworků. Na druhou stranu naprostá většina kompilátorů a interpretů je psaná v C nebo C++ kvůli kompilaci do strojového kódu a z ní vyplývající rychlosti provádění.
 
-Autor při vývoji systémových aplikací preferuje C++ a má s ním také mnohem více zku\-še\-no\-stí, a proto byl tento jazyk, spolu s knihovnou STL, zvolen pro implementaci aplikace. Žádná další knihovna nebude při tvorbě základního kódu použita, interpret pro příkazovou řádku by měl mít co nejméně externích závislostí. Díky tomu by měl být bez větších problémů portovatelný na všechny platformy, pro které existuje C++ kompilátor.
+Autor při vývoji systémových aplikací preferuje C++ a má s ním také mnohem více zku\-še\-no\-stí, a proto byl tento jazyk zvolen pro implementaci aplikace. Žádná další knihovna, kromě standardního STL, nebude při tvorbě základního kódu použita, interpret pro příkazovou řádku by měl mít co nejméně externích závislostí. Díky tomu by měl být bez větších problémů portovatelný na všechny platformy, pro které existuje C++ kompilátor.
 
-Grafické část aplikace bude naprogramována s použitím knihovny Qt. Je jednou z nejlépe navržených knihoven pro tvorbu GUI aplikací, přenositelná na všechny majoritní operační systémy a bezplatná pro nekomerční použití (licence GNU LGPL). Vizualizace grafů budou používat OpenGL, což je standard pro 3D grafiku. Druhá možná volba, Direct3D, není použitelná na ne-Microsoft platformách, a proto je zbytečné o ní byť i uvažovat.
+Grafická část aplikace bude naprogramována s použitím knihovny Qt. Je jednou z nejlépe navržených knihoven pro tvorbu GUI aplikací, přenositelná na všechny majoritní operační systémy a bezplatná pro nekomerční použití. Vizualizace grafů budou používat OpenGL, což je standard pro 3D grafiku. Druhá možná volba, Direct3D, není použitelná na ne-Microsoft platformách, a proto je zbytečné o ní uvažovat.
 
 
 \section{Návrh a specifikace vytvářeného jazyka}
@@ -321,7 +323,7 @@ Jak už bylo zmíněno, syntaxe jazyka je z větší části založena na všeob
 \subsection{Datové typy a proměnné}
 \label{datove_typy_a_promenne}
 
-Proměnné se nedeklarují a v průběhu vykonávání skriptu mohou libovolně měnit svůj datový typ. Uvnitř interpretu jsou rozlišovány typy \texttt{null}, \texttt{bool}, \texttt{int}, \texttt{float}, \texttt{string}, \texttt{struct}, \texttt{array}, \texttt{graph}, \texttt{vertex}, \texttt{vertexset}, \texttt{edge} a \texttt{edgeset}. Jazyk nepodporuje modifikátory typu, jako jsou například \texttt{unsigned} nebo \texttt{const}, protože nepřinášejí žádné výrazné vylepšení, programátor se bude muset obejít bez nich.
+Proměnné se nedeklarují a v průběhu vykonávání skriptu mohou libovolně měnit svůj datový typ. Uvnitř interpretu jsou rozlišovány typy \texttt{null}, \texttt{bool}, \texttt{int}, \texttt{float}, \texttt{string}, \texttt{struct}, \texttt{array}, \texttt{graph}, \texttt{vertex}, \texttt{edge}, \texttt{vertexset} a \texttt{edgeset}. Jazyk nepodporuje modifikátory typu, jako jsou například \texttt{unsigned} nebo \texttt{const}, protože nepřinášejí žádné výrazné vylepšení, programátor se bude muset obejít bez nich.
 
 Viditelnost proměnných je definována na úroveň funkcí, tudíž opuštění daného bloku (na\-pří\-klad cyklu) nezpůsobuje zrušení v něm používaných proměnných. Globální pro\-měn\-nou je možné ve funkci zpřístupnit po vzoru jazyka PHP klíčovým slovem \texttt{global}.
 
@@ -333,7 +335,7 @@ function example()
 }
 \end{verbatim}
 
-Při úvahách o deklaracích proměnných byly zvažovány celkem čtyři možnosti.
+Při úvahách o deklarací proměnných byly zvažovány celkem čtyři možnosti.
 
 \begin{enumerate}
 \item Jako v C, povinná
@@ -344,14 +346,14 @@ Při úvahách o deklaracích proměnných byly zvažovány celkem čtyři možn
 
 Na první pohled je jasné, že prostřední dvě možnosti nepřinášejí nic užitečného. Pokud jsou deklarace volitelné, nejde těžit z jejich výhod a pouze přidávají nová klíčová slova, což je patrné především u JavaScriptového způsobu.
 
-Výhodou deklarací je snadná automatická detekce chyb a případně možnost větších optimalizací. Na druhou stranu příliš svazují, což je patrné především u skriptovacích jazyků, které se snaží o co nejmenší množství kódu na co největší funkcionalitu. Právě z tohoto důvodu byla zvolena verze bez deklarací.
+Výhodou deklarací je snadná detekce chyb a případně možnost větších optimalizací. Na druhou stranu příliš svazují, což je patrné především u skriptovacích jazyků, které se snaží o co nejmenší množství kódu na co největší funkcionalitu. Právě z tohoto důvodu byla zvolena verze bez deklarací.
 
-Poznámka na okraj. Deklarace by se mohly hodit i pro automatizovaný překlad do jiných běžně používaných jazyků, než ve kterém byl napsán vlastní algoritmus. V tomto případě by se pravděpodobně jednalo o kompilovatelné C++ nebo Javu. Tato myšlenka je inspirována Google Web Toolkitem, který překládá javovské programy do HTML, CSS a JavaSkriptu, nejedná se o nic nereálného.
+Poznámka na okraj: Deklarace by se mohly hodit i pro automatizovaný překlad do jiných běžně používaných jazyků, než ve kterém byl napsán vlastní algoritmus. V tomto případě by se pravděpodobně jednalo o kompilovatelné C++ nebo Javu. Tato myšlenka je inspirována Google Web Toolkitem, který překládá javovské programy do HTML, CSS a JavaSkriptu, nejedná se o nic nereálného.
 
 
 \subsection{Operátory}
 
-Jazyk podporuje prakticky všechny operátory z jazyka C, s výjimkou operátoru čárky a bitových operátorů. Priority jsou stejné jako v C.
+Jazyk podporuje prakticky všechny operátory z jazyka C s výjimkou operátoru čárky a bitových operátorů. Priority jsou stejné jako v C.
 
 \begin{itemize}
 \item Unární operátory
@@ -375,14 +377,14 @@ Jazyk podporuje prakticky všechny operátory z jazyka C, s výjimkou operátoru
 
 \subsection{Řídící struktury}
 
-Zápis podmínek a cyklů je naprosto stejný jako v C, je možné použít \texttt{if}, \texttt{if-else}, \texttt{for} a \texttt{while}. Vícenásobné větvení \texttt{switch} není implementováno, protože je bez problémů nahraditelné vnořenými \texttt{if-else} podmínkami.
+Zápis podmínek a cyklů je naprosto stejný jako v C, je možné použít konstrukce \texttt{if}, \texttt{if-else}, \texttt{for} a \texttt{while}. Vícenásobné větvení \texttt{switch} není implementováno, protože je bez problémů nahraditelné vnořenými \texttt{if-else} podmínkami.
 
-Jazyk dále přináší cyklus \texttt{foreach}, který umí iterovat přes všechny prvky složeného datového typu, jímž jsou například pole a struktury, ale také vlastnosti vrcholů a hran. Cyklus \texttt{foreach} interně používá iterátory, které jsou v interpretu zpřístupněny přes zabudované funkce.
+Jazyk dále přináší cyklus \texttt{foreach}, který umí iterovat přes všechny prvky složeného datového typu, jimiž jsou například pole a struktury, ale také vlastnosti vrcholů a hran. Cyklus \texttt{foreach} interně používá iterátory.
 
 \begin{verbatim}
 foreach(item; iterableObject)
 {
-    echo(item);
+    println(item);
 }
 \end{verbatim}
 
@@ -391,9 +393,9 @@ Předčasné ukončení cyklu je možné provést klasicky pomocí strukturovan�
 
 \subsection{Funkce}
 
-Funkce se ve skriptu deklarují podobně jako v jazyce PHP. Klíčové slovo \texttt{function}, následuje jméno funkce, v kulatých závorkách čárkami oddělený seznam parametrů a ve složených závorkách tělo funkce. Při parsování nezávisí na pořadí uvedení funkcí, interpretace začíná až po zpracování celého zdrojového kódu, kdy už jsou všechny dostupné. Samotný skript se spouští funkcí \texttt{main(argv)} s polem argumentů v parametrech.
+Funkce se ve skriptu deklarují podobně jako v jazyce PHP. Klíčové slovo \texttt{function} následuje jméno funkce, v kulatých závorkách čárkami oddělený seznam parametrů a ve složených závorkách tělo funkce. Při parsování nezáleží na pořadí funkcí ve zdrojovém souboru, interpretace začíná až po zpracování celého zdrojového kódu, kdy už jsou všechny dostupné. Samotný skript se spouští funkcí \texttt{main(argv)} s polem argumentů v parametru.
 
-U volání funkcí jsou k dispozici dvě ekvivalentní syntaxe. V první verzi je možné všechny parametry předat klasicky do kulatých závorek, u druhého způsobu je první parametr zapsán tečkovou notací před jméno funkce a celý zápis potom vypadá, jako volání metody nad daným objektem. Forma je podobná jazyku Python a jeho \texttt{self} parametrům metod.
+U volání funkcí jsou k dispozici dvě ekvivalentní syntaxe. V první verzi je možné všechny parametry předat klasicky do kulatých závorek, u druhého způsobu je první parametr zapsán tečkovou notací před jméno funkce a celý zápis potom vypadá, jako volání metody nad daným objektem. Forma je inspirována jazykem Python a jeho \texttt{self} parametrem u metod třídy.
 
 \begin{verbatim}
 function someFunc(parameter1, parameter2, parameter3)
@@ -405,12 +407,12 @@ someFunc(object, parameter2, parameter3);
 object.someFunc(parameter2, parameter3);
 \end{verbatim}
 
-Při návrhu bylo zvažováno také předávání parametrů odkazem, tato technika se používá především k vracení několika hodnot z funkce najednou. Nakonec se ale došlo k závěru, že není vyloženě nutná, protože je možné uložit tyto hodnoty do struktury nebo pole a vrátit celý kontejner. Jednoduchost jazyka a nedeklarativnost proměnných k tomu přímo vybízí.
+Při návrhu bylo zvažováno také předávání parametrů odkazem, tato technika se používá především k vracení několika hodnot z funkce najednou. Nakonec se ale došlo k závěru, že není vyloženě nutná. Hodnoty je možné uložit do struktury nebo pole a vrátit je ve formě kontejneru. Jednoduchost jazyka a nedeklarativnost proměnných k tomu přímo vybízí.
 
 
 \subsection{Preprocesor}
 
-Pro vložení zdrojového souboru, například knihovny funkcí, slouží příkaz \texttt{include} s cestou a jménem souboru v parametru. Nové makro je možné specifikovat příkazem \texttt{define}. Kdykoli se ve zdrojovém souboru najde specifikovaný identifikátor, je automaticky nahrazen hodnotou makra. Obě konstrukce se zpracovávají na úrovni lexikálního analyzátoru v době překladu.
+Pro vložení zdrojového souboru, například knihovny funkcí, slouží příkaz \texttt{include} s cestou a jménem souboru v parametru. Nové makro je možné specifikovat příkazem \texttt{define}. Kdykoli se ve zdrojovém souboru objeví specifikovaný identifikátor, je automaticky nahrazen hodnotou makra. Obě konstrukce se zpracovávají na úrovni lexikálního analyzátoru a parseru se předává až výsledný proud tokenů.
 
 \begin{verbatim}
 include("filename");
@@ -420,9 +422,9 @@ define("name", "value");
 
 \subsection{Datové kontejnery}
 
-Základními datovými kontejnery zůstávají pole a struktury, které se však dají jednoduše rozšířit. Zásobník a fronta se z pole vytvoří definováním operací \texttt{pushFront()}, \texttt{push\-Back()}, \texttt{popFront()}, \texttt{popBack()}, \texttt{front()} a \texttt{back()}. Struktura se dá bez jakýchkoli změn po\-u\-ží\-vat i jako mapa (asociativní pole) a množina.
+Základními datovými kontejnery na úrovni jazyka zůstávají pole a struktury, ty se však dají jednoduše rozšířit. Zásobník a fronta se z pole vytvoří definováním operací \texttt{pushFront()}, \texttt{push\-Back()}, \texttt{popFront()}, \texttt{popBack()}, \texttt{front()} a \texttt{back()}. Struktura se dá bez jakýchkoli změn po\-u\-ží\-vat jako mapa (asociativní pole) a množina. S její pomocí se dá jednoduše implementovat i spojový seznam.
 
-Na rozdíl od jiných skriptovacích jazyků není definována speciální syntaxe pro deklarace a vytváření. Pro zachování jednoduchosti stačí pouze zavolat zabudované funkce \texttt{array()} a \texttt{struct()}, které vrací nově vytvořený objekt daného datového typu, a ná\-sled\-ně je začít používat.
+Na rozdíl od jiných skriptovacích jazyků není definována speciální syntaxe pro deklarace a vytváření netriviálních typů proměnných. Pro zachování jednoduchosti stačí pouze zavolat zabudované funkce \texttt{array()} a \texttt{struct()}, které vrací nově vytvořený objekt daného datového typu, a ná\-sled\-ně je začít používat.
 
 \begin{verbatim}
 arr = array(5);
