@@ -149,7 +149,7 @@ Jádrem diplomové práce je návrh a implementace speciálního programovacího
 
 \tableofcontents
 \listoffigures
-\listoftables
+% \listoftables
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -186,7 +186,6 @@ Základní kód interpretu a rozhraní pro příkazovou řádku je napsáno v ja
 
 \chapter{Popis problému, specifikace cíle}
 
-% TODO: delete
 %\begin{itemize}
 %\item Popis řešeného problému, vymezení cílů DP/BP a požadavků na implementovaný systém.
 %\item Popis struktury DP/BP ve vztahu k vytyčeným cílům.
@@ -287,7 +286,6 @@ Interpretace kódu může být krokována, při jejím pozastavení se překresl
 
 \chapter{Analýza a návrh řešení}
 
-% TODO: delete
 % Analýza a návrh implementace (včetně diskuse různých alternativ a volby im\-ple\-men\-tač\-ní\-ho prostředí).
 
 \section{Obecný postup řešení}
@@ -548,9 +546,15 @@ class Graph
 
 Parametry datových kontejnerů nemohou být primitivní datové typy, protože každý vrchol i hrana musí umět ukládat dodatečné vlastnosti typu klíč--hodnota definované v požadavcích na systém.
 
-Na první pohled se zdá, že by mohlo být výhodné použít tuto reprezentaci, nicméně existuje několik výrazných problémů. Největším z nich jsou paralelní hrany, protože počáteční a koncový vrchol neurčují hranu jednoznačně. Řešením by mohlo být přidání dodatečného uzlu uživatelem, který rozliší dvojici hran či trojrozměrná matice a trojrozměrné indexy. Je však jasně vidět, že ani jedno z řešení rozhodně není hezké.
+Na první pohled se zdá, že by mohlo být výhodné použít tuto reprezentaci, nicméně existuje několik výrazných problémů. Největším z nich jsou paralelní hrany, protože počáteční a koncový vrchol neurčují hranu jednoznačně. Řešením by mohlo být přidání dodatečného uzlu uživatelem podle schématu \ref{fig:parallel_edges}, kterým se dvojici hran rozliší. Druhou, horší, možností zůstává trojrozměrná matice a trojrozměrné indexy. Ani jedno z řešení rozhodně není hezké.
 
-% TODO: obrázek
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=10cm]{img/parallel_edges.pdf}
+\caption{Rozlišení dvou paralelních hran pomocí dodatečného uzlu}
+\label{fig:parallel_edges}
+\end{center}
+\end{figure}
 
 \begin{verbatim}
     vector< vector< vector<Edge*> > > m_edges;
@@ -558,9 +562,15 @@ Na první pohled se zdá, že by mohlo být výhodné použít tuto reprezentaci
 
 Další velkou nevýhodou je příliš složité přidávání a mazání vrcholů a vyplývající časté realokace velkých bloků paměti. Toto řešení by tedy bylo vhodné spíše pro statické grafy, které se na začátku vytvoří a pak zůstanou nezměněny až do konce algoritmu.
 
-Problémem je i složité procházení vrcholů a hran a hledání sebe sama v grafu. Každý vrchol a hrana musí mít u sebe uložen index do matice reprezentující graf, který je navíc nutné, především při smazání některého z vrcholů, u výrazného množství již existujících vrcholů aktualizovat. Tímto by se výrazně zvýšily paměťové i výpočetní nároky.
+Problémem je i složité procházení vrcholů a hran a hledání sebe sama v grafu. Každý vrchol a hrana musí mít u sebe uložen index do matice reprezentující graf, který je navíc nutné aktualizovat při libovolné změně matice sousednosti. Kupříkladu schéma \ref{fig:update_indices} ukazuje problémy s mazáním hrany. Tímto by se výrazně zvýšily nejen paměťové, ale i výpočetní nároky.
 
-% TODO: obrázek
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=7cm]{img/update_indices.pdf}
+\caption{Vrcholy, které musejí být aktualizování po smazání některého z nich}
+\label{fig:update_indices}
+\end{center}
+\end{figure}
 
 Další problémy pravděpodobně vzniknou při vytváření množin vrcholů a hran, které budou mít naprosto odlišnou implementaci vzhledem k vlastní třídě grafu. Paměťový management by býl extrémně složitý a snadno náchylný k chybám.
 
@@ -797,9 +807,15 @@ Kontext skriptu, ve kterém jsou uložené například hodnoty proměnných bude
 
 Alternativní možností vykonávání skriptu by mohl být překlad do instrukcí virtuálního procesoru a jejich následná interpretace. To se však aktuálně jeví jako zbytečně náročné řešení, které nepřináší téměř nic navíc.
 
-Pozice ve zdrojových kódech bude uchovávána ne ve všech, ale pouze ve speciálních uzlech stromu. Například příkaz bude obalen objektem typu \texttt{NodePosition}, jehož prací bude aktualizovat pozici v kontextu a rekurzivní zavolání metody svého následníka. Tato technika umožní, aby pozice nemusela být zbytečně uchovávána v každém prvku stromu.
+Pozice ve zdrojových kódech bude uchovávána ne ve všech, ale pouze ve speciálních uzlech stromu. Například příkaz bude obalen objektem typu \texttt{NodePosition}, jehož prací bude aktualizovat pozici v kontextu a rekurzivní zavolání metody svého následníka. Tato technika umožní, aby pozice nemusela být zbytečně uchovávána v každém prvku stromu. Uložení pozic v jednoduchém demostračním příkazu \texttt{c = a + b;} je zobrazeno na schématu \ref{fig:nodeposition}.
 
-% TODO: obrázek
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=10cm]{img/nodeposition.pdf}
+\caption{Dva přístupy k uložení pozice (kolečko označuje vlastní data)}
+\label{fig:nodeposition}
+\end{center}
+\end{figure}
 
 
 \subsection{Podpora debuggingu}
