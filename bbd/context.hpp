@@ -38,7 +38,6 @@
 
 class NodeFunction;
 
-// Singleton
 class Context : public BaseObject
 {
 public:

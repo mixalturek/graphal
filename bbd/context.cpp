@@ -281,8 +281,7 @@ int Context::executeScriptMain(const deque<string>& parameters)
 		argv_array->setItem(i, CountPtr<Value>(new ValueString(parameters[i])));
 
 	NodeFunctionCall main(getStringTable()->getID("main"),
-		new NodeBlock(new NodeValue(argv_array)),
-		NULL);
+		new NodeBlock(new NodeValue(argv_array)), NULL);
 
 	INFO(_("*** ENTERING SCRIPT MAIN ***"));
 

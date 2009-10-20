@@ -863,9 +863,15 @@ function main(argv)
 }
 \end{verbatim}
 
-Součet bude v syntaktickém stromu uložen celkem ve třech uzlech. Listy vracejí svoji hodnotu ve formě celých čísel, binární operátor následně tyto dvě hodnoty sečte a vrátí výsledek operátoru \texttt{return}. Vykonávání pokračuje v podobném duchu až do vynoření z kořene stromu.
+Součet bude v syntaktickém stromu uložen celkem ve třech uzlech. Listy vracejí svoji hodnotu ve formě celých čísel, binární operátor následně tyto dvě hodnoty sečte a vrátí výsledek operátoru \texttt{return}. Vykonávání pokračuje v podobném duchu až do vynoření se z kořene stromu. Celá situace je znázorněna ve schématu \ref{fig:execute}.
 
-% TODO: obrázek
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=4cm]{img/execute.pdf}
+\caption{Vyhodnocení příkazu "return 1 + 2;"}
+\label{fig:execute}
+\end{center}
+\end{figure}
 
 Je jasné, že třída pro sčítání nezná datový typ návratové hodnoty při kompilaci, může jím být například \texttt{null}, \texttt{int}, \texttt{float} aj., a tudíž návratovou hodnotou funkce musí být abstraktní objekt typu \texttt{Value} představený v sekci \ref{double_dispatching_pattern} na straně \pageref{double_dispatching_pattern}.
 
@@ -919,7 +925,6 @@ Grafické uživatelské rozhraní bude zahrnovat hlavní okno s textovým editor
 
 \chapter{Realizace}
 
-% TODO: delete
 % Popis implementace / realizace se zaměřením na nestandardní části řešení.
 
 \section{Základní kód a interpret pro příkazovou řádku}
@@ -1097,7 +1102,13 @@ V případě, že proměnná daného jména, popř. položka struktury, ještě 
 
 \subsubsection{Grafové třídy}
 
-TODO: nejspíš budou ještě nějaké změny
+Všechny grafové třídy jsou, stejně jako ostatní hodnoty, potomky abstraktní třídy \texttt{Value}, a tudíž musí implementovat Double dispatching operace pro vyhodnocování operátorů. Třída \texttt{ValueGraph} reprezentuje graf na principu množin vrcholů a hran, který byl představen v kapitole \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}. Graf může být vytvořen ručně opakovaným voláním funkcí \texttt{generateVertex()} a \texttt{generateEdge()}, či automaticky z datového souboru funkcí \texttt{lo\-ad\-From\-Fi\-le()}.
+
+Vykonávané operace rozlišují, zda je graf orientovaný či ne, orientace hran může být také kdykoli invertována. Matice sousednosti není přímo přístupná, protože se s ní vnitřně nepočítá, ale může být na žádost \texttt{getAdjacencyMatrix()} vygenerována a vrácena.
+
+Třídy \texttt{ValueVertex} i \texttt{ValueEdge} v sobě obsahují \texttt{ValueStruct} atribut a mapují na něj nedostupné operace, aby jejich rozhraní bylo ekvivalentní. Skládání dostalo přednost před dědičností, protože vrchol ani hrana \textit{nejsou} ve své podstatě stukturou. Návrh funkcionality je pouze takový, že poskytují stejné služby, ale to není dostatečným důvodem pro dědičnost.
+
+Poslání množin vrcholů a hran \texttt{ValueVertexSet} a \texttt{ValueEdgeSet} je především udržovat záznamy o registrovaných objektech. Kromě toho se navíc mohou iterovat a je s nimi možné vykonávat operace průniku, sjednocení či rozdílu.
 
 
 \subsection{Abstraktní strom syntaxe, Node* hierarchie tříd}
@@ -1155,13 +1166,46 @@ Bylo by možné, aby příkaz \texttt{return} nastavil hodnotu nějaké sdílen�
 
 Funkce, potomci třídy \texttt{NodeFunction} se dělí na dvě skupiny -- na zapsané ve skriptu a na zabudované do interpretu. Každou z nich identifikuje jméno a parametry, při volání se ovšem používá pouze jméno. První typ funkcí také očekává tělo s příkazy a pozici ve zdrojových kódech, kde je definována. U zabudovaných funkcí, potomků \texttt{Node\-Function\-Builtin}, tyto informace nemají význam, tělo je specifikováno přímo C++ kódem metody \texttt{execute()}.
 
-Všechny definované, a tudíž i volatelné, funkce ukládá kontext skriptu. Není třeba, aby věděl, o který z obou typů se jedná, samotné objekty to ví a díky polymorfismu se budou volat správné metody.
+Kód funkce umí zavolat třída \texttt{NodeFunctionCall}. Ta se ji nejdříve pokusí pomocí uloženého jména najít a zkontroluje počty deklarovaných a předaných parametrů. Pokud vše souhlasí, vyhodnotí parametry, vloží na zásobník volání novou položku, podle specifikovaných jmen parametrů definuje požadované proměnné a spustí tělo funkce.
+
+
+\subsection{Kontext skriptu}
+
+V textu byl již několikrát zmíněn, do této chvíle bez dostatečného vysvětlení, termín \textit{kontext skriptu}. V kódu se jedná o jednu z funkcionálně nejbohatších tříd aplikace pojmenovanou \texttt{Context}. Tato třída mimo jiné ukládá zabudované i uživatelské funkce, globální proměnné a zásobník volání funkcí spolu s lokálními proměnnými. Dále si vede záznam o aktuální pozici ve zdrojových kódech, která slouží především při vypisování chybových zpráv, a také umí pomocí databáze řetězců převádět jména identifikátorů z řetězcové do ID formy a naopak (viz kapitola \ref{identifikatory} na straně \pageref{identifikatory}).
+
+
+\subsubsection{Funkce ve skriptu, spuštění skriptu}
+
+Všechny definované a tudíž i volatelné funkce se ukládají do asociativního pole indexovaného jménem funkce, datová položka se skládá z ukazatele na abstraktního předka \texttt{NodeFunction*}. Kontext nepotřebuje znát, o který z obou typů se jedná, samotné objekty to ví a díky polymorfismu se budou volat správné metody. Hledání pouze podle jména znemožňuje přetěžování funkcí, k jeho zprovoznění by bylo potřeba ukládat dodatečné informace, nepříklad počet parametrů, a používat je i při vyhledávání.
+
+Již bylo řečeno, že skript se spouští voláním funkce \texttt{main(argv)}. Tuto funkcionalitu opět poskytuje kontext, konkrétně se jedná o metodu \texttt{executeScriptMain()}, jež vytvoří objekt typu \texttt{NodeFunctionCall}, do konstruktoru mu předá identifikátor jména \textit{main} s \texttt{ValueArray} parametrem a zavolá jeho \texttt{execute()}. Tím se odstartuje rekurzivní volání \texttt{execute()} metod nad uzly abstraktního stromu syntaxe.
 
 \begin{verbatim}
-map<identifier, NodeFunction*> m_functions;
+NodeFunctionCall main(getStringTable()->getID("main"),
+    new NodeBlock(new NodeValue(argv_array)), NULL);
+
+INFO(_("*** ENTERING SCRIPT MAIN ***"));
+CountPtr<Value> main_retval = main.execute();
+INFO(_("*** EXITING SCRIPT MAIN, OK ***"));
+INFO(_("Return value: ") + main_retval->toString());
 \end{verbatim}
 
-Kód funkce umí zavolat třída \texttt{NodeFunctionCall}. Ta se ji nejdříve pokusí pomocí uloženého jména najít a zkontroluje počty deklarovaných a předaných parametrů. Pokud vše souhlasí, vyhodnotí parametry, vloží na zásobník volání novou položku, podle specifikovaných jmen parametrů definuje požadované proměnné a spustí tělo funkce.
+
+\subsubsection{Globální proměnné}
+
+Seznam globálních proměnných je taktéž definován pomocí asociativního pole. Kontext neposkytuje žádné metody pro vrácení nebo nastavení hodnoty globální proměnné. Naproti tomu umožňuje funkcí \texttt{propagateGlobalVariable()} namapovat její hodnotu do adresního prostoru právě zavolané lokální funkce, což ve skriptu přesně odpovídá chování operátoru \texttt{global} představeného v kapitole \ref{datove_typy_a_promenne} na straně \pageref{datove_typy_a_promenne}.
+
+Celý mechanismus funguje na principu sdílení \texttt{ValueReference} objektu mezi globálními a lo\-kál\-ní\-mi proměnnými. Změní-li se hodnota lokální proměnné, která odkazuje na stejný objekt, jako globální proměnná, je automaticky aktualizována i ta.
+
+
+\subsubsection{Paralelizace skriptů, více kontextů}
+
+TODO:
+
+
+\subsection{Logování}
+
+TODO:
 
 
 \subsection{Generátory zdrojových kódů}
@@ -1169,8 +1213,8 @@ Kód funkce umí zavolat třída \texttt{NodeFunctionCall}. Ta se ji nejdříve 
 Interpret obsahuje několik skupin tříd, jejichž kód je velice podobný, typickým příkladem jsou třídy aritmetických a logických operátorů. Vezměme si třeba operátory pro sčítání a odčítání, jejich výkonná část se liší jediným příkazem. Sčítání volá metodu \texttt{add()} a odčítání logicky \texttt{sub()}, jinak je celý kód identický.
 
 \begin{verbatim}
-    return m_left->execute()->add(*(m_right->execute()));
-    return m_left->execute()->sub(*(m_right->execute()));
+return m_left->execute()->add(*(m_right->execute()));
+return m_left->execute()->sub(*(m_right->execute()));
 \end{verbatim}
 
 Kromě těchto dvou je potřeba dalších dvacet binárních operátorů, k tomu několik unárních operátorů a nesmí se zapomenout ani na zabudované funkce. Vytvářet všechny třídy ručně je zdlouhavé a neefektivní, v případě změn je třeba manuálně upravovat stejným způsobem spoustu souborů.
@@ -1220,6 +1264,7 @@ Aktuálně jsou definováni pouze dva potomci. \texttt{LexanIteratorFile} má za
 
 
 \subsubsection{Identifikátory}
+\label{identifikatory}
 
 Řetězcové identifikátory ve skriptu, jména proměnných a funkcí, jsou během lexikální analýzy nahrazovány za celočíselné, stejnou myšlenku používá i interpret JavaScriptu ve webovém prohlížeči Links \cite[str. 25]{links}.
 
@@ -1259,6 +1304,8 @@ Hlavní výhodou této techniky je vyšší rychlost interpretace, porovnání d
 
 
 \section{Grafické uživatelské rozhraní}
+
+\subsection{Oddělení od interpretu pro příkazovou řádku}
 
 \subsection{Hlavní okno}
 
