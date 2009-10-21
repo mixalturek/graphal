@@ -807,16 +807,6 @@ Kontext skriptu, ve kterém jsou uložené například hodnoty proměnných bude
 
 Alternativní možností vykonávání skriptu by mohl být překlad do instrukcí virtuálního procesoru a jejich následná interpretace. To se však aktuálně jeví jako zbytečně náročné řešení, které nepřináší téměř nic navíc.
 
-Pozice ve zdrojových kódech bude uchovávána ne ve všech, ale pouze ve speciálních uzlech stromu. Například příkaz bude obalen objektem typu \texttt{NodePosition}, jehož prací bude aktualizovat pozici v kontextu a rekurzivní zavolání metody svého následníka. Tato technika umožní, aby pozice nemusela být zbytečně uchovávána v každém prvku stromu. Uložení pozic v jednoduchém demostračním příkazu \texttt{c = a + b;} je zobrazeno na schématu \ref{fig:nodeposition}.
-
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[width=10cm]{img/nodeposition.pdf}
-\caption{Dva přístupy k uložení pozice (kolečko označuje vlastní data)}
-\label{fig:nodeposition}
-\end{center}
-\end{figure}
-
 
 \subsection{Podpora debuggingu}
 
@@ -1171,31 +1161,55 @@ Kód funkce umí zavolat třída \texttt{NodeFunctionCall}. Ta se ji nejdříve 
 
 \subsection{Kontext skriptu}
 
-V textu byl již několikrát zmíněn, do této chvíle bez dostatečného vysvětlení, termín \textit{kontext skriptu}. V kódu se jedná o jednu z funkcionálně nejbohatších tříd aplikace pojmenovanou \texttt{Context}. Tato třída mimo jiné ukládá zabudované i uživatelské funkce, globální proměnné a zásobník volání funkcí spolu s lokálními proměnnými. Dále si vede záznam o aktuální pozici ve zdrojových kódech, která slouží především při vypisování chybových zpráv, a také umí pomocí databáze řetězců převádět jména identifikátorů z řetězcové do ID formy a naopak (viz kapitola \ref{identifikatory} na straně \pageref{identifikatory}).
+V textu byl již několikrát zmíněn, do této chvíle bez dostatečného vysvětlení, termín \textit{kontext skriptu}. V kódu se jedná o jednu z funkcionálně nejbohatších tříd aplikace pojmenovanou \texttt{Context}. Tato třída mimo jiné ukládá zabudované i uživatelské funkce, globální proměnné a zásobník volání funkcí spolu s lokálními proměnnými. Dále si vede záznam o aktuální pozici ve zdrojových kódech, který slouží především při vypisování chybových zpráv, a také umí pomocí databáze řetězců převádět jména identifikátorů z řetězcové do ID/číselné formy a naopak (viz kapitola \ref{identifikatory} na straně \pageref{identifikatory}).
 
 
-\subsubsection{Funkce ve skriptu, spuštění skriptu}
+\subsubsection{Funkce ve skriptu, volání funkcí, spuštění skriptu}
 
-Všechny definované a tudíž i volatelné funkce se ukládají do asociativního pole indexovaného jménem funkce, datová položka se skládá z ukazatele na abstraktního předka \texttt{NodeFunction*}. Kontext nepotřebuje znát, o který z obou typů se jedná, samotné objekty to ví a díky polymorfismu se budou volat správné metody. Hledání pouze podle jména znemožňuje přetěžování funkcí, k jeho zprovoznění by bylo potřeba ukládat dodatečné informace, nepříklad počet parametrů, a používat je i při vyhledávání.
+Všechny definované a tudíž i volatelné funkce se ukládají do asociativního pole indexovaného jménem funkce, datová položka se skládá z ukazatele na abstraktního předka \texttt{NodeFunction*}. Kontext nepotřebuje znát, o který z obou typů se jedná, samotné objekty to ví a díky polymorfismu se budou volat správné metody. Hledání pouze podle jména znemožňuje přetěžování funkcí, k jeho zprovoznění by bylo potřeba ukládat dodatečné informace, nepříklad počet argumentů, a používat je i při vyhledávání.
 
-Již bylo řečeno, že skript se spouští voláním funkce \texttt{main(argv)}. Tuto funkcionalitu opět poskytuje kontext, konkrétně se jedná o metodu \texttt{executeScriptMain()}, jež vytvoří objekt typu \texttt{NodeFunctionCall}, do konstruktoru mu předá identifikátor jména \textit{main} s \texttt{ValueArray} parametrem a zavolá jeho \texttt{execute()}. Tím se odstartuje rekurzivní volání \texttt{execute()} metod nad uzly abstraktního stromu syntaxe.
+Zásobník volání funkcí je taktéž uložen v kontextu skriptu. Jedná se o pole objektů typu \texttt{CallStackItem}, jež v sobě ukládají jméno právě spuštěné funkce, pozici v kódu, odkud byla zavolána, a hodnoty lokálních proměnných na dané úrovni.
 
-\begin{verbatim}
-NodeFunctionCall main(getStringTable()->getID("main"),
-    new NodeBlock(new NodeValue(argv_array)), NULL);
+Vlastní spuštění funkce je úkolem třídy \texttt{NodeFunctionCall} a především její \texttt{execute()} metody. Objekty tohoto datového typu si v sobě uchovávají identifikátor volané funkce, kód nutný pro zjištění hodnot parametrů a pozici v kódu, odkud je funkce volána. Celý životní cyklus funkce vypadá následovně.
 
-INFO(_("*** ENTERING SCRIPT MAIN ***"));
-CountPtr<Value> main_retval = main.execute();
-INFO(_("*** EXITING SCRIPT MAIN, OK ***"));
-INFO(_("Return value: ") + main_retval->toString());
-\end{verbatim}
+\begin{enumerate}
+\item V kontextu je nalezen objekt \texttt{NodeFunction*}
+\item Ověří se počet deklarovaných a předaných parametrů
+\item Vyhodnotí se kód nutný pro získání hodnot parametrů
+\item Na vrchol zásobníku volání funkcí je přidána nově vytvořená položka
+\item Nastaví se hodnoty argumentů funkce (lokální proměnné) na hodnoty předané v parametrech
+\item Zavolá se \texttt{execute()} metoda objektu funkce
+\item Po skončení se z vrcholu zásobníku volání odstraní dříve přidaná položka
+\item Vrátí se návratová hodnota
+\end{enumerate}
+
+Již bylo řečeno, že skript se spouští voláním funkce \texttt{main(argv)}. Tuto operaci opět poskytuje kontext, konkrétně se jedná o metodu \texttt{executeScriptMain()}, jež vytvoří objekt typu \texttt{NodeFunctionCall}, do konstruktoru mu předá identifikátor \textit{main} s jedním \texttt{ValueArray} parametrem. Následně je odstartováno rekurzivní volání \texttt{execute()} metod nad uzly abstraktního stromu syntaxe.
 
 
 \subsubsection{Globální proměnné}
 
 Seznam globálních proměnných je taktéž definován pomocí asociativního pole. Kontext neposkytuje žádné metody pro vrácení nebo nastavení hodnoty globální proměnné. Naproti tomu umožňuje funkcí \texttt{propagateGlobalVariable()} namapovat její hodnotu do adresního prostoru právě zavolané lokální funkce, což ve skriptu přesně odpovídá chování operátoru \texttt{global} představeného v kapitole \ref{datove_typy_a_promenne} na straně \pageref{datove_typy_a_promenne}.
 
-Celý mechanismus funguje na principu sdílení \texttt{ValueReference} objektu mezi globálními a lo\-kál\-ní\-mi proměnnými. Změní-li se hodnota lokální proměnné, která odkazuje na stejný objekt, jako globální proměnná, je automaticky aktualizována i ta.
+Celý mechanismus funguje na principu sdílení \texttt{ValueReference} objektu mezi globálními a lo\-kál\-ní\-mi proměnnými. Změní-li se hodnota lokální proměnné, která odkazuje na stejný objekt jako globální proměnná, je automaticky aktualizována i ta.
+
+
+\subsubsection{Pozice v kódu}
+
+Pozice ve zdrojových kódech jsou uchovávány ne ve všech, ale pouze ve speciálních uzlech stromu. Například každý příkaz (výraz zakončený středníkem) je obalen objektem typu \texttt{NodePosition}, jehož prací je aktualizovat pozici v kontextu a zavolat metodu svého ná\-sled\-ní\-ka ve stromu.
+
+Díky této technice nemusí být pozice zbytečně uchovávána v každém prvku stromu. Uložení pozic v jednoduchém demostračním příkazu \texttt{c = a + b;} je zobrazeno ve schématu \ref{fig:nodeposition}. Na první pohled je jasné, že ukládání pozic do každého uzlu stromu by bylo zbytečné a navíc by docházelo ke značnému plýtvání pamětí.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=10cm]{img/nodeposition.pdf}
+\caption{Dva možné přístupy k ukládání pozic (kolečko označuje vlastní data)}
+\label{fig:nodeposition}
+\end{center}
+\end{figure}
+
+Třída \texttt{NodePosition} v sobě zapouzdřuje objekt typu \texttt{CodePosition}, což je jednoduchý kontejner uchovávající jméno souboru a číslo řádky, na kterém se vyskytuje ve zdrojových kódech. Jméno souboru opět není ukládáno v řetězcové formě, ale jako číselné ID, což přispívá k dalšímu šetření paměti.
+
+Kontext skriptu obsahuje datovou \texttt{CodePosition} položku, jež je během průchodu abstraktním stromem syntaxe průběžně aktualizována a může být použita například při výpisu chybové zprávy.
 
 
 \subsubsection{Paralelizace skriptů, více kontextů}
