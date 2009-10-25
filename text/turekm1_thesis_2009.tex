@@ -409,6 +409,7 @@ Při návrhu bylo zvažováno také předávání parametrů odkazem, tato techn
 
 
 \subsection{Preprocesor}
+\label{preprocesor}
 
 Pro vložení zdrojového souboru, například knihovny funkcí, slouží příkaz \texttt{include} s cestou a jménem souboru v parametru. Nové makro je možné specifikovat příkazem \texttt{define}. Kdykoli se ve zdrojovém souboru objeví specifikovaný identifikátor, je automaticky nahrazen hodnotou makra. Obě konstrukce se zpracovávají na úrovni lexikálního analyzátoru a parseru se předává až výsledný proud tokenů.
 
@@ -809,6 +810,7 @@ Alternativní možností vykonávání skriptu by mohl být překlad do instrukc
 
 
 \subsection{Podpora debuggingu}
+\label{podpora_debuggingu}
 
 Výhodou lineárního pole instrukcí a virtuálního procesoru je snadná implementace de\-bug\-gin\-gu. V kterémkoli okamžiku je možné pozastavit vykonávání, protože kód skriptu je uložen výhradně v datové struktuře. Po případném opuštění interpretující funkce zůstane stav vir\-tu\-ál\-ní\-ho procesoru zachován a pozastavený skript může být kdykoli opětovně spuštěn.
 
@@ -918,6 +920,64 @@ Grafické uživatelské rozhraní bude zahrnovat hlavní okno s textovým editor
 % Popis implementace / realizace se zaměřením na nestandardní části řešení.
 
 \section{Základní kód a interpret pro příkazovou řádku}
+
+\subsection{Lexikální analyzátor}
+
+Jako základ pro lexikální analyzátor byl použit zdrojový kód z předchozího autorova projektu \cite[třída \texttt{CLexan}]{borsch}. Jeho jádrem je rozsáhlý stavový automat, který zpracovává příchozí znaky a v závislosti na nich vrací lexikální tokeny.
+
+Analyzátor bere v úvahu konstanty \texttt{\_\_FILE\_\_}, \texttt{\_\_LINE\_\_} a \texttt{\_\_FUNCTION\_\_}, které se při svém použití automaticky nahrazují za pozice ve zdrojových kódech. Dalšími vnitřními příkazy jsou jednoduchá bezparametrická makra a vkládání externích souborů.
+
+\begin{verbatim}
+define("name", "value");
+include("filename");
+\end{verbatim}
+
+
+\subsubsection{Procházení zdrojových dat}
+
+Makra i soubory se ve svém principu zpracovávají naprosto stejně. Lexikální analyzátor obsahuje zásobník objektů typu \texttt{LexanIterator}, který slouží pro zanoření se do další úrovně ve zdrojových kódech skriptu. Například při inkluzi souboru se na vrcholu zásobníku vytvoří nová položka, při dokončení jeho zpracování se naopak odstraní. Překlad končí ve chvíli, kdy je zásobník vyprázdněn.
+
+Abstraktní třída \texttt{LexanIterator} definuje rozhraní pro nejnižší vrstvu -- vlastní čtení znaků ze vstupního proudu. Jediný požadavek na jeho potomky je specifikace metody \texttt{get()}, která má za úkol vrátit následující znak v pořadí a \texttt{unget()} sloužící pro návrat o znak zpátky. Třída dále ukládá pozici ve zdrojových kódech používanou především ve zprávách v případě chyby.
+
+Aktuálně jsou definováni pouze dva potomci. \texttt{LexanIteratorFile} má za úkol iterovat přes znaky v souboru, používá ho konstrukce \texttt{include}. \texttt{Le\-xan\-Ite\-ra\-tor\-String} zpracovává ře\-těz\-ce, slouží pro rozbalování \texttt{define} maker. V budoucnu je možné, bez větších zásahů do aplikace, přidat další zdroje, například soubory nahrávané z internetu.
+
+
+\subsubsection{Identifikátory}
+\label{identifikatory}
+
+Řetězcové identifikátory ve skriptu, jména proměnných a funkcí, jsou během lexikální analýzy nahrazovány za celočíselné, stejnou myšlenku používá i interpret JavaScriptu ve webovém prohlížeči Links \cite[str. 25]{links}.
+
+Ve chvíli, kdy lexikální analyzátor narazí ve zdrojovém proudu na shluk znaků, který by mohl být identifikátorem, zkontroluje nejdříve, zda se nejedná o klíčové slovo. V případě negativního výsledku projde seznam skriptem definovaných maker a pokusí se je rozbalit. Neuspěje-li ani zde, použije makro \texttt{STR2ID(string)}, které požádá tabulku symbolů, třídu \texttt{StringTable}, o překlad řetězce na celočíselný identifikátor. Opačný směr umožňuje makro \texttt{ID2STR(identifier)}.
+
+Algoritmus překladu je velice jednoduchý. Tabulka symbolů obsahuje obyčejné pole, jehož jednotlivé položky ukládají řetězcovou reprezentaci, hodnota indexu představuje reprezentaci číselnou. Při žádosti o překlad z řetězce na identifikátor, zkusí třída najít a vrátit pozici již existujícího prvku. Pokud neuspěje, přidá řetězec na konec pole a vrátí jeho pozici.
+
+Složitost operace vychází v nejhorším případě lineární, protože se musí projít všechny prvky, pokud se jedná o první výskyt řetězce. Její snížení, například seřazením prvků podle abecedy, není možné. Pořadí v poli se nesmí změnit, jinak by se zneplatnily již existující překlady. Opačný směr představuje operaci s konstatní složitostí, identifikátor je současně indexem do pole.
+
+\begin{verbatim}
+identifier StringTable::getID(const string& str)
+{
+    vector<string>::iterator pos = find(m_data.begin(), m_data.end(), str);
+
+    if(pos == m_data.end())
+        m_data.push_back(str);
+
+    return pos - m_data.begin();
+}
+
+string& StringTable::getString(identifier id)
+{
+    assert(id < m_data.size());
+    return m_data[id];
+}
+\end{verbatim}
+
+Hlavní výhodou této techniky je vyšší rychlost interpretace, porovnání dvou čísel trvá mnohem kratší dobu než porovnání dvou řetězců. Úspora vzniká při každém přístupu k hodnotě proměnné a při volání funkcí. Druhá z výhod spočívá ve snížených paměťových nárocích, všechny řetězce jsou uloženy bez duplicit na jednom místě a ve skriptu je reprezentují pouze celočíselné hodnoty. Jak už bylo zmíněno, jediné zpomalení nastává při vytváření tabulky symbolů, je přímo úměrné počtu různých identifikátorů ve zdrojovém textu a jejich délce.
+
+
+\subsection{Gramatika, Bison}
+
+Gramatiku vytvořeného jazyka je možné najít v souboru \texttt{parser.y}, alternativně v příloze \ref{gramatika_jazyka} na straně \pageref{gramatika_jazyka}. Jedná se o standardní vstupní kód pro generátor gramatik Bison, který má za úkol vystavět abstraktní strom syntaxe.
+
 
 \subsection{Hierarchie tříd, třída BaseObject}
 
@@ -1161,43 +1221,48 @@ Kód funkce umí zavolat třída \texttt{NodeFunctionCall}. Ta se ji nejdříve 
 
 \subsection{Kontext skriptu}
 
-V textu byl již několikrát zmíněn, do této chvíle bez dostatečného vysvětlení, termín \textit{kontext skriptu}. V kódu se jedná o jednu z funkcionálně nejbohatších tříd aplikace pojmenovanou \texttt{Context}. Tato třída mimo jiné ukládá zabudované i uživatelské funkce, globální proměnné a zásobník volání funkcí spolu s lokálními proměnnými. Dále si vede záznam o aktuální pozici ve zdrojových kódech, který slouží především při vypisování chybových zpráv, a také umí pomocí databáze řetězců převádět jména identifikátorů z řetězcové do ID/číselné formy a naopak (viz kapitola \ref{identifikatory} na straně \pageref{identifikatory}).
+V textu byl již několikrát zmíněn, do této chvíle bez dostatečného vysvětlení, termín \textit{kontext skriptu}. V kódu se jedná o jednu z funkcionálně nejbohatších tříd aplikace pojmenovanou \texttt{Context}. Tato třída mimo jiné ukládá zabudované i uživatelské funkce, globální proměnné a zásobník volání funkcí spolu s lokálními proměnnými. Dále si vede záznam o aktuální pozici ve zdrojových kódech, který slouží především při vypisování chybových zpráv, a také umí pomocí databáze řetězců převádět jména identifikátorů skriptu z řetězcové do ID/číselné formy a naopak (viz kapitola \ref{identifikatory} na straně \pageref{identifikatory}).
 
 
 \subsubsection{Funkce ve skriptu, volání funkcí, spuštění skriptu}
 
-Všechny definované a tudíž i volatelné funkce se ukládají do asociativního pole indexovaného jménem funkce, datová položka se skládá z ukazatele na abstraktního předka \texttt{NodeFunction*}. Kontext nepotřebuje znát, o který z obou typů se jedná, samotné objekty to ví a díky polymorfismu se budou volat správné metody. Hledání pouze podle jména znemožňuje přetěžování funkcí, k jeho zprovoznění by bylo potřeba ukládat dodatečné informace, nepříklad počet argumentů, a používat je i při vyhledávání.
+Všechny definované a tudíž i volatelné funkce se ukládají do asociativního pole indexovaného jménem funkce, datová položka se skládá z ukazatele na abstraktního předka \texttt{NodeFunction*}. Kontext nepotřebuje znát, o který z obou typů se jedná, samotné objekty to ví a díky polymorfismu se při spuštění volají správné metody. Hledání pouze podle jména znemožňuje přetěžování funkcí, k jeho zprovoznění by bylo potřeba ukládat dodatečné informace, na\-pří\-klad počet argumentů, a používat je i při vyhledávání.
 
-Zásobník volání funkcí je taktéž uložen v kontextu skriptu. Jedná se o pole objektů typu \texttt{CallStackItem}, jež v sobě ukládají jméno právě spuštěné funkce, pozici v kódu, odkud byla zavolána, a hodnoty lokálních proměnných na dané úrovni.
+Zásobník volání je taktéž uložen v kontextu skriptu. Jedná se o pole objektů typu \texttt{Call\-Stack\-Item}, jež v sobě ukládají jméno právě spuštěné funkce, pozici v kódu, odkud byla zavolána, a hodnoty lokálních proměnných na dané úrovni.
 
-Vlastní spuštění funkce je úkolem třídy \texttt{NodeFunctionCall} a především její \texttt{execute()} metody. Objekty tohoto datového typu si v sobě uchovávají identifikátor volané funkce, kód nutný pro zjištění hodnot parametrů a pozici v kódu, odkud je funkce volána. Celý životní cyklus funkce vypadá následovně.
+Vlastní spuštění funkce je úkolem třídy \texttt{NodeFunctionCall}. Objekty tohoto datového typu si v sobě uchovávají identifikátor volané funkce, kód nutný pro zjištění hodnot parametrů a pozici v kódu, odkud je funkce volána. Celý životní cyklus funkce vypadá následovně.
 
 \begin{enumerate}
 \item V kontextu je nalezen objekt \texttt{NodeFunction*}
 \item Ověří se počet deklarovaných a předaných parametrů
 \item Vyhodnotí se kód nutný pro získání hodnot parametrů
-\item Na vrchol zásobníku volání funkcí je přidána nově vytvořená položka
-\item Nastaví se hodnoty argumentů funkce (lokální proměnné) na hodnoty předané v parametrech
+\item Na vrchol zásobníku volání je přidána nově vytvořená položka
+\item Nastaví se hodnoty argumentů (lokální proměnné) na hodnoty předané v parametrech
 \item Zavolá se \texttt{execute()} metoda objektu funkce
 \item Po skončení se z vrcholu zásobníku volání odstraní dříve přidaná položka
 \item Vrátí se návratová hodnota
 \end{enumerate}
 
-Již bylo řečeno, že skript se spouští voláním funkce \texttt{main(argv)}. Tuto operaci opět poskytuje kontext, konkrétně se jedná o metodu \texttt{executeScriptMain()}, jež vytvoří objekt typu \texttt{NodeFunctionCall}, do konstruktoru mu předá identifikátor \textit{main} s jedním \texttt{ValueArray} parametrem. Následně je odstartováno rekurzivní volání \texttt{execute()} metod nad uzly abstraktního stromu syntaxe.
+Již bylo řečeno, že skript se spouští voláním funkce \texttt{main(argv)}. Tuto operaci opět poskytuje kontext, konkrétně se jedná o metodu \texttt{executeScriptMain()}, jež vytvoří objekt typu \texttt{NodeFunctionCall}, do konstruktoru mu předá identifikátor \textit{main} a \texttt{ValueArray} parametr. Následně je odstartováno rekurzivní volání \texttt{execute()} metod nad uzly abstraktního stromu syntaxe.
 
 
 \subsubsection{Globální proměnné}
 
-Seznam globálních proměnných je taktéž definován pomocí asociativního pole. Kontext neposkytuje žádné metody pro vrácení nebo nastavení hodnoty globální proměnné. Naproti tomu umožňuje funkcí \texttt{propagateGlobalVariable()} namapovat její hodnotu do adresního prostoru právě zavolané lokální funkce, což ve skriptu přesně odpovídá chování operátoru \texttt{global} představeného v kapitole \ref{datove_typy_a_promenne} na straně \pageref{datove_typy_a_promenne}.
+Seznam globálních proměnných je taktéž definován pomocí asociativního pole. Kontext neposkytuje žádné metody pro získání nebo nastavení hodnoty globální proměnné. Naproti tomu umožňuje funkcí \texttt{propagateGlobalVariable()} namapovat její hodnotu do adresního prostoru právě zavolané lokální funkce, což ve skriptu přesně odpovídá chování operátoru \texttt{global} představeného v kapitole \ref{datove_typy_a_promenne} na straně \pageref{datove_typy_a_promenne}.
 
-Celý mechanismus funguje na principu sdílení \texttt{ValueReference} objektu mezi globálními a lo\-kál\-ní\-mi proměnnými. Změní-li se hodnota lokální proměnné, která odkazuje na stejný objekt jako globální proměnná, je automaticky aktualizována i ta.
+Celý mechanismus funguje na principu sdílení \texttt{ValueReference} objektu mezi globálními a lo\-kál\-ní\-mi proměnnými. Změní-li se hodnota lokální proměnné, která odkazuje na stejný objekt jako globální proměnná, je automaticky aktualizována i ta, protože sídlí na stejném místě v paměti.
 
 
 \subsubsection{Pozice v kódu}
+\label{pozice_v_kodu}
 
-Pozice ve zdrojových kódech jsou uchovávány ne ve všech, ale pouze ve speciálních uzlech stromu. Například každý příkaz (výraz zakončený středníkem) je obalen objektem typu \texttt{NodePosition}, jehož prací je aktualizovat pozici v kontextu a zavolat metodu svého ná\-sled\-ní\-ka ve stromu.
+Není potřeba, aby byla pozice ve zdrojových kódech přítomna v naprosto každém z uzlů stromu syntaxe. Dokud by se nezměnilo jméno vstupního souboru ani číslo řádky, docházelo by pouze k duplikacím, které by při vykonávání nepřinášely žádnou novou informaci.
 
-Díky této technice nemusí být pozice zbytečně uchovávána v každém prvku stromu. Uložení pozic v jednoduchém demostračním příkazu \texttt{c = a + b;} je zobrazeno ve schématu \ref{fig:nodeposition}. Na první pohled je jasné, že ukládání pozic do každého uzlu stromu by bylo zbytečné a navíc by docházelo ke značnému plýtvání pamětí.
+Bylo by žádoucí, aby každá řádka vstupního souboru měla svou uzlovou reprezentaci ve stromu, avšak syntaktický analyzátor v dané implementaci nepracuje po řádcích, ale po tokenech. Pokud se budou brát v úvahu \textit{příkazy} namísto řádků, je možné se k tomuto požadavku přiblížit. Téměř každý příkaz (výraz zakončený středníkem) bývá uveden na samostatné řádce, v některých méně častých případech i na dvou či třech. To ale nevadí, pozice v chybových hlášeních budou mít pouze o něco menší přesnost, stále však dostatečnou.
+
+Pozice ve zdrojových kódech budou tedy uchovávány pouze ve speciálních uzlech stromu, příkazy budou obaleny objekty typu \texttt{NodePosition}, jejichž prací bude aktualizovat pozici v kontextu a zavolat metodu svého ná\-sled\-ní\-ka ve stromu.
+
+Uložení pozic v jednoduchém demostračním příkazu \texttt{c = a + b;} je zobrazeno ve schématu \ref{fig:nodeposition}. Na první pohled je jasné, že ukládání pozic do každého uzlu stromu by bylo zbytečné a navíc by docházelo ke značnému plýtvání pamětí.
 
 \begin{figure}[ht]
 \begin{center}
@@ -1207,24 +1272,26 @@ Díky této technice nemusí být pozice zbytečně uchovávána v každém prvk
 \end{center}
 \end{figure}
 
-Třída \texttt{NodePosition} v sobě zapouzdřuje objekt typu \texttt{CodePosition}, což je jednoduchý kontejner uchovávající jméno souboru a číslo řádky, na kterém se vyskytuje ve zdrojových kódech. Jméno souboru opět není ukládáno v řetězcové formě, ale jako číselné ID, což přispívá k dalšímu šetření paměti.
+Třída \texttt{NodePosition} v sobě zapouzdřuje objekt typu \texttt{CodePosition}, jenž je jednoduchým kontejnerem uchovávajícím jméno souboru a číslo řádky. Jméno souboru opět není ukládáno v řetězcové formě, ale jako číselné ID, což přispívá k dalšímu šetření paměti.
 
-Kontext skriptu obsahuje datovou \texttt{CodePosition} položku, jež je během průchodu abstraktním stromem syntaxe průběžně aktualizována a může být použita například při výpisu chybové zprávy.
+Kontext skriptu obsahuje datovou \texttt{CodePosition} položku, jež je během průchodu abs\-trakt\-ním stromem syntaxe s pomocí \texttt{NodePosition} uzlů a volání \texttt{setPosition()} průběžně aktualizována a může být použita například při výpisu chybové zprávy.
 
 
 \subsubsection{Paralelizace skriptů, více kontextů}
 
-TODO:
+Kontext skriptu je ostatními třídami používán téměř jako singleton, přistupují k němu pomocí makra \texttt{CONTEXT}, které se rozbaluje na volání \texttt{getContext()} třídy \texttt{ObjectCreator}. V průběhu vykonávání skriptu existuje vždy právě jeden kontext, a tudíž není paralelní běh na úrovni skriptu aktuálně podporován.
+
+Pokud by vznikla potřeba vícevláknového programování, existuje v zásadě pouze jediná mož\-nost, jak doprogramovat jeho podporu. Spočívá v dodatečném argumentu \texttt{execute()} metod, který si budou uzly stromu při rekurzivním vykonávání předávat. Nevýhody jsou zřejmé, naprostá většina uzlů kontext ke své činnosti nepotřebuje, a tudíž by jeho neustálé kopírování, byť i ve formě reference, zpomalovalo běh skriptu.
 
 
 \subsection{Logování}
 
-TODO:
+Logování výstupu ze skriptu, varovných a chybových zpráv zajišťuje třída \texttt{Logger}. Aplikace definuje několik maker, například \texttt{ERR(str)}, \texttt{WARN(str)} nebo \texttt{INFO(str)}, které slouží jako rozhraní pro výstup chybových a jiných zpráv uživateli. Přímý přístup k vstupně výstupním proudům jazyka C++ není používán, aby bylo jednodušší přesměrovat veškerý výstup skriptu do některého z oken aplikace při běhu v grafickém rozhraní.
 
 
 \subsection{Generátory zdrojových kódů}
 
-Interpret obsahuje několik skupin tříd, jejichž kód je velice podobný, typickým příkladem jsou třídy aritmetických a logických operátorů. Vezměme si třeba operátory pro sčítání a odčítání, jejich výkonná část se liší jediným příkazem. Sčítání volá metodu \texttt{add()} a odčítání logicky \texttt{sub()}, jinak je celý kód identický.
+Interpret obsahuje několik skupin tříd, jejichž kód je velice podobný, typickým příkladem jsou třídy aritmetických a logických operátorů. Vezměme si třeba operátory pro sčítání a odčítání, jejich výkonná část se liší jediným příkazem. Sčítání volá metodu \texttt{add()} a odčítání \texttt{sub()}, jinak je celý kód identický.
 
 \begin{verbatim}
 return m_left->execute()->add(*(m_right->execute()));
@@ -1233,7 +1300,7 @@ return m_left->execute()->sub(*(m_right->execute()));
 
 Kromě těchto dvou je potřeba dalších dvacet binárních operátorů, k tomu několik unárních operátorů a nesmí se zapomenout ani na zabudované funkce. Vytvářet všechny třídy ručně je zdlouhavé a neefektivní, v případě změn je třeba manuálně upravovat stejným způsobem spoustu souborů.
 
-Nepříliš vhodné řešení této situace je využítí C++ maker, jimiž lze generovat libovolný kód, tedy i třídy. Jedna z primitivnějších a ne moc hezkých implementací by mohla vypadat například následovně.
+Nepříliš vhodné řešení této situace je využití C++ maker, jimiž lze generovat libovolný kód, tedy i třídy. Jedna z primitivnějších a ne moc hezkých implementací by mohla vypadat například následovně.
 
 \begin{verbatim}
 #define UNARYOPERATOR(NAME, CODE)             \
@@ -1249,99 +1316,208 @@ public:                                       \
 };
 \end{verbatim}
 
-Jedná se o plně funkční kód v profesionální praxi běžně používaný, ale obecně hodně špatný a naprosto nevhodný. Kvůli těmto konstrukcím není možný debugging a také nefunguje automatické do\-pl\-ňo\-vá\-ní, protože s podobným zápisem tvůrci žádného IDE zkrátka nepočítali. Počáteční úsporu času a zrychlení vývoje velice rychle, při prvních problémech a neúspěšných pokusech o ladění, vystřídají myšlenky na kompletní přepsání.
+Jedná se o plně funkční kód v profesionální praxi běžně používaný, ale obecně hodně špatný a naprosto nevhodný pro libovolnou situaci. Kvůli těmto konstrukcím není možný debugging a při psaní kódu také nefunguje automatické do\-pl\-ňo\-vá\-ní, protože s podobným zápisem tvůrci žádného IDE zkrátka nepočítali. Počáteční úsporu času a zrychlení vývoje velice rychle, při prvních problémech a neúspěšných pokusech o ladění, vystřídají myšlenky na kompletní přepsání.
 
 Řešením situace je sáhnout po externím skriptu, jehož jediným posláním bude podle při\-pra\-ve\-né šablony generovat C++ soubory s definicí jednotlivých tříd. Pokud vznikne požadavek na úpravu, změní se šablona a skript všechny soubory během krátké chvíle automaticky přegeneruje.
 
-Ve vyvinuté aplikaci toto navržené řešení používají jednoduché perlovské skripty \texttt{gen\_\-ope\-ra\-tors.pl} a \texttt{gen\_builtin.pl}, které generují C++ kód unárních i binárních operátorů a také zabudovaných funkcí.
+Ve vyvinuté aplikaci toto navržené řešení používají perlovské skripty \texttt{gen\_\-ope\-ra\-tors.pl} a \texttt{gen\_builtin.pl}, které generují C++ kód unárních operátorů, binárních operátorů a také zabudovaných funkcí.
 
 
-\subsection{Lexikální analyzátor}
+\subsubsection{Vytvoření nové zabudované funkce}
 
-Jako základ pro lexikální analyzátor byl použit zdrojový kód z předchozího autorova projektu \cite[třída \texttt{CLexan}]{borsch}. Jeho jádrem je rozsáhlý stavový automat, který zpracovává příchozí znaky a v závislosti na nich vrací lexikální tokeny.
+Při vytváření nějaké nové zabudované funkce, je dobré postupovat podle následujících kroků.
 
-Analyzátor bere v úvahu konstanty \texttt{\_\_FILE\_\_}, \texttt{\_\_LINE\_\_} a \texttt{\_\_FUNCTION\_\_}, které se při svém použití automaticky nahrazují za pozice ve zdrojových kódech. Dalšími vnitřními příkazy jsou jednoduchá bezparametrická makra a vkládání externích souborů.
+\begin{enumerate}
+\item Vytvořit \texttt{../samples/tests.txt} unit test (viz kapitola \ref{unit_testy} na straně \pageref{unit_testy})
+\item V souboru \texttt{gen\_builtin.pl}
+\begin{enumerate}
+\item Napsat \texttt{\$funcdecl} deklaraci/dokumentaci funkce
+\item Definovat kód pro vložení hlavičkových souborů
+\item Definovat tělo zabudované funkce
+\item Zavolat funkci \texttt{genBFClass()}
+\end{enumerate}
+\item Přegenerovat zdrojové kódy pomocí \texttt{make builtin} nebo \texttt{make rebuild}
+\item Přidat nové soubory \texttt{classname.hpp} a \texttt{classname.cpp} do projektových souborů
+\item Zkompilovat aplikaci
+\item Otestovat kód pomocí \texttt{valgrind ./bbd --unit-tests ../samples/tests.txt}
+\end{enumerate}
 
-\begin{verbatim}
-define("name", "value");
-include("filename");
-\end{verbatim}
-
-
-\subsubsection{Procházení zdrojových dat}
-
-Makra i inkludované soubory se ve svém principu zpracovávají naprosto stejně. Lexikální analyzátor obsahuje zásobník objektů typu \texttt{LexanIterator}, který slouží pro zanoření se do další úrovně ve zdrojových kódech skriptu. Například při inkludování souboru se na vrcholu zásobníku vytvoří nová položka, při dokončení jeho zpracování se naopak odstraní. Překlad končí ve chvíli, kdy je zásobník vyprázdněn.
-
-Abstraktní třída \texttt{LexanIterator} definuje rozhraní pro nejnižší vrstvu -- vlastní čtení znaků. Jediný požadavek na potomky je specifikace metody \texttt{get()}, která má za úkol vrátit následující znak v pořadí a \texttt{unget()} sloužící pro návrat o znak zpátky. Třída dále ukládá pozici ve zdrojových kódech používanou především ve zprávách v případě chyby.
-
-Aktuálně jsou definováni pouze dva potomci. \texttt{LexanIteratorFile} má za úkol iterovat přes znaky v souboru, používá ho konstrukce \texttt{include}, a \texttt{Le\-xan\-Ite\-ra\-tor\-String} zpracovává ře\-těz\-ce, slouží pro rozbalování \texttt{define} maker. V budoucnu je možné, bez větších zásahů do aplikace, přidat další zdroje, například soubory nahrávané z internetu.
-
-
-\subsubsection{Identifikátory}
-\label{identifikatory}
-
-Řetězcové identifikátory ve skriptu, jména proměnných a funkcí, jsou během lexikální analýzy nahrazovány za celočíselné, stejnou myšlenku používá i interpret JavaScriptu ve webovém prohlížeči Links \cite[str. 25]{links}.
-
-Ve chvíli, kdy lexikální analyzátor narazí ve zdrojovém proudu na shluk znaků, který by mohl být identifikátorem, zkontroluje nejdříve, zda se nejedná o klíčové slovo. V případě negativního výsledku projde seznam skriptem definovaných maker a pokusí se je rozbalit. Neuspěje-li ani zde, použije makro \texttt{STR2ID(string)}, které požádá tabulku symbolů, třídu \texttt{StringTable}, o překlad řetězce na celočíselný identifikátor. Opačný směr umožňuje makro \texttt{ID2STR(identifier)}.
-
-Algoritmus překladu je velice jednoduchý. Tabulka symbolů obsahuje obyčejné pole, jehož jednotlivé položky ukládají řetězcovou reprezentaci, hodnota indexu představuje reprezentaci číselnou. Při žádosti o překlad z řetězce na identifikátor, zkusí třída najít a vrátit pozici již existujícího prvku. Pokud neuspěje, přidá řetězec na konec pole a vrátí jeho pozici.
-
-Složitost operace vychází v nejhorším případě lineární, protože se musí samozřejmě projít všechny prvky. Její snížení, například seřazením prvků podle abecedy, není možné. Pořadí v poli se nesmí změnit, jinak by se zneplatnily již existující překlady. Opačný směr představuje operaci s konstatní složitostí, identifikátor je současně indexem do pole.
+Následuje kompletní výpis kódu zabudované funkce \texttt{getAdjacencyMatrix()}, která pro\-gra\-má\-to\-ro\-vi skriptu zpřístupňuje matici sousednosti grafu.
 
 \begin{verbatim}
-identifier StringTable::getID(const string& str)
-{
-    vector<string>::iterator pos = find(m_data.begin(), m_data.end(), str);
+$funcdecl = 'getAdjacencyMatrix(graph) : array';
 
-    if(pos == m_data.end())
-        m_data.push_back(str);
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+END_OF_CODE
 
-    return pos - m_data.begin();
-}
+$code = <<END_OF_CODE;
+    ValueGraph* g = NULL;
 
-string& StringTable::getString(identifier id)
-{
-    assert(id < m_data.size());
-    return m_data[id];
-}
+    if((g = par[0]->toValueGraph()) != NULL)
+        return g->getAdjacencyMatrix();
+    else
+    {
+        WARN_P(_("Bad parameters type: $funcdecl"));
+        return VALUENULL;
+    }
+END_OF_CODE
+
+genBFClass('getAdjacencyMatrix',
+    'NodeBuiltinGetAdjacencyMatrix',
+    1, $code, $include);
 \end{verbatim}
 
-Hlavní výhodou této techniky je vyšší rychlost interpretace, porovnání dvou čísel trvá mnohem kratší dobu než porovnání dvou řetězců. Úspora vzniká při každém přístupu k hodnotě proměnné a při volání funkcí. Druhá z výhod spočívá ve snížených paměťových nárocích, všechny řetězce jsou uloženy na jednom místě a ve skriptu je reprezentují pouze celočíselné hodnoty. Jak už bylo zmíněno, jediné zpomalení nastává při vytváření tabulky symbolů, je přímo úměrné počtu různých identifikátorů ve zdrojovém textu a jejich délce.
-
-
-\subsection{Gramatika, Bison}
-
+Při dodržení výše uvedeného postupu stačí pouze vytvořit tento zdrojový kód, přegenerovat zabudované funkce, přidat novou třídu do projektových souborů a začít nově vytvořenou funkci používat.
 
 
 \subsection{Shrnutí}
 
+Tato kapitola popsala, jak byl navržen a realizován základní kód a interpret pro příkazovou řádku. Lexikální analyzátor byl, oproti syntaktickému, napsán ručně. Jedná se o relativně velký stavový automat, jenž při inkluzi souborů a definování maker používá hierarchii tříd pro zobecnění přístupu ke vstupním datům skriptu. Syntaktický analyzátor pro vytvoření abstraktního stromu syntaxe využívá služeb nástroje Bison.
+
+Třída \texttt{BaseObject} je základním kamenem hierarchie, vývojáři poskytuje jednoduchý detektor úniků paměti. Po svých potomcích požaduje implementaci metody \texttt{dump()} sloužící pro přehledný výpis obsahu složených objektů. Proměnné jsou ve skriptu reprezentovány hierarchií odvozenou od třídy \texttt{Value}, potomci třídy \texttt{Node} tvoří abstraktní strom syntaxe.
+
+Kontext skriptu reprezentovaný třídou \texttt{Context} se stará o zabudované i uživatelem definované funkce, ukládá lokální a globální proměnné a vede si záznam o aktuální pozici ve zdrojových kódech skriptu. Pro zobecnění textových výstupů z aplikace slouží třída \texttt{Logger}.
+
+Program obsahuje několik skupin velice podobných tříd, které se liší pouze malým množstvím kódu. Skripty na jejich generování umožňují rychlé a efektivní úpravy bez ručního procházení velkého množství souborů.
 
 
 \section{Grafické uživatelské rozhraní}
 
 \subsection{Oddělení od interpretu pro příkazovou řádku}
+\label{oddeleni_od_interpretu_pro_prikazovou_radku}
+
+Grafické uživatelské rozhraní je pouze alternativou k interpretu pro příkazovou řádku, a proto by měly být oba zdrojové kódy co nejvíce odděleny. Ideálem zůstává samostatná knihovna zapouzdřující veškerý základní kód a dvě nezávislá uživatelská rozhraní -- konzolová a okenní aplikace. Vytvořené programy se dají zkompilovat nezávisle na sobě, sdílí většinu zdrojových kódů, nicméně nepoužívají žádnou knihovnu.
+
+Některé třídy, například kontext skriptu či logování, není možné sdílet, a proto aplikace zavádí singleton \texttt{ObjectCreator}, jenž se stará o vytváření a poskytování těchto objektů.
+
+Pokud skript například potřebuje vypsat chybové hlášení o nastanuvší chybě, požádá creator o logovací třídu a s její pomocí vypíše chybovou zprávu. V případě, že aplikace běží v textovém režimu, vrátí creator logovací třídu pro textový režim, která vypíše text na konzoli. U grafického režimu je vrácena grafická instance, ta vkládá text do logovacího okna. Oba vrácené objekty mají stejné rozhraní, protože jsou potomky společné třídy.
+
+Řešení používá návrhový vzor \textit{továrna}. Zůstaneme-li u příkladu s logováním, aplikace definuje celkem tři třídy pro výstup zpráv, abstraktní nadtřídu \texttt{Logger} a dva konktrétní potomky \texttt{CliLogger} a \texttt{GuiLogger}. Dále využívá, taktéž tři, továrny -- rozhraní \texttt{ObjectFactory} a jeho potomky \texttt{CliFactory} a \texttt{GuiFactory}. Rodičovská rozhraní jsou kompilována v obou verzích programu, \texttt{Cli*} třídy pouze v konzolové a \texttt{Gui*} třídy pouze v grafické.
+
+Nyní se vrátíme zpět k singletonu \texttt{ObjectCreator}, jenž poskytuje vlastní objekty. Při spuštění programu je mu předán některý z potomků \texttt{ObjectFactory}, s jehož pomocí může velice elegantně vytvořit správný typ objektů, aniž by věděl, ve které verzi programu se nachází. Pracuje pouze s obecnými rozhraními rodičovských tříd a díky polymorfismu volá správné metody. Tovární třída je vytvořena na začátku funkce \texttt{main()}, ta se samozřejmě musí v obou verzích programu taktéž lišit.
+
+
+\subsection{Vlákna a jejich synchronizace}
+
+Rozdíl mezi konzolovou a grafickou verzí aplikace je i ve způsobu, jak je skript spuštěn. Konzolový program se nemusí starat o interakci s uživatelem, a tudíž mu i pro běh skriptu postačuje pouze jedno vlákno.
+
+Okenní rozhraní, na rozdíl od něj, neslouží pouze pro jednorázové vykonání skriptu, ale umožňuje i psaní kódu v editoru, vizualizace a další činnosti, a proto musí být vykonávání skriptu vloženo do dalšího, pracovního, vlákna. Bez něj by déletrvající skript způsobil zamrznutí GUI aplikace a nemožnost debuggingu ani vizualizací.
+
+Spolu s druhým a dalšími vlákny v aplikaci automaticky přichází i požadavek na jejich synchronizaci. Podobně jako u logování v kapitole \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku} bude vhodné napsat synchronizační kód pro obě aplikace zvlášť.
+
+Opět vytvoříme tři třídy, obecné rozhraní \texttt{Mutex} a konkrétní \texttt{CliMutex} a \texttt{GuiMutex}. Ro\-di\-čov\-ská třída požaduje po svých potomcích definovat pouze \texttt{lock()} a \texttt{unlock()} metody. Už bylo řečeno, že konzolová aplikace nepotřebuje synchronizaci vláken, a proto může \texttt{CliMutex} definovat tyto dvě funkce jako prázdné. \texttt{GuiMutex} využije služeb knihovny Qt a její třídy \texttt{QMutex}, ten je nutné definovat jako rekurzivní (\texttt{QMutex::Recursive}), aby mohl být se zanořením do funkcí zamknut v daném vláknu opakovaně.
+
+Aby se omezil počet možných chyb se synchronizací, byla dále, po vzoru \texttt{QMu\-tex\-Loc\-ker} z knihovny Qt, vytvořena třída \texttt{MutexLocker}. Ta v konstruktoru zamyká předaný mutex, v destruktoru je automaticky odemknut. Nyní stačí na začátku synchronizovaní funkce vytvořit statický objekt tohoto datového typu a je zajištěno, že se \texttt{lock()} a \texttt{unlock()} zavolá automaticky. Makro \texttt{ACCESS\_MUTEX\_LOCKER} dále zkracuje celý zápis a zároveň umožňuje, v případě konzolového programu, mutexy kompletně odstranit.
+
+\begin{verbatim}
+#ifdef DISABLE_THREAD_SYNCHRONIZATION
+#define ACCESS_MUTEX_LOCKER
+#else
+#define ACCESS_MUTEX_LOCKER \
+    MutexLocker mutexLocker(ObjectCreator::getInstance().getAccessMutex())
+#endif
+\end{verbatim}
+
+
+\subsection{Debugging skriptu}
+
+V požadavcích na vytvářenou aplikaci je definováno, že musí umožňovat krokování skriptu, které ve své složitější formě odpovídá debuggingu. Kapitola \ref{podpora_debuggingu} na straně \pageref{podpora_debuggingu} analyzovala možnosti pozastavení skriptu a pro grafickou aplikaci přišla s nápadem použít synchronizační prostředky vláken. \texttt{QWaitCondition} parametr je obsažen ve třídě \texttt{GuiContext} a vlastní pozastavení je možné realizovat zabudouvanou funkcí \texttt{breakpoint()}.
+
+\begin{verbatim}
+void GuiContext::pauseExecution(void)
+{
+    emit executionPaused();
+
+    m_dbgMutex.lock();
+    m_waitCondition.wait(&m_dbgMutex);
+    m_dbgMutex.unlock();
+}
+\end{verbatim}
+
+Implementovaný debugging podporuje celkem čtyři níže uvedené způsoby probuzení vlákna známé z běžných vývojových prostředí.
+
+\begin{itemize}
+\item continue -- obnovení běhu skriptu, pozastavit se až na následujícím breakpointu
+\item step into -- pokračovat a zastavit skript na následujícím příkazu, a to i uvnitř volané funkce
+\item step over -- pokračovat a zastavit skript na následujícím příkazu, ignorovat příkazy uvnitř volaných funkcí
+\item step out -- pokračovat a zastavit skript po opuštění aktuálně prováděné funkce
+\end{itemize}
+
+Zdrojový kód je definuje jako výčet \texttt{SteppingType}, jenž nabývá hodnot \texttt{ST\_NONE}, \texttt{ST\_INTO}, \texttt{ST\_OVER} a \texttt{ST\_OUT}. Aktuálně používané krokování je uloženo v členské proměnné kontextu \texttt{m\_step\-ping\-Type}.
+
+Nejjednodušším typem pokračování běhu je samozřejmě \textit{continue}. V jeho případě se pouze nastaví krokování na \texttt{ST\_NONE} a probudí se vlákno. Tato funkce je volána z hlavního/GUI vlákna aplikace například po kliknutí uživatelem na odpovídající tlačítko v nástrojové liště.
+
+\begin{verbatim}
+void GuiContext::debugRun(void)
+{
+    ACCESS_MUTEX_LOCKER;
+    m_steppingType = ST_NONE;
+    m_waitCondition.wakeAll();
+}
+\end{verbatim}
+
+Další tři typy krokování však vyžadují o něco více pozornosti. Jak bylo vidět před chvílí, spustit vlákno není nic složitého, problémem je ho opětovně pozastavit. Nejvhodnější místo pro tuto činnost je metoda kontextu \texttt{setPosition()}, jež má za úkol aktualizovat pozici ve skriptu -- podrobnosti viz kapitola \ref{pozice_v_kodu} na straně~\pageref{pozice_v_kodu}. Funkce se volá periodicky po každém provedeném příkazu a to je to, co nás zajímá.
+
+Nová implementace na začátku zavolá metodu předka a poté se větví podle nastaveného typu krokování. Jak už bylo řečeno \texttt{ST\_NONE} nedělá nic a \texttt{ST\_INTO} se pozastaví na nejbližším následujícím příkazu. \texttt{ST\_OVER} a \texttt{ST\_OUT} navíc berou v úvahu úroveň zanoření na zásobníku volání funkcí, parametr \texttt{m\_callStackSize} byl na svou hodnotu nastaven spolu s \texttt{m\_steppingType} ve chvíli, kdy uživatel kliknul na odpovídající tlačítko pro pokračování.
+
+\begin{verbatim}
+void GuiContext::setPosition(const CodePosition* pos)
+{
+    Context::setPosition(pos);
+
+    switch(m_steppingType)
+    {
+    case ST_INTO:
+        pauseExecution();
+        break;
+
+    case ST_OVER:
+        if(getStackSize() <= m_callStackSize)
+            pauseExecution();
+        break;
+
+    case ST_OUT:
+        if(getStackSize() < m_callStackSize)
+            pauseExecution();
+        break;
+
+    case ST_NONE:
+    default:
+        break;
+    }
+}
+\end{verbatim}
+
+Ačkoli se to nemusí zdát, pouze toto malé množství kódu realizuje kompletní debugging ve vytvořené aplikaci. Jediný rozdíl, oproti běžným IDE, spočívá v definici breakpointu, jedná se zde o zabudovanou funkci zapsanou přímo do zdrojových kódů skriptu.
+
+Jasnou výhodou z implementačního hlediska je snadnost řešení. Kontext si nemusí vést databázi breakpointů a v každém kroku pro všechny z nich porovnávat, zda jejich pozice spadá mezi číslo řádku předchozího a aktuálního příkazu. Při zápisu do zdrojového kódu, breakpoint pozastaví skript automaticky během svého vykonávání.
+
+Druhou obrovskou výhodou je parametrizace zabudované funkce, aktuální implementace zastavuje skript pouze, pokud je předán argument odpovídající logickému true. Jak ukazují následující příklady, díky jediné dodatečné podmínce ve zdrojových kódech, dostává programátor k dispozici opravdu komplexní nástroj.
+
+\begin{verbatim}
+breakpoint(true);// Aktivní
+breakpoint(false);// Neaktivní
+
+breakpoint(cond1 || cond2);// Aktivní v závisloti na hodnotě proměnných
+
+for(i = 0; i < 1000; ++i)
+    breakpoint(i % 100);// Aktivní při každém stém průchodu cyklem
+\end{verbatim}
+
+Nevýhodou je určitě statičnost, není možné definovat nový breakpoint po spuštění skriptu, protože zdrojový soubor je již zpracován a změny se neberou v úvahu. Další možnou ne\-vý\-ho\-dou je nestandardnost řešení oproti tomu, na co jsou programátoři zvyklí.
+
 
 \subsection{Hlavní okno}
 
-\subsection{Editor}
+\subsection{Textový editor}
 
 Code Editor Example
 http://doc.trolltech.com/4.5/widgets-codeeditor.html
 
-\subsection{Debugger}
+\subsection{Zobrazení proměnných skriptu}
 
-
-\subsubsection{Vykonávání kódu}
-
-Recursive traversion of AST, mutexes
-
-
-\subsubsection{Zabudovaná funkce breakpoint()}
-
-\subsubsection{Proměnné skriptu}
-
-\subsubsection{Zásobník volání funkcí}
-
+\subsection{Zobrazení zásobníku volání funkcí}
 
 \subsection{Vizualizace grafu}
 
@@ -1361,6 +1537,7 @@ Recursive traversion of AST, mutexes
 \end{itemize}
 
 \section{Unit testy}
+\label{unit_testy}
 
 \section{Skriptové unit testy}
 
@@ -1401,6 +1578,157 @@ Recursive traversion of AST, mutexes
 
 
 \chapter{Gramatika jazyka}
+\label{gramatika_jazyka}
+
+Při vytváření níže uvedené gramatiky se vycházelo z předpisu pro jazyk Ansi C \cite{c_grammar}. Jazyk dále poskytuje konstrukce \texttt{define} a \texttt{include}, ty se však zpracovávají na úrovni lexikálního analyzátoru, viz kapitola \ref{preprocesor} na straně \pageref{preprocesor}.
+
+\begin{verbatim}
+primary_expression
+    : LEX_NULL
+    | LEX_TRUE
+    | LEX_FALSE
+    | LEX_INT
+    | LEX_IDENTIFIER
+    | LEX_FLOAT
+    | LEX_STRING
+    | '(' expression ')'
+    ;
+
+postfix_expression
+    : primary_expression
+    | postfix_expression '[' expression ']'
+    | LEX_IDENTIFIER '(' ')'
+    | LEX_IDENTIFIER '(' argument_expression_list ')'
+    | postfix_expression '.' LEX_IDENTIFIER
+    | postfix_expression '.' LEX_IDENTIFIER '(' ')'
+    | postfix_expression '.' LEX_IDENTIFIER '(' argument_expression_list ')'
+    | postfix_expression LEX_INC_OP
+    | postfix_expression LEX_DEC_OP
+    ;
+
+argument_expression_list
+    : assignment_expression
+    | argument_expression_list ',' assignment_expression
+    ;
+
+unary_expression
+    : postfix_expression
+    | LEX_INC_OP unary_expression
+    | LEX_DEC_OP unary_expression
+    | '+' unary_expression
+    | '-' unary_expression
+    | '!' unary_expression
+    ;
+
+multiplicative_expression
+    : unary_expression
+    | multiplicative_expression '*' unary_expression
+    | multiplicative_expression '/' unary_expression
+    | multiplicative_expression '%' unary_expression
+    ;
+
+additive_expression
+    : multiplicative_expression
+    | additive_expression '+' multiplicative_expression
+    | additive_expression '-' multiplicative_expression
+    ;
+
+relational_expression
+    : additive_expression
+    | relational_expression '<' additive_expression
+    | relational_expression '>' additive_expression
+    | relational_expression LEX_LE_OP additive_expression
+    | relational_expression LEX_GE_OP additive_expression
+    ;
+
+equality_expression
+    : relational_expression
+    | equality_expression LEX_EQ_OP relational_expression
+    | equality_expression LEX_NE_OP relational_expression
+    ;
+
+logical_and_expression
+    : equality_expression
+    | logical_and_expression LEX_AND_OP equality_expression
+    ;
+
+logical_or_expression
+    : logical_and_expression
+    | logical_or_expression LEX_OR_OP logical_and_expression
+    ;
+
+conditional_expression
+    : logical_or_expression
+    | logical_or_expression '?' expression ':' conditional_expression
+    ;
+
+assignment_expression
+    : conditional_expression
+    | unary_expression '=' assignment_expression
+    | unary_expression LEX_MUL_ASSIGN assignment_expression
+    | unary_expression LEX_DIV_ASSIGN assignment_expression
+    | unary_expression LEX_MOD_ASSIGN assignment_expression
+    | unary_expression LEX_ADD_ASSIGN assignment_expression
+    | unary_expression LEX_SUB_ASSIGN assignment_expression
+    | unary_expression LEX_REF_ASSIGN assignment_expression
+    ;
+
+expression
+    : assignment_expression
+    ;
+
+statement
+    : compound_statement
+    | expression_statement
+    /* "parser.y: conflicts: 1 shift/reduce" is ok */
+    | LEX_IF '(' expression ')' statement
+    | LEX_IF '(' expression ')' statement LEX_ELSE statement
+    | LEX_WHILE '(' expression ')' statement
+    | LEX_FOR '(' expression_statement expression_statement ')' statement
+    | LEX_FOR '(' expression_statement expression_statement
+        expression ')' statement
+    | LEX_FOREACH '(' LEX_IDENTIFIER ';' expression ')' statement
+    | LEX_BREAK ';'
+    | LEX_CONTINUE ';'
+    | LEX_RETURN ';'
+    | LEX_RETURN expression ';'
+    | LEX_GLOBAL LEX_IDENTIFIER ';'
+    ;
+
+expression_statement
+    : ';'
+    | expression ';'
+    ;
+
+compound_statement
+    : '{' '}'
+    | '{' block_item_list '}'
+    ;
+
+block_item_list
+    : statement
+    | block_item_list statement
+    ;
+
+function_definition
+    : function_and_name '(' parameter_list ')' compound_statement
+    | function_and_name '(' ')' compound_statement
+    ;
+
+function_and_name
+    : LEX_FUNCTION LEX_IDENTIFIER
+    ;
+
+parameter_list
+    : LEX_IDENTIFIER
+    | parameter_list ',' LEX_IDENTIFIER
+    ;
+
+start
+    : /* empty */
+    | start function_definition
+    ;
+\end{verbatim}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1426,6 +1754,7 @@ base code for the application qt4/examples/mainwindows/mdi
 %%%%
 
 \chapter{Seznam použitých zkratek}
+
 \begin{description}
 \setlength{\labelwidth}{2.5cm}
 \setlength{\itemindent}{1.5cm}

@@ -1,7 +1,7 @@
 PROJECT = turekm1_thesis_2009
 DVIPS = dvips
 LATEX = latex
-PDFLATEX = pdflatex
+PDFLATEX = pdflatex -halt-on-error
 BIBTEX = bibtex
 
 
