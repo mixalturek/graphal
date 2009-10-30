@@ -53,7 +53,7 @@ void DockScriptOutput::reinit(void)
 
 	m_textEdit->setUndoRedoEnabled(false);
 	m_textEdit->setReadOnly(true);
-	m_textEdit->setOpenLinks(false);// anchorClicked() -> MainWindow::open()
+	m_textEdit->setOpenLinks(false);// anchorClicked() -> MainWindow::openAndScroll()
 	m_textEdit->setFont(SETTINGS.getEditorFont());
 
 	setWidget(m_textEdit);

@@ -186,7 +186,7 @@ void MainWindow::openAndScroll(const QString& fileName, int line)
 		{
 			// Three hours of my life to write the following line :-(
 			editor->setTextCursor(QTextCursor(editor->document()->findBlockByNumber(line-1)));
-			// editor->centerCursor();// TOOD: only if it is not visible
+			// editor->centerCursor();// TODO: only if it is not visible
 		}
 
 		editor->setFocus();

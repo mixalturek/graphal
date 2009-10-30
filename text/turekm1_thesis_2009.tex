@@ -1420,6 +1420,15 @@ Aby se omezil počet možných chyb se synchronizací, byla dále, po vzoru \tex
 \end{verbatim}
 
 
+\subsection{Spuštění a běh vlákna skriptu}
+
+Z uživatelského hlediska se skript spouští kliknutím na tlačítko \textit{Run}, které je namapováno na slot \texttt{runScript()} hlavního okna. Při jeho aktivaci se automaticky uloží všechny otevřené soubory, z dokumentu v aktivním editoru se vezme disková cesta se jménem skriptu, inicializuje se \texttt{ScriptThread} objekt (dědí ze třídy \texttt{QThread}) a spustí se nové pracovní vlákno.
+
+V metodě \texttt{run()} vlákna se nejdříve resetuje kontextu skriptu do výchozí podoby a znovu se nastaví požadované parametry. Dále je naparsován vstupní soubor, vytvořen abstraktní strom syntaxe a spuštěna hlavní funkce skriptu.
+
+Samotný skript komunikuje s GUI vláknem spíše zřídka. Výjimkou je zasílání chybových a informačních zpráv k zobrazení v panelu s textovým výstupem skriptu a signál o pozastavení běhu breakpointem, který má za následek aktualizaci uživatelského rozhraní včetně panelu aktuálně definovaných proměnných a vizualizací.
+
+
 \subsection{Debugging skriptu}
 
 V požadavcích na vytvářenou aplikaci je definováno, že musí umožňovat krokování skriptu, které ve své složitější formě odpovídá debuggingu. Kapitola \ref{podpora_debuggingu} na straně \pageref{podpora_debuggingu} analyzovala možnosti pozastavení skriptu a pro grafickou aplikaci přišla s nápadem použít synchronizační prostředky vláken. \texttt{QWaitCondition} parametr je obsažen ve třídě \texttt{GuiContext} a vlastní pozastavení je možné realizovat zabudouvanou funkcí \texttt{breakpoint()}.
@@ -1510,16 +1519,81 @@ Nevýhodou je určitě statičnost, není možné definovat nový breakpoint po 
 
 \subsection{Hlavní okno}
 
+Hlavní okno aplikace dědí ze třídy \texttt{QMainWindow} a používá standardní rozvržení tvořené hlavním menu, nástrojovými lištami a stavovým řádkem. Jedná se o MDI aplikaci, centrálním widgetem jsou textové editory pro úpravu kódu, které se dají přepínat pomocí záložek.
+
+Posledním výrazným prvkem jsou dokovatelná okna, která se dají libovolně přesouvat po celé ploše hlavního okna, skrývat a znovu zobrazovat a také kompletně vytrhávat ven do samostatných oken. Aplikace si rozložení ovládacích prvků mezi jednotlivými spuštěními samozřejmě pamatuje.
+
+
 \subsection{Textový editor}
 
-Code Editor Example
-http://doc.trolltech.com/4.5/widgets-codeeditor.html
+Textový editor rozšiřuje standardní \texttt{QPlainTextEdit} a kvůli logickému oddělení částečně nesouvisejícího kódu používá dvě samostatné třídy: \texttt{TextEditorProgrammers}, z níž dále dědí \texttt{TextEditor}.
 
-\subsection{Zobrazení proměnných skriptu}
+Programátorský textový editor poskytuje zvýrazňování syntaxe, číslování řádek, zvýraznění aktivní řádky, automatické odsazování zdrojového kódu a inteligentní klávesu \textit{Home}. Od něj odvozená třída dále přidává vytváření, otevírání a ukládání souborů, hledání a nahrazování textu a další činnosti.
 
-\subsection{Zobrazení zásobníku volání funkcí}
+
+\subsubsection{Zvýrazňování syntaxe}
+
+Pravidla a vlastní funkcionalitu zvýrazňování syntaxe definuje třída \texttt{Text\-E\-di\-tor\-High\-ligh\-ter}, jež vychází ze standardní \texttt{QSyntaxHighlighter} a je zaregistrována k zobrazovanému dokumentu. V jejím konstruktoru je definováno, jak se mají obarvovat klíčová slova, řetězce, čísla, komentáře a další elementy jazyka, tyto formáty jsou dále přiřazeny k regulárním výrazům, pomocí kterých se budou hledat jejich textové reprezentace v kódu skriptu.
+
+Vlastní obarvování probíhá v metodě \texttt{highlightBlock()}, jež prochází řetězec s textem zvýrazňované řádky, hledá v něm specifikované regulární výrazy a při nalezení aplikuje daný formát textu. Celé řešení vychází z oficiálního tutoriálu dodávanému ke knihovně Qt \cite{syntax_highlighter_example}.
+
+
+\subsubsection{Zvýraznění aktuální řádky}
+
+Změní-li se pozice textového kurzoru v dokumentu, editor emituje signál \texttt{cur\-sor\-Po\-si\-ti\-on\-Chan\-ged}. Tento singnál je namapován na obslužný slot \texttt{highlightCurrentLine()}, jenž vytvoří objekt typu \texttt{QTextEdit::ExtraSelection}. Nastaví mu barvu pozadí a řekne, aby se roztáhl přes celou řádku, ve které se nachází kurzor.
+
+
+\subsubsection{Číslování řádek}
+
+Převážná část kódu pro přidání čísel řádek do levého okraje editoru se nachází ve třídě \texttt{TextEditorProgrammers}. Nejdříve je nutné vytvořit prázdné místo, do kterého se později budou kreslit čísla řádků. K tomu slouží funkce \texttt{updateLineNumberAreaWidth()} volaná například při přidání nového řádku do dokumentu nebo při změně velikosti okna. Vlastní šířka se získá násobením šířky jednoho znaku s počtem znaků (číslic) v textové reprezentaci počtu řádků.
+
+Zobrazená čísla řádků se musí měnit zároveň s posunem dokumentu. Požadavek na rolování oznamuje editor signálem \texttt{updateRequest}, stačí ho namapovat na slot \texttt{up\-da\-te\-Li\-ne\-Num\-ber\-A\-re\-a()}, ve kterém se pomocí standardní funkce \texttt{scroll()} posune viewport o požadovaný počet pixelů.
+
+Vlastní vykreslení čísel řádků se provádí ve funkci \texttt{lineNumberAreaPaintEvent()}, jenž si najde číslo prvního viditelného řádku a poté v cyklu kreslí číslice. Téměř celý kód byl převzat z oficiálního tutoriálu knihovny Qt \cite{code_editor_example}.
+
+
+\subsubsection{Indikace šířky řádku}
+
+Programátoři často zarovnávají své zdrojové kódy na 80 znaků, některé textové editory umožňují zobrazit vertikální linku, jež specifikuje tento pravý okraj dokumentu. Zdrojový kód pro její vykreslení je umístěn ve funkci \texttt{paintEvent()}.
+
+
+\subsubsection{Automatické odsazování textu}
+
+Automatické odsazování textu je implementováno v metodě \texttt{autoIndent()} editoru, která se volá po každém stisku klávesy \textit{Enter}. Funkce zkopíruje všechny bílé znaky (mezery, tabulátory) na začátku předchozího řádku do aktuálního. Pokud navíc jako první ne-bílý znak nalezne složenou závorku, přidá ještě jeden tabulátor.
+
+
+\subsubsection{Inteligentní klávesa Home}
+
+Nové chování klávesy \textit{Home} má na starost metoda \texttt{homeKey()}. Ve standardním nastavení přesouvá editor při jejím stisku textový kurzor na začátek aktuálního řádku a v případě současného stisku klávesy \textit{Shift} vybírá mezilehlý text do bloku.
+
+Nová implementace umožňuje, aby se kurzor nepřesouval přímo na začátek řádku, ale až za poslední ne-bílý znak na začátku řádku, tedy za odsazení tabulátory. V případě, že se tam již nacházel, je přesunut na standardní začátek a naopak. Napsaný kód neporušuje chování klávesových zkratek \textit{Ctrl+Home} a \textit{Ctrl+Shift+Home}.
+
+
+\subsubsection{Vyhledávání a nahrazování textu}
+
+Editory z knihovny Qt neposkytují dialogy na vyhledávání ani nahrazování textu. V aplikaci je poskytují nově vytvořené třídy \texttt{DialogFind} a \texttt{DialogReplace}, které spolupracují s kódem editoru.
+
+
+\subsection{Textový výstup ze skriptu}
+
+V kapitole \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku} byla představena třída \texttt{GuiLogger}, jejímž prostřednictvím skript vypisuje text do okna s výstupem. Aby mohl tento objekt pro mezivláknovou komunikaci využívat signály a sloty, musí být potomkem třídy \texttt{QObject} a dialog mezi vlákny musí probíhat podle schématu využívajícího mezilehlou frontu (angl. queued connection) \cite{qt_threads}.
+
+\texttt{GuiLogger} poskytuje skriptu funkce pro předávání informačních, varovných a chybových zpráv a také pro standardní výstup ze skriptu. V jejich tělech emituje signály s textovými parametry, které jsou na druhém konci napojeny na obslužné sloty výstupního okna.
+
+Panel je tvořen třídou \texttt{DockScriptOutput}, jež dědí od \texttt{QDockWidget} a zároveň zapouzdřuje \texttt{QTextBrowser}. Obslužné sloty převezmou text, definují barvu a všechno předají metodě \texttt{append()}. V ní se pozice ve zdrojových kódech obalí HTML odkazem a vloží se, spolu s obarveným textem, na konec logu.
+
+Interním podpora odkazů je jediným důvodem pro použití třídy \texttt{QTextBrowser} namísto \texttt{QPlainTextEdit}. Jméno a číslo řádku, ve kterém se vyskytla chyba, je v logu vždy klikací, daný soubor se otevírá v editoru a kurzor je přesunut na požadovaný řádek.
+
+Toto bohužel není standardní chování \texttt{QTextBrowser}. Třída musí být pomocí funkce \texttt{set\-Open\-Links()} požádána, aby odkazy automaticky neotevírala, ale pouze generovala signály o klinutí. Předané URL má stejný formát, jaký byl zadán do \texttt{href} parametru odkazu, tedy jméno souboru a číslo řádku oddělené dvojtečkou. Obě části se od sebe oddělí a předají se jako parametry nově emitovanému signálu. Ten je poté již jednoduše napojen na \texttt{openAndScroll()} slot hlavního okna.
+
+
+\subsection{Panel proměnných skriptu}
+
+\subsection{Panel zásobníku volání funkcí}
 
 \subsection{Vizualizace grafu}
+
+\subsection{Konfigurace a konfigurační dialog}
 
 \subsection{Shrnutí}
 
@@ -1764,11 +1838,13 @@ base code for the application qt4/examples/mainwindows/mdi
 \item[CLI] Command Line Interface
 \item[GUI] Graphics User Interface
 \item[OOP] Object Oriented Programming
+\item[RTTI] Run-Time Type Information
 \item[I/O] Input/Output
 \item[OpenGL] Open Graphics Library
 \item[MDI] Multiple Document Interface
 \item[XML] eXtensible Markup Language
-\item[RTTI] Run-Time Type Information
+\item[HTML] Hyper Text Markup Language
+\item[URL] Uniform Resource Locator
 \end{description}
 \vdots
 
