@@ -1591,9 +1591,9 @@ Toto bohužel není standardní chování \texttt{QTextBrowser}. Třída musí b
 
 \subsection{Panel proměnných skriptu a panel zásobníku volání}
 
-Panel s výpisem hodnot proměnných definovaných ve skriptu obsahuje dva sloupce, jméno proměnné a její hodnotu. Aktualizace informací probíhá po každém pozastavení skriptu, kontext přes zásobník volání dodává všechny potřebné informace. Proměnné se procházejí v cyklu a předávají se v textové formě do seznamu položek okna.
+Panel s výpisem hodnot lokálních proměnných obsahuje dva sloupce, jméno proměnné a její hodnotu. Aktualizace informací probíhá po každém pozastavení skriptu, všechny potřebné informace dodává kontext a jeho zásobník volání. Proměnné se procházejí v cyklu a v textové formě se vkládají do seznamu položek okna.
 
-Hodnoty prvků uložených ve stukturovaných proměnných (pole, struktura, graf atd.) se nezobrazují, místo nich je předán pouze datový typ. Vypisovat všechny hodnoty stoprvkového pole, nebo grafu s milionem uzlů by bylo jednak nepřehledné a jednak neefektivně vytěžovalo procesor i paměť. Místo toho je možné vyžít služeb přiřazení reference, kdy se hodnota strukturovaného datového typu namapuje na jméno proměnné a tím je zároveň možné napřímo zobrazit i její hodnotu.
+Hodnoty prvků, jež jsou uložené ve stukturovaných proměnných (pole, struktura, graf atd.), se nezobrazují, místo nich je předán pouze datový typ. Vypisovat všechny hodnoty stoprvkového pole nebo grafu s milionem uzlů by bylo jednak nepřehledné a jednak neefektivně vytěžovalo procesor i paměť. Místo toho je možné vyžít služeb přiřazení reference, kdy se prvek strukturovaného datového typu namapuje na jméno obyčejné proměnné.
 
 \begin{verbatim}
 alias &= structure.some_array[57];
@@ -1603,7 +1603,7 @@ structure.some_array[57] = "some new value";
 
 Se zásobníkem volání se pracuje ekvivalentním způsobem jako s výpisem proměnných. Obsahuje tři sloupce, jméno funkce, jméno souboru a řádek, ze kterého byla funkce zavolána.
 
-Po přidržení kurzoru myši nad jménem souboru se zobrazí \textit{tool tip} ukazující kompletní cestu k souboru. Třída dále zpracovává signál o dvojkliku myši, na jeho reakci otevírá soubor a roluje na řádek s voláním.
+Po přidržení kurzoru myši nad jménem souboru se zobrazí \textit{tool tip} ukazující kompletní cestu k souboru. Třída dále zpracovává signál o dvojkliku myši, na jeho reakci otevírá soubor v editoru a roluje na specifikovaný řádek.
 
 
 \subsection{Vizualizace grafu}
@@ -1612,25 +1612,25 @@ Po přidržení kurzoru myši nad jménem souboru se zobrazí \textit{tool tip} 
 
 Programátor skriptu komunikuje s vizualizačním oknem výhradně pomocí zabudovaných funkcí, jejich jména začínají na předponu \textit{vis-}. Podobně jako logování z kapitoly \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku} i tato funkcionalita musí být zobecněna, aby se dala používat s grafickou aplikací a zároveň negenerovala chyby o neexistujících funkcích při běhu z konzole.
 
-Základní třída \texttt{VisualizationConnector} definuje svými virtuálními metodami potřebné rozhraní, současně implementuje jejich těla jako prázdná. Všechny zabudované funkce pro vizualizace komunikují s GUI výhradně prostřednictvím této třídy, resp. jejího potomka, a proto pokus o přístup k vizualizačnímu oknu z konzolové aplikace nezpůsobí chybu, ale pouze zavolání prázdné metody komunikačního objektu.
+Rodičovská třída \texttt{VisualizationConnector} definuje potřebné rozhraní, současně implementuje těla metod jako prázdná. Všechny zabudované funkce pro vizualizace komunikují s GUI výhradně prostřednictvím této třídy, resp. jejího potomka, a proto pokus o přístup k oknu z konzolové aplikace nezpůsobí chybu, ale pouze zavolání prázdné metody komunikačního objektu.
 
-\texttt{GuiVisualizationConnector} je o něco zajímavější. Všechny vizualizační zabudované funkce mají obdobu v některé z metod konektoru, ten dále v jejich implementaci generuje Qt signály, které jsou napojeny na obslužné sloty vizualizačního okna. Opačný směr komunikace probíhá pomocí obyčejného volání metod -- vizualizace nepotřebují žádný zobecňovací mechanismus, ví že konektor vždy existuje.
+Odvozený \texttt{GuiVisualizationConnector} je o něco zajímavější. Všechny vizualizační zabudované funkce mají obdobu v některé z metod konektoru, ten dále v jejich těle generuje Qt signály, které jsou napojeny na obslužné sloty okna. Opačný směr komunikace probíhá pomocí obyčejného volání metod -- vizualizační okno nepotřebuje žádný zobecňovací mechanismus, ví že konektor vždy existuje.
 
 
 \subsubsection{Registrace objektů a rendering grafu}
 
-Chce-li programátor skriptu zaregistrovat graf pro zobrazení ve vizualizačním okně, zavolá zabudovanou funkci \texttt{visRegister()}. Ta se přes metodu a signál konektoru spojí se slotem vizualizace, jenž si předaný objekt uloží pro další použití.
+Chce-li programátor skriptu zaregistrovat graf pro zobrazení ve vizualizačním okně, zavolá zabudovanou funkci \texttt{visRegister()}. Ta se přes metodu a signál konektoru spojí se slotem widgetu, jenž si předaný objekt uloží pro další použití.
 
-Aplikace v této části rozlišuje množiny vrcholů, množiny hran a celé grafy obsahující oba předchozí typy. Současně s objektem je předána i výchozí barva a textový řetězec pro menu, s jehož pomocí se bude moci vykreslování objektu vypínat a opětovně zapínat.
+Aplikace v této části rozlišuje množiny vrcholů, množiny hran a celé grafy obsahující oba předchozí typy. Současně s objektem se předává i výchozí barva a řetězec pro menu, s jehož pomocí bude moci uživatel vypínat a opětovně zapínat jeho zobrazování.
 
-Vlastní rendering používá grafickou knihovnu OpenGL. Uzly se vykreslují jako \texttt{GL\_POINTS} body ve 3D prostoru, jež jsou pospojovány \texttt{GL\_LINES} čárami reprezentujícími hrany. Sou\-řad\-ni\-co\-vé koordináty se přebírají z vlastností uzlů pojmenovaných \textit{\_\_x}, \textit{\_\_y} a \textit{\_\_z}, jsou tedy implicitně přístupné i kódu skriptu, jenž je může obyčejným přiřazením kdykoli změnit. U hran je situace obdobná, při renderingu se berou pozice počátečního a koncového uzlu.
+Vlastní rendering používá grafickou knihovnu OpenGL. Uzly se vykreslují jako \texttt{GL\_POINTS} body ve 3D prostoru, jež jsou pospojovány \texttt{GL\_LINES} čárami reprezentujícími hrany. Sou\-řad\-ni\-co\-vé koordináty se přebírají z vlastností uzlů pojmenovaných \textit{\_\_x}, \textit{\_\_y} a \textit{\_\_z}, jsou tedy implicitně přístupné i kódu skriptu, jenž je může obyčejným přiřazením kdykoli změnit. U hran je situace obdobná, při renderingu se ovšem používá pozice počátečního a koncového uzlu.
 
 Nutno podotknout, že není úkolem vizualizací ani skriptu souřadnicové koordináty nějakým způsobem vytvářet. Nestarají se, jak se jejich hodnoty dostaly do uzlů, jednoduše před\-po\-klá\-da\-jí, že tam jsou, a používají je. O jejich vytvoření se musí postarat tvůrce poskytovaného grafu -- ať už specifikací v datovém souboru či přímo v kódu skriptu.
 % TODO: odkaz na kapitolu s formátem grafového souboru
 
 Další vlastnosti, které mohou ovlivnit rendering se jmenují \textit{\_\_r}, \textit{\_\_g}, \textit{\_\_b} a \textit{\_\_w}. První tři z nich definují barvu ve formátu RGB, při jejím nalezení se pro tento konkrétní uzel (hranu) nepoužije obecná barva množiny, se kterou byl registrován, ale tato konkrétní.
 
-Čtvrtý z parametrů umožňuje dodatečné vychýlení hrany ve směru souřadnicové osy \textit{z}. Je-li definován a zároveň je ovlivňování pozic povoleno (zabudovaná funkce \texttt{vis\-Use\-Weight\-When\-Pa\-in\-ting\-Ed\-ges()}), bere se při výpočtu pozice hrany v úvahu i její ohodnocení. Představená funkcionalita souvisí se speciálním požadavkem vedoucího práce, jehož popis přesahuje rámec tohoto textu.
+Čtvrtý z parametrů umožňuje dodatečné vychýlení hrany ve směru souřadnicové osy \textit{z}. Je-li definován a zároveň je ovlivňování pozic povoleno (zabudovaná funkce \texttt{vis\-Use\-Weight\-When\-Pa\-in\-ting\-Ed\-ges()}), bere se při výpočtu pozice hrany v úvahu i její ohodnocení. Představená funkcionalita souvisí se speciálním požadavkem vedoucího práce, popis přesahuje rámec tohoto textu.
 % TODO: případný odkaz na doplňující kapitolu
 
 
