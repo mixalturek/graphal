@@ -23,6 +23,7 @@ isFloat(object) : bool
 isString(object) : bool
 isStruct(object) : bool
 isArray(object) : bool
+isSet(object) : bool
 isGraph(object) : bool
 isVertex(object) : bool
 isEdge(object) : bool
@@ -35,6 +36,9 @@ next(object) : object
 resetIterator(object) : object
 array(number) : array|null
 struct() : struct
+set() : set
+insert(set, object) : null
+remove(set, object) : null
 size(array|string) : int|null
 pushFront(array, object) : null
 pushBack(array, object) : null
@@ -62,10 +66,10 @@ getNeighbors(vertex) : vertexset|null
 getBeginVertex(edge) : vertex|null
 getEndVertex(edge) : vertex|null
 add(vertexset|edgeset, vertex|edge) : null
-contains(graph|vertexset|edgeset, vertex|edge) : bool|null
-union(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
-intersection(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
-difference(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
+contains(graph|vertexset|edgeset|set, vertex|edge|object) : bool|null
+union(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
+intersection(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
+difference(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
 getAdjacencyMatrix(graph) : array
 setPropertyToAllVertices(graph|vertexset, string, object) : null
 setPropertyToAllEdges(graph|edgeset, string, object) : null

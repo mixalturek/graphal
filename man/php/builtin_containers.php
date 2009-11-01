@@ -17,6 +17,27 @@ struct() : struct
 </pre>
 
 
+<p>Return newly created set.</p>
+
+<pre class="spec">
+set() : set
+</pre>
+
+
+<p>Insert object to the set.</p>
+
+<pre class="spec">
+insert(set, object) : null
+</pre>
+
+
+<p>Remove object from the set.</p>
+
+<pre class="spec">
+remove(set, object) : null
+</pre>
+
+
 <p>Return size of the array or string lenght.</p>
 
 <pre class="spec">

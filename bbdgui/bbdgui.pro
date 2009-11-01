@@ -60,6 +60,7 @@ SOURCES += main.cpp \
     ../bbd/valueedge.cpp \
     ../bbd/valuebool.cpp \
     ../bbd/valuearray.cpp \
+    ../bbd/valueset.cpp \
     ../bbd/value.cpp \
     ../bbd/stringtable.cpp \
     ../bbd/parser.cpp \
@@ -187,7 +188,11 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinsetpropertytoalledges.cpp \
     ../bbd/nodebuiltinprint.cpp \
     ../bbd/nodebuiltinprintln.cpp \
-    ../bbd/nodebuiltinvisgetgraph.cpp
+    ../bbd/nodebuiltinvisgetgraph.cpp \
+    ../bbd/nodebuiltinremove.cpp \
+    ../bbd/nodebuiltininsert.cpp \
+    ../bbd/nodebuiltinset.cpp \
+    ../bbd/nodebuiltinisset.cpp
 HEADERS += mainwindow.h \
     settings.h \
     scriptthread.h \
@@ -238,6 +243,7 @@ HEADERS += mainwindow.h \
     ../bbd/valueedge.hpp \
     ../bbd/valuebool.hpp \
     ../bbd/valuearray.hpp \
+    ../bbd/valueset.hpp \
     ../bbd/value.hpp \
     ../bbd/stringtable.hpp \
     ../bbd/parser.hpp \
@@ -366,7 +372,11 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinsetpropertytoalledges.hpp \
     ../bbd/nodebuiltinprintln.hpp \
     ../bbd/nodebuiltinprint.hpp \
-    ../bbd/nodebuiltinvisgetgraph.hpp
+    ../bbd/nodebuiltinvisgetgraph.hpp \
+    ../bbd/nodebuiltinremove.hpp \
+    ../bbd/nodebuiltininsert.hpp \
+    ../bbd/nodebuiltinset.hpp \
+    ../bbd/nodebuiltinisset.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
 FORMS += dialogincludedirs.ui \

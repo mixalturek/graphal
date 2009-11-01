@@ -78,6 +78,12 @@ public:
 		return *this;
 	}
 
+	bool operator== (const CountPtr<TYPE>& cntptr) const
+	{
+		ACCESS_MUTEX_LOCKER;
+		return m_ptr->eq(*(cntptr.m_ptr))->toBool();
+	}
+
 
 /////////////////////////////////////////////////////////////////////////////
 ////

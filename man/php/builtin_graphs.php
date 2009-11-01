@@ -146,31 +146,31 @@ add(vertexset|edgeset, vertex|edge) : null
 </pre>
 
 
-<p>Check if the graph, vertex set or edge set contain the vertex or edge.</p>
+<p>Check if the graph, vertex set or edge set contain the vertex or edge. Check if the set contains object.</p>
 
 <pre class="spec">
-contains(graph|vertexset|edgeset, vertex|edge) : bool|null
+contains(graph|vertexset|edgeset|set, vertex|edge|object) : bool|null
 </pre>
 
 
-<p>Create union from two vertex sets or two edge sets.</p>
+<p>Create union from two vertex sets, two edge sets or two sets.</p>
 
 <pre class="spec">
-union(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
+union(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
 </pre>
 
 
-<p>Create intersection from two vertex sets or two edge sets.</p>
+<p>Create intersection from two vertex sets, two edge sets or two sets.</p>
 
 <pre class="spec">
-intersection(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
+intersection(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
 </pre>
 
 
-<p>Create difference from two vertex sets or two edge sets.</p>
+<p>Create difference from two vertex sets, two edge sets or two sets.</p>
 
 <pre class="spec">
-difference(vertexset|edgeset, vertexset|edgeset) : vertexset|edgeset|null
+difference(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
 </pre>
 
 

@@ -33,6 +33,7 @@ class ValueFloat;
 class ValueString;
 class ValueStruct;
 class ValueArray;
+class ValueSet;
 class ValueReference;
 class ValueIdentifier;
 class ValueGraph;
@@ -66,6 +67,7 @@ public:
 	virtual ValueString*       toValueString(void) { return NULL; }
 	virtual ValueStruct*       toValueStruct(void) { return NULL; }
 	virtual ValueArray*         toValueArray(void) { return NULL; }
+	virtual ValueSet*             toValueSet(void) { return NULL; }
 	virtual ValueGraph*         toValueGraph(void) { return NULL; }
 	virtual ValueVertex*       toValueVertex(void) { return NULL; }
 	virtual ValueEdge*           toValueEdge(void) { return NULL; }

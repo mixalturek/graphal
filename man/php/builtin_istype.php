@@ -12,6 +12,7 @@ include 'p_begin.php';
 <pre class="spec">isString(object) : bool</pre>
 <pre class="spec">isStruct(object) : bool</pre>
 <pre class="spec">isArray(object) : bool</pre>
+<pre class="spec">isSet(object) : bool</pre>
 <pre class="spec">isGraph(object) : bool</pre>
 <pre class="spec">isVertex(object) : bool</pre>
 <pre class="spec">isEdge(object) : bool</pre>

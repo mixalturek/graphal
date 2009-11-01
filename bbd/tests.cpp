@@ -50,6 +50,7 @@
 #include "nodeunaryreturn.hpp"
 #include "nodebinarymult.hpp"
 #include "valuearray.hpp"
+#include "valueset.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -145,6 +146,8 @@ void Tests::run(void)
 	failed += !testCountPtr();
 	failed += !testNodeFunction();
 	failed += !testValueArrayIterator();
+	failed += !testValueSet();
+	failed += !testValueSetOperations();
 
 	// Template
 	// failed += !test();
@@ -1279,6 +1282,96 @@ bool Tests::testValueArrayIterator(void)
 	verify(tmp->toString() == "2");
 
 	verify(!iterator->hasNext()->toBool());
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool Tests::testValueSet(void)
+{
+	bool result = true;
+
+	ValueSet set;
+	verify(set.getNumItems() == 0);
+
+	CountPtr<Value> int_val(new ValueInt(5));
+	verify(!set.contains(int_val));
+	set.insert(int_val);
+	verify(set.getNumItems() == 1);
+	verify(set.contains(int_val));
+
+	CountPtr<Value> float_val(new ValueFloat(3.14));
+	verify(!set.contains(float_val));
+	set.insert(float_val);
+	verify(set.getNumItems() == 2);
+	verify(set.contains(int_val));
+	verify(set.contains(float_val));
+
+	set.insert(float_val);
+	verify(set.getNumItems() == 2);
+	verify(set.contains(int_val));
+	verify(set.contains(float_val));
+
+	CountPtr<Value> int_val2(new ValueInt(5));
+	set.insert(int_val2);
+	verify(set.getNumItems() == 2);
+	verify(set.contains(int_val));
+	verify(set.contains(int_val2));
+	verify(set.contains(float_val));
+
+	set.remove(int_val);
+	verify(set.getNumItems() == 1);
+	verify(!set.contains(int_val));
+	verify(!set.contains(int_val2));
+	verify(set.contains(float_val));
+
+	return testResult(__FUNCTION__, result);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool Tests::testValueSetOperations(void)
+{
+	bool result = true;
+
+	ValueSet set1;
+	ValueSet set2;
+
+	CountPtr<Value> int_val(new ValueInt(5));
+	CountPtr<Value> float_val(new ValueFloat(3.14));
+	CountPtr<Value> string_val(new ValueString("bagr"));
+
+	set1.insert(int_val);
+	set1.insert(float_val);
+
+	set2.insert(int_val);
+	set2.insert(string_val);
+
+	CountPtr<Value> union_val = set1.getUnion(set2);
+	assert(union_val->toValueSet() != NULL);
+	verify(union_val->toValueSet()->getNumItems() == 3);
+	verify(union_val->toValueSet()->contains(int_val));
+	verify(union_val->toValueSet()->contains(float_val));
+	verify(union_val->toValueSet()->contains(string_val));
+
+	CountPtr<Value> intersection_val = set1.getIntersection(set2);
+	assert(intersection_val->toValueSet() != NULL);
+	verify(intersection_val->toValueSet()->getNumItems() == 1);
+	verify(intersection_val->toValueSet()->contains(int_val));
+	verify(!intersection_val->toValueSet()->contains(float_val));
+	verify(!intersection_val->toValueSet()->contains(string_val));
+
+	CountPtr<Value> difference_val = set1.getDifference(set2);
+	assert(difference_val->toValueSet() != NULL);
+	verify(difference_val->toValueSet()->getNumItems() == 1);
+	verify(!difference_val->toValueSet()->contains(int_val));
+	verify(difference_val->toValueSet()->contains(float_val));
+	verify(!difference_val->toValueSet()->contains(string_val));
 
 	return testResult(__FUNCTION__, result);
 }

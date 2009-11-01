@@ -181,6 +181,8 @@
 		<Unit filename="nodebuiltingraph.hpp" />
 		<Unit filename="nodebuiltinhasnext.cpp" />
 		<Unit filename="nodebuiltinhasnext.hpp" />
+		<Unit filename="nodebuiltininsert.cpp" />
+		<Unit filename="nodebuiltininsert.hpp" />
 		<Unit filename="nodebuiltinintersection.cpp" />
 		<Unit filename="nodebuiltinintersection.hpp" />
 		<Unit filename="nodebuiltininvertedgesdirection.cpp" />
@@ -203,6 +205,8 @@
 		<Unit filename="nodebuiltinisint.hpp" />
 		<Unit filename="nodebuiltinisnull.cpp" />
 		<Unit filename="nodebuiltinisnull.hpp" />
+		<Unit filename="nodebuiltinisset.cpp" />
+		<Unit filename="nodebuiltinisset.hpp" />
 		<Unit filename="nodebuiltinisstring.cpp" />
 		<Unit filename="nodebuiltinisstring.hpp" />
 		<Unit filename="nodebuiltinisstruct.cpp" />
@@ -231,8 +235,12 @@
 		<Unit filename="nodebuiltinpushback.hpp" />
 		<Unit filename="nodebuiltinpushfront.cpp" />
 		<Unit filename="nodebuiltinpushfront.hpp" />
+		<Unit filename="nodebuiltinremove.cpp" />
+		<Unit filename="nodebuiltinremove.hpp" />
 		<Unit filename="nodebuiltinresetiterator.cpp" />
 		<Unit filename="nodebuiltinresetiterator.hpp" />
+		<Unit filename="nodebuiltinset.cpp" />
+		<Unit filename="nodebuiltinset.hpp" />
 		<Unit filename="nodebuiltinsetdirected.cpp" />
 		<Unit filename="nodebuiltinsetdirected.hpp" />
 		<Unit filename="nodebuiltinsetpropertytoalledges.cpp" />
@@ -338,6 +346,8 @@
 		<Unit filename="valuenull.hpp" />
 		<Unit filename="valuereference.cpp" />
 		<Unit filename="valuereference.hpp" />
+		<Unit filename="valueset.cpp" />
+		<Unit filename="valueset.hpp" />
 		<Unit filename="valuestring.cpp" />
 		<Unit filename="valuestring.hpp" />
 		<Unit filename="valuestruct.cpp" />

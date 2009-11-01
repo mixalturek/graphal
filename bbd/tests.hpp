@@ -64,6 +64,8 @@ private:
 	bool testCountPtr(void);
 	bool testNodeFunction(void);
 	bool testValueArrayIterator(void);
+	bool testValueSet(void);
+	bool testValueSetOperations(void);
 
 	// Template
 	// bool test(void);
