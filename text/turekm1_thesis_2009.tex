@@ -1634,10 +1634,25 @@ Další vlastnosti, které mohou ovlivnit rendering se jmenují \textit{\_\_r}, 
 % TODO: případný odkaz na doplňující kapitolu
 
 
-\subsubsection{Změna pohledu a jeho uložení}
+\subsubsection{Změna pohledu kamery na scénu a její ukládání}
+
+Rendering používá celkem pět parametrů pro definici kamery. Jsou jimi \textit{x}, \textit{y} a \textit{z} pozice spolu s \textit{x} a \textit{y} rotacemi. Kamera se v kódu renderingu nastavuje následovně.
+
+\begin{verbatim}
+glLoadIdentity();
+glTranslatef(xpos, ypos, zpos - 10.0f);
+glRotatef(xrot, 1.0f, 0.0f, 0.0f);
+glRotatef(yrot, 0.0f, 1.0f, 0.0f);
+\end{verbatim}
+
+Uživatel má možnost, stiskem levého tlačítka myši ve vizualizačním okně a táhnutím, ovlivnit \textit{x} a \textit{y} pozici, k posutí na ose \textit{z} slouží kolečko. Táhnutí se stisknutým pravým tlačítkem ovlivňuje rotace, \textit{Ctrl} a \textit{Shift} modifikátory omezují natáčení pouze na horizontální, respektive vertikální, osu.
+
+Zmíněné parametry se sdružují do třídy \texttt{VisualizationView}. Aplikace si udržuje kontejner jejích objektů, vkládání a aktivaci zpřístupňuje pomocí položek menu.
 
 
 \subsubsection{Screenshot vizualizačního okna}
+
+Díky knihovně Qt je kód funkce velice jednoduchý, jedná se pouze o dva řádky. Funkce \texttt{grabWindow()} třídy \texttt{QPixmap} sejme obsah okna a \texttt{save()} uloží data obrázku na disk. Alternativou by mohlo být OpenGL volání \texttt{glReadPixels()}, obě metody produkují stejné výsledky.
 
 
 \subsection{Konfigurace a konfigurační dialog}
