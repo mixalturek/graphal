@@ -99,6 +99,8 @@ void GuiVisualizationConnector::visScreenshot(const string& path)
 
 CountPtr<Value> GuiVisualizationConnector::visGetGraph(void)
 {
+	ACCESS_MUTEX_LOCKER;
+
 	if(!m_graphPath.isEmpty())
 	{
 		ValueGraph* graph = new ValueGraph();

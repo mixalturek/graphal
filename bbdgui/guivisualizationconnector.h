@@ -35,7 +35,7 @@ public:
 	~GuiVisualizationConnector(void);
 
 	virtual void dump(ostream& os, uint indent) const;
-	void setGraphPath(const QString& path) { m_graphPath = path; }
+	void setGraphPath(const QString& path) { ACCESS_MUTEX_LOCKER; m_graphPath = path; }
 
 signals:
 	void visRegisterSig(VisualizationItemData);
