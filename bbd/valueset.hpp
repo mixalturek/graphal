@@ -34,15 +34,20 @@ public:
 	ValueSet(void);
 	virtual ~ValueSet(void);
 
-	virtual bool toBool(void) const { ACCESS_MUTEX_LOCKER; return !m_data.empty(); }
+	virtual bool toBool(void) const { ACCESS_MUTEX_LOCKER; return !m_val.empty(); }
 	virtual string toString(void) const { return "#Set"; }
 	virtual void dump(ostream& os, uint indent) const;
 	virtual ValueSet* toValueSet(void) { return this; }
 
+	void clear(void);
+	bool empty(void) const { ACCESS_MUTEX_LOCKER; return m_val.empty(); }
+	CountPtr<Value> clone(void) const;
+
 	void insert(CountPtr<Value> value);
 	void remove(CountPtr<Value> value);
+	void remove(const ValueSet& set);
 	bool contains(CountPtr<Value> value) const;
-	uint getNumItems(void) const { ACCESS_MUTEX_LOCKER;	return m_data.size(); }
+	uint getSize(void) const { ACCESS_MUTEX_LOCKER;	return m_val.size(); }
 
 	CountPtr<Value> getUnion(const ValueSet& vs) const;
 	CountPtr<Value> getIntersection(const ValueSet& vs) const;
@@ -53,7 +58,15 @@ public:
 	virtual CountPtr<Value> next(void);
 	virtual void resetIterator(void);
 
-//	void setPropertyToAllVertices(identifier name, CountPtr<Value> value);
+	void setPropertyToAllStructItems(identifier name, CountPtr<Value> value);
+
+	// See ValueEdge::getBeginVertex()
+	CountPtr<Value> findItem(const Value* value) const;
+
+	set_container::iterator begin(void) { ACCESS_MUTEX_LOCKER; return m_val.begin(); }
+	set_container::iterator end(void) { ACCESS_MUTEX_LOCKER; return m_val.end(); }
+	set_container::const_iterator begin(void) const { ACCESS_MUTEX_LOCKER; return m_val.begin(); }
+	set_container::const_iterator end(void) const { ACCESS_MUTEX_LOCKER; return m_val.end(); }
 
 public:
 	virtual PTR_Value add(const Value&    right) const; // +
@@ -74,7 +87,7 @@ public:
 	virtual PTR_Value logNOT(void)               const; // !
 
 private:
-	set_container m_data;
+	set_container m_val;
 	set_container::iterator m_it;
 };
 

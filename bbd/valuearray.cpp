@@ -25,6 +25,7 @@
 #include "valuenull.hpp"
 #include "valueint.hpp"
 #include "valuefloat.hpp"
+#include "valuestruct.hpp"
 #include "logger.hpp"
 
 
@@ -222,11 +223,19 @@ CountPtr<Value> ValueArray::iterator(void) const
 	return CountPtr<Value>(tmp);
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 CountPtr<Value> ValueArray::hasNext(void) const
 {
 	ACCESS_MUTEX_LOCKER;
 	return (m_it == m_val.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
 
 CountPtr<Value> ValueArray::next(void)
 {
@@ -236,10 +245,31 @@ CountPtr<Value> ValueArray::next(void)
 	return ret;
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueArray::resetIterator(void)
 {
 	ACCESS_MUTEX_LOCKER;
 	m_it = m_val.begin();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueArray::setPropertyToAllStructItems(identifier name, CountPtr<Value> value)
+{
+	ACCESS_MUTEX_LOCKER;
+
+	deque< CountPtr<Value> >::iterator it;
+	for(it = m_val.begin(); it != m_val.end(); ++it)
+	{
+		ValueStruct* tmp = (*it)->toValueStruct();
+		if(tmp != NULL)
+			tmp->setItem(name, value);
+	}
 }
 
 

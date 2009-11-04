@@ -24,7 +24,6 @@
 #include <set>
 #include "general.hpp"
 #include "value.hpp"
-#include "valueedgeset.hpp"
 #include "valuegraph.hpp"
 #include "valuestruct.hpp"
 
@@ -46,8 +45,8 @@ public:
 
 	virtual void dump(ostream& os, uint indent) const;
 
-	set<ValueEdge*>* getEdges(void) { return m_edges; }
-	set<ValueEdge*> getEdgesCopy(void) { return *m_edges; }
+	ValueSet* getEdges(void) { return m_edges; }
+	CountPtr<Value> getEdgesCopy(void);
 
 	uint getDegree(void) const;
 	CountPtr<Value> getNeighbors(void);
@@ -64,12 +63,12 @@ public:
 	virtual void resetIterator(void) { m_properties->resetIterator(); }
 
 private:
-	friend ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end);
+	friend CountPtr<Value> ValueGraph::generateEdge(CountPtr<Value> begin, CountPtr<Value> end);
 	friend bool ValueGraph::loadFromFile(const string& filename);
-	void addEdge(ValueEdge* edge);
+	void addEdge(CountPtr<Value> edge);
 
-	friend void ValueGraph::deleteEdge(ValueEdge* edge);
-	void deleteEdge(ValueEdge* edge);
+	friend void ValueGraph::deleteEdge(CountPtr<Value> edge);
+	void deleteEdge(CountPtr<Value> edge);
 
 public:
 	virtual PTR_Value add(const Value&     right) const; // +
@@ -91,7 +90,7 @@ public:
 
 private:
 	ValueGraph* m_graph;
-	set<ValueEdge*>* m_edges;
+	ValueSet* m_edges;
 	ValueStruct* m_properties;
 };
 

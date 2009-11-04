@@ -20,6 +20,8 @@
 
 #include "valueset.hpp"
 #include "valuebool.hpp"
+#include "valuenull.hpp"
+#include "valuestruct.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -27,8 +29,8 @@
 
 ValueSet::ValueSet(void)
 	: Value(),
-	m_data(),
-	m_it(m_data.begin())
+	m_val(),
+	m_it(m_val.begin())
 {
 
 }
@@ -36,6 +38,30 @@ ValueSet::ValueSet(void)
 ValueSet::~ValueSet(void)
 {
 
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueSet::clear(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	m_val.clear();
+	m_it = m_val.begin();
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueSet::clone(void) const
+{
+	ACCESS_MUTEX_LOCKER;
+	ValueSet* ret = new ValueSet;
+	ret->m_val = m_val;
+	ret->resetIterator();
+	return CountPtr<Value>(ret);
 }
 
 
@@ -50,7 +76,7 @@ void ValueSet::dump(ostream& os, uint indent) const
 	os << "<ValueSet>" << endl;
 
 	set_container::const_iterator it;
-	for(it = m_data.begin(); it != m_data.end(); ++it)
+	for(it = m_val.begin(); it != m_val.end(); ++it)
 		(*it)->dump(os, indent+1);
 
 	dumpIndent(os, indent);
@@ -68,7 +94,7 @@ void ValueSet::insert(CountPtr<Value> value)
 	if(contains(value))
 		return;
 
-	m_data.push_back(value);
+	m_val.push_back(value);
 }
 
 
@@ -80,14 +106,26 @@ void ValueSet::remove(CountPtr<Value> value)
 	ACCESS_MUTEX_LOCKER;
 
 	set_container::iterator it;
-	for(it = m_data.begin(); it != m_data.end(); ++it)
+	for(it = m_val.begin(); it != m_val.end(); ++it)
 	{
 		if(*it == value)
 		{
-			m_data.erase(it);
+			m_val.erase(it);
 			break;
 		}
 	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueSet::remove(const ValueSet& set)
+{
+	ACCESS_MUTEX_LOCKER;
+	set_container::const_iterator it;
+	for(it = set.m_val.begin(); it != set.m_val.end(); ++it)
+		remove(*it);
 }
 
 
@@ -99,13 +137,48 @@ bool ValueSet::contains(CountPtr<Value> value) const
 	ACCESS_MUTEX_LOCKER;
 
 	set_container::const_iterator it;
-	for(it = m_data.begin(); it != m_data.end(); ++it)
+	for(it = m_val.begin(); it != m_val.end(); ++it)
 	{
 		if(*it == value)
 			return true;
 	}
 
 	return false;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueSet::findItem(const Value* value) const
+{
+	ACCESS_MUTEX_LOCKER;
+
+	set_container::const_iterator it;
+	for(it = m_val.begin(); it != m_val.end(); ++it)
+	{
+		if(it->getPtr() == value)
+			return *it;
+	}
+
+	return VALUENULL;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueSet::setPropertyToAllStructItems(identifier name, CountPtr<Value> value)
+{
+	ACCESS_MUTEX_LOCKER;
+
+	set_container::iterator it;
+	for(it = m_val.begin(); it != m_val.end(); ++it)
+	{
+		ValueStruct* tmp = (*it)->toValueStruct();
+		if(tmp != NULL)
+			tmp->setItem(name, value);
+	}
 }
 
 
@@ -119,10 +192,10 @@ CountPtr<Value> ValueSet::getUnion(const ValueSet& vs) const
 	set_container::const_iterator it;
 	ValueSet* ret = new ValueSet;
 
-	for(it = m_data.begin(); it != m_data.end(); ++it)
+	for(it = m_val.begin(); it != m_val.end(); ++it)
 		ret->insert(*it);
 
-	for(it = vs.m_data.begin(); it != vs.m_data.end(); it++)
+	for(it = vs.m_val.begin(); it != vs.m_val.end(); it++)
 		ret->insert(*it);
 
 	return CountPtr<Value>(ret);
@@ -139,7 +212,7 @@ CountPtr<Value> ValueSet::getIntersection(const ValueSet& vs) const
 	set_container::const_iterator it;
 	ValueSet* ret = new ValueSet;
 
-	for(it = m_data.begin(); it != m_data.end(); ++it)
+	for(it = m_val.begin(); it != m_val.end(); ++it)
 	{
 		if(vs.contains(*it))
 			ret->insert(*it);
@@ -159,7 +232,7 @@ CountPtr<Value> ValueSet::getDifference(const ValueSet& vs) const
 	set_container::const_iterator it;
 	ValueSet* ret = new ValueSet;
 
-	for(it = m_data.begin(); it != m_data.end(); ++it)
+	for(it = m_val.begin(); it != m_val.end(); ++it)
 	{
 		if(!vs.contains(*it))
 			ret->insert(*it);
@@ -175,7 +248,7 @@ CountPtr<Value> ValueSet::iterator(void) const
 {
 	ACCESS_MUTEX_LOCKER;
 	ValueSet* tmp = new ValueSet;
-	tmp->m_data = m_data;
+	tmp->m_val = m_val;
 	tmp->resetIterator();
 
 	return CountPtr<Value>(tmp);
@@ -188,7 +261,7 @@ CountPtr<Value> ValueSet::iterator(void) const
 CountPtr<Value> ValueSet::hasNext(void) const
 {
 	ACCESS_MUTEX_LOCKER;
-	return (m_it == m_data.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
+	return (m_it == m_val.end()) ? VALUEBOOL_FALSE : VALUEBOOL_TRUE;
 }
 
 
@@ -208,7 +281,7 @@ CountPtr<Value> ValueSet::next(void)
 void ValueSet::resetIterator(void)
 {
 	ACCESS_MUTEX_LOCKER;
-	m_it = m_data.begin();
+	m_it = m_val.begin();
 }
 
 
@@ -221,16 +294,16 @@ PTR_Value ValueSet::mult(const Value& right)       const { return right.mult(*th
 PTR_Value ValueSet::div(const Value& right)        const { return right.div(*this); } // /
 PTR_Value ValueSet::mod(const Value& right)        const { return right.mod(*this); } // %
 PTR_Value ValueSet::eq(const Value& right)         const { return right.eq(*this); } // ==
-PTR_Value ValueSet::eq(const ValueSet& left) const { return (left.m_data == m_data) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueSet::eq(const ValueSet& left) const { return (left.m_val == m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 PTR_Value ValueSet::ne(const Value& right)         const { return right.ne(*this); } // !=
-PTR_Value ValueSet::ne(const ValueSet& left) const { return (left.m_data != m_data) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+PTR_Value ValueSet::ne(const ValueSet& left) const { return (left.m_val != m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
 PTR_Value ValueSet::le(const Value& right)         const { return right.le(*this); } // <=
 PTR_Value ValueSet::ge(const Value& right)         const { return right.ge(*this); } // >=
 PTR_Value ValueSet::lt(const Value& right)         const { return right.lt(*this); } // <
 PTR_Value ValueSet::gt(const Value& right)         const { return right.gt(*this); } // >
 PTR_Value ValueSet::member(const Value& right)     const { return right.member(*this); } // .
 PTR_Value ValueSet::index(const Value& right)      const { return right.index(*this); } // []
-PTR_Value ValueSet::logNOT(void)                   const { ACCESS_MUTEX_LOCKER; return (m_data.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
+PTR_Value ValueSet::logNOT(void)                   const { ACCESS_MUTEX_LOCKER; return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
 
 
 /////////////////////////////////////////////////////////////////////////////

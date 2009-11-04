@@ -29,7 +29,7 @@
 #include "valuegraph.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
-#include "valuevertexset.hpp"
+#include "valueset.hpp"
 #include "logger.hpp"
 
 
@@ -131,8 +131,7 @@ PTR_Value ValueIdentifier::add(const ValueIdentifier& left) const { return left.
 PTR_Value ValueIdentifier::add(const ValueGraph& left)      const { return static_cast<const Value&>(left).add(*getReferredValue()); }
 PTR_Value ValueIdentifier::add(const ValueVertex& left)     const { return static_cast<const Value&>(left).add(*getReferredValue()); }
 PTR_Value ValueIdentifier::add(const ValueEdge& left)       const { return static_cast<const Value&>(left).add(*getReferredValue()); }
-PTR_Value ValueIdentifier::add(const ValueVertexSet& left)  const { return static_cast<const Value&>(left).add(*getReferredValue()); }
-PTR_Value ValueIdentifier::add(const ValueEdgeSet& left)    const { return static_cast<const Value&>(left).add(*getReferredValue()); }
+PTR_Value ValueIdentifier::add(const ValueSet& left)        const { return static_cast<const Value&>(left).add(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::sub(const Value& right)          const { return this->getReferredValue()->sub(right); } // -
 PTR_Value ValueIdentifier::sub(const ValueNull& left)       const { return static_cast<const Value&>(left).sub(*getReferredValue()); }
@@ -146,8 +145,7 @@ PTR_Value ValueIdentifier::sub(const ValueIdentifier& left) const { return left.
 PTR_Value ValueIdentifier::sub(const ValueGraph& left)      const { return static_cast<const Value&>(left).sub(*getReferredValue()); }
 PTR_Value ValueIdentifier::sub(const ValueVertex& left)     const { return static_cast<const Value&>(left).sub(*getReferredValue()); }
 PTR_Value ValueIdentifier::sub(const ValueEdge& left)       const { return static_cast<const Value&>(left).sub(*getReferredValue()); }
-PTR_Value ValueIdentifier::sub(const ValueVertexSet& left)  const { return static_cast<const Value&>(left).sub(*getReferredValue()); }
-PTR_Value ValueIdentifier::sub(const ValueEdgeSet& left)    const { return static_cast<const Value&>(left).sub(*getReferredValue()); }
+PTR_Value ValueIdentifier::sub(const ValueSet& left)        const { return static_cast<const Value&>(left).sub(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::mult(const Value& right)         const { return this->getReferredValue()->mult(right); } // *
 PTR_Value ValueIdentifier::mult(const ValueNull& left)      const { return static_cast<const Value&>(left).mult(*getReferredValue()); }
@@ -161,8 +159,7 @@ PTR_Value ValueIdentifier::mult(const ValueIdentifier& left)const { return left.
 PTR_Value ValueIdentifier::mult(const ValueGraph& left)     const { return static_cast<const Value&>(left).mult(*getReferredValue()); }
 PTR_Value ValueIdentifier::mult(const ValueVertex& left)    const { return static_cast<const Value&>(left).mult(*getReferredValue()); }
 PTR_Value ValueIdentifier::mult(const ValueEdge& left)      const { return static_cast<const Value&>(left).mult(*getReferredValue()); }
-PTR_Value ValueIdentifier::mult(const ValueVertexSet& left) const { return static_cast<const Value&>(left).mult(*getReferredValue()); }
-PTR_Value ValueIdentifier::mult(const ValueEdgeSet& left)   const { return static_cast<const Value&>(left).mult(*getReferredValue()); }
+PTR_Value ValueIdentifier::mult(const ValueSet& left)       const { return static_cast<const Value&>(left).mult(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::div(const Value& right)          const { return this->getReferredValue()->div(right); } // /
 PTR_Value ValueIdentifier::div(const ValueNull& left)       const { return static_cast<const Value&>(left).div(*getReferredValue()); }
@@ -176,8 +173,7 @@ PTR_Value ValueIdentifier::div(const ValueIdentifier& left) const { return left.
 PTR_Value ValueIdentifier::div(const ValueGraph& left)      const { return static_cast<const Value&>(left).div(*getReferredValue()); }
 PTR_Value ValueIdentifier::div(const ValueVertex& left)     const { return static_cast<const Value&>(left).div(*getReferredValue()); }
 PTR_Value ValueIdentifier::div(const ValueEdge& left)       const { return static_cast<const Value&>(left).div(*getReferredValue()); }
-PTR_Value ValueIdentifier::div(const ValueVertexSet& left)  const { return static_cast<const Value&>(left).div(*getReferredValue()); }
-PTR_Value ValueIdentifier::div(const ValueEdgeSet& left)    const { return static_cast<const Value&>(left).div(*getReferredValue()); }
+PTR_Value ValueIdentifier::div(const ValueSet& left)        const { return static_cast<const Value&>(left).div(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::mod(const Value& right)          const { return this->getReferredValue()->mod(right); } // %
 PTR_Value ValueIdentifier::mod(const ValueNull& left)       const { return static_cast<const Value&>(left).mod(*getReferredValue()); }
@@ -191,8 +187,7 @@ PTR_Value ValueIdentifier::mod(const ValueIdentifier& left) const { return left.
 PTR_Value ValueIdentifier::mod(const ValueGraph& left)      const { return static_cast<const Value&>(left).mod(*getReferredValue()); }
 PTR_Value ValueIdentifier::mod(const ValueVertex& left)     const { return static_cast<const Value&>(left).mod(*getReferredValue()); }
 PTR_Value ValueIdentifier::mod(const ValueEdge& left)       const { return static_cast<const Value&>(left).mod(*getReferredValue()); }
-PTR_Value ValueIdentifier::mod(const ValueVertexSet& left)  const { return static_cast<const Value&>(left).mod(*getReferredValue()); }
-PTR_Value ValueIdentifier::mod(const ValueEdgeSet& left)    const { return static_cast<const Value&>(left).mod(*getReferredValue()); }
+PTR_Value ValueIdentifier::mod(const ValueSet& left)        const { return static_cast<const Value&>(left).mod(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::eq(const Value& right)           const { return this->getReferredValue()->eq(right); } // ==
 PTR_Value ValueIdentifier::eq(const ValueNull& left)        const { return static_cast<const Value&>(left).eq(*getReferredValue()); }
@@ -206,8 +201,7 @@ PTR_Value ValueIdentifier::eq(const ValueIdentifier& left)  const { return left.
 PTR_Value ValueIdentifier::eq(const ValueGraph& left)       const { return static_cast<const Value&>(left).eq(*getReferredValue()); }
 PTR_Value ValueIdentifier::eq(const ValueVertex& left)      const { return static_cast<const Value&>(left).eq(*getReferredValue()); }
 PTR_Value ValueIdentifier::eq(const ValueEdge& left)        const { return static_cast<const Value&>(left).eq(*getReferredValue()); }
-PTR_Value ValueIdentifier::eq(const ValueVertexSet& left)   const { return static_cast<const Value&>(left).eq(*getReferredValue()); }
-PTR_Value ValueIdentifier::eq(const ValueEdgeSet& left)     const { return static_cast<const Value&>(left).eq(*getReferredValue()); }
+PTR_Value ValueIdentifier::eq(const ValueSet& left)         const { return static_cast<const Value&>(left).eq(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::ne(const Value& right)           const { return this->getReferredValue()->ne(right); } // !=
 PTR_Value ValueIdentifier::ne(const ValueNull& left)        const { return static_cast<const Value&>(left).ne(*getReferredValue()); }
@@ -221,8 +215,7 @@ PTR_Value ValueIdentifier::ne(const ValueIdentifier& left)  const { return left.
 PTR_Value ValueIdentifier::ne(const ValueGraph& left)       const { return static_cast<const Value&>(left).ne(*getReferredValue()); }
 PTR_Value ValueIdentifier::ne(const ValueVertex& left)      const { return static_cast<const Value&>(left).ne(*getReferredValue()); }
 PTR_Value ValueIdentifier::ne(const ValueEdge& left)        const { return static_cast<const Value&>(left).ne(*getReferredValue()); }
-PTR_Value ValueIdentifier::ne(const ValueVertexSet& left)   const { return static_cast<const Value&>(left).ne(*getReferredValue()); }
-PTR_Value ValueIdentifier::ne(const ValueEdgeSet& left)     const { return static_cast<const Value&>(left).ne(*getReferredValue()); }
+PTR_Value ValueIdentifier::ne(const ValueSet& left)         const { return static_cast<const Value&>(left).ne(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::le(const Value& right)           const { return this->getReferredValue()->le(right); } // <=
 PTR_Value ValueIdentifier::le(const ValueNull& left)        const { return static_cast<const Value&>(left).le(*getReferredValue()); }
@@ -236,8 +229,7 @@ PTR_Value ValueIdentifier::le(const ValueIdentifier& left)  const { return left.
 PTR_Value ValueIdentifier::le(const ValueGraph& left)       const { return static_cast<const Value&>(left).le(*getReferredValue()); }
 PTR_Value ValueIdentifier::le(const ValueVertex& left)      const { return static_cast<const Value&>(left).le(*getReferredValue()); }
 PTR_Value ValueIdentifier::le(const ValueEdge& left)        const { return static_cast<const Value&>(left).le(*getReferredValue()); }
-PTR_Value ValueIdentifier::le(const ValueVertexSet& left)   const { return static_cast<const Value&>(left).le(*getReferredValue()); }
-PTR_Value ValueIdentifier::le(const ValueEdgeSet& left)     const { return static_cast<const Value&>(left).le(*getReferredValue()); }
+PTR_Value ValueIdentifier::le(const ValueSet& left)         const { return static_cast<const Value&>(left).le(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::ge(const Value& right)           const { return this->getReferredValue()->ge(right); } // >=
 PTR_Value ValueIdentifier::ge(const ValueNull& left)        const { return static_cast<const Value&>(left).ge(*getReferredValue()); }
@@ -251,8 +243,7 @@ PTR_Value ValueIdentifier::ge(const ValueIdentifier& left)  const { return left.
 PTR_Value ValueIdentifier::ge(const ValueGraph& left)       const { return static_cast<const Value&>(left).ge(*getReferredValue()); }
 PTR_Value ValueIdentifier::ge(const ValueVertex& left)      const { return static_cast<const Value&>(left).ge(*getReferredValue()); }
 PTR_Value ValueIdentifier::ge(const ValueEdge& left)        const { return static_cast<const Value&>(left).ge(*getReferredValue()); }
-PTR_Value ValueIdentifier::ge(const ValueVertexSet& left)   const { return static_cast<const Value&>(left).ge(*getReferredValue()); }
-PTR_Value ValueIdentifier::ge(const ValueEdgeSet& left)     const { return static_cast<const Value&>(left).ge(*getReferredValue()); }
+PTR_Value ValueIdentifier::ge(const ValueSet& left)         const { return static_cast<const Value&>(left).ge(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::lt(const Value& right)           const { return this->getReferredValue()->lt(right); } // <
 PTR_Value ValueIdentifier::lt(const ValueNull& left)        const { return static_cast<const Value&>(left).lt(*getReferredValue()); }
@@ -266,8 +257,7 @@ PTR_Value ValueIdentifier::lt(const ValueIdentifier& left)  const { return left.
 PTR_Value ValueIdentifier::lt(const ValueGraph& left)       const { return static_cast<const Value&>(left).lt(*getReferredValue()); }
 PTR_Value ValueIdentifier::lt(const ValueVertex& left)      const { return static_cast<const Value&>(left).lt(*getReferredValue()); }
 PTR_Value ValueIdentifier::lt(const ValueEdge& left)        const { return static_cast<const Value&>(left).lt(*getReferredValue()); }
-PTR_Value ValueIdentifier::lt(const ValueVertexSet& left)   const { return static_cast<const Value&>(left).lt(*getReferredValue()); }
-PTR_Value ValueIdentifier::lt(const ValueEdgeSet& left)     const { return static_cast<const Value&>(left).lt(*getReferredValue()); }
+PTR_Value ValueIdentifier::lt(const ValueSet& left)         const { return static_cast<const Value&>(left).lt(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::gt(const Value& right)           const { return this->getReferredValue()->gt(right); } // >
 PTR_Value ValueIdentifier::gt(const ValueNull& left)        const { return static_cast<const Value&>(left).gt(*getReferredValue()); }
@@ -281,8 +271,7 @@ PTR_Value ValueIdentifier::gt(const ValueIdentifier& left)  const { return left.
 PTR_Value ValueIdentifier::gt(const ValueGraph& left)       const { return static_cast<const Value&>(left).gt(*getReferredValue()); }
 PTR_Value ValueIdentifier::gt(const ValueVertex& left)      const { return static_cast<const Value&>(left).gt(*getReferredValue()); }
 PTR_Value ValueIdentifier::gt(const ValueEdge& left)        const { return static_cast<const Value&>(left).gt(*getReferredValue()); }
-PTR_Value ValueIdentifier::gt(const ValueVertexSet& left)   const { return static_cast<const Value&>(left).gt(*getReferredValue()); }
-PTR_Value ValueIdentifier::gt(const ValueEdgeSet& left)     const { return static_cast<const Value&>(left).gt(*getReferredValue()); }
+PTR_Value ValueIdentifier::gt(const ValueSet& left)         const { return static_cast<const Value&>(left).gt(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::member(const Value& right)             const { return this->getReferredValue()->member(right); } // .
 PTR_Value ValueIdentifier::member(const ValueNull& /*left*/)      const { WARN_P(_("Member access to the NULL variable")); return VALUENULL; }
@@ -296,8 +285,7 @@ PTR_Value ValueIdentifier::member(const ValueIdentifier& left)    const { return
 PTR_Value ValueIdentifier::member(const ValueGraph& /*left*/)     const { WARN_P(_("Member access to the graph variable")); return VALUENULL; }
 PTR_Value ValueIdentifier::member(const ValueVertex& left)        const { return const_cast<ValueVertex&>(left).getItem(m_val); }
 PTR_Value ValueIdentifier::member(const ValueEdge& left)          const { return const_cast<ValueEdge&>(left).getItem(m_val); }
-PTR_Value ValueIdentifier::member(const ValueVertexSet& /*left*/) const { WARN_P(_("Member access to the VertexSet variable")); return VALUENULL; }
-PTR_Value ValueIdentifier::member(const ValueEdgeSet& /*left*/)   const { WARN_P(_("Member access to the EdgeSet variable")); return VALUENULL; }
+PTR_Value ValueIdentifier::member(const ValueSet& /*left*/)       const { WARN_P(_("Member access to the VertexSet variable")); return VALUENULL; }
 
 PTR_Value ValueIdentifier::index(const Value& right)         const { return this->getReferredValue()->index(right); } // []
 PTR_Value ValueIdentifier::index(const ValueNull& left)      const { return static_cast<const Value&>(left).index(*getReferredValue()); }
@@ -311,7 +299,6 @@ PTR_Value ValueIdentifier::index(const ValueIdentifier& left)const { return left
 PTR_Value ValueIdentifier::index(const ValueGraph& left)     const { return static_cast<const Value&>(left).index(*getReferredValue()); }
 PTR_Value ValueIdentifier::index(const ValueVertex& left)    const { return static_cast<const Value&>(left).index(*getReferredValue()); }
 PTR_Value ValueIdentifier::index(const ValueEdge& left)      const { return static_cast<const Value&>(left).index(*getReferredValue()); }
-PTR_Value ValueIdentifier::index(const ValueVertexSet& left) const { return static_cast<const Value&>(left).index(*getReferredValue()); }
-PTR_Value ValueIdentifier::index(const ValueEdgeSet& left)   const { return static_cast<const Value&>(left).index(*getReferredValue()); }
+PTR_Value ValueIdentifier::index(const ValueSet& left)       const { return static_cast<const Value&>(left).index(*getReferredValue()); }
 
 PTR_Value ValueIdentifier::logNOT(void)                      const { return this->getReferredValue()->logNOT(); } // !

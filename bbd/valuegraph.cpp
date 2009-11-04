@@ -26,13 +26,12 @@
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
-#include "valuevertexset.hpp"
-#include "valueedgeset.hpp"
 #include "context.hpp"
 #include "valueint.hpp"
 #include "valuefloat.hpp"
 #include "objectcreator.hpp"
 #include "valuearray.hpp"
+#include "valueset.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -42,20 +41,14 @@ ValueGraph::ValueGraph(bool directed)
 	: Value(),
 	m_directed(directed),
 	m_vertices(),
-	m_edges(),
-	m_vertices_deleted(),
-	m_edges_deleted()
+	m_edges()
 {
 
 }
 
-ValueGraph::~ValueGraph()
+ValueGraph::~ValueGraph(void)
 {
-	ACCESS_MUTEX_LOCKER;
-	for_each(m_vertices.begin(), m_vertices.end(), DeleteObject());
-	for_each(m_edges.begin(), m_edges.end(), DeleteObject());
-	for_each(m_vertices_deleted.begin(), m_vertices_deleted.end(), DeleteObject());
-	for_each(m_edges_deleted.begin(), m_edges_deleted.end(), DeleteObject());
+
 }
 
 
@@ -83,7 +76,7 @@ bool ValueGraph::loadFromFile(const string& filename)
 	int num_edges_props = 0;
 	vector<identifier> vertices_props;
 	vector<identifier> edges_props;
-	map<int, ValueVertex*> vertices;
+	map<int, CountPtr<Value> > vertices;
 
 	// Is directed flag, number of vertices, number of edges
 	is >> m_directed;
@@ -119,6 +112,7 @@ bool ValueGraph::loadFromFile(const string& filename)
 		is >> id;
 
 		ValueVertex* vertex = new ValueVertex(this);
+		CountPtr<Value> valvertex(vertex);
 		vertex->setItem(STR2ID("__id"), CountPtr<Value>(new ValueInt(id)));
 
 		for(int i = 0; i < num_vertices_props; i++)
@@ -128,8 +122,8 @@ bool ValueGraph::loadFromFile(const string& filename)
 			vertex->setItem(vertices_props[i], CountPtr<Value>(new ValueFloat(value)));
 		}
 
-		m_vertices.insert(vertex);
-		vertices.insert(make_pair(id, vertex));
+		m_vertices.insert(valvertex);
+		vertices.insert(make_pair(id, valvertex));
 	}
 
 	// Edges
@@ -138,31 +132,36 @@ bool ValueGraph::loadFromFile(const string& filename)
 		int id = 0;
 		is >> id;
 
-		ValueVertex* begin = vertices[id];
-		if(begin == NULL)
+		map<int, CountPtr<Value> >::iterator begin = vertices.find(id);
+		if(begin == vertices.end())
 		{
 			stringstream sstream;
 			sstream << _("Vertex with ID ") << id << _(" hasn't been defined");
 			WARN_P(sstream.str());
 			is.close();
+			m_vertices.clear();
+			m_edges.clear();
 			return false;
 		}
 
 		is >> id;
 
-		ValueVertex* end = vertices[id];
-		if(end == NULL)
+		map<int, CountPtr<Value> >::iterator end = vertices.find(id);
+		if(end == vertices.end())
 		{
 			stringstream sstream;
 			sstream << _("Vertex with ID ") << id << _(" hasn't been defined");
 			WARN_P(sstream.str());
 			is.close();
+			m_vertices.clear();
+			m_edges.clear();
 			return false;
 		}
 
-		ValueEdge* edge = new ValueEdge(this, begin, end);
-		begin->addEdge(edge);
-		end->addEdge(edge);
+		ValueEdge* edge = new ValueEdge(this, begin->second, end->second);
+		CountPtr<Value> valedge(edge);
+		(*begin).second->toValueVertex()->addEdge(valedge);
+		(*end).second->toValueVertex()->addEdge(valedge);
 
 		for(int i = 0; i < num_edges_props; i++)
 		{
@@ -171,13 +170,15 @@ bool ValueGraph::loadFromFile(const string& filename)
 			edge->setItem(edges_props[i], CountPtr<Value>(new ValueFloat(value)));
 		}
 
-		m_edges.insert(edge);
+		m_edges.insert(valedge);
 	}
 
 	if(!is.good())
 	{
 		WARN_P(_("An error occurred during the graph loading, stream state indicates problem"));
 		is.close();
+		m_vertices.clear();
+		m_edges.clear();
 		return false;
 	}
 
@@ -189,54 +190,99 @@ bool ValueGraph::loadFromFile(const string& filename)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-ValueVertex* ValueGraph::generateVertex(void)
+CountPtr<Value> ValueGraph::generateVertex(void)
 {
 	ACCESS_MUTEX_LOCKER;
-	ValueVertex* vertex = new ValueVertex(this);
+	CountPtr<Value> vertex(new ValueVertex(this));
 	m_vertices.insert(vertex);
 	return vertex;
 }
 
-ValueEdge* ValueGraph::generateEdge(ValueVertex* begin, ValueVertex* end)
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueGraph::generateEdge(CountPtr<Value> begin, CountPtr<Value> end)
 {
 	ACCESS_MUTEX_LOCKER;
-	if(!(begin->getGraph() == this && end->getGraph() == this))
+
+	ValueVertex* bv = begin->toValueVertex();
+	ValueVertex* ev = end->toValueVertex();
+
+	if(bv == NULL || ev == NULL)
 	{
-		WARN_P(_("Vertex belongs to the different graph"));
-		return NULL;
+		WARN_P(_("The parameter is not a vertex"));
+		return VALUENULL;
 	}
 
-	ValueEdge* edge = new ValueEdge(this, begin, end);
+	if(!(bv->getGraph() == this && ev->getGraph() == this))
+	{
+		WARN_P(_("The vertices belong to the different graphs"));
+		return VALUENULL;
+	}
+
+	CountPtr<Value> edge(new ValueEdge(this, begin, end));
 	m_edges.insert(edge);
 
-	begin->addEdge(edge);
-	end->addEdge(edge);
+	bv->addEdge(edge);
+	ev->addEdge(edge);
 
 	return edge;
 }
 
-void ValueGraph::deleteVertex(ValueVertex* vertex)
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueGraph::deleteVertex(CountPtr<Value> vertex)
 {
 	ACCESS_MUTEX_LOCKER;
-	set<ValueEdge*> edges = vertex->getEdgesCopy();
 
-	set<ValueEdge*>::iterator it;
-	for(it = edges.begin(); it != edges.end(); it++)
+	ValueVertex* vv = vertex->toValueVertex();
+
+	if(vv == NULL)
+	{
+		WARN_P(_("The parameter is not a vertex"));
+		return;
+	}
+
+	CountPtr<Value> edges = vv->getEdgesCopy();
+	ValueSet* ev = edges->toValueSet();
+	assert(ev != NULL);
+
+	set_container::iterator it;
+	for(it = ev->begin(); it != ev->end(); ++it)
+	{
+		(*it)->toValueEdge()->removeVertex(vv);
 		deleteEdge(*it);
+	}
 
-	m_vertices.erase(vertex);
-	m_vertices_deleted.insert(vertex);
-	vertex->clear();
+	vv->clear();
+	m_vertices.remove(vertex);
 }
 
-void ValueGraph::deleteEdge(ValueEdge* edge)
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueGraph::deleteEdge(CountPtr<Value> edge)
 {
 	ACCESS_MUTEX_LOCKER;
-	edge->getBeginVertex()->deleteEdge(edge);
-	edge->getEndVertex()->deleteEdge(edge);
-	m_edges.erase(edge);
-	m_edges_deleted.insert(edge);
-	edge->clear();
+
+	ValueEdge* ev = edge->toValueEdge();
+
+	if(ev == NULL)
+	{
+		WARN_P(_("The parameter is not an edge"));
+		return;
+	}
+
+	if(ev->getBeginVertex()->toValueVertex() != NULL)
+		ev->getBeginVertex()->toValueVertex()->deleteEdge(edge);
+	if(ev->getEndVertex()->toValueVertex() != NULL)
+		ev->getEndVertex()->toValueVertex()->deleteEdge(edge);
+
+	m_edges.remove(edge);
 }
 
 
@@ -246,25 +292,10 @@ void ValueGraph::deleteEdge(ValueEdge* edge)
 void ValueGraph::invertEdgesDirection(void)
 {
 	ACCESS_MUTEX_LOCKER;
-	set<ValueEdge*>::iterator eit;
-	for(eit = m_edges.begin(); eit != m_edges.end(); eit++)
-		(*eit)->invertDirection();
-}
 
-
-/////////////////////////////////////////////////////////////////////////////
-////
-
-CountPtr<Value> ValueGraph::getVertices(void) const
-{
-	ACCESS_MUTEX_LOCKER;
-	return CountPtr<Value>(new ValueVertexSet(const_cast<ValueGraph*>(this), m_vertices));
-}
-
-CountPtr<Value> ValueGraph::getEdges(void) const
-{
-	ACCESS_MUTEX_LOCKER;
-	return CountPtr<Value>(new ValueEdgeSet(const_cast<ValueGraph*>(this), m_edges));
+	set_container::iterator it;
+	for(it = m_edges.begin(); it != m_edges.end(); ++it)
+		(*it)->toValueEdge()->invertDirection();
 }
 
 
@@ -306,7 +337,7 @@ bool ValueGraph::setDirected(bool directed)
 uint ValueGraph::getNumVertices(void) const
 {
 	ACCESS_MUTEX_LOCKER;
-	return m_vertices.size();
+	return m_vertices.getSize();
 }
 
 
@@ -316,27 +347,27 @@ uint ValueGraph::getNumVertices(void) const
 uint ValueGraph::getNumEdges(void) const
 {
 	ACCESS_MUTEX_LOCKER;
-	return m_edges.size();
+	return m_edges.getSize();
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-bool ValueGraph::contains(ValueVertex* vertex) const
+bool ValueGraph::containsVertex(CountPtr<Value> vertex) const
 {
 	ACCESS_MUTEX_LOCKER;
-	return m_vertices.count(vertex);
+	return m_vertices.contains(vertex);
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-bool ValueGraph::contains(ValueEdge* edge) const
+bool ValueGraph::containsEdge(CountPtr<Value> edge) const
 {
 	ACCESS_MUTEX_LOCKER;
-	return m_edges.count(edge);
+	return m_edges.contains(edge);
 }
 
 
@@ -347,30 +378,30 @@ CountPtr<Value> ValueGraph::getAdjacencyMatrix(void) const
 {
 	ACCESS_MUTEX_LOCKER;
 
-	int size = m_vertices.size();
+	int size = m_vertices.getSize();
 	map<ValueVertex*, int> trans_table;
 	vector< vector<int> > matrix(size, vector<int>(size, 0));
 
 	// Array of indices
 	int pos = 0;
-	set<ValueVertex*>::const_iterator it;
+	set_container::const_iterator it;
 	for(it = m_vertices.begin(); it != m_vertices.end(); ++it)
-		trans_table[*it] = pos++;
+		trans_table[(*it)->toValueVertex()] = pos++;
 
 	// Adjacency Matrix
 	for(it = m_vertices.begin(); it != m_vertices.end(); ++it)
 	{
-		CountPtr<Value> neighbors = (*it)->getNeighbors();
-		assert(neighbors->toValueVertexSet() != NULL);
-		set<ValueVertex*>& vertices = neighbors->toValueVertexSet()->getVertices();
-		set<ValueVertex*>::const_iterator vertex;
+		CountPtr<Value> neighbors = (*it)->toValueVertex()->getNeighbors();
+		ValueSet* vertices = neighbors->toValueSet();
+		assert(vertices != NULL);
+		set_container::const_iterator vertex;
 
-		for(vertex = vertices.begin(); vertex != vertices.end(); ++vertex)
+		for(vertex = vertices->begin(); vertex != vertices->end(); ++vertex)
 		{
 			if(!isDirected() && *vertex == *it)
-				matrix[trans_table[*vertex]][trans_table[*it]] += 2;
+				matrix[trans_table[(*vertex)->toValueVertex()]][trans_table[(*it)->toValueVertex()]] += 2;
 			else
-				++matrix[trans_table[*vertex]][trans_table[*it]];
+				++matrix[trans_table[(*vertex)->toValueVertex()]][trans_table[(*it)->toValueVertex()]];
 		}
 	}
 
@@ -394,16 +425,24 @@ CountPtr<Value> ValueGraph::getAdjacencyMatrix(void) const
 
 void ValueGraph::setPropertyToAllVertices(identifier name, CountPtr<Value> value)
 {
-	set<ValueVertex*>::iterator it;
-	for(it = m_vertices.begin(); it != m_vertices.end(); ++it)
-		(*it)->setItem(name, value);
+	ACCESS_MUTEX_LOCKER;
+	m_vertices.setPropertyToAllStructItems(name, value);
 }
 
 void ValueGraph::setPropertyToAllEdges(identifier name, CountPtr<Value> value)
 {
-	set<ValueEdge*>::iterator it;
-	for(it = m_edges.begin(); it != m_edges.end(); ++it)
-		(*it)->setItem(name, value);
+	ACCESS_MUTEX_LOCKER;
+	m_edges.setPropertyToAllStructItems(name, value);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueGraph::findVertex(ValueVertex* vertex) const
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_vertices.findItem(vertex);
 }
 
 
@@ -420,9 +459,7 @@ void ValueGraph::dump(ostream& os, uint indent) const
 	dumpIndent(os, indent+1);
 	os << "<Vertices>" << endl;
 
-	set<ValueVertex*>::const_iterator itv;
-	for(itv = m_vertices.begin(); itv != m_vertices.end(); itv++)
-		(*itv)->dump(os, indent+2);
+	m_vertices.dump(os, indent+2);
 
 	dumpIndent(os, indent+1);
 	os << "</Vertices>" << endl;
@@ -430,9 +467,7 @@ void ValueGraph::dump(ostream& os, uint indent) const
 	dumpIndent(os, indent+1);
 	os << "<Edges>" << endl;
 
-	set<ValueEdge*>::const_iterator ite;
-	for(ite = m_edges.begin(); ite != m_edges.end(); ite++)
-		(*ite)->dump(os, indent+2);
+	m_edges.dump(os, indent+2);
 
 	dumpIndent(os, indent+1);
 	os << "</Edges>" << endl;

@@ -27,16 +27,16 @@
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-ValueEdge::ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end)
+ValueEdge::ValueEdge(ValueGraph* graph, CountPtr<Value> begin, CountPtr<Value> end)
 	: Value(),
 	m_graph(graph),
-	m_begin(begin),
-	m_end(end),
+	m_begin(begin->toValueVertex()),
+	m_end(end->toValueVertex()),
 	m_properties(new ValueStruct)
 {
 	assert(graph != NULL);
-	assert(begin != NULL);
-	assert(end != NULL);
+	assert(m_begin != NULL);
+	assert(m_end != NULL);
 }
 
 ValueEdge::~ValueEdge(void)
@@ -62,6 +62,36 @@ void ValueEdge::invertDirection(void)
 	ValueVertex* tmp = m_begin;
 	m_begin = m_end;
 	m_end = tmp;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueEdge::getBeginVertex(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	return (m_begin == NULL) ? VALUENULL : m_graph->findVertex(m_begin);
+}
+
+CountPtr<Value> ValueEdge::getEndVertex(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	return (m_end == NULL) ? VALUENULL : m_graph->findVertex(m_end);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+void ValueEdge::removeVertex(ValueVertex* vertex)
+{
+	ACCESS_MUTEX_LOCKER;
+	if(m_begin == vertex)
+		m_begin = NULL;
+
+	if(m_end == vertex)
+		m_end = NULL;
 }
 
 

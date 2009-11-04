@@ -175,28 +175,28 @@ function testGraph()
 
 
 	// VertexSet tests
-	vs = vertexset(g);
-	vs.add(v1);
-	vs.add(v4);
+	vs = set();
+	vs.insert(v1);
+	vs.insert(v4);
 
-	tverify(vs.getNumVertices() == 2);
+	tverify(vs.size() == 2);
 	tverify(vs.contains(v1));
 	tverify(!vs.contains(v3));
 	tverify(vs.contains(v4));
 
-	vs.deleteVertex(v1);
+	vs.remove(v1);
 	tverify(!vs.contains(v1));
 	tverify(vs.contains(v4));
 
 
 	// EdgeSet tests
-	es = edgeset(g);
-	es.add(e3);
+	es = set();
+	es.insert(e3);
 
-	tverify(es.getNumEdges() == 1);
+	tverify(es.size() == 1);
 	tverify(es.contains(e3));
 
-	es.deleteEdge(e3);
+	es.remove(e3);
 	tverify(!es.contains(e3));
 
 	return testResult(__FUNCTION__, result);
@@ -409,29 +409,29 @@ function testUnionIntersectionDifference()
 	v2n = v2.getNeighbors();
 	v4n = v4.getNeighbors();
 
-	tverify(v2n.getNumVertices() == 2);
+	tverify(v2n.size() == 2);
 	tverify(v2n.contains(v1));
 	tverify(v2n.contains(v3));
-	tverify(v4n.getNumVertices() == 2);
+	tverify(v4n.size() == 2);
 	tverify(v4n.contains(v3));
 	tverify(v4n.contains(v5));
 
 	un = union(v2n, v4n);
-	tverify(un.getNumVertices() == 3);
+	tverify(un.size() == 3);
 	tverify(un.contains(v1));
 	tverify(un.contains(v3));
 	tverify(un.contains(v5));
 
 	in = intersection(v2n, v4n);
-	tverify(in.getNumVertices() == 1);
+	tverify(in.size() == 1);
 	tverify(un.contains(v3));
 
 	di = difference(v2n, v4n);
-	tverify(di.getNumVertices() == 1);
+	tverify(di.size() == 1);
 	tverify(un.contains(v1));
 
 	di = difference(v4n, v2n);
-	tverify(di.getNumVertices() == 1);
+	tverify(di.size() == 1);
 	tverify(un.contains(v5));
 
 	return testResult(__FUNCTION__, result);
@@ -493,12 +493,12 @@ function testTypeChecks()
 	tverify(!othertype.isEdge());
 
 	var = g.getVertices();
-	tverify(var.isVertexSet());
-	tverify(!othertype.isVertexSet());
+	tverify(var.isSet());
+	tverify(!othertype.isSet());
 
 	var = g.getEdges();
-	tverify(var.isEdgeSet());
-	tverify(!othertype.isEdgeSet());
+	tverify(var.isSet());
+	tverify(!othertype.isSet());
 
 	return testResult(__FUNCTION__, result);
 }
@@ -837,19 +837,19 @@ function testSetPropertyToAll()
 	tverify(e2.weight == 3.14);
 	tverify(e3.weight == 3.14);
 
-	vs = vertexset(g);
-	vs.add(v1);
-	vs.add(v3);
-	vs.setPropertyToAllVertices("state", "open");
+	vs = set();
+	vs.insert(v1);
+	vs.insert(v3);
+	vs.setPropertyToAllStructItems("state", "open");
 	tverify(v1.state == "open");
 	tverify(v2.state == "new");
 	tverify(v3.state == "open");
 	tverify(v4.state == "new");
 
-	es = edgeset(g);
-	es.add(e1);
-	es.add(e3);
-	es.setPropertyToAllEdges("weight", 5);
+	es = set();
+	es.insert(e1);
+	es.insert(e3);
+	es.setPropertyToAllStructItems("weight", 5);
 	tverify(e1.weight == 5);
 	tverify(e2.weight == 3.14);
 	tverify(e3.weight == 5);

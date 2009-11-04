@@ -8,10 +8,10 @@ include 'p_begin.php';
 <p>The visualization painting expects that all registered vertices contatin <em>__x</em>, <em>__y</em> and <em>__z</em> properties for their positioning in 3D space. The center of the whole graph should be at (0, 0, 0) position to guarantee the proper rotations. Vertices and edges can contatin <em>__r</em>, <em>__g</em> and <em>__b</em> color specification, the values are from 0 to 255. Edges can also set theirs <em>__w</em> property, if <em>visUseWeightWhenPaintingEdges()</em> flag is set, the weight will be added to the <em>Z</em> position coordinate.</p>
 
 
-<p>Register graph, vertex set or edge set for painting. String parameter will be used in the application menu to enable/disable when painting. Three numbers are RGB color components, they can be redefined in the vertex or edge.</p>
+<p>Register graph or set for painting. String parameter will be used in the application menu to enable/disable when painting. Three numbers are RGB color components, they can be redefined in the vertex or edge.</p>
 
 <pre class="spec">
-visRegister(graph|vertexset|edgeset, string, number, number, number) : null
+visRegister(graph|set, string, number, number, number) : null
 </pre>
 
 

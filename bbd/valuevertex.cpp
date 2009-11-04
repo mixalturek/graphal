@@ -23,8 +23,8 @@
 #include "valuebool.hpp"
 #include "valuegraph.hpp"
 #include "valueedge.hpp"
-#include "valuevertexset.hpp"
 #include "context.hpp"
+#include "valueset.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -33,7 +33,7 @@
 ValueVertex::ValueVertex(ValueGraph* graph)
 	: Value(),
 	m_graph(graph),
-	m_edges(new set<ValueEdge*>),
+	m_edges(new ValueSet),
 	m_properties(new ValueStruct)
 {
 	assert(graph != NULL);
@@ -42,15 +42,25 @@ ValueVertex::ValueVertex(ValueGraph* graph)
 ValueVertex::~ValueVertex(void)
 {
 	ACCESS_MUTEX_LOCKER;
+
+	set_container::iterator it;
+	for(it = m_edges->begin(); it != m_edges->end(); ++it)
+		(*it)->toValueEdge()->removeVertex(this);
+
 	delete m_edges;
 	m_edges = NULL;
 	delete m_properties;
 	m_properties = NULL;
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueVertex::clear(void)
 {
 	ACCESS_MUTEX_LOCKER;
+	m_edges->clear();
 	m_properties->clear();
 }
 
@@ -58,18 +68,18 @@ void ValueVertex::clear(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-void ValueVertex::addEdge(ValueEdge* edge)
+void ValueVertex::addEdge(CountPtr<Value> edge)
 {
 	ACCESS_MUTEX_LOCKER;
-	assert(edge != NULL);
+	assert(edge->toValueEdge() != NULL);
 	m_edges->insert(edge);
 }
 
-void ValueVertex::deleteEdge(ValueEdge* edge)
+void ValueVertex::deleteEdge(CountPtr<Value> edge)
 {
 	ACCESS_MUTEX_LOCKER;
-	assert(edge != NULL);
-	m_edges->erase(edge);
+	assert(edge->toValueEdge() != NULL);
+	m_edges->remove(edge);
 }
 
 
@@ -79,25 +89,31 @@ void ValueVertex::deleteEdge(ValueEdge* edge)
 CountPtr<Value> ValueVertex::getNeighbors(void)
 {
 	ACCESS_MUTEX_LOCKER;
-	ValueVertexSet* ret = new ValueVertexSet(m_graph);
-	set<ValueEdge*>::iterator it;
+	ValueSet* ret = new ValueSet;
+	set_container::iterator it;
 
 	if(m_graph->isDirected())
 	{
-		for(it = m_edges->begin(); it != m_edges->end(); it++)
+		for(it = m_edges->begin(); it != m_edges->end(); ++it)
 		{
-			if((*it)->getBeginVertex() == this)
-				ret->addVertex((*it)->getEndVertex());
+			ValueEdge* edge = (*it)->toValueEdge();
+			assert(edge != NULL);
+
+			if(edge->getBeginVertex()->toValueVertex() == this)
+				ret->insert((*it)->toValueEdge()->getEndVertex());
 		}
 	}
 	else
 	{
-		for(it = m_edges->begin(); it != m_edges->end(); it++)
+		for(it = m_edges->begin(); it != m_edges->end(); ++it)
 		{
-			if((*it)->getBeginVertex() == this)
-				ret->addVertex((*it)->getEndVertex());
+			ValueEdge* edge = (*it)->toValueEdge();
+			assert(edge != NULL);
+
+			if(edge->getBeginVertex()->toValueVertex() == this)
+				ret->insert(edge->getEndVertex());
 			else
-				ret->addVertex((*it)->getBeginVertex());
+				ret->insert(edge->getBeginVertex());
 		}
 	}
 
@@ -111,9 +127,18 @@ CountPtr<Value> ValueVertex::getNeighbors(void)
 uint ValueVertex::getDegree(void) const
 {
 	ACCESS_MUTEX_LOCKER;
-	return m_edges->size();
+	return m_edges->getSize();
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+CountPtr<Value> ValueVertex::getEdgesCopy(void)
+{
+	ACCESS_MUTEX_LOCKER;
+	return m_edges->clone();
+}
 
 /////////////////////////////////////////////////////////////////////////////
 ////

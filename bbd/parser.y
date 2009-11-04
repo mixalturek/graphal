@@ -69,7 +69,6 @@
 
 #include "valuebool.hpp"
 #include "valueedge.hpp"
-#include "valueedgeset.hpp"
 #include "valuefloat.hpp"
 #include "valuegraph.hpp"
 #include "valueint.hpp"
@@ -77,7 +76,6 @@
 #include "valuestring.hpp"
 #include "valuestruct.hpp"
 #include "valuevertex.hpp"
-#include "valuevertexset.hpp"
 #include "valueidentifier.hpp"
 
 #include "logger.hpp"

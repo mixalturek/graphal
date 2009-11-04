@@ -52,6 +52,9 @@ public:
 	virtual void resetIterator(void);
 
 	virtual void dump(ostream& os, uint indent) const;
+	uint getSize(void) const { ACCESS_MUTEX_LOCKER;	return m_val.size(); }
+
+	void setPropertyToAllStructItems(identifier name, CountPtr<Value> value);
 
 	virtual PTR_Value add(const Value&      right) const; // +
 	virtual PTR_Value sub(const Value&      right) const; // -

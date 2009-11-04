@@ -472,36 +472,6 @@ genBFClass('isEdge', 'NodeBuiltinIsEdge', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'isVertexSet(object) : bool';
-
-$include = <<END_OF_CODE;
-#include "valuebool.hpp"
-END_OF_CODE
-
-$code = <<END_OF_CODE;
-	return (par[0]->toValueVertexSet() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
-END_OF_CODE
-genBFClass('isVertexSet', 'NodeBuiltinIsVertexSet', 1, $code, $include);
-
-
-#############################################################################
-####
-
-$funcdecl = 'isEdgeSet(object) : bool';
-
-$include = <<END_OF_CODE;
-#include "valuebool.hpp"
-END_OF_CODE
-
-$code = <<END_OF_CODE;
-	return (par[0]->toValueEdgeSet() != NULL) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE;
-END_OF_CODE
-genBFClass('isEdgeSet', 'NodeBuiltinIsEdgeSet', 1, $code, $include);
-
-
-#############################################################################
-####
-
 $funcdecl = 'printStackTrace() : null';
 
 $include = <<END_OF_CODE;
@@ -625,21 +595,29 @@ genBFClass('struct', 'NodeBuiltinStruct', 0, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'size(array|string) : int|null';
+$funcdecl = 'size(array|struct|set|string) : int|null';
 
 $include = <<END_OF_CODE;
 #include "valuearray.hpp"
+#include "valuestruct.hpp"
+#include "valueset.hpp"
 #include "valuestring.hpp"
 #include "valueint.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueArray* a = NULL;
+	ValueStruct* st = NULL;
+	ValueSet* se = NULL;
 	ValueString* s = NULL;
 
 	if((a = par[0]->toValueArray()) != NULL)
 		return CountPtr<Value>(new ValueInt(a->getSize()));
-	if((s = par[0]->toValueString()) != NULL)
+	else if((st = par[0]->toValueStruct()) != NULL)
+		return CountPtr<Value>(new ValueInt(st->getSize()));
+	else if((se = par[0]->toValueSet()) != NULL)
+		return CountPtr<Value>(new ValueInt(se->getSize()));
+	else if((s = par[0]->toValueString()) != NULL)
 		return CountPtr<Value>(new ValueInt(s->getSize()));
 	else
 	{
@@ -837,54 +815,6 @@ genBFClass('loadFromFile', 'NodeBuiltinLoadFromFile', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'vertexset(graph) : vertexset|null';
-
-$include = <<END_OF_CODE;
-#include "valuevertexset.hpp"
-#include "valuegraph.hpp"
-END_OF_CODE
-
-$code = <<END_OF_CODE;
-	ValueGraph* g = NULL;
-
-	if((g = par[0]->toValueGraph()) != NULL)
-		return CountPtr<Value>(new ValueVertexSet(g));
-	else
-	{
-		WARN_P(_("Bad parameters type: $funcdecl"));
-		return VALUENULL;
-	}
-END_OF_CODE
-genBFClass('vertexset', 'NodeBuiltinVertexSet', 1, $code, $include);
-
-
-#############################################################################
-####
-
-$funcdecl = 'edgeset(graph) : edgeset|null';
-
-$include = <<END_OF_CODE;
-#include "valueedgeset.hpp"
-#include "valuegraph.hpp"
-END_OF_CODE
-
-$code = <<END_OF_CODE;
-	ValueGraph* g = NULL;
-
-	if((g = par[0]->toValueGraph()) != NULL)
-		return CountPtr<Value>(new ValueEdgeSet(g));
-	else
-	{
-		WARN_P(_("Bad parameters type: $funcdecl"));
-		return VALUENULL;
-	}
-END_OF_CODE
-genBFClass('edgeset', 'NodeBuiltinEdgeSet', 1, $code, $include);
-
-
-#############################################################################
-####
-
 $funcdecl = 'isDirected(graph) : bool|null';
 
 $include = <<END_OF_CODE;
@@ -970,11 +900,7 @@ $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
 
 	if((g = par[0]->toValueGraph()) != NULL)
-	{
-		CountPtr<Value> ret(g->generateVertex());
-		ret.dontDeleteAutomatically();
-		return ret;
-	}
+		return g->generateVertex();
 	else
 	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
@@ -997,19 +923,9 @@ END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
-	ValueVertex* v1 = NULL;
-	ValueVertex* v2 = NULL;
 
-	if((g = par[0]->toValueGraph()) != NULL && (v1 = par[1]->toValueVertex()) != NULL && (v2 = par[2]->toValueVertex()) != NULL)
-	{
-		ValueEdge* tmp = g->generateEdge(v1, v2);
-		if(tmp == NULL)
-			return VALUENULL;
-
-		CountPtr<Value> ret(tmp);
-		ret.dontDeleteAutomatically();
-		return ret;
-	}
+	if((g = par[0]->toValueGraph()) != NULL && par[1]->toValueVertex() != NULL && par[2]->toValueVertex() != NULL)
+		return g->generateEdge(par[1], par[2]);
 	else
 	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
@@ -1022,34 +938,21 @@ genBFClass('generateEdge', 'NodeBuiltinGenerateEdge', 3, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'deleteVertex(graph|vertexset, vertex) : null';
+$funcdecl = 'deleteVertex(graph, vertex) : null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
-#include "valuevertex.hpp"
-#include "valuevertexset.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
-	ValueVertex* v = NULL;
-	ValueVertexSet* vs = NULL;
 
-	if((g = par[0]->toValueGraph()) != NULL && (v = par[1]->toValueVertex()) != NULL)
-	{
-		g->deleteVertex(v);
-		return VALUENULL;
-	}
-	else if((vs = par[0]->toValueVertexSet()) != NULL && (v = par[1]->toValueVertex()) != NULL)
-	{
-		vs->deleteVertex(v);
-		return VALUENULL;
-	}
+	if((g = par[0]->toValueGraph()) != NULL && par[1]->toValueVertex() != NULL)
+		g->deleteVertex(par[1]);
 	else
-	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
-		return VALUENULL;
-	}
+
+	return VALUENULL;
 END_OF_CODE
 genBFClass('deleteVertex', 'NodeBuiltinDeleteVertex', 2, $code, $include);
 
@@ -1057,34 +960,21 @@ genBFClass('deleteVertex', 'NodeBuiltinDeleteVertex', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'deleteEdge(graph|edgeset, edge) : null';
+$funcdecl = 'deleteEdge(graph, edge) : null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
-#include "valueedge.hpp"
-#include "valueedgeset.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
-	ValueEdge* e = NULL;
-	ValueEdgeSet* es = NULL;
 
-	if((g = par[0]->toValueGraph()) != NULL && (e = par[1]->toValueEdge()) != NULL)
-	{
-		g->deleteEdge(e);
-		return VALUENULL;
-	}
-	else if((es = par[0]->toValueEdgeSet()) != NULL && (e = par[1]->toValueEdge()) != NULL)
-	{
-		es->deleteEdge(e);
-		return VALUENULL;
-	}
+	if((g = par[0]->toValueGraph()) != NULL && par[1]->toValueEdge() != NULL)
+		g->deleteEdge(par[1]);
 	else
-	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
-		return VALUENULL;
-	}
+
+	return VALUENULL;
 END_OF_CODE
 genBFClass('deleteEdge', 'NodeBuiltinDeleteEdge', 2, $code, $include);
 
@@ -1092,22 +982,18 @@ genBFClass('deleteEdge', 'NodeBuiltinDeleteEdge', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getNumVertices(graph|vertexset) : int|null';
+$funcdecl = 'getNumVertices(graph) : int|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
-#include "valuevertexset.hpp"
 #include "valueint.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
-	ValueVertexSet* vs = NULL;
 
 	if((g = par[0]->toValueGraph()) != NULL)
 		return CountPtr<Value>(new ValueInt(g->getNumVertices()));
-	else if((vs = par[0]->toValueVertexSet()) != NULL)
-		return CountPtr<Value>(new ValueInt(vs->getNumVertices()));
 	else
 	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
@@ -1120,22 +1006,18 @@ genBFClass('getNumVertices', 'NodeBuiltinGetNumVertices', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getNumEdges(graph|edgeset) : int|null';
+$funcdecl = 'getNumEdges(graph) : int|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
-#include "valueedgeset.hpp"
 #include "valueint.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
-	ValueEdgeSet* es = NULL;
 
 	if((g = par[0]->toValueGraph()) != NULL)
 		return CountPtr<Value>(new ValueInt(g->getNumEdges()));
-	else if((es = par[0]->toValueEdgeSet()) != NULL)
-		return CountPtr<Value>(new ValueInt(es->getNumEdges()));
 	else
 	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
@@ -1148,7 +1030,7 @@ genBFClass('getNumEdges', 'NodeBuiltinGetNumEdges', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getVertices(graph) : vertexset|null';
+$funcdecl = 'getVertices(graph) : set|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -1171,7 +1053,7 @@ genBFClass('getVertices', 'NodeBuiltinGetVertices', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getEdges(graph) : edgeset|null';
+$funcdecl = 'getEdges(graph) : set|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
@@ -1218,11 +1100,10 @@ genBFClass('getDegree', 'NodeBuiltinGetDegree', 1, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'getNeighbors(vertex) : vertexset|null';
+$funcdecl = 'getNeighbors(vertex) : set|null';
 
 $include = <<END_OF_CODE;
 #include "valuevertex.hpp"
-#include "valuevertexset.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1253,11 +1134,7 @@ $code = <<END_OF_CODE;
 	ValueEdge* e = NULL;
 
 	if((e = par[0]->toValueEdge()) != NULL)
-	{
-		CountPtr<Value> ret(e->getBeginVertex());
-		ret.dontDeleteAutomatically();
-		return ret;
-	}
+		return e->getBeginVertex();
 	else
 	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
@@ -1281,11 +1158,7 @@ $code = <<END_OF_CODE;
 	ValueEdge* e = NULL;
 
 	if((e = par[0]->toValueEdge()) != NULL)
-	{
-		CountPtr<Value> ret(e->getEndVertex());
-		ret.dontDeleteAutomatically();
-		return ret;
-	}
+		return e->getEndVertex();
 	else
 	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
@@ -1293,43 +1166,6 @@ $code = <<END_OF_CODE;
 	}
 END_OF_CODE
 genBFClass('getEndVertex', 'NodeBuiltinGetEndVertex', 1, $code, $include);
-
-
-#############################################################################
-####
-
-$funcdecl = 'add(vertexset|edgeset, vertex|edge) : null';
-
-$include = <<END_OF_CODE;
-#include "valuevertexset.hpp"
-#include "valuevertex.hpp"
-#include "valueedgeset.hpp"
-#include "valueedge.hpp"
-END_OF_CODE
-
-$code = <<END_OF_CODE;
-	ValueVertexSet* vs = NULL;
-	ValueVertex* v = NULL;
-	ValueEdgeSet* es = NULL;
-	ValueEdge* e = NULL;
-
-	if((vs = par[0]->toValueVertexSet()) != NULL && (v = par[1]->toValueVertex()) != NULL)
-	{
-		vs->addVertex(v);
-		return VALUENULL;
-	}
-	else if((es = par[0]->toValueEdgeSet()) != NULL && (e = par[1]->toValueEdge()) != NULL)
-	{
-		es->addEdge(e);
-		return VALUENULL;
-	}
-	else
-	{
-		WARN_P(_("Bad parameters type: $funcdecl"));
-		return VALUENULL;
-	}
-END_OF_CODE
-genBFClass('add', 'NodeBuiltinAdd', 2, $code, $include);
 
 
 #############################################################################
@@ -1345,15 +1181,11 @@ $code = <<END_OF_CODE;
 	ValueSet* vs = NULL;
 
 	if((vs = par[0]->toValueSet()) != NULL)
-	{
 		vs->insert(par[1]);
-		return VALUENULL;
-	}
 	else
-	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
-		return VALUENULL;
-	}
+
+	return VALUENULL;
 END_OF_CODE
 genBFClass('insert', 'NodeBuiltinInsert', 2, $code, $include);
 
@@ -1371,15 +1203,11 @@ $code = <<END_OF_CODE;
 	ValueSet* vs = NULL;
 
 	if((vs = par[0]->toValueSet()) != NULL)
-	{
 		vs->remove(par[1]);
-		return VALUENULL;
-	}
 	else
-	{
 		WARN_P(_("Bad parameters type: $funcdecl"));
-		return VALUENULL;
-	}
+
+	return VALUENULL;
 END_OF_CODE
 genBFClass('remove', 'NodeBuiltinRemove', 2, $code, $include);
 
@@ -1387,12 +1215,10 @@ genBFClass('remove', 'NodeBuiltinRemove', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'contains(graph|vertexset|edgeset|set, vertex|edge|object) : bool|null';
+$funcdecl = 'contains(graph|set, object) : bool|null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
-#include "valuevertexset.hpp"
-#include "valueedgeset.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
 #include "valuebool.hpp"
@@ -1401,28 +1227,20 @@ END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
-	ValueVertex* v = NULL;
-	ValueEdge* e = NULL;
-	ValueVertexSet* vs = NULL;
-	ValueEdgeSet* es = NULL;
 	ValueSet* vset = NULL;
 
 	if((g = par[0]->toValueGraph()) != NULL)
 	{
-		if((v = par[1]->toValueVertex()) != NULL)
-			return CountPtr<Value>((g->contains(v)) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
-		else if((e = par[1]->toValueEdge()) != NULL)
-			return CountPtr<Value>((g->contains(e)) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
+		if(par[1]->toValueVertex() != NULL)
+			return CountPtr<Value>((g->containsVertex(par[1])) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
+		else if(par[1]->toValueEdge() != NULL)
+			return CountPtr<Value>((g->containsEdge(par[1])) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 		else
 		{
 			WARN_P(_("Bad parameters type: $funcdecl"));
 			return VALUENULL;
 		}
 	}
-	else if((vs = par[0]->toValueVertexSet()) != NULL && (v = par[1]->toValueVertex()) != NULL)
-		return CountPtr<Value>((vs->contains(v)) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
-	else if((es = par[0]->toValueEdgeSet()) != NULL && (e = par[1]->toValueEdge()) != NULL)
-		return CountPtr<Value>((es->contains(e)) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 	else if((vset = par[0]->toValueSet()) != NULL)
 		return CountPtr<Value>((vset->contains(par[1])) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 	else
@@ -1437,27 +1255,17 @@ genBFClass('contains', 'NodeBuiltinContains', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'union(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null';
+$funcdecl = 'union(set, set) : set|null';
 
 $include = <<END_OF_CODE;
-#include "valuevertexset.hpp"
-#include "valueedgeset.hpp"
 #include "valueset.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
-	ValueVertexSet* vs1 = NULL;
-	ValueVertexSet* vs2 = NULL;
-	ValueEdgeSet* es1 = NULL;
-	ValueEdgeSet* es2 = NULL;
 	ValueSet* vset1 = NULL;
 	ValueSet* vset2 = NULL;
 
-	if((vs1 = par[0]->toValueVertexSet()) != NULL && (vs2 = par[1]->toValueVertexSet()) != NULL)
-		return vs1->getUnion(*vs2);
-	else if((es1 = par[0]->toValueEdgeSet()) != NULL && (es2 = par[1]->toValueEdgeSet()) != NULL)
-		return es1->getUnion(*es2);
-	else if((vset1 = par[0]->toValueSet()) != NULL && (vset2 = par[1]->toValueSet()) != NULL)
+	if((vset1 = par[0]->toValueSet()) != NULL && (vset2 = par[1]->toValueSet()) != NULL)
 		return vset1->getUnion(*vset2);
 	else
 	{
@@ -1471,27 +1279,17 @@ genBFClass('union', 'NodeBuiltinUnion', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'intersection(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null';
+$funcdecl = 'intersection(set, set) : set|null';
 
 $include = <<END_OF_CODE;
-#include "valuevertexset.hpp"
-#include "valueedgeset.hpp"
 #include "valueset.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
-	ValueVertexSet* vs1 = NULL;
-	ValueVertexSet* vs2 = NULL;
-	ValueEdgeSet* es1 = NULL;
-	ValueEdgeSet* es2 = NULL;
 	ValueSet* vset1 = NULL;
 	ValueSet* vset2 = NULL;
 
-	if((vs1 = par[0]->toValueVertexSet()) != NULL && (vs2 = par[1]->toValueVertexSet()) != NULL)
-		return vs1->getIntersection(*vs2);
-	else if((es1 = par[0]->toValueEdgeSet()) != NULL && (es2 = par[1]->toValueEdgeSet()) != NULL)
-		return es1->getIntersection(*es2);
-	else if((vset1 = par[0]->toValueSet()) != NULL && (vset2 = par[1]->toValueSet()) != NULL)
+	if((vset1 = par[0]->toValueSet()) != NULL && (vset2 = par[1]->toValueSet()) != NULL)
 		return vset1->getIntersection(*vset2);
 	else
 	{
@@ -1505,27 +1303,17 @@ genBFClass('intersection', 'NodeBuiltinIntersection', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'difference(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null';
+$funcdecl = 'difference(set, set) : set|null';
 
 $include = <<END_OF_CODE;
-#include "valuevertexset.hpp"
-#include "valueedgeset.hpp"
 #include "valueset.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
-	ValueVertexSet* vs1 = NULL;
-	ValueVertexSet* vs2 = NULL;
-	ValueEdgeSet* es1 = NULL;
-	ValueEdgeSet* es2 = NULL;
 	ValueSet* vset1 = NULL;
 	ValueSet* vset2 = NULL;
 
-	if((vs1 = par[0]->toValueVertexSet()) != NULL && (vs2 = par[1]->toValueVertexSet()) != NULL)
-		return vs1->getDifference(*vs2);
-	else if((es1 = par[0]->toValueEdgeSet()) != NULL && (es2 = par[1]->toValueEdgeSet()) != NULL)
-		return es1->getDifference(*es2);
-	else if((vset1 = par[0]->toValueSet()) != NULL && (vset2 = par[1]->toValueSet()) != NULL)
+	if((vset1 = par[0]->toValueSet()) != NULL && (vset2 = par[1]->toValueSet()) != NULL)
 		return vset1->getDifference(*vset2);
 	else
 	{
@@ -1562,23 +1350,19 @@ genBFClass('getAdjacencyMatrix', 'NodeBuiltinGetAdjacencyMatrix', 1, $code, $inc
 #############################################################################
 ####
 
-$funcdecl = 'setPropertyToAllVertices(graph|vertexset, string, object) : null';
+$funcdecl = 'setPropertyToAllVertices(graph, string, object) : null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
-#include "valuevertexset.hpp"
 #include "valuestring.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
-	ValueVertexSet* vs = NULL;
 	ValueString* s = NULL;
 
 	if((g = par[0]->toValueGraph()) != NULL && (s = par[1]->toValueString()) != NULL)
 		g->setPropertyToAllVertices(STR2ID(s->getVal()), par[2]);
-	else if((vs = par[0]->toValueVertexSet()) != NULL && (s = par[1]->toValueString()) != NULL)
-		vs->setPropertyToAllVertices(STR2ID(s->getVal()), par[2]);
 	else
 		WARN_P(_("Bad parameters type: $funcdecl"));
 
@@ -1590,23 +1374,19 @@ genBFClass('setPropertyToAllVertices', 'NodeBuiltinSetPropertyToAllVertices', 3,
 #############################################################################
 ####
 
-$funcdecl = 'setPropertyToAllEdges(graph|edgeset, string, object) : null';
+$funcdecl = 'setPropertyToAllEdges(graph, string, object) : null';
 
 $include = <<END_OF_CODE;
 #include "valuegraph.hpp"
-#include "valueedgeset.hpp"
 #include "valuestring.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
 	ValueGraph* g = NULL;
-	ValueEdgeSet* es = NULL;
 	ValueString* s = NULL;
 
 	if((g = par[0]->toValueGraph()) != NULL && (s = par[1]->toValueString()) != NULL)
 		g->setPropertyToAllEdges(STR2ID(s->getVal()), par[2]);
-	else if((es = par[0]->toValueEdgeSet()) != NULL && (s = par[1]->toValueString()) != NULL)
-		es->setPropertyToAllEdges(STR2ID(s->getVal()), par[2]);
 	else
 		WARN_P(_("Bad parameters type: $funcdecl"));
 
@@ -1618,7 +1398,39 @@ genBFClass('setPropertyToAllEdges', 'NodeBuiltinSetPropertyToAllEdges', 3, $code
 #############################################################################
 ####
 
-$funcdecl = 'visRegister(graph|vertexset|edgeset, string, number, number, number) : null';
+$funcdecl = 'setPropertyToAllStructItems(array|struct|set, string, object) : null';
+
+$include = <<END_OF_CODE;
+#include "valuearray.hpp"
+#include "valuestruct.hpp"
+#include "valueset.hpp"
+#include "valuestring.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+	ValueArray* a = NULL;
+	ValueStruct* st = NULL;
+	ValueSet* se = NULL;
+	ValueString* s = NULL;
+
+	if((a = par[0]->toValueArray()) != NULL && (s = par[1]->toValueString()) != NULL)
+		a->setPropertyToAllStructItems(STR2ID(s->getVal()), par[2]);
+	if((st = par[0]->toValueStruct()) != NULL && (s = par[1]->toValueString()) != NULL)
+		st->setPropertyToAllStructItems(STR2ID(s->getVal()), par[2]);
+	if((se = par[0]->toValueSet()) != NULL && (s = par[1]->toValueString()) != NULL)
+		se->setPropertyToAllStructItems(STR2ID(s->getVal()), par[2]);
+	else
+		WARN_P(_("Bad parameters type: $funcdecl"));
+
+	return VALUENULL;
+END_OF_CODE
+genBFClass('setPropertyToAllStructItems', 'NodeBuiltinSetPropertyToAllStructItems', 3, $code, $include);
+
+
+#############################################################################
+####
+
+$funcdecl = 'visRegister(graph|set, string, number, number, number) : null';
 
 $include = <<END_OF_CODE;
 #include "objectcreator.hpp"
@@ -1629,12 +1441,15 @@ END_OF_CODE
 $code = <<END_OF_CODE;
 	ValueString* name = NULL;
 
-	if((par[0]->toValueGraph() != NULL || par[0]->toValueVertexSet() != NULL || par[0]->toValueEdgeSet() != NULL)
+	if((par[0]->toValueGraph() != NULL || par[0]->toValueSet() != NULL)
 			&& (name = par[1]->toValueString()) != NULL
 			&& par[2]->isNumeric()
 			&& par[3]->isNumeric()
 			&& par[4]->isNumeric())
-		VISUALIZATION_CONNECTOR->visRegister(par[0], name->getVal(), par[2]->toInt(), par[3]->toInt(), par[4]->toInt());
+	{
+		VISUALIZATION_CONNECTOR->visRegister(par[0], name->getVal(),
+			par[2]->toInt(), par[3]->toInt(), par[4]->toInt());
+	}
 	else
 		WARN_P(_("Bad parameters type: $funcdecl"));
 

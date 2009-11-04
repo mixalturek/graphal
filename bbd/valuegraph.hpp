@@ -24,6 +24,7 @@
 #include <set>
 #include "general.hpp"
 #include "value.hpp"
+#include "valueset.hpp"
 
 class ValueVertex;
 class ValueEdge;
@@ -32,7 +33,7 @@ class ValueGraph : public Value
 {
 public:
 	ValueGraph(bool directed = false);
-	virtual ~ValueGraph();
+	virtual ~ValueGraph(void);
 
 	virtual ValueGraph*         toValueGraph(void) { return this; }
 
@@ -47,23 +48,22 @@ public:
 	bool setDirected(bool directed);
 	void invertEdgesDirection(void);
 
-	ValueVertex* generateVertex(void);
-	ValueEdge* generateEdge(ValueVertex* begin, ValueVertex* end);
+	CountPtr<Value> generateVertex(void);
+	CountPtr<Value> generateEdge(CountPtr<Value> begin, CountPtr<Value> end);
 
-	void deleteVertex(ValueVertex* vertex);
-	void deleteEdge(ValueEdge* edge);
+	void deleteVertex(CountPtr<Value> vertex);
+	void deleteEdge(CountPtr<Value> edge);
 
 	uint getNumVertices(void) const;
 	uint getNumEdges(void) const;
 
-	bool contains(ValueVertex* vertex) const;
-	bool contains(ValueEdge* edge) const;
+	bool containsVertex(CountPtr<Value> vertex) const;
+	bool containsEdge(CountPtr<Value> edge) const;
 
-	CountPtr<Value> getVertices(void) const;// Returns ValueVertexSet
-	CountPtr<Value> getEdges(void) const;// Returns ValueEdgeSet
-
-	const set<ValueVertex*>& getVerticesSet(void) const { return m_vertices; }
-	const set<ValueEdge*>& getEdgesSet(void) const { return m_edges; }
+	CountPtr<Value> getVertices(void) const { return m_vertices.clone(); }
+	CountPtr<Value> getEdges(void) const { return m_edges.clone(); }
+	ValueSet* getVerticesPtr(void) { return &m_vertices; }
+	ValueSet* getEdgesPtr(void) { return &m_edges; }
 
 	// Two calls can return different matrices (permutation of rows/lines),
 	// use getVertices() to get current vertices order
@@ -71,6 +71,9 @@ public:
 
 	void setPropertyToAllVertices(identifier name, CountPtr<Value> value);
 	void setPropertyToAllEdges(identifier name, CountPtr<Value> value);
+
+	// See ValueEdge::getBeginVertex()
+	CountPtr<Value> findVertex(ValueVertex* vertex) const;
 
 	virtual PTR_Value add(const Value&     right) const; // +
 	virtual PTR_Value sub(const Value&     right) const; // -
@@ -91,15 +94,8 @@ public:
 
 private:
 	bool m_directed;
-	set<ValueVertex*> m_vertices;
-	set<ValueEdge*> m_edges;
-
-	// Wait with the real deleting. Some variables in the script may contain
-	// another reference to the deleted object -> segmentation fault
-	// CountPtr<Value> can't be used here (circle in vertex and edge classes),
-	// memory wouldn't be deleted
-	set<ValueVertex*> m_vertices_deleted;
-	set<ValueEdge*> m_edges_deleted;
+	ValueSet m_vertices;
+	ValueSet m_edges;
 };
 
 ostream& operator<<(ostream& os, const ValueGraph& node);

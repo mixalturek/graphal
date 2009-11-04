@@ -141,8 +141,7 @@ PTR_Value Value::add(const ValueIdentifier& /* left */) const { return VALUENULL
 PTR_Value Value::add(const ValueGraph& /* left */)      const { return VALUENULL; }
 PTR_Value Value::add(const ValueVertex& /* left */)     const { return VALUENULL; }
 PTR_Value Value::add(const ValueEdge& /* left */)       const { return VALUENULL; }
-PTR_Value Value::add(const ValueVertexSet& /* left */)  const { return VALUENULL; }
-PTR_Value Value::add(const ValueEdgeSet& /* left */)    const { return VALUENULL; }
+PTR_Value Value::add(const ValueSet& /* left */)        const { return VALUENULL; }
 
 // -
 PTR_Value Value::sub(const ValueNull& /* left */)       const { return VALUENULL; }
@@ -156,8 +155,7 @@ PTR_Value Value::sub(const ValueIdentifier& /* left */) const { return VALUENULL
 PTR_Value Value::sub(const ValueGraph& /* left */)      const { return VALUENULL; }
 PTR_Value Value::sub(const ValueVertex& /* left */)     const { return VALUENULL; }
 PTR_Value Value::sub(const ValueEdge& /* left */)       const { return VALUENULL; }
-PTR_Value Value::sub(const ValueVertexSet& /* left */)  const { return VALUENULL; }
-PTR_Value Value::sub(const ValueEdgeSet& /* left */)    const { return VALUENULL; }
+PTR_Value Value::sub(const ValueSet& /* left */)        const { return VALUENULL; }
 
 // *
 PTR_Value Value::mult(const ValueNull& /* left */)      const { return VALUENULL; }
@@ -171,8 +169,7 @@ PTR_Value Value::mult(const ValueIdentifier& /* left */)const { return VALUENULL
 PTR_Value Value::mult(const ValueGraph& /* left */)     const { return VALUENULL; }
 PTR_Value Value::mult(const ValueVertex& /* left */)    const { return VALUENULL; }
 PTR_Value Value::mult(const ValueEdge& /* left */)      const { return VALUENULL; }
-PTR_Value Value::mult(const ValueVertexSet& /* left */) const { return VALUENULL; }
-PTR_Value Value::mult(const ValueEdgeSet& /* left */)   const { return VALUENULL; }
+PTR_Value Value::mult(const ValueSet& /* left */)       const { return VALUENULL; }
 
 // /
 PTR_Value Value::div(const ValueNull& /* left */)       const { return VALUENULL; }
@@ -186,8 +183,7 @@ PTR_Value Value::div(const ValueIdentifier& /* left */) const { return VALUENULL
 PTR_Value Value::div(const ValueGraph& /* left */)      const { return VALUENULL; }
 PTR_Value Value::div(const ValueVertex& /* left */)     const { return VALUENULL; }
 PTR_Value Value::div(const ValueEdge& /* left */)       const { return VALUENULL; }
-PTR_Value Value::div(const ValueVertexSet& /* left */)  const { return VALUENULL; }
-PTR_Value Value::div(const ValueEdgeSet& /* left */)    const { return VALUENULL; }
+PTR_Value Value::div(const ValueSet& /* left */)        const { return VALUENULL; }
 
 // %
 PTR_Value Value::mod(const ValueNull& /* left */)       const { return VALUENULL; }
@@ -201,8 +197,7 @@ PTR_Value Value::mod(const ValueIdentifier& /* left */) const { return VALUENULL
 PTR_Value Value::mod(const ValueGraph& /* left */)      const { return VALUENULL; }
 PTR_Value Value::mod(const ValueVertex& /* left */)     const { return VALUENULL; }
 PTR_Value Value::mod(const ValueEdge& /* left */)       const { return VALUENULL; }
-PTR_Value Value::mod(const ValueVertexSet& /* left */)  const { return VALUENULL; }
-PTR_Value Value::mod(const ValueEdgeSet& /* left */)    const { return VALUENULL; }
+PTR_Value Value::mod(const ValueSet& /* left */)        const { return VALUENULL; }
 
 // ==
 PTR_Value Value::eq(const ValueNull& /* left */)        const { return VALUEBOOL_FALSE; }
@@ -216,8 +211,7 @@ PTR_Value Value::eq(const ValueIdentifier& /* left */)  const { return VALUEBOOL
 PTR_Value Value::eq(const ValueGraph& /* left */)       const { return VALUEBOOL_FALSE; }
 PTR_Value Value::eq(const ValueVertex& /* left */)      const { return VALUEBOOL_FALSE; }
 PTR_Value Value::eq(const ValueEdge& /* left */)        const { return VALUEBOOL_FALSE; }
-PTR_Value Value::eq(const ValueVertexSet& /* left */)   const { return VALUEBOOL_FALSE; }
-PTR_Value Value::eq(const ValueEdgeSet& /* left */)     const { return VALUEBOOL_FALSE; }
+PTR_Value Value::eq(const ValueSet& /* left */)         const { return VALUEBOOL_FALSE; }
 
 // !=
 PTR_Value Value::ne(const ValueNull& /* left */)        const { return VALUEBOOL_TRUE; }
@@ -231,8 +225,7 @@ PTR_Value Value::ne(const ValueIdentifier& /* left */)  const { return VALUEBOOL
 PTR_Value Value::ne(const ValueGraph& /* left */)       const { return VALUEBOOL_TRUE; }
 PTR_Value Value::ne(const ValueVertex& /* left */)      const { return VALUEBOOL_TRUE; }
 PTR_Value Value::ne(const ValueEdge& /* left */)        const { return VALUEBOOL_TRUE; }
-PTR_Value Value::ne(const ValueVertexSet& /* left */)   const { return VALUEBOOL_TRUE; }
-PTR_Value Value::ne(const ValueEdgeSet& /* left */)     const { return VALUEBOOL_TRUE; }
+PTR_Value Value::ne(const ValueSet& /* left */)         const { return VALUEBOOL_TRUE; }
 
 // <=
 PTR_Value Value::le(const ValueNull& /* left */)        const { return VALUEBOOL_FALSE; }
@@ -246,8 +239,7 @@ PTR_Value Value::le(const ValueIdentifier& /* left */)  const { return VALUEBOOL
 PTR_Value Value::le(const ValueGraph& /* left */)       const { return VALUEBOOL_FALSE; }
 PTR_Value Value::le(const ValueVertex& /* left */)      const { return VALUEBOOL_FALSE; }
 PTR_Value Value::le(const ValueEdge& /* left */)        const { return VALUEBOOL_FALSE; }
-PTR_Value Value::le(const ValueVertexSet& /* left */)   const { return VALUEBOOL_FALSE; }
-PTR_Value Value::le(const ValueEdgeSet& /* left */)     const { return VALUEBOOL_FALSE; }
+PTR_Value Value::le(const ValueSet& /* left */)         const { return VALUEBOOL_FALSE; }
 
 // >=
 PTR_Value Value::ge(const ValueNull& /* left */)        const { return VALUEBOOL_FALSE; }
@@ -261,8 +253,7 @@ PTR_Value Value::ge(const ValueIdentifier& /* left */)  const { return VALUEBOOL
 PTR_Value Value::ge(const ValueGraph& /* left */)       const { return VALUEBOOL_FALSE; }
 PTR_Value Value::ge(const ValueVertex& /* left */)      const { return VALUEBOOL_FALSE; }
 PTR_Value Value::ge(const ValueEdge& /* left */)        const { return VALUEBOOL_FALSE; }
-PTR_Value Value::ge(const ValueVertexSet& /* left */)   const { return VALUEBOOL_FALSE; }
-PTR_Value Value::ge(const ValueEdgeSet& /* left */)     const { return VALUEBOOL_FALSE; }
+PTR_Value Value::ge(const ValueSet& /* left */)         const { return VALUEBOOL_FALSE; }
 
 // <
 PTR_Value Value::lt(const ValueNull& /* left */)        const { return VALUEBOOL_FALSE; }
@@ -276,8 +267,7 @@ PTR_Value Value::lt(const ValueIdentifier& /* left */)  const { return VALUEBOOL
 PTR_Value Value::lt(const ValueGraph& /* left */)       const { return VALUEBOOL_FALSE; }
 PTR_Value Value::lt(const ValueVertex& /* left */)      const { return VALUEBOOL_FALSE; }
 PTR_Value Value::lt(const ValueEdge& /* left */)        const { return VALUEBOOL_FALSE; }
-PTR_Value Value::lt(const ValueVertexSet& /* left */)   const { return VALUEBOOL_FALSE; }
-PTR_Value Value::lt(const ValueEdgeSet& /* left */)     const { return VALUEBOOL_FALSE; }
+PTR_Value Value::lt(const ValueSet& /* left */)         const { return VALUEBOOL_FALSE; }
 
 // >
 PTR_Value Value::gt(const ValueNull& /* left */)        const { return VALUEBOOL_FALSE; }
@@ -291,8 +281,7 @@ PTR_Value Value::gt(const ValueIdentifier& /* left */)  const { return VALUEBOOL
 PTR_Value Value::gt(const ValueGraph& /* left */)       const { return VALUEBOOL_FALSE; }
 PTR_Value Value::gt(const ValueVertex& /* left */)      const { return VALUEBOOL_FALSE; }
 PTR_Value Value::gt(const ValueEdge& /* left */)        const { return VALUEBOOL_FALSE; }
-PTR_Value Value::gt(const ValueVertexSet& /* left */)   const { return VALUEBOOL_FALSE; }
-PTR_Value Value::gt(const ValueEdgeSet& /* left */)     const { return VALUEBOOL_FALSE; }
+PTR_Value Value::gt(const ValueSet& /* left */)         const { return VALUEBOOL_FALSE; }
 
 // . (member access)
 PTR_Value Value::member(const ValueNull& /* left */)      const { return VALUENULL; }
@@ -306,8 +295,7 @@ PTR_Value Value::member(const ValueIdentifier& /* left */)const { return VALUENU
 PTR_Value Value::member(const ValueGraph& /* left */)     const { return VALUENULL; }
 PTR_Value Value::member(const ValueVertex& /* left */)    const { return VALUENULL; }
 PTR_Value Value::member(const ValueEdge& /* left */)      const { return VALUENULL; }
-PTR_Value Value::member(const ValueVertexSet& /* left */) const { return VALUENULL; }
-PTR_Value Value::member(const ValueEdgeSet& /* left */)   const { return VALUENULL; }
+PTR_Value Value::member(const ValueSet& /* left */)       const { return VALUENULL; }
 
 // [] index
 
@@ -370,8 +358,7 @@ PTR_Value Value::index(const ValueIdentifier& /* left */)const { return VALUENUL
 PTR_Value Value::index(const ValueGraph& /* left */)     const { return VALUENULL; }
 PTR_Value Value::index(const ValueVertex& /* left */)    const { return VALUENULL; }
 PTR_Value Value::index(const ValueEdge& /* left */)      const { return VALUENULL; }
-PTR_Value Value::index(const ValueVertexSet& /* left */) const { return VALUENULL; }
-PTR_Value Value::index(const ValueEdgeSet& /* left */)   const { return VALUENULL; }
+PTR_Value Value::index(const ValueSet& /* left */)       const { return VALUENULL; }
 
 // - (unary)
 PTR_Value Value::subUn(void)   const { return VALUENULL; }

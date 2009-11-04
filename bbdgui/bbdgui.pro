@@ -46,7 +46,6 @@ SOURCES += main.cpp \
     ../bbd/lexaniterator.cpp \
     ../bbd/lexan.cpp \
     ../bbd/init_static_objects.cpp \
-    ../bbd/valuevertexset.cpp \
     ../bbd/valuevertex.cpp \
     ../bbd/valuestruct.cpp \
     ../bbd/valuestring.cpp \
@@ -56,7 +55,6 @@ SOURCES += main.cpp \
     ../bbd/valueidentifier.cpp \
     ../bbd/valuegraph.cpp \
     ../bbd/valuefloat.cpp \
-    ../bbd/valueedgeset.cpp \
     ../bbd/valueedge.cpp \
     ../bbd/valuebool.cpp \
     ../bbd/valuearray.cpp \
@@ -85,7 +83,6 @@ SOURCES += main.cpp \
     ../bbd/nodeforeach.cpp \
     ../bbd/nodeemptycommand.cpp \
     ../bbd/nodecondition.cpp \
-    ../bbd/nodebuiltinvertexset.cpp \
     ../bbd/nodebuiltinverify.cpp \
     ../bbd/nodebuiltinunion.cpp \
     ../bbd/nodebuiltinstruct.cpp \
@@ -99,7 +96,6 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinpopback.cpp \
     ../bbd/nodebuiltinnext.cpp \
     ../bbd/nodebuiltiniterator.cpp \
-    ../bbd/nodebuiltinisvertexset.cpp \
     ../bbd/nodebuiltinisvertex.cpp \
     ../bbd/nodebuiltinisstruct.cpp \
     ../bbd/nodebuiltinisstring.cpp \
@@ -108,7 +104,6 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinisint.cpp \
     ../bbd/nodebuiltinisgraph.cpp \
     ../bbd/nodebuiltinisfloat.cpp \
-    ../bbd/nodebuiltinisedgeset.cpp \
     ../bbd/nodebuiltinisedge.cpp \
     ../bbd/nodebuiltinisbool.cpp \
     ../bbd/nodebuiltinisarray.cpp \
@@ -128,7 +123,6 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltingenerateedge.cpp \
     ../bbd/nodebuiltinfront.cpp \
     ../bbd/nodebuiltinexit.cpp \
-    ../bbd/nodebuiltinedgeset.cpp \
     ../bbd/nodebuiltinecho.cpp \
     ../bbd/nodebuiltindump.cpp \
     ../bbd/nodebuiltindifference.cpp \
@@ -139,7 +133,6 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinback.cpp \
     ../bbd/nodebuiltinassert.cpp \
     ../bbd/nodebuiltinarray.cpp \
-    ../bbd/nodebuiltinadd.cpp \
     ../bbd/nodebuiltinloadfromfile.cpp \
     ../bbd/nodebuiltinvisregister.cpp \
     ../bbd/nodebuiltin_inst.cpp \
@@ -192,7 +185,8 @@ SOURCES += main.cpp \
     ../bbd/nodebuiltinremove.cpp \
     ../bbd/nodebuiltininsert.cpp \
     ../bbd/nodebuiltinset.cpp \
-    ../bbd/nodebuiltinisset.cpp
+    ../bbd/nodebuiltinisset.cpp \
+    ../bbd/nodebuiltinsetpropertytoallstructitems.cpp
 HEADERS += mainwindow.h \
     settings.h \
     scriptthread.h \
@@ -229,7 +223,6 @@ HEADERS += mainwindow.h \
     ../bbd/lexan.hpp \
     ../bbd/general.hpp \
     ../bbd/version.hpp \
-    ../bbd/valuevertexset.hpp \
     ../bbd/valuevertex.hpp \
     ../bbd/valuestruct.hpp \
     ../bbd/valuestring.hpp \
@@ -239,7 +232,6 @@ HEADERS += mainwindow.h \
     ../bbd/valueidentifier.hpp \
     ../bbd/valuegraph.hpp \
     ../bbd/valuefloat.hpp \
-    ../bbd/valueedgeset.hpp \
     ../bbd/valueedge.hpp \
     ../bbd/valuebool.hpp \
     ../bbd/valuearray.hpp \
@@ -268,7 +260,6 @@ HEADERS += mainwindow.h \
     ../bbd/nodeforeach.hpp \
     ../bbd/nodeemptycommand.hpp \
     ../bbd/nodecondition.hpp \
-    ../bbd/nodebuiltinvertexset.hpp \
     ../bbd/nodebuiltinverify.hpp \
     ../bbd/nodebuiltinunion.hpp \
     ../bbd/nodebuiltinstruct.hpp \
@@ -282,16 +273,14 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinpopback.hpp \
     ../bbd/nodebuiltinnext.hpp \
     ../bbd/nodebuiltiniterator.hpp \
-    ../bbd/nodebuiltinisvertexset.hpp \
     ../bbd/nodebuiltinisvertex.hpp \
     ../bbd/nodebuiltinisstruct.hpp \
     ../bbd/nodebuiltinisstring.hpp \
-    ../bbd/nodebuiltinisdirectedted.hpp \
+    ../bbd/nodebuiltinisdirected.hpp \
     ../bbd/nodebuiltinisnull.hpp \
     ../bbd/nodebuiltinisint.hpp \
     ../bbd/nodebuiltinisgraph.hpp \
     ../bbd/nodebuiltinisfloat.hpp \
-    ../bbd/nodebuiltinisedgeset.hpp \
     ../bbd/nodebuiltinisedge.hpp \
     ../bbd/nodebuiltinisbool.hpp \
     ../bbd/nodebuiltinisarray.hpp \
@@ -311,7 +300,6 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltingenerateedge.hpp \
     ../bbd/nodebuiltinfront.hpp \
     ../bbd/nodebuiltinexit.hpp \
-    ../bbd/nodebuiltinedgeset.hpp \
     ../bbd/nodebuiltinecho.hpp \
     ../bbd/nodebuiltindump.hpp \
     ../bbd/nodebuiltindifference.hpp \
@@ -322,7 +310,6 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinback.hpp \
     ../bbd/nodebuiltinassert.hpp \
     ../bbd/nodebuiltinarray.hpp \
-    ../bbd/nodebuiltinadd.hpp \
     ../bbd/nodebuiltinloadfromfile.hpp \
     ../bbd/nodebuiltinvisregister.hpp \
     ../bbd/nodebuiltin_inst.hpp \
@@ -376,7 +363,8 @@ HEADERS += mainwindow.h \
     ../bbd/nodebuiltinremove.hpp \
     ../bbd/nodebuiltininsert.hpp \
     ../bbd/nodebuiltinset.hpp \
-    ../bbd/nodebuiltinisset.hpp
+    ../bbd/nodebuiltinisset.hpp \
+    ../bbd/nodebuiltinsetpropertytoallstructitems.hpp
 RESOURCES += resources.qrc
 OTHER_FILES += 
 FORMS += dialogincludedirs.ui \

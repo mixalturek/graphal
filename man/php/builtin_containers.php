@@ -38,10 +38,10 @@ remove(set, object) : null
 </pre>
 
 
-<p>Return size of the array or string lenght.</p>
+<p>Return size of the array, struct or set. Return string lenght.</p>
 
 <pre class="spec">
-size(array|string) : int|null
+size(array|struct|set|string) : int|null
 </pre>
 
 
@@ -84,6 +84,12 @@ front(array) : object|null
 
 <pre class="spec">
 back(array) : object|null
+</pre>
+
+<p>Set property with name <em>string</em> and value <em>object</em> to all struct-like (struct, vertex, edge) items of the array, struct or set.</p>
+
+<pre class="spec">
+setPropertyToAllStructItems(array|struct|set, string, object) : null
 </pre>
 
 

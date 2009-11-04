@@ -358,16 +358,6 @@ void MainWindow::updateVisualizationMenu(void)
 	QAction* action = NULL;
 
 
-	// Enable/disable
-/*	if(!vis->hasVertices() && !vis->hasEdges())
-	{
-		m_visualizationMenu->setEnabled(false);
-		return;
-	}
-	else
-		m_visualizationMenu->setEnabled(true);
-*/
-
 	// Clear and rebuild
 	m_visualizationMenu->clear();
 	m_visualizationMenu->addAction(m_saveCurrentViewAct);
@@ -405,30 +395,14 @@ void MainWindow::updateVisualizationMenu(void)
 
 
 	// Vertex sets
-	if(vis->hasVertices())
+	if(vis->hasSets())
 		m_visualizationMenu->addSeparator();
 
-	const VIS_DATA_CONTAINER& dataVertices = vis->getVertexSets();
-	for(it = dataVertices.begin(); it != dataVertices.end(); ++it)
+	const VIS_DATA_CONTAINER& dataSets = vis->getSets();
+	for(it = dataSets.begin(); it != dataSets.end(); ++it)
 	{
 		action = m_visualizationMenu->addAction(it->getName());
-		action->setStatusTip(tr("Toogle painting of this vertex set"));
-		action->setCheckable(true);
-		action->setChecked(it->isEnabled());
-		connect(action, SIGNAL(toggled(bool)), it->getMe(), SLOT(setEnabled(bool)));
-		connect(action, SIGNAL(toggled(bool)), this, SLOT(repaintVisualization()));
-	}
-
-
-	// Edge sets
-	if(vis->hasEdges())
-		m_visualizationMenu->addSeparator();
-
-	const VIS_DATA_CONTAINER& dataEdges = vis->getEdgeSets();
-	for(it = dataEdges.begin(); it != dataEdges.end(); ++it)
-	{
-		action = m_visualizationMenu->addAction(it->getName());
-		action->setStatusTip(tr("Toogle painting of this edge set"));
+		action->setStatusTip(tr("Toogle painting of this set"));
 		action->setCheckable(true);
 		action->setChecked(it->isEnabled());
 		connect(action, SIGNAL(toggled(bool)), it->getMe(), SLOT(setEnabled(bool)));
@@ -1389,6 +1363,8 @@ void MainWindow::screenshot(void)
 
 	QPixmap pixmap = QPixmap::grabWindow(m_dockVisualization->getVisualization()->winId());
 	pixmap.save(filename);
+
+	statusBarMessageWithTimeout(tr("Screenshot: %1").arg(filename));
 }
 
 

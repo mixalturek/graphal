@@ -31,7 +31,7 @@ class ValueEdge : public Value
 {
 public:
 	// Don't define copy constructor or operator=, shallow copy must be used!
-	ValueEdge(ValueGraph* graph, ValueVertex* begin, ValueVertex* end);
+	ValueEdge(ValueGraph* graph, CountPtr<Value> begin, CountPtr<Value> end);
 	virtual ~ValueEdge(void);
 	void clear(void);
 
@@ -43,8 +43,12 @@ public:
 
 	virtual void dump(ostream& os, uint indent) const;
 
-	ValueVertex* getBeginVertex(void) { return m_begin; }
-	ValueVertex* getEndVertex(void)   { return m_end; }
+	CountPtr<Value> getBeginVertex(void);
+	CountPtr<Value> getEndVertex(void);
+	ValueVertex* getBeginVertexPtr(void) { return m_begin; }
+	ValueVertex* getEndVertexPtr(void) { return m_end; }
+
+	void removeVertex(ValueVertex* vertex);
 
 	ValueGraph* getGraph(void) { return m_graph; }
 
@@ -81,7 +85,7 @@ public:
 
 private:
 	ValueGraph*  m_graph;
-	ValueVertex* m_begin;
+	ValueVertex* m_begin;// CountPtr<Value> cannot be used, cyclic references
 	ValueVertex* m_end;
 	ValueStruct* m_properties;
 };

@@ -66,6 +66,7 @@ private:
 	bool testValueArrayIterator(void);
 	bool testValueSet(void);
 	bool testValueSetOperations(void);
+	bool testValueSetRemove(void);
 
 	// Template
 	// bool test(void);

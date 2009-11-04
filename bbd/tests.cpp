@@ -30,8 +30,6 @@
 #include "valuegraph.hpp"
 #include "valuevertex.hpp"
 #include "valueedge.hpp"
-#include "valuevertexset.hpp"
-#include "valueedgeset.hpp"
 #include "lexan.hpp"
 #include "context.hpp"
 #include "nodeunarysub.hpp"
@@ -148,6 +146,7 @@ void Tests::run(void)
 	failed += !testValueArrayIterator();
 	failed += !testValueSet();
 	failed += !testValueSetOperations();
+	failed += !testValueSetRemove();
 
 	// Template
 	// failed += !test();
@@ -382,51 +381,50 @@ bool Tests::testGraph(void)
 	//     e1      e2      e3
 	ValueGraph g;
 
-	ValueVertex* v1 = g.generateVertex();
-	ValueVertex* v2 = g.generateVertex();
-	ValueVertex* v3 = g.generateVertex();
-	ValueVertex* v4 = g.generateVertex();
+	CountPtr<Value> v1 = g.generateVertex();
+	CountPtr<Value> v2 = g.generateVertex();
+	CountPtr<Value> v3 = g.generateVertex();
+	CountPtr<Value> v4 = g.generateVertex();
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 0);
 
-	ValueEdge* e1 = g.generateEdge(v1, v2);
-	ValueEdge* e2 = g.generateEdge(v2, v3);
-	ValueEdge* e3 = g.generateEdge(v3, v4);
+	CountPtr<Value> e1 = g.generateEdge(v1, v2);
+	CountPtr<Value> e2 = g.generateEdge(v2, v3);
+	CountPtr<Value> e3 = g.generateEdge(v3, v4);
 
-	verify(e1->getBeginVertex() == v1);
-	verify(e1->getEndVertex() == v2);
-	verify(e2->getBeginVertex() == v2);
-	verify(e2->getEndVertex() == v3);
-	verify(e3->getBeginVertex() == v3);
-	verify(e3->getEndVertex() == v4);
+
+	verify(e1->toValueEdge()->getBeginVertex() == v1);
+	verify(e1->toValueEdge()->getEndVertex() == v2);
+	verify(e2->toValueEdge()->getBeginVertex() == v2);
+	verify(e2->toValueEdge()->getEndVertex() == v3);
+	verify(e3->toValueEdge()->getBeginVertex() == v3);
+	verify(e3->toValueEdge()->getEndVertex() == v4);
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 3);
-	verify(v1->getDegree() == 1);
-	verify(v2->getDegree() == 2);
-	verify(v3->getDegree() == 2);
-	verify(v4->getDegree() == 1);
+	verify(v1->toValueVertex()->getDegree() == 1);
+	verify(v2->toValueVertex()->getDegree() == 2);
+	verify(v3->toValueVertex()->getDegree() == 2);
+	verify(v4->toValueVertex()->getDegree() == 1);
 
 	g.deleteEdge(e1);
-	e1 = NULL;
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 2);
-	verify(v1->getDegree() == 0);
-	verify(v2->getDegree() == 1);
-	verify(v3->getDegree() == 2);
-	verify(v4->getDegree() == 1);
+	verify(v1->toValueVertex()->getDegree() == 0);
+	verify(v2->toValueVertex()->getDegree() == 1);
+	verify(v3->toValueVertex()->getDegree() == 2);
+	verify(v4->toValueVertex()->getDegree() == 1);
 
 	g.deleteVertex(v2);
-	v2 = NULL;
 
 	verify(g.getNumVertices() == 3);
 	verify(g.getNumEdges() == 1);
-	verify(v1->getDegree() == 0);
-	// verify(v2->getDegree() == 1); // deleted
-	verify(v3->getDegree() == 1);
-	verify(v4->getDegree() == 1);
+	verify(v1->toValueVertex()->getDegree() == 0);
+	verify(v2->toValueVertex()->getDegree() == 0); // deleted
+	verify(v3->toValueVertex()->getDegree() == 1);
+	verify(v4->toValueVertex()->getDegree() == 1);
 
 	return testResult(__FUNCTION__, result);
 }
@@ -441,69 +439,73 @@ bool Tests::testGraphSet(void)
 	//     e1      e2      e3
 	ValueGraph g(false);
 
-	ValueVertex* v1 = g.generateVertex();
-	ValueVertex* v2 = g.generateVertex();
-	ValueVertex* v3 = g.generateVertex();
-	ValueVertex* v4 = g.generateVertex();
-	ValueEdge* e1 = g.generateEdge(v1, v2);
-	ValueEdge* e2 = g.generateEdge(v2, v3);
-	ValueEdge* e3 = g.generateEdge(v3, v4);
+	CountPtr<Value> v1 = g.generateVertex();
+	CountPtr<Value> v2 = g.generateVertex();
+	CountPtr<Value> v3 = g.generateVertex();
+	CountPtr<Value> v4 = g.generateVertex();
+	CountPtr<Value> e1 = g.generateEdge(v1, v2);
+	CountPtr<Value> e2 = g.generateEdge(v2, v3);
+	CountPtr<Value> e3 = g.generateEdge(v3, v4);
 
 
-	CountPtr<Value> vvs(v1->getNeighbors());
-	verify(vvs->toValueVertexSet()->getNumVertices() == 1);
-	verify(vvs->toValueVertexSet()->contains(v2));
-	verify(!vvs->toValueVertexSet()->contains(v3));
-	verify(!vvs->toValueVertexSet()->contains(v4));
+	CountPtr<Value> vvs(v1->toValueVertex()->getNeighbors());
+	verify(vvs->toValueSet()->getSize() == 1);
+	verify(!vvs->toValueSet()->contains(v1));
+	verify(vvs->toValueSet()->contains(v2));
+	verify(!vvs->toValueSet()->contains(v3));
+	verify(!vvs->toValueSet()->contains(v4));
 
-	vvs = v2->getNeighbors();
-	verify(vvs->toValueVertexSet()->getNumVertices() == 2);
-	verify(vvs->toValueVertexSet()->contains(v1));
-	verify(vvs->toValueVertexSet()->contains(v3));
-	verify(!vvs->toValueVertexSet()->contains(v4));
+	vvs = v2->toValueVertex()->getNeighbors();
+	verify(vvs->toValueSet()->getSize() == 2);
+	verify(vvs->toValueSet()->contains(v1));
+	verify(!vvs->toValueSet()->contains(v2));
+	verify(vvs->toValueSet()->contains(v3));
+	verify(!vvs->toValueSet()->contains(v4));
 
 
 	// v1 ----> v2 ----> v3 ----> v4
 	//     e1       e2       e3
 	g.setDirected(true);
 
-	vvs = v1->getNeighbors();
-	verify(vvs->toValueVertexSet()->getNumVertices() == 1);
-	verify(vvs->toValueVertexSet()->contains(v2));
-	verify(!vvs->toValueVertexSet()->contains(v3));
-	verify(!vvs->toValueVertexSet()->contains(v4));
+	vvs = v1->toValueVertex()->getNeighbors();
+	verify(vvs->toValueSet()->getSize() == 1);
+	verify(!vvs->toValueSet()->contains(v1));
+	verify(vvs->toValueSet()->contains(v2));
+	verify(!vvs->toValueSet()->contains(v3));
+	verify(!vvs->toValueSet()->contains(v4));
 
-	vvs = v2->getNeighbors();
-	verify(vvs->toValueVertexSet()->getNumVertices() == 1);
-	verify(!vvs->toValueVertexSet()->contains(v1));
-	verify(vvs->toValueVertexSet()->contains(v3));
-	verify(!vvs->toValueVertexSet()->contains(v4));
+	vvs = v2->toValueVertex()->getNeighbors();
+	verify(vvs->toValueSet()->getSize() == 1);
+	verify(!vvs->toValueSet()->contains(v1));
+	verify(!vvs->toValueSet()->contains(v2));
+	verify(vvs->toValueSet()->contains(v3));
+	verify(!vvs->toValueSet()->contains(v4));
 
 
 	g.setDirected(false);
 
 
-	ValueEdgeSet ves(&g);
-	ves.addEdge(e1);
-	ves.addEdge(e2);
-	verify(ves.getNumEdges() == 2);
+	ValueSet ves;
+	ves.insert(e1);
+	ves.insert(e2);
+	verify(ves.getSize() == 2);
 	verify(ves.contains(e1));
 	verify(ves.contains(e2));
 
-	ves.deleteEdge(e1);
-	verify(ves.getNumEdges() == 1);
+	ves.remove(e1);
+	verify(ves.getSize() == 1);
 	verify(!ves.contains(e1));
 	verify(ves.contains(e2));
 
-	ves.deleteEdge(e2);
-	verify(ves.getNumEdges() == 0);
+	ves.remove(e2);
+	verify(ves.getSize() == 0);
 	verify(!ves.contains(e1));
 	verify(!ves.contains(e2));
 
-	ves.addEdge(e3);
-	verify(ves.getNumEdges() == 1);
-	ves.deleteEdge(e3);
-	verify(ves.getNumEdges() == 0);
+	ves.insert(e3);
+	verify(ves.getSize() == 1);
+	ves.remove(e3);
+	verify(ves.getSize() == 0);
 
 	return testResult(__FUNCTION__, result);
 }
@@ -517,51 +519,51 @@ bool Tests::testGraphInvertEdgesOrientation(void)
 	//     e1       e2       e3
 	ValueGraph g(true);
 
-	ValueVertex* v1 = g.generateVertex();
-	ValueVertex* v2 = g.generateVertex();
-	ValueVertex* v3 = g.generateVertex();
-	ValueVertex* v4 = g.generateVertex();
-	ValueEdge* e1 = g.generateEdge(v1, v2);
-	ValueEdge* e2 = g.generateEdge(v2, v3);
-	ValueEdge* e3 = g.generateEdge(v3, v4);
+	CountPtr<Value> v1 = g.generateVertex();
+	CountPtr<Value> v2 = g.generateVertex();
+	CountPtr<Value> v3 = g.generateVertex();
+	CountPtr<Value> v4 = g.generateVertex();
+	CountPtr<Value> e1 = g.generateEdge(v1, v2);
+	CountPtr<Value> e2 = g.generateEdge(v2, v3);
+	CountPtr<Value> e3 = g.generateEdge(v3, v4);
 
 	// v1 <---- v2 <---- v3 <---- v4
 	//      e1       e2       e3
 	g.invertEdgesDirection();
 
-	CountPtr<Value> vvs(v1->getNeighbors());
+	CountPtr<Value> vvs(v1->toValueVertex()->getNeighbors());
 
-	verify(vvs->toValueVertexSet()->getNumVertices() == 0);
-	verify(!vvs->toValueVertexSet()->contains(v2));
-	verify(!vvs->toValueVertexSet()->contains(v3));
-	verify(!vvs->toValueVertexSet()->contains(v4));
+	verify(vvs->toValueSet()->getSize() == 0);
+	verify(!vvs->toValueSet()->contains(v2));
+	verify(!vvs->toValueSet()->contains(v3));
+	verify(!vvs->toValueSet()->contains(v4));
 
-	vvs = v2->getNeighbors();
-	verify(vvs->toValueVertexSet()->getNumVertices() == 1);
-	verify(vvs->toValueVertexSet()->contains(v1));
-	verify(!vvs->toValueVertexSet()->contains(v3));
-	verify(!vvs->toValueVertexSet()->contains(v4));
+	vvs = v2->toValueVertex()->getNeighbors();
+	verify(vvs->toValueSet()->getSize() == 1);
+	verify(vvs->toValueSet()->contains(v1));
+	verify(!vvs->toValueSet()->contains(v3));
+	verify(!vvs->toValueSet()->contains(v4));
 
-	vvs = v3->getNeighbors();
-	verify(vvs->toValueVertexSet()->getNumVertices() == 1);
-	verify(!vvs->toValueVertexSet()->contains(v1));
-	verify(vvs->toValueVertexSet()->contains(v2));
-	verify(!vvs->toValueVertexSet()->contains(v4));
+	vvs = v3->toValueVertex()->getNeighbors();
+	verify(vvs->toValueSet()->getSize() == 1);
+	verify(!vvs->toValueSet()->contains(v1));
+	verify(vvs->toValueSet()->contains(v2));
+	verify(!vvs->toValueSet()->contains(v4));
 
-	vvs = v4->getNeighbors();
-	verify(vvs->toValueVertexSet()->getNumVertices() == 1);
-	verify(!vvs->toValueVertexSet()->contains(v1));
-	verify(!vvs->toValueVertexSet()->contains(v2));
-	verify(vvs->toValueVertexSet()->contains(v3));
+	vvs = v4->toValueVertex()->getNeighbors();
+	verify(vvs->toValueSet()->getSize() == 1);
+	verify(!vvs->toValueSet()->contains(v1));
+	verify(!vvs->toValueSet()->contains(v2));
+	verify(vvs->toValueSet()->contains(v3));
 
-	verify(e1->getBeginVertex() == v2);
-	verify(e1->getEndVertex() == v1);
+	verify(e1->toValueEdge()->getBeginVertex() == v2);
+	verify(e1->toValueEdge()->getEndVertex() == v1);
 
-	verify(e2->getBeginVertex() == v3);
-	verify(e2->getEndVertex() == v2);
+	verify(e2->toValueEdge()->getBeginVertex() == v3);
+	verify(e2->toValueEdge()->getEndVertex() == v2);
 
-	verify(e3->getBeginVertex() == v4);
-	verify(e3->getEndVertex() == v3);
+	verify(e3->toValueEdge()->getBeginVertex() == v4);
+	verify(e3->toValueEdge()->getEndVertex() == v3);
 
 	return testResult(__FUNCTION__, result);
 }
@@ -1295,35 +1297,35 @@ bool Tests::testValueSet(void)
 	bool result = true;
 
 	ValueSet set;
-	verify(set.getNumItems() == 0);
+	verify(set.getSize() == 0);
 
 	CountPtr<Value> int_val(new ValueInt(5));
 	verify(!set.contains(int_val));
 	set.insert(int_val);
-	verify(set.getNumItems() == 1);
+	verify(set.getSize() == 1);
 	verify(set.contains(int_val));
 
 	CountPtr<Value> float_val(new ValueFloat(3.14));
 	verify(!set.contains(float_val));
 	set.insert(float_val);
-	verify(set.getNumItems() == 2);
+	verify(set.getSize() == 2);
 	verify(set.contains(int_val));
 	verify(set.contains(float_val));
 
 	set.insert(float_val);
-	verify(set.getNumItems() == 2);
+	verify(set.getSize() == 2);
 	verify(set.contains(int_val));
 	verify(set.contains(float_val));
 
 	CountPtr<Value> int_val2(new ValueInt(5));
 	set.insert(int_val2);
-	verify(set.getNumItems() == 2);
+	verify(set.getSize() == 2);
 	verify(set.contains(int_val));
 	verify(set.contains(int_val2));
 	verify(set.contains(float_val));
 
 	set.remove(int_val);
-	verify(set.getNumItems() == 1);
+	verify(set.getSize() == 1);
 	verify(!set.contains(int_val));
 	verify(!set.contains(int_val2));
 	verify(set.contains(float_val));
@@ -1354,21 +1356,21 @@ bool Tests::testValueSetOperations(void)
 
 	CountPtr<Value> union_val = set1.getUnion(set2);
 	assert(union_val->toValueSet() != NULL);
-	verify(union_val->toValueSet()->getNumItems() == 3);
+	verify(union_val->toValueSet()->getSize() == 3);
 	verify(union_val->toValueSet()->contains(int_val));
 	verify(union_val->toValueSet()->contains(float_val));
 	verify(union_val->toValueSet()->contains(string_val));
 
 	CountPtr<Value> intersection_val = set1.getIntersection(set2);
 	assert(intersection_val->toValueSet() != NULL);
-	verify(intersection_val->toValueSet()->getNumItems() == 1);
+	verify(intersection_val->toValueSet()->getSize() == 1);
 	verify(intersection_val->toValueSet()->contains(int_val));
 	verify(!intersection_val->toValueSet()->contains(float_val));
 	verify(!intersection_val->toValueSet()->contains(string_val));
 
 	CountPtr<Value> difference_val = set1.getDifference(set2);
 	assert(difference_val->toValueSet() != NULL);
-	verify(difference_val->toValueSet()->getNumItems() == 1);
+	verify(difference_val->toValueSet()->getSize() == 1);
 	verify(!difference_val->toValueSet()->contains(int_val));
 	verify(difference_val->toValueSet()->contains(float_val));
 	verify(!difference_val->toValueSet()->contains(string_val));
@@ -1376,6 +1378,35 @@ bool Tests::testValueSetOperations(void)
 	return testResult(__FUNCTION__, result);
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+bool Tests::testValueSetRemove(void)
+{
+	bool result = true;
+
+	ValueSet set1;
+	ValueSet set2;
+
+	CountPtr<Value> int_val(new ValueInt(5));
+	CountPtr<Value> float_val(new ValueFloat(3.14));
+	CountPtr<Value> string_val(new ValueString("bagr"));
+
+	set1.insert(int_val);
+	set1.insert(float_val);
+	set2.insert(int_val);
+	set2.insert(string_val);
+	verify(set1.getSize() == 2);
+	verify(set2.getSize() == 2);
+
+	set1.remove(set2);
+
+	verify(set1.getSize() == 1);
+	verify(set2.getSize() == 2);
+
+	return testResult(__FUNCTION__, result);
+}
 
 /*
 // Template

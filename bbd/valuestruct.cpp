@@ -146,6 +146,23 @@ void ValueStruct::resetIterator(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
+void ValueStruct::setPropertyToAllStructItems(identifier name, CountPtr<Value> value)
+{
+	ACCESS_MUTEX_LOCKER;
+
+	map<identifier, CountPtr<Value> >::iterator it;
+	for(it = m_val.begin(); it != m_val.end(); ++it)
+	{
+		ValueStruct* tmp = (*it).second->toValueStruct();
+		if(tmp != NULL)
+			tmp->setItem(name, value);
+	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
 void ValueStruct::dump(ostream& os, uint indent) const
 {
 	ACCESS_MUTEX_LOCKER;

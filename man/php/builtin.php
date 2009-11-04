@@ -27,19 +27,15 @@ isSet(object) : bool
 isGraph(object) : bool
 isVertex(object) : bool
 isEdge(object) : bool
-isVertexSet(object) : bool
-isEdgeSet(object) : bool
 printStackTrace() : null
 iterator(object) : object
 hasNext(object) : bool
 next(object) : object
 resetIterator(object) : object
 array(number) : array|null
-struct() : struct
 set() : set
-insert(set, object) : null
-remove(set, object) : null
-size(array|string) : int|null
+struct() : struct
+size(array|struct|set|string) : int|null
 pushFront(array, object) : null
 pushBack(array, object) : null
 popFront(array) : null
@@ -48,32 +44,32 @@ back(array) : object|null
 front(array) : object|null
 graph() : graph
 loadFromFile(graph, string) : bool
-vertexset(graph) : vertexset|null
-edgeset(graph) : edgeset|null
 isDirected(graph) : bool|null
 setDirected(graph, number) : bool|null
 invertEdgesDirection(graph) : null
 generateVertex(graph) : vertex|null
 generateEdge(graph, vertex, vertex) : edge|null
-deleteVertex(graph|vertexset, vertex) : null
-deleteEdge(graph|edgeset, edge) : null
-getNumVertices(graph|vertexset) : int|null
-getNumEdges(graph|edgeset) : int|null
-getVertices(graph) : vertexset|null
-getEdges(graph) : edgeset|null
+deleteVertex(graph, vertex) : null
+deleteEdge(graph, edge) : null
+getNumVertices(graph) : int|null
+getNumEdges(graph) : int|null
+getVertices(graph) : set|null
+getEdges(graph) : set|null
 getDegree(vertex) : int|null
-getNeighbors(vertex) : vertexset|null
+getNeighbors(vertex) : set|null
 getBeginVertex(edge) : vertex|null
 getEndVertex(edge) : vertex|null
-add(vertexset|edgeset, vertex|edge) : null
-contains(graph|vertexset|edgeset|set, vertex|edge|object) : bool|null
-union(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
-intersection(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
-difference(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
+insert(set, object) : null
+remove(set, object) : null
+contains(graph|set, object) : bool|null
+union(set, set) : set|null
+intersection(set, set) : set|null
+difference(set, set) : set|null
 getAdjacencyMatrix(graph) : array
-setPropertyToAllVertices(graph|vertexset, string, object) : null
-setPropertyToAllEdges(graph|edgeset, string, object) : null
-visRegister(graph|vertexset|edgeset, string, number, number, number) : null
+setPropertyToAllVertices(graph, string, object) : null
+setPropertyToAllEdges(graph, string, object) : null
+setPropertyToAllStructItems(array|struct|set, string, object) : null
+visRegister(graph|set, string, number, number, number) : null
 visSetPos(vertex, number, number, number) : null
 visSetColor(vertex|edge, number, number, number) : null
 visSetView(number, number, number, number, number) : null

@@ -40,11 +40,9 @@ public:
 
 	void clear(void);
 	bool hasGraphs(void) const { return !m_graphs.empty(); }
-	bool hasVertices(void) const { return !m_vertexSets.empty(); }
-	bool hasEdges(void) const { return !m_edgeSets.empty(); }
+	bool hasSets(void) const { return !m_sets.empty(); }
 	const VIS_DATA_CONTAINER& getGraphs(void) const { return m_graphs; }
-	const VIS_DATA_CONTAINER& getVertexSets(void) const { return m_vertexSets; }
-	const VIS_DATA_CONTAINER& getEdgeSets(void) const { return m_edgeSets; }
+	const VIS_DATA_CONTAINER& getSets(void) const { return m_sets; }
 
 	bool hasViews(void) const { return !m_views.empty(); }
 	void setCurrentView(const VisualizationView& view) { m_currentView = view; }
@@ -65,8 +63,7 @@ protected:
 	void initializeGL(void);
 	void resizeGL(int width, int height);
 	void paintGL(void);
-	void paintVertices(const set<ValueVertex*>& vertices, const QColor& color);
-	void paintEdges(const set<ValueEdge*>& edges, const QColor& color);
+	void paintSet(ValueSet* vs, const QColor& color);
 
 	void mousePressEvent(QMouseEvent* event);
 	void mouseMoveEvent(QMouseEvent* event);
@@ -74,8 +71,7 @@ protected:
 
 private:
 	VIS_DATA_CONTAINER m_graphs;
-	VIS_DATA_CONTAINER m_vertexSets;
-	VIS_DATA_CONTAINER m_edgeSets;
+	VIS_DATA_CONTAINER m_sets;
 
 	QPoint m_lastMousePos;
 	VisualizationView m_currentView;

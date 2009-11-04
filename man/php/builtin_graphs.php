@@ -20,20 +20,6 @@ loadFromFile(graph, string) : bool
 </pre>
 
 
-<p>Return a newly created vertex set.</p>
-
-<pre class="spec">
-vertexset(graph) : vertexset|null
-</pre>
-
-
-<p>Return a newly created edge set.</p>
-
-<pre class="spec">
-edgeset(graph) : edgeset|null
-</pre>
-
-
 <p>Check if the graph is directed.</p>
 
 <pre class="spec">
@@ -69,45 +55,45 @@ generateEdge(graph, vertex, vertex) : edge|null
 </pre>
 
 
-<p>Delete the vertex from the graph or vertex set.</p>
+<p>Delete the vertex from the graph or set.</p>
 
 <pre class="spec">
-deleteVertex(graph|vertexset, vertex) : null
+deleteVertex(graph|set, vertex) : null
 </pre>
 
 
-<p>Delete the edge from the graph or edge set.</p>
+<p>Delete the edge from the graph or set.</p>
 
 <pre class="spec">
-deleteEdge(graph|edgeset, edge) : null
+deleteEdge(graph|set, edge) : null
 </pre>
 
 
-<p>Return number of vertices in the graph or vertex set.</p>
+<p>Return number of vertices in the graph.</p>
 
 <pre class="spec">
-getNumVertices(graph|vertexset) : int|null
+getNumVertices(graph) : int|null
 </pre>
 
 
-<p>Return number of edges in the graph or edge set.</p>
+<p>Return number of edges in the graph.</p>
 
 <pre class="spec">
 getNumEdges(graph|edgeset) : int|null
 </pre>
 
 
-<p>Return graph's vertices as a vertex set object.</p>
+<p>Return graph's vertices as a set object.</p>
 
 <pre class="spec">
-getVertices(graph) : vertexset|null
+getVertices(graph) : set|null
 </pre>
 
 
-<p>Return graph's edges as an edge set object.</p>
+<p>Return graph's edges as a set object.</p>
 
 <pre class="spec">
-getEdges(graph) : edgeset|null
+getEdges(graph) : set|null
 </pre>
 
 
@@ -118,10 +104,10 @@ getDegree(vertex) : int|null
 </pre>
 
 
-<p>Return the neighbors of the vertex as a vertex set object.</p>
+<p>Return the neighbors of the vertex as a set object.</p>
 
 <pre class="spec">
-getNeighbors(vertex) : vertexset|null
+getNeighbors(vertex) : set|null
 </pre>
 
 
@@ -139,59 +125,52 @@ getEndVertex(edge) : vertex|null
 </pre>
 
 
-<p>Add the vertex to the vertex set or edge to the edge set.</p>
+<p>Check if the graph contains the vertex or edge. Check if the set contains object.</p>
 
 <pre class="spec">
-add(vertexset|edgeset, vertex|edge) : null
+contains(graph|set, object) : bool|null
 </pre>
 
 
-<p>Check if the graph, vertex set or edge set contain the vertex or edge. Check if the set contains object.</p>
+<p>Create union from two sets.</p>
 
 <pre class="spec">
-contains(graph|vertexset|edgeset|set, vertex|edge|object) : bool|null
+union(set, set) : set|null
 </pre>
 
 
-<p>Create union from two vertex sets, two edge sets or two sets.</p>
+<p>Create intersection from two sets.</p>
 
 <pre class="spec">
-union(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
+intersection(set, set) : set|null
 </pre>
 
 
-<p>Create intersection from two vertex sets, two edge sets or two sets.</p>
+<p>Create difference from two sets.</p>
 
 <pre class="spec">
-intersection(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
+difference(set, set) : set|null
 </pre>
 
 
-<p>Create difference from two vertex sets, two edge sets or two sets.</p>
-
-<pre class="spec">
-difference(vertexset|edgeset|set, vertexset|edgeset|set) : vertexset|edgeset|set|null
-</pre>
-
-
-<p>Create the adjacency matrix from the graph, 2D array (array containing arrays in all items) is returned. Note that position of the lines/rows may vary during several calls, but the linear combination is always the same.</p>
+<p>Create the adjacency matrix from the graph, 2D array (array containing arrays in all items) is returned.</p>
 
 <pre class="spec">
 getAdjacencyMatrix(graph) : array
 </pre>
 
 
-<p>Set property with name <em>string</em> and value <em>object</em> to all vertices of the graph or vertex set.</p>
+<p>Set property with name <em>string</em> and value <em>object</em> to all vertices of the graph.</p>
 
 <pre class="spec">
-setPropertyToAllVertices(graph|vertexset, string, object) : null
+setPropertyToAllVertices(graph, string, object) : null
 </pre>
 
 
-<p>Set property with name <em>string</em> and value <em>object</em> to all edges of the graph or edge set.</p>
+<p>Set property with name <em>string</em> and value <em>object</em> to all edges of the graph.</p>
 
 <pre class="spec">
-setPropertyToAllEdges(graph|edgeset, string, object) : null
+setPropertyToAllEdges(graph, string, object) : null
 </pre>
 
 

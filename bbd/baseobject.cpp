@@ -64,11 +64,10 @@ void BaseObject::printMemoryLeaks(uint number_of_static_objects)
 		return;
 
 	// Display all allocated objects, also including static objects
-	// (ie. ValueStruct::m_notfound)
 	set<BaseObject*>::const_iterator it;
 	for(it = m_allocated_objects.begin(); it != m_allocated_objects.end(); it++)
 	{
-		ss.clear();
+		ss.str(string());
 		ss << *it << ", " << typeid(**it).name();
 		ERR(ss.str());
 	}

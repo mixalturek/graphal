@@ -16,8 +16,6 @@ include 'p_begin.php';
 <pre class="spec">isGraph(object) : bool</pre>
 <pre class="spec">isVertex(object) : bool</pre>
 <pre class="spec">isEdge(object) : bool</pre>
-<pre class="spec">isVertexSet(object) : bool</pre>
-<pre class="spec">isEdgeSet(object) : bool</pre>
 
 <?php
 include 'p_end.php';

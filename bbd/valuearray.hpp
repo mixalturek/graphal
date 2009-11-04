@@ -60,6 +60,8 @@ public:
 	virtual CountPtr<Value> next(void);
 	virtual void resetIterator(void);
 
+	void setPropertyToAllStructItems(identifier name, CountPtr<Value> value);
+
 	virtual PTR_Value add(const Value&     right) const; // +
 	virtual PTR_Value sub(const Value&     right) const; // -
 	virtual PTR_Value mult(const Value&    right) const; // *

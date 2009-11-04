@@ -51,8 +51,7 @@ public:
 	virtual ValueGraph*         toValueGraph(void) { return m_val->toValueGraph(); }
 	virtual ValueVertex*       toValueVertex(void) { return m_val->toValueVertex(); }
 	virtual ValueEdge*           toValueEdge(void) { return m_val->toValueEdge(); }
-	virtual ValueVertexSet* toValueVertexSet(void) { return m_val->toValueVertexSet(); }
-	virtual ValueEdgeSet*     toValueEdgeSet(void) { return m_val->toValueEdgeSet(); }
+	virtual ValueSet*             toValueSet(void) { return m_val->toValueSet(); }
 	virtual ValueReference* toValueReference(void) { return this; }
 
 	virtual CountPtr<Value> assign(CountPtr<Value> val);
@@ -79,8 +78,7 @@ public:
 	virtual PTR_Value add(const ValueGraph&     left) const;
 	virtual PTR_Value add(const ValueVertex&    left) const;
 	virtual PTR_Value add(const ValueEdge&      left) const;
-	virtual PTR_Value add(const ValueVertexSet& left) const;
-	virtual PTR_Value add(const ValueEdgeSet&   left) const;
+	virtual PTR_Value add(const ValueSet&       left) const;
 
 	// -
 	virtual PTR_Value sub(const Value&         right) const;
@@ -95,8 +93,7 @@ public:
 	virtual PTR_Value sub(const ValueGraph&     left) const;
 	virtual PTR_Value sub(const ValueVertex&    left) const;
 	virtual PTR_Value sub(const ValueEdge&      left) const;
-	virtual PTR_Value sub(const ValueVertexSet& left) const;
-	virtual PTR_Value sub(const ValueEdgeSet&   left) const;
+	virtual PTR_Value sub(const ValueSet&       left) const;
 
 	// *
 	virtual PTR_Value mult(const Value&         right) const;
@@ -111,8 +108,7 @@ public:
 	virtual PTR_Value mult(const ValueGraph&     left) const;
 	virtual PTR_Value mult(const ValueVertex&    left) const;
 	virtual PTR_Value mult(const ValueEdge&      left) const;
-	virtual PTR_Value mult(const ValueVertexSet& left) const;
-	virtual PTR_Value mult(const ValueEdgeSet&   left) const;
+	virtual PTR_Value mult(const ValueSet&       left) const;
 
 	// /
 	virtual PTR_Value div(const Value&         right) const;
@@ -127,8 +123,7 @@ public:
 	virtual PTR_Value div(const ValueGraph&     left) const;
 	virtual PTR_Value div(const ValueVertex&    left) const;
 	virtual PTR_Value div(const ValueEdge&      left) const;
-	virtual PTR_Value div(const ValueVertexSet& left) const;
-	virtual PTR_Value div(const ValueEdgeSet&   left) const;
+	virtual PTR_Value div(const ValueSet&       left) const;
 
 	// %
 	virtual PTR_Value mod(const Value&         right) const;
@@ -143,8 +138,7 @@ public:
 	virtual PTR_Value mod(const ValueGraph&     left) const;
 	virtual PTR_Value mod(const ValueVertex&    left) const;
 	virtual PTR_Value mod(const ValueEdge&      left) const;
-	virtual PTR_Value mod(const ValueVertexSet& left) const;
-	virtual PTR_Value mod(const ValueEdgeSet&   left) const;
+	virtual PTR_Value mod(const ValueSet&       left) const;
 
 	// ==
 	virtual PTR_Value eq(const Value&         right) const;
@@ -159,8 +153,7 @@ public:
 	virtual PTR_Value eq(const ValueGraph&     left) const;
 	virtual PTR_Value eq(const ValueVertex&    left) const;
 	virtual PTR_Value eq(const ValueEdge&      left) const;
-	virtual PTR_Value eq(const ValueVertexSet& left) const;
-	virtual PTR_Value eq(const ValueEdgeSet&   left) const;
+	virtual PTR_Value eq(const ValueSet&       left) const;
 
 	// !=
 	virtual PTR_Value ne(const Value&         right) const;
@@ -175,8 +168,7 @@ public:
 	virtual PTR_Value ne(const ValueGraph&     left) const;
 	virtual PTR_Value ne(const ValueVertex&    left) const;
 	virtual PTR_Value ne(const ValueEdge&      left) const;
-	virtual PTR_Value ne(const ValueVertexSet& left) const;
-	virtual PTR_Value ne(const ValueEdgeSet&   left) const;
+	virtual PTR_Value ne(const ValueSet&       left) const;
 
 	// <=
 	virtual PTR_Value le(const Value&         right) const;
@@ -191,8 +183,7 @@ public:
 	virtual PTR_Value le(const ValueGraph&     left) const;
 	virtual PTR_Value le(const ValueVertex&    left) const;
 	virtual PTR_Value le(const ValueEdge&      left) const;
-	virtual PTR_Value le(const ValueVertexSet& left) const;
-	virtual PTR_Value le(const ValueEdgeSet&   left) const;
+	virtual PTR_Value le(const ValueSet&       left) const;
 
 	// >=
 	virtual PTR_Value ge(const Value&         right) const;
@@ -207,8 +198,7 @@ public:
 	virtual PTR_Value ge(const ValueGraph&     left) const;
 	virtual PTR_Value ge(const ValueVertex&    left) const;
 	virtual PTR_Value ge(const ValueEdge&      left) const;
-	virtual PTR_Value ge(const ValueVertexSet& left) const;
-	virtual PTR_Value ge(const ValueEdgeSet&   left) const;
+	virtual PTR_Value ge(const ValueSet&       left) const;
 
 	// <
 	virtual PTR_Value lt(const Value&         right) const;
@@ -223,8 +213,7 @@ public:
 	virtual PTR_Value lt(const ValueGraph&     left) const;
 	virtual PTR_Value lt(const ValueVertex&    left) const;
 	virtual PTR_Value lt(const ValueEdge&      left) const;
-	virtual PTR_Value lt(const ValueVertexSet& left) const;
-	virtual PTR_Value lt(const ValueEdgeSet&   left) const;
+	virtual PTR_Value lt(const ValueSet&       left) const;
 
 	// >
 	virtual PTR_Value gt(const Value&         right) const;
@@ -239,8 +228,7 @@ public:
 	virtual PTR_Value gt(const ValueGraph&     left) const;
 	virtual PTR_Value gt(const ValueVertex&    left) const;
 	virtual PTR_Value gt(const ValueEdge&      left) const;
-	virtual PTR_Value gt(const ValueVertexSet& left) const;
-	virtual PTR_Value gt(const ValueEdgeSet&   left) const;
+	virtual PTR_Value gt(const ValueSet&       left) const;
 
 	// . (member access)
 	virtual PTR_Value member(const Value&         right) const;
@@ -255,8 +243,7 @@ public:
 	virtual PTR_Value member(const ValueGraph&     left) const;
 	virtual PTR_Value member(const ValueVertex&    left) const;
 	virtual PTR_Value member(const ValueEdge&      left) const;
-	virtual PTR_Value member(const ValueVertexSet& left) const;
-	virtual PTR_Value member(const ValueEdgeSet&   left) const;
+	virtual PTR_Value member(const ValueSet&       left) const;
 
 	// [] index
 	virtual PTR_Value index(const Value&         right) const;
@@ -271,8 +258,7 @@ public:
 	virtual PTR_Value index(const ValueGraph&     left) const;
 	virtual PTR_Value index(const ValueVertex&    left) const;
 	virtual PTR_Value index(const ValueEdge&      left) const;
-	virtual PTR_Value index(const ValueVertexSet& left) const;
-	virtual PTR_Value index(const ValueEdgeSet&   left) const;
+	virtual PTR_Value index(const ValueSet&       left) const;
 
 	virtual PTR_Value logNOT(void)               const; // !
 

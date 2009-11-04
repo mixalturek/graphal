@@ -11,5 +11,3 @@ Bison
 		array() - array0()
 		array(size) - array1()
 	add switch
-
-rewrite code for storing vertices and edges to use CountPtr, dangling pointers still occur :-(

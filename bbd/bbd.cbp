@@ -127,8 +127,6 @@
 		<Unit filename="nodeblock.hpp" />
 		<Unit filename="nodebuiltin_inst.cpp" />
 		<Unit filename="nodebuiltin_inst.hpp" />
-		<Unit filename="nodebuiltinadd.cpp" />
-		<Unit filename="nodebuiltinadd.hpp" />
 		<Unit filename="nodebuiltinarray.cpp" />
 		<Unit filename="nodebuiltinarray.hpp" />
 		<Unit filename="nodebuiltinassert.cpp" />
@@ -149,8 +147,6 @@
 		<Unit filename="nodebuiltindump.hpp" />
 		<Unit filename="nodebuiltinecho.cpp" />
 		<Unit filename="nodebuiltinecho.hpp" />
-		<Unit filename="nodebuiltinedgeset.cpp" />
-		<Unit filename="nodebuiltinedgeset.hpp" />
 		<Unit filename="nodebuiltinexit.cpp" />
 		<Unit filename="nodebuiltinexit.hpp" />
 		<Unit filename="nodebuiltinfront.cpp" />
@@ -195,8 +191,6 @@
 		<Unit filename="nodebuiltinisdirected.hpp" />
 		<Unit filename="nodebuiltinisedge.cpp" />
 		<Unit filename="nodebuiltinisedge.hpp" />
-		<Unit filename="nodebuiltinisedgeset.cpp" />
-		<Unit filename="nodebuiltinisedgeset.hpp" />
 		<Unit filename="nodebuiltinisfloat.cpp" />
 		<Unit filename="nodebuiltinisfloat.hpp" />
 		<Unit filename="nodebuiltinisgraph.cpp" />
@@ -213,8 +207,6 @@
 		<Unit filename="nodebuiltinisstruct.hpp" />
 		<Unit filename="nodebuiltinisvertex.cpp" />
 		<Unit filename="nodebuiltinisvertex.hpp" />
-		<Unit filename="nodebuiltinisvertexset.cpp" />
-		<Unit filename="nodebuiltinisvertexset.hpp" />
 		<Unit filename="nodebuiltiniterator.cpp" />
 		<Unit filename="nodebuiltiniterator.hpp" />
 		<Unit filename="nodebuiltinloadfromfile.cpp" />
@@ -245,6 +237,8 @@
 		<Unit filename="nodebuiltinsetdirected.hpp" />
 		<Unit filename="nodebuiltinsetpropertytoalledges.cpp" />
 		<Unit filename="nodebuiltinsetpropertytoalledges.hpp" />
+		<Unit filename="nodebuiltinsetpropertytoallstructitems.cpp" />
+		<Unit filename="nodebuiltinsetpropertytoallstructitems.hpp" />
 		<Unit filename="nodebuiltinsetpropertytoallvertices.cpp" />
 		<Unit filename="nodebuiltinsetpropertytoallvertices.hpp" />
 		<Unit filename="nodebuiltinsize.cpp" />
@@ -255,8 +249,6 @@
 		<Unit filename="nodebuiltinunion.hpp" />
 		<Unit filename="nodebuiltinverify.cpp" />
 		<Unit filename="nodebuiltinverify.hpp" />
-		<Unit filename="nodebuiltinvertexset.cpp" />
-		<Unit filename="nodebuiltinvertexset.hpp" />
 		<Unit filename="nodebuiltinvisgetgraph.cpp" />
 		<Unit filename="nodebuiltinvisgetgraph.hpp" />
 		<Unit filename="nodebuiltinvisregister.cpp" />
@@ -332,8 +324,6 @@
 		<Unit filename="valuebool.hpp" />
 		<Unit filename="valueedge.cpp" />
 		<Unit filename="valueedge.hpp" />
-		<Unit filename="valueedgeset.cpp" />
-		<Unit filename="valueedgeset.hpp" />
 		<Unit filename="valuefloat.cpp" />
 		<Unit filename="valuefloat.hpp" />
 		<Unit filename="valuegraph.cpp" />
@@ -354,8 +344,6 @@
 		<Unit filename="valuestruct.hpp" />
 		<Unit filename="valuevertex.cpp" />
 		<Unit filename="valuevertex.hpp" />
-		<Unit filename="valuevertexset.cpp" />
-		<Unit filename="valuevertexset.hpp" />
 		<Unit filename="version.hpp" />
 		<Unit filename="visualizationconnector.cpp" />
 		<Unit filename="visualizationconnector.hpp" />
