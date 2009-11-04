@@ -1100,7 +1100,15 @@ Vyvíjená aplikace nakonec používá zcela jiné řešení. Statické nejsou s
 
 Jak už bylo zmíněno v kapitole \ref{double_dispatching_pattern} analýzy na straně \pageref{double_dispatching_pattern}, binární operace nad hodnotami ve skriptu jsou vykonávány s využitím návrhového vzoru Double dispatching.
 
-Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \texttt{ValueNull}, \texttt{Va\-lue\-Bool}, \texttt{ValueInt}, \texttt{ValueFloat} atd., každá ze zavedených tříd může být použita v libovolné operaci. Hodnota \texttt{null}, respektive \texttt{false} u logických operátorů, je vrácena v případě, kdy není operace nad danou kombinací typů definována.
+Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \texttt{ValueNull}, \texttt{Va\-lue\-Bool}, \texttt{ValueInt}, \texttt{ValueFloat} atd., každá ze zavedených tříd může být použita v libovolné operaci. Class diagram je uveden na obrázku \ref{fig:value_hierarchy}. Hodnota \texttt{null}, respektive \texttt{false} u logických operátorů, je vrácena v případě, kdy není operace nad danou kombinací typů definována.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[height=12cm]{img/classValue__inherit__graph.pdf}
+\caption{Hierarchie Value* tříd}
+\label{fig:value_hierarchy}
+\end{center}
+\end{figure}
 
 % \begin{enumerate}
 % \item aritmetické sčítání \texttt{+}, odčítání \texttt{-}, násobení \texttt{*}, dělení \texttt{/}, dělení modulo \texttt{\%}
@@ -1165,7 +1173,15 @@ TODO: nahrávání grafu ze souboru, jeho formát
 
 \subsection{Abstraktní strom syntaxe, Node* hierarchie tříd}
 
-Abstraktní třída \texttt{Node} byla již představena v analýze, v kapitole \ref{abstraktni_strom_syntaxe} na straně \pageref{abstraktni_strom_syntaxe}. Z ní vycházázejí všechny ostatní třídy, jejichž objekty budou tvořit abstraktní strom syntaxe skriptu.
+Abstraktní třída \texttt{Node} byla již představena v analýze, v kapitole \ref{abstraktni_strom_syntaxe} na straně \pageref{abstraktni_strom_syntaxe}. Z ní vycházázejí všechny ostatní třídy, jejichž objekty budou tvořit abstraktní strom syntaxe skriptu. Class diagram je uveden na obrázku \ref{fig:node_hierarchy}.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[height=14.9cm]{img/classNode__inherit__graph.pdf}
+\caption{Hierarchie Node* tříd}
+\label{fig:node_hierarchy}
+\end{center}
+\end{figure}
 
 Unární operátory jsou potomky třídy \texttt{NodeUnary}, která předpokládá jeden poduzel ve stromě, \texttt{NodeBinary} logicky dva. Ternální operátor je interně mapován na \texttt{if-else} větvení poskytované třídou \texttt{NodeCondition}. Dalšími podtřídami jsou například \texttt{Node\-Loop} a \texttt{NodeForeach} cykly, \texttt{NodeBlock} zapouzdřuje skupinu příkazů, \texttt{Node\-Function\-Call} slouží pro volání funkcí. Prázdný příkaz \texttt{NodeEmptyCommand} se využívá spíše interně.
 
@@ -1540,7 +1556,7 @@ Pravidla a vlastní funkcionalitu zvýrazňování syntaxe definuje třída \tex
 Vlastní obarvování probíhá v metodě \texttt{highlightBlock()}, jež prochází řetězec s textem zvýrazňované řádky, hledá v něm specifikované regulární výrazy a při nalezení aplikuje daný formát textu. Celé řešení vychází z oficiálního tutoriálu dodávanému ke knihovně Qt \cite{syntax_highlighter_example}.
 
 
-\subsubsection{Zvýraznění aktuální řádky}
+\subsubsection{Zvýraznění aktuálního řádku}
 
 Změní-li se pozice textového kurzoru v dokumentu, editor emituje signál \texttt{cur\-sor\-Po\-si\-ti\-on\-Chan\-ged}. Tento singnál je namapován na obslužný slot \texttt{highlightCurrentLine()}, jenž vytvoří objekt typu \texttt{QTextEdit::ExtraSelection}. Nastaví mu barvu pozadí a řekne, aby se roztáhl přes celou řádku, ve které se nachází kurzor.
 
@@ -1652,10 +1668,13 @@ Zmíněné parametry se sdružují do třídy \texttt{VisualizationView}. Aplika
 
 \subsubsection{Screenshot vizualizačního okna}
 
-Díky knihovně Qt je kód funkce velice jednoduchý, jedná se pouze o dva řádky. Funkce \texttt{grabWindow()} třídy \texttt{QPixmap} sejme obsah okna a \texttt{save()} uloží data obrázku na disk. Alternativou by mohlo být OpenGL volání \texttt{glReadPixels()}, obě metody produkují stejné výsledky.
+Díky knihovně Qt je kód funkce velice jednoduchý, zabírá pouze dva řádky. Funkce \texttt{grabWindow()} třídy \texttt{QPixmap} sejme obsah okna a \texttt{save()} uloží data obrázku na disk. Alternativou by mohlo být OpenGL volání \texttt{glReadPixels()}, obě metody produkují stejné výsledky.
 
 
-\subsection{Konfigurace a konfigurační dialog}
+\subsection{Konfigurace grafické aplikace}
+
+Grafická aplikace, na rozdíl od konzolové, nepřebírá nastavení z předaných argumentů, ale jednotlivé volby získává z konfiguračního souboru. Databáze parametrů se uchovává v singletonu \texttt{Settings}. Hodnoty jsou načteny jednorázově při konstrukci objektu, pozdější přístup ke každé z nich poskytují \textit{set-} a \textit{get-} metody. Zápis do souboru se provádí při každé změně, ne až při ukončení aplikace. Kód interně využívá služeb třídy \texttt{QSettings}.
+
 
 \subsection{Shrnutí}
 
@@ -1916,8 +1935,6 @@ base code for the application qt4/examples/mainwindows/mdi
 %%%%
 
 \chapter{UML diagramy}
-
-TODO: X36ASS
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
