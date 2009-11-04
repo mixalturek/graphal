@@ -1,4 +1,4 @@
-function set(val)
+function setGlobal(val)
 {
 	echo("Setting global variable: " + val + "\n");
 	global g_var;
@@ -14,9 +14,9 @@ function display()
 
 function main(argv)
 {
-	set("bagr");
+	setGlobal("bagr");
 	display();
 
-	set(3.14);
+	setGlobal(3.14);
 	display();
 }

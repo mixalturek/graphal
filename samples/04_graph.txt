@@ -34,7 +34,7 @@ function main(argv)
 	verify(v4.getDegree() == 1);
 
 	g.deleteEdge(e1);
-	e1 = null;
+//	e1 = null;
 
 	verify(g.getNumVertices() == 4);
 	verify(g.getNumEdges() == 2);
@@ -55,27 +55,26 @@ function main(argv)
 
 
 	// VertexSet tests
-	vs = vertexset(g);
-	vs.add(v1);
-	vs.add(v4);
+	vs = set();
+	vs.insert(v1);
+	vs.insert(v4);
 
-	verify(vs.getNumVertices() == 2);
+	verify(vs.size() == 2);
 	verify(vs.contains(v1));
 	verify(!vs.contains(v3));
 	verify(vs.contains(v4));
 
-	vs.deleteVertex(v1);
+	vs.remove(v1);
 	verify(!vs.contains(v1));
 	verify(vs.contains(v4));
 
-
 	// EdgeSet tests
-	es = edgeset(g);
-	es.add(e3);
+	es = set();
+	es.insert(e3);
 
-	verify(es.getNumEdges() == 1);
+	verify(es.size() == 1);
 	verify(es.contains(e3));
 
-	es.deleteEdge(e3);
+	es.remove(e3);
 	verify(!es.contains(e3));
 }
