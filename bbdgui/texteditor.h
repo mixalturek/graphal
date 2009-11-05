@@ -31,8 +31,8 @@ public:
 
 	void newFile(void);
 	bool loadFile(const QString& fileName, bool warnIfNotFound);
-	bool save(void);
-	bool saveAs(void);
+	bool save(const QString& directory = "");
+	bool saveAs(const QString& directory);
 	bool saveFile(const QString& fileName);
 
 	QString userFriendlyCurrentFile(void) const;

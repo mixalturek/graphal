@@ -139,8 +139,9 @@ void MainWindow::newFile()
 
 void MainWindow::open()
 {
-	// TODO: save path to the settings
-	QStringList fileName = QFileDialog::getOpenFileNames(this);
+	QStringList fileName = QFileDialog::getOpenFileNames(this, tr("Open"),
+		m_dockFiles->rootIndex());
+
 	foreach(QString str, fileName)
 		open(str, true);
 }
@@ -199,13 +200,13 @@ void MainWindow::openAndScroll(const QString& fileName, int line)
 
 void MainWindow::save()
 {
-	if(activeTextEditor() && activeTextEditor()->save())
+	if(activeTextEditor() && activeTextEditor()->save(m_dockFiles->rootIndex()))
 		statusBarMessageWithTimeout(tr("File saved"));
 }
 
 void MainWindow::saveAs()
 {
-	if(activeTextEditor() && activeTextEditor()->saveAs())
+	if(activeTextEditor() && activeTextEditor()->saveAs(m_dockFiles->rootIndex()))
 		statusBarMessageWithTimeout(tr("File saved"));
 }
 

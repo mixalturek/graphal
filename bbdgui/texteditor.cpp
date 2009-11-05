@@ -88,10 +88,10 @@ bool TextEditor::loadFile(const QString& fileName, bool warnIfNotFound)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-bool TextEditor::save(void)
+bool TextEditor::save(const QString& directory)
 {
 	if(m_isUntitled)
-		return saveAs();
+		return saveAs(directory);
 	else
 		return saveFile(m_curFile);
 }
@@ -100,9 +100,14 @@ bool TextEditor::save(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-bool TextEditor::saveAs(void)
+bool TextEditor::saveAs(const QString& directory)
 {
-	QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"), m_curFile);
+	QString fileName;
+
+	if(m_isUntitled)
+		fileName = QFileDialog::getSaveFileName(this, tr("Save As"), directory);
+	else
+		fileName = QFileDialog::getSaveFileName(this, tr("Save As"), m_curFile);
 
 	if(fileName.isEmpty())
 		return false;
