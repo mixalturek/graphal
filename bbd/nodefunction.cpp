@@ -46,6 +46,9 @@ NodeFunction::~NodeFunction(void)
 ostream& operator<<(ostream& os, const list<identifier>& node)
 {
 	uint num = node.size();
+	if(num == 0)
+		return os;
+
 	list<identifier>::const_iterator it = node.begin();
 
 	for(uint i = 0; i < num-1; i++, it++)

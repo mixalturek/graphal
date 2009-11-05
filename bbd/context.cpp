@@ -268,7 +268,7 @@ int Context::executeScriptMain(const deque<string>& parameters)
 	else if(maintest->getNumberOfParameters() != 1)
 	{
 		ERR_PP(maintest->declarationPos()->toString(),
-			_("Function main(argv) does not expect one parameter, exiting"));
+			_("Function main(argv) expect one parameter, exiting"));
 		return 1;
 	}
 
