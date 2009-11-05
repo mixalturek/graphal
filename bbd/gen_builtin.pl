@@ -1215,33 +1215,17 @@ genBFClass('remove', 'NodeBuiltinRemove', 2, $code, $include);
 #############################################################################
 ####
 
-$funcdecl = 'contains(graph|set, object) : bool|null';
+$funcdecl = 'contains(set, object) : bool|null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
-#include "valuevertex.hpp"
-#include "valueedge.hpp"
 #include "valuebool.hpp"
 #include "valueset.hpp"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
-	ValueGraph* g = NULL;
 	ValueSet* vset = NULL;
 
-	if((g = par[0]->toValueGraph()) != NULL)
-	{
-		if(par[1]->toValueVertex() != NULL)
-			return CountPtr<Value>((g->containsVertex(par[1])) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
-		else if(par[1]->toValueEdge() != NULL)
-			return CountPtr<Value>((g->containsEdge(par[1])) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
-		else
-		{
-			WARN_P(_("Bad parameters type: $funcdecl"));
-			return VALUENULL;
-		}
-	}
-	else if((vset = par[0]->toValueSet()) != NULL)
+	if((vset = par[0]->toValueSet()) != NULL)
 		return CountPtr<Value>((vset->contains(par[1])) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE);
 	else
 	{

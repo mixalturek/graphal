@@ -55,17 +55,17 @@ generateEdge(graph, vertex, vertex) : edge|null
 </pre>
 
 
-<p>Delete the vertex from the graph or set.</p>
+<p>Delete the vertex from the graph.</p>
 
 <pre class="spec">
-deleteVertex(graph|set, vertex) : null
+deleteVertex(graph, vertex) : null
 </pre>
 
 
-<p>Delete the edge from the graph or set.</p>
+<p>Delete the edge from the graph.</p>
 
 <pre class="spec">
-deleteEdge(graph|set, edge) : null
+deleteEdge(graph, edge) : null
 </pre>
 
 
@@ -79,7 +79,7 @@ getNumVertices(graph) : int|null
 <p>Return number of edges in the graph.</p>
 
 <pre class="spec">
-getNumEdges(graph|edgeset) : int|null
+getNumEdges(graph) : int|null
 </pre>
 
 
@@ -125,35 +125,7 @@ getEndVertex(edge) : vertex|null
 </pre>
 
 
-<p>Check if the graph contains the vertex or edge. Check if the set contains object.</p>
-
-<pre class="spec">
-contains(graph|set, object) : bool|null
-</pre>
-
-
-<p>Create union from two sets.</p>
-
-<pre class="spec">
-union(set, set) : set|null
-</pre>
-
-
-<p>Create intersection from two sets.</p>
-
-<pre class="spec">
-intersection(set, set) : set|null
-</pre>
-
-
-<p>Create difference from two sets.</p>
-
-<pre class="spec">
-difference(set, set) : set|null
-</pre>
-
-
-<p>Create the adjacency matrix from the graph, 2D array (array containing arrays in all items) is returned.</p>
+<p>Create the adjacency matrix from the graph. 2D array (array containing arrays in all items) is returned.</p>
 
 <pre class="spec">
 getAdjacencyMatrix(graph) : array

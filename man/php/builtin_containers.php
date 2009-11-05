@@ -38,10 +38,38 @@ remove(set, object) : null
 </pre>
 
 
+<p>Check if the set contains the object.</p>
+
+<pre class="spec">
+contains(set, object) : bool|null
+</pre>
+
+
 <p>Return size of the array, struct or set. Return string lenght.</p>
 
 <pre class="spec">
 size(array|struct|set|string) : int|null
+</pre>
+
+
+<p>Create union from two sets.</p>
+
+<pre class="spec">
+union(set, set) : set|null
+</pre>
+
+
+<p>Create intersection from two sets.</p>
+
+<pre class="spec">
+intersection(set, set) : set|null
+</pre>
+
+
+<p>Create difference from two sets.</p>
+
+<pre class="spec">
+difference(set, set) : set|null
 </pre>
 
 
@@ -86,7 +114,7 @@ front(array) : object|null
 back(array) : object|null
 </pre>
 
-<p>Set property with name <em>string</em> and value <em>object</em> to all struct-like (struct, vertex, edge) items of the array, struct or set.</p>
+<p>Set property with name <em>string</em> and value <em>object</em> to the all struct-like items (struct, vertex, edge) saved in the array, struct or set.</p>
 
 <pre class="spec">
 setPropertyToAllStructItems(array|struct|set, string, object) : null
