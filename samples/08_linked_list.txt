@@ -18,7 +18,7 @@ function listDisplay(list)
 {
 	while(list.ptr != null)
 	{
-		echo("Item: " + list.val + "\n");
+		println(list.val);
 		list = list.ptr;
 	}
 }
@@ -36,9 +36,9 @@ function main(argv)
 	a[2] = "bagr";
 	list = list.listPushFront(a);
 
-//	echo("Dumping list...\n");
-//	list.dump();
+	println("Dumping list...");
+	list.dump();
 
-//	echo("Displaying list...\n");
+	println("Displaying list...");
 	list.listDisplay();
 }

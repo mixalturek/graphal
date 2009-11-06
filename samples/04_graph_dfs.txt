@@ -8,7 +8,7 @@ function dfs(v)
 	if(v.state == CLOSED)
 		return;
 
-	echo("Closing vertex: " + v.num + "\n");
+	println("Closing vertex: " + v.num);
 	v.state = CLOSED;
 
 	foreach(neighbor; v.getNeighbors())

@@ -7,7 +7,7 @@ function main(argv)
 	foreach(var ; arr)
 		var = i++;
 
-	echo("--- array items ---\n");
+	println("--- array items ---");
 	foreach(var ; arr)
 		println(var);
 
@@ -17,11 +17,11 @@ function main(argv)
 	st.pi = 3.14;
 	st.str = "bagr";
 
-	echo("--- struct items ---\n");
+	println("--- struct items ---");
 	foreach(var ; st)
 		println(var);
 
-	echo("--- struct items using iterator ---\n");
+	println("--- struct items using iterator ---");
 	it = st.iterator();
 	while(it.hasNext())
 		println(it.next());
@@ -41,41 +41,41 @@ function main(argv)
 	e1.value = 0.5;
 	e2.value = 0.4;
 
-	echo("--- vertex set ---\n");
+	println("--- vertex set ---");
 	foreach(var ; g.getVertices())
-		echo("" + var + ": " + var.color + "\n");
+		println("" + var + ": " + var.color);
 
-	echo("--- edge set ---\n");
+	println("--- edge set ---");
 	foreach(var ; g.getEdges())
-		echo("" + var + ": " + var.value + "\n");
+		println("" + var + ": " + var.value);
 
-	echo("--- vertex neighbors ---\n");
+	println("--- vertex neighbors ---");
 	foreach(var ; v2.getNeighbors())
-		echo("" + var + ": " + var.color + "\n");
+		println("" + var + ": " + var.color);
 
 	foreach(var ; g.getVertices())
 		var.state = "new";
 
 	v2.state = "closed";
 
-	echo("--- graph dump ---\n");
+	println("--- graph dump ---");
 	g.dumpGraph();
 }
 
 function dumpGraph(g)
 {
-	echo("" + g + "\n");
+	println(g);
 	foreach(vertex ; g.getVertices())
 	{
-		echo("\t" + vertex + "\n");
+		println("\t" + vertex);
 		foreach(item ; vertex)
-			echo("\t\t" + item + "\n");
+			println("\t\t" + item);
 	}
 
 	foreach(edge ; g.getEdges())
 	{
-		echo("\t" + edge + "\n");
+		println("\t" + edge);
 		foreach(item ; edge)
-			echo("\t\t" + item + "\n");
+			println("\t\t" + item);
 	}
 }

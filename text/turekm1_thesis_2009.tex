@@ -1746,11 +1746,50 @@ valgrind ./bbd --unit-tests ../samples/tests.txt
 Je nutné podotknout, že vytvořené unit testy poskytly neocenitelné služby při vývoji aplikace a především při testování interních změn ve fungování jednotlivých částí programu. Dokázaly velice rychle a efektivně detekovat místa v kódu, která nepracují tak, jak by měly -- mnohdy i v na první pohled nesouvisejících částech aplikace.
 
 
-\section{Skriptové unit testy}
+\section{Unit testy ve skriptu}
 
-\section{Benchmarks}
+Obdobným způsobem, jakým jsou implementovány jednotkové testy z předchozí kapitoly, funguje i testovací skript \textit{samples/tests.txt}. Jedná se v podstatě o unit test zapsaný v kódu skriptu a vykonávaný interpretem. Jeho obrovskou výhodou je, že se netestují pouze umělé případy navržené programátorem, ale přímo reálné interakce mezi všemi objekty interpretu.
 
-\section{Použitelnost}
+Skript definuje testovací makro \texttt{tverify()} (jméno \texttt{verify()} se již používá pro zabudovanou funkci), které se opět rozbaluje na aktualizaci stavové proměnné. Jazyk nepodporuje výpis předaného kódu, a proto si bude muset programátor vystačit pouze se jménem souboru a číslem řádku, na kterém nastala chyba. Tato informace je však plně dostatečná, zvlášť ve spojení s grafickým prostředím, kde se po kliknutí otevře místo chyby v editoru.
+
+\begin{verbatim}
+define("tverify", "result = result && verify");
+\end{verbatim}
+
+Jednoduchá testovací funkce by mohla vypadat například následovně.
+
+\begin{verbatim}
+function testFactorial()
+{
+    result = true;
+
+    tverify(factorial(1) == 1);
+    tverify(factorial(2) == 2);
+    tverify(factorial(3) == 6);
+
+    return testResult(__FUNCTION__, result);
+}
+\end{verbatim}
+
+Pouze pro zajímavost, takto vypadá kód, který vznikne v lexikálním analyzátoru po rozbalení makra \texttt{tverify()} a dodání jména funkce.
+
+\begin{verbatim}
+function testFactorial()
+{
+    result = true;
+
+    result = result && verify(factorial(1) == 1);
+    result = result && verify(factorial(2) == 2);
+    result = result && verify(factorial(3) == 6);
+
+    return testResult("testFactorial", result);
+}
+\end{verbatim}
+
+
+\section{Rychlost vykonávání skriptu, srovnávací testy}
+
+%\section{Použitelnost}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

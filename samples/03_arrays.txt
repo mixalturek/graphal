@@ -1,9 +1,8 @@
 function main(argv)
 {
-	breakpoint(true);
 	num = argv.size();
 	for(i = 0; i < num; i++)
-		echo("argv[" + i + "]: " + argv[i] + "\n");
+		println("argv[" + i + "]: " + argv[i]);
 
 	arr = array(5);
 	arr[0] = "bagr";
@@ -11,14 +10,14 @@ function main(argv)
 	arr[4] = 3;
 
 	for(i = 0; i < 5; i++)
-		echo("arr[" + i + "]: " + arr[i] + "\n");
+		println("arr[" + i + "]: " + arr[i]);
 
 	st = struct();
 	st.bagr = "bagr";
 	st.brm = true;
 
-	echo("st.bagr: " + st.bagr + "\n");
-	echo("st.brm: " + st.brm + "\n");
+	println("st.bagr: " + st.bagr);
+	println("st.brm: " + st.brm);
 	st.bagr = "jiny bagr";
-	echo("st.bagr: " + st.bagr + "\n");
+	println("st.bagr: " + st.bagr);
 }

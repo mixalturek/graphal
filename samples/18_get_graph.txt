@@ -2,7 +2,7 @@ function main(argc)
 {
 	if((g = visGetGraph()) == null)
 	{
-		echo("No graph was set in GUI, using predefined one in the script.\n");
+		println("No graph was set in GUI, using predefined one in the script.");
 		g = graph();
 		assert(g.loadFromFile("../graphs/00_simple.txt"));
 	}

@@ -1,17 +1,17 @@
 function g()
 {
-	echo("ggggggggg\n");
+	println("ggggggggg");
 	h();
-	echo("ggggggggg\n");
+	println("ggggggggg");
 }
 
 function f()
 {
 	stop = false;
 	breakpoint(stop);
-	echo("fffffffff\n");
+	println("fffffffff");
 	g();
-	echo("fffffffff\n");
+	println("fffffffff");
 
 	var = undf + 3;
 	variable = 3 + undefined;
@@ -19,13 +19,13 @@ function f()
 
 function main(argv)
 {
-	echo("0\n");
+	println("0");
 	breakpoint(true);
-	echo("1\n");
-	echo("2\n");
+	println("1");
+	println("2");
 	f();
-	echo("3\n");
-	echo("4\n");
-	echo("5\n");
+	println("3");
+	println("4");
+	println("5");
 	return "bagr";
 }

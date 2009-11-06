@@ -2,7 +2,7 @@ define("tverify", "result = result && verify");
 
 function main(argv)
 {
-	echo("Executing unit tests...\n");
+	println("Executing unit tests...");
 
 	failed = 0;
 	failed += !testFactorial();
@@ -20,15 +20,15 @@ function main(argv)
 	failed += !testAdjacencyMatrix();
 	failed += !testSetPropertyToAll();
 
-	echo("Number of failed tests: " + failed + "\n");
+	println("Number of failed tests: " + failed);
 }
 
 function testResult(testName, result)
 {
 	if(result)
-		echo("[ OK ]     " + testName + "\n");
+		println("[ OK ]     " + testName);
 	else
-		echo("[ FAILED ] " + testName + "\n");
+		println("[ FAILED ] " + testName);
 
 	return result;
 }

@@ -16,11 +16,11 @@ function main(argv)
 	v1.smth = PI;
 	e.smth = 2.81;
 
-	echo("" + a + "\n");
-	echo("" + arr[2] + "\n");
-	echo("" + stru.member + "\n");
-	echo("" + stru.blem + "\n");
-	echo("" + v1.prop + "\n");
-	echo("" + v1.smth + "\n");
-	echo("" + e.smth + "\n");
+	println(a);
+	println(arr[2]);
+	println(stru.member);
+	println(stru.blem);
+	println(v1.prop);
+	println(v1.smth);
+	println(e.smth);
 }

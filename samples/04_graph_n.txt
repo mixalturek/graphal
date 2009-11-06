@@ -19,14 +19,14 @@ function main(argv)
 		v1 = v2;
 	}
 
-	echo("Processing vertices\n");
+	println("Processing vertices");
 	foreach(v; g.getVertices())
-		echo("Vertex: " + v.num + "\n");
+		println("Vertex: " + v.num);
 
-	echo("Processing edges\n");
+	println("Processing edges");
 	foreach(e; g.getEdges())
 	{
-		echo("Edge: between " + e.getBeginVertex().num
-			+ " and " + e.getEndVertex().num + "\n");
+		println("Edge: between " + e.getBeginVertex().num
+			+ " and " + e.getEndVertex().num);
 	}
 }

@@ -1,7 +1,6 @@
 function doSomething(par)
 {
-	echo(par);
-	echo("\n");
+	println(par);
 }
 
 function fromIncludedFile(param)

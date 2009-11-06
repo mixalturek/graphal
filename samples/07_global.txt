@@ -1,15 +1,15 @@
 function setGlobal(val)
 {
-	echo("Setting global variable: " + val + "\n");
+	println("Setting global variable: " + val);
 	global g_var;
 	g_var = val;
 }
 
 function display()
 {
-	echo("Before global: " + g_var + "\n");
+	println("Before global: " + g_var);
 	global g_var;
-	echo("After global: " + g_var + "\n");
+	println("After global: " + g_var);
 }
 
 function main(argv)
