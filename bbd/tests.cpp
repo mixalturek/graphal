@@ -55,26 +55,27 @@
 ////
 
 // Verify macro, like assert but without exiting
-#define verify(expr)                                                          \
-	result = result && (expr);                                                \
-	if(!(expr))                                                               \
-	{                                                                         \
-		stringstream ss;                                                       \
-		ss << __FILE__ << ":" << __LINE__ << "   " << #expr;                  \
-		ERR(ss.str());                                                      \
-	}
-
+#define verify(expr)                                          \
+{                                                             \
+	result = result && (expr);                                \
+	if(!(expr))                                               \
+	{                                                         \
+		stringstream ss;                                      \
+		ss << __FILE__ << ":" << __LINE__ << "   " << #expr;  \
+		ERR(ss.str());                                        \
+	}                                                         \
+}
 
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-Tests::Tests()
+Tests::Tests(void)
 {
 
 }
 
 
-Tests::~Tests()
+Tests::~Tests(void)
 {
 
 }
@@ -196,11 +197,13 @@ bool Tests::testDoubleDispatching(void)
 {
 	bool result = true;
 
-	PTR_Value varleft(new ValueInt(5));
-	PTR_Value varright(new ValueFloat(3.4f));
-	PTR_Value varsub(new ValueFloat(2.0f));
+	PTR_Value a(new ValueInt(6));
+	PTR_Value b(new ValueFloat(3.4f));
+	PTR_Value c(new ValueFloat(2.0f));
 
-	verify(varleft->add(*varright)->div(*varsub)->toString() == "4.2");
+	verify(a->add(*b)->div(*c)->toString() == "4.2");// (5 + 3.4) / 2
+	verify(a->mult(*c)->sub(*b)->toString() == "6.6");// (5 * 2) - 3.4
+
 	return testResult(__FUNCTION__, result);
 }
 

@@ -27,8 +27,8 @@
 class Tests : public BaseObject
 {
 public:
-	Tests();
-	virtual ~Tests();
+	Tests(void);
+	virtual ~Tests(void);
 
 	virtual void dump(ostream& os, uint indent) const;
 

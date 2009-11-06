@@ -1389,17 +1389,6 @@ genBFClass('getAdjacencyMatrix',
 Při dodržení výše uvedeného postupu stačí pouze vytvořit tento zdrojový kód, přegenerovat zabudované funkce, přidat novou třídu do projektových souborů a začít nově vytvořenou funkci používat.
 
 
-\subsection{Shrnutí}
-
-Tato kapitola popsala, jak byl navržen a realizován základní kód a interpret pro příkazovou řádku. Lexikální analyzátor byl, oproti syntaktickému, napsán ručně. Jedná se o relativně velký stavový automat, jenž při inkluzi souborů a definování maker používá hierarchii tříd pro zobecnění přístupu ke vstupním datům skriptu. Syntaktický analyzátor pro vytvoření abstraktního stromu syntaxe využívá služeb nástroje Bison.
-
-Třída \texttt{BaseObject} je základním kamenem hierarchie, vývojáři poskytuje jednoduchý detektor úniků paměti. Po svých potomcích požaduje implementaci metody \texttt{dump()} sloužící pro přehledný výpis obsahu složených objektů. Proměnné jsou ve skriptu reprezentovány hierarchií odvozenou od třídy \texttt{Value}, potomci třídy \texttt{Node} tvoří abstraktní strom syntaxe.
-
-Kontext skriptu reprezentovaný třídou \texttt{Context} se stará o zabudované i uživatelem definované funkce, ukládá lokální a globální proměnné a vede si záznam o aktuální pozici ve zdrojových kódech skriptu. Pro zobecnění textových výstupů z aplikace slouží třída \texttt{Logger}.
-
-Program obsahuje několik skupin velice podobných tříd, které se liší pouze malým množstvím kódu. Skripty na jejich generování umožňují rychlé a efektivní úpravy bez ručního procházení velkého množství souborů.
-
-
 \section{Grafické uživatelské rozhraní}
 
 \subsection{Oddělení od interpretu pro příkazovou řádku}
@@ -1668,15 +1657,12 @@ Zmíněné parametry se sdružují do třídy \texttt{VisualizationView}. Aplika
 
 \subsubsection{Screenshot vizualizačního okna}
 
-Díky knihovně Qt je kód funkce velice jednoduchý, zabírá pouze dva řádky. Funkce \texttt{grabWindow()} třídy \texttt{QPixmap} sejme obsah okna a \texttt{save()} uloží data obrázku na disk. Alternativou by mohlo být OpenGL volání \texttt{glReadPixels()}, obě metody produkují stejné výsledky.
+Díky knihovně Qt je kód funkce velice jednoduchý, zabírá pouze dva řádky. Funkce \texttt{grab\-Win\-dow()} třídy \texttt{QPixmap} sejme obsah okna a \texttt{save()} uloží data obrázku na disk. Alternativou by mohlo být OpenGL volání \texttt{glReadPixels()}, obě metody produkují stejné výsledky.
 
 
 \subsection{Konfigurace grafické aplikace}
 
 Grafická aplikace, na rozdíl od konzolové, nepřebírá nastavení z předaných argumentů, ale jednotlivé volby získává z konfiguračního souboru. Databáze parametrů se uchovává v singletonu \texttt{Settings}. Hodnoty jsou načteny jednorázově při konstrukci objektu, pozdější přístup ke každé z nich poskytují \textit{set-} a \textit{get-} metody. Zápis do souboru se provádí při každé změně, ne až při ukončení aplikace. Kód interně využívá služeb třídy \texttt{QSettings}.
-
-
-\subsection{Shrnutí}
 
 
 
@@ -1685,14 +1671,80 @@ Grafická aplikace, na rozdíl od konzolové, nepřebírá nastavení z předan�
 
 \chapter{Testování}
 
-% TODO: delete
-\begin{itemize}
- \item Způsob, průběh a výsledky testování.
- \item Srovnání s existujícími řešeními, pokud jsou známy.
-\end{itemize}
+%\begin{itemize}
+%\item Způsob, průběh a výsledky testování.
+%\item Srovnání s existujícími řešeními, pokud jsou známy.
+%\end{itemize}
 
 \section{Unit testy}
 \label{unit_testy}
+
+Aplikace nepoužívá žádný standardní framework pro automatické testování, místo toho při\-chá\-zí s vlastním kódem zapouzdřeným ve třídě \texttt{Tests}. Ke spuštění jednotkových testů slouží metoda \texttt{run()}, která volá jednotlivé testovací funkce a jednoduchým způsobem inkrementuje proměnnou při neúspěšném pokusu.
+
+\begin{verbatim}
+void Tests::run(void)
+{
+    uint failed = 0;
+
+    failed += !testDoubleDispatching();
+    // ...
+
+    cout << _("Number of failed tests: ") << failed << endl;
+}
+\end{verbatim}
+
+Z přechozího kódu je vidět, že jediným požadavkem na testovací funkci je její návratová hodnota. Funkce dále pomocí \texttt{testResult()} vypisuje jméno testu (své jméno) a výsledek \textit{OK} či \textit{FAILED}.
+
+\begin{verbatim}
+bool Tests::testDoubleDispatching(void)
+{
+    bool result = true;
+
+    PTR_Value a(new ValueInt(5));
+    PTR_Value b(new ValueFloat(3.4f));
+    PTR_Value c(new ValueFloat(2.0f));
+
+    verify(a->add(*b)->div(*c)->toString() == "4.2");// (5 + 3.4) / 2
+    verify(a->mult(*c)->sub(*b)->toString() == "6.6");// (5 * 2) - 3.4
+
+    return testResult(__FUNCTION__, result);
+}
+\end{verbatim}
+
+Pozorný čtenář si jistě všiml slůvka \texttt{verify()}, jímž byly obaleny testovací podmínky. Nejedná se o funkci, ale o makro, které vyhodnotí kód v parametru, aktualizuje stavovou proměnnou \texttt{result} a v případě chyby vypíše jméno souboru s číslem řádku, kde k ní došlo. Dále je zobrazena i textová reprezentace testovacího kódu. V podstatě se jedná o alternativu ke standardnímu makru \texttt{assert()}, která však, v případě neúspěchu, nemá za následek ukončení programu.
+
+\begin{verbatim}
+// Verify macro, like assert but without exiting
+#define verify(expr)                                                   \
+{                                                                      \
+    result = result && (expr);                                         \
+    if(!(expr))                                                        \
+        cerr << __FILE__ << ":" << __LINE__ << "   " << #expr << endl; \
+}
+\end{verbatim}
+
+Změníme-li pokusně hodnotu proměnné \textit{a} (jednoduchá emulace chyby), bude výstup z provedených testů vypadat ná\-sle\-dov\-ně.
+
+\begin{verbatim}
+[i] [ OK ]     testMemoryLeaks
+[e] tests.cpp:204   a->add(*b)->div(*c)->toString() == "4.2"
+[e] tests.cpp:205   a->mult(*c)->sub(*b)->toString() == "6.6"
+[e] [ FAILED ] testDoubleDispatching
+[i] [ OK ]     testValueStruct
+[i] [ OK ]     testValueString
+...
+[i] Number of failed tests: 1
+[i] Number of memory leaks: 0
+\end{verbatim}
+
+Ke spuštění všech testovacích sekvencí slouží u konzolové aplikace dodatečný argument pří\-ka\-zo\-vé řádky \texttt{--unit-tests}. Následující příkaz současně testuje i úniky dynamické paměti, a to nejen nástrojem \textit{valgrind}, ale i vlastním kódem - viz kapitola \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}.
+
+\begin{verbatim}
+valgrind ./bbd --unit-tests ../samples/tests.txt
+\end{verbatim}
+
+Je nutné podotknout, že vytvořené unit testy poskytly neocenitelné služby při vývoji aplikace a především při testování interních změn ve fungování jednotlivých částí programu. Dokázaly velice rychle a efektivně detekovat místa v kódu, která nepracují tak, jak by měly -- mnohdy i v na první pohled nesouvisejících částech aplikace.
+
 
 \section{Skriptové unit testy}
 

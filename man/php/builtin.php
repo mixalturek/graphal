@@ -7,7 +7,7 @@ include 'p_begin.php';
 <p>The list of defined built-in functions, their parameters and return values can be displayed using <em>make listbuiltin</em> command.</p>
 
 <pre class="screen">
-[woq@evm bbd]$ <strong>make listbuiltin</strong>
+[woq@evm bbd]$ <strong>make listbuiltin</s<trong>
 echo(object) : object
 print(object) : object
 println(object) : object
@@ -61,7 +61,7 @@ getBeginVertex(edge) : vertex|null
 getEndVertex(edge) : vertex|null
 insert(set, object) : null
 remove(set, object) : null
-contains(graph|set, object) : bool|null
+contains(set, object) : bool|null
 union(set, set) : set|null
 intersection(set, set) : set|null
 difference(set, set) : set|null
