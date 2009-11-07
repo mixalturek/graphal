@@ -1789,6 +1789,41 @@ function testFactorial()
 
 \section{Rychlost vykonávání skriptu, srovnávací testy}
 
+Po vytvožení nového kompilátoru či interpretu nějakého programacího jazyka je jistě důležité znát, jak rychle dokáže vykonávat napsané programy. Byla navržena sada tří jednoduchých testů, které odpovídají na tuto otázku.
+
+Všechny z nich obsahují cyklus o deseti milionech kroků. V prvním se testuje provádění jednoduchých aritmetických operací a přístup k proměnným (\texttt{tmp = i * 2;}), druhý rozšiřuje funkcionalitu o indexování pole (\texttt{a[i \% SIZE] = i * 2;}) a třetí navíc přichází s voláním funkcí (\texttt{tmp = func(i);}).
+
+Tyto jednoduché testy byly dále přepsány do jazyků C++ a Perl, aby se dalo s něčím porovnávat. Zkompilované C++ programy byly podle očekávání bezkonkurenčně nejrychlejší, doba běhu byla neměřitelně malá. Při porovnání naměřených hodnot z tabulky \ref{tab:benchmark} a vynesených do grafu \ref{fig:benchmark} vyplývá, že vytvořený interpret je přibližně osmkrát až patnáctkrát pomalejší než taktéž interpretovaný jazyk Perl. Výsledky byly v podstatě očekávatelné, interpret se v dané verzi nesnaží o naprosto žádné optimalizace, a tudíž se není čemu divit.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|l||r|r||r|}
+\hline
+\textbf{typ úlohy} & \textbf{perl} & \textbf{bbd} & \textbf{poměr} \\
+\hline \hline
+\bf{variables} & 3.78 & 42.91 & 11.3 \\
+\hline
+\bf{arrays} & 6.91 & 57.11 & 8.3 \\
+\hline
+\bf{functions} & 10.48 & 159.78 & 15.2 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Rychlost vykonávání porovnaná s jazykem Perl}
+\label{tab:benchmark}
+\end{table}
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=10cm]{img/benchmark.pdf}
+\caption{Rychlost vykonávání porovnaná s jazykem Perl}
+\label{fig:benchmark}
+\end{center}
+\end{figure}
+
+Cílem těchto testů bylo především získání orientačních hodnot. Interpret byl zkompilován s optimalizačními volbami \texttt{-O2 -s -DNDEBUG} a vypnutými testy úniku paměti (viz kapitola \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}), neoptimalizovaná verze byla ještě cca. dvakrát pomalejší. Měření byla spuštěna několikrát na nezatíženém počítači, vždy s obdobnými výsledky.
+
+
 %\section{Použitelnost}
 
 

@@ -12,9 +12,10 @@ int main(int argc, char* argv[])
 	for(i = 0; i < NUM; i++)
 	{
 		tmp = i * 2;
+		tmp++;
 
-		if(i % DISP == 0)
-			cout << "debug: " << i << endl;
+//		if(i % DISP == 0)
+//			cout << "debug: " << i << endl;
 	}
 
 	return 0;

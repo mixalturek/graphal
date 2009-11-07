@@ -197,7 +197,7 @@ bool Tests::testDoubleDispatching(void)
 {
 	bool result = true;
 
-	PTR_Value a(new ValueInt(6));
+	PTR_Value a(new ValueInt(5));
 	PTR_Value b(new ValueFloat(3.4f));
 	PTR_Value c(new ValueFloat(2.0f));
 

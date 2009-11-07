@@ -6,9 +6,10 @@ function main(argv)
 	for(i = 0; i < NUM; i++)
 	{
 		tmp = i * 2;
+		tmp++;
 
-		if(i % DISP == 0)
-			echo("debug: " + i + "\n");
+//		if(i % DISP == 0)
+//			println("debug: " + i);
 	}
 
 	return 0;

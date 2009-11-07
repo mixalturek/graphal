@@ -13,9 +13,10 @@ int main(int argc, char* argv[])
 	for(i = 0; i < NUM; i++)
 	{
 		a[i % SIZE] = i * 2;
+		a[i % SIZE]++;
 
-		if(i % DISP == 0)
-			cout << "debug: " << i << endl;
+//		if(i % DISP == 0)
+//			cout << "debug: " << i << endl;
 	}
 
 	return 0;

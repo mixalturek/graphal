@@ -9,9 +9,10 @@ function main(argv)
 	for(i = 0; i < NUM; i++)
 	{
 		a[i % SIZE] = i * 2;
+		a[i % SIZE]++;
 
-		if(i % DISP == 0)
-			echo("debug: " + i + "\n");
+//		if(i % DISP == 0)
+//			echo("debug: " + i + "\n");
 	}
 
 	return 0;
