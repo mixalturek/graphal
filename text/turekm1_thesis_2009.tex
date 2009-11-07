@@ -22,6 +22,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 %\usepackage{indentfirst} %1. odstavec jako v cestine.
+\usepackage{tocloft}
 
 \usepackage{k336_thesis_macros}
 \usepackage{url}
@@ -126,7 +127,7 @@ unicode=true,
 %%%%
 
 % TODO: update information
-\declaration{V Krasnojarsku dne 12.\,6.\,2009}
+\declaration{V Praze dne 7.\,11.\,2009}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,9 +148,11 @@ Jádrem diplomové práce je návrh a implementace speciálního programovacího
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
 
+\cleardoublepage
+
 \tableofcontents
 \listoffigures
-% \listoftables
+\listoftables
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -256,29 +259,29 @@ Vizualizační jednotka zobrazuje aktuálně zpracovávaný graf ve 3D, nemusí 
 Pokud bude v jazyce možnost přidávat barevné (texturové) atributy vrcholům, hranám nebo jejich množinám, promítaly by se i do zobrazení. Zobrazovací okno má vlastní možnost načtení grafu, aplikace umožní volit, zda má algoritmus pracovat s grafem, který je v grafickém okně nebo zda si jej načte sám podle zápisu v kódu.
 
 
-\subsection{Manipulace s grafem, debugger}
+\subsection{Manipulace s grafem, krokování skriptu}
 
 Interpretace kódu může být krokována, při jejím pozastavení se překreslí vizualizační okno a tím se aktualizauje i pohled na graf. Dokud není vydán příkaz k dalšímu kroku, je možné s grafem posouvat, natáčet ho a podobně. Parametry samotného grafu během průběhu programu není vhodné měnit, avšak parametry zobrazení nejspíše ano (barvy, měřítka a podobně). Debugging není třeba nijak zvlášť podporovat, postačí konzole, kam si programátor může vypsat ladící a trasovací tisky.
 
 
-\subsection{Systémové požadavky}
-
-\begin{itemize}
-	\item Verze pro příkazovou řádku
-		\begin{itemize}
-		\item platformy \texttt{i386} a \texttt{amd64}, podpora dalších volitelná
-		\item operační systémy \texttt{GNU/Linux}, \texttt{MS Windows} (založený na NT) a \texttt{MacOS}, podpora dalších volitelná
-		\item procesor min. 1 GHz
-		\item operační paměť min. 2 GB RAM, v grafech se předpokládají miliony vrcholů
-		\end{itemize}
-
-	\item Grafická verze
-		\begin{itemize}
-		\item grafická karta s podporou OpenGL (např. \texttt{nVidia GeForce 2} a novější)
-		\item nainstalované OpenGL ovladače a Qt4 knihovny
-		\item rozlišení monitoru min. 1024x768
-		\end{itemize}
-\end{itemize}
+%\subsection{Systémové požadavky}
+%
+%\begin{itemize}
+%	\item Verze pro příkazovou řádku
+%		\begin{itemize}
+%		\item platformy \texttt{i386} a \texttt{amd64}, podpora dalších volitelná
+%		\item operační systémy \texttt{GNU/Linux}, \texttt{MS Windows} (založený na NT) a \texttt{MacOS}, podpora dalších volitelná
+%		\item procesor min. 1 GHz
+%		\item operační paměť min. 2 GB RAM, v grafech se předpokládají miliony vrcholů
+%		\end{itemize}
+%
+%	\item Grafická verze
+%		\begin{itemize}
+%		\item grafická karta s podporou OpenGL (např. \texttt{nVidia GeForce 2} a novější)
+%		\item nainstalované OpenGL ovladače a Qt4 knihovny
+%		\item rozlišení monitoru min. 1024x768
+%		\end{itemize}
+%\end{itemize}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -460,7 +463,7 @@ foreach(vertex; neighbors)
 Pro vytváření množin vrcholů a hran slouží opět zabudované funkce.
 
 
-\subsection{Ukázka spustitelného skriptu}
+\subsection{Ukázka kompletního skriptu}
 
 Příkladem kompletního skriptu zapsaného ve vytvářeném jazyce budiž rekurzivní pro\-hle\-dá\-vá\-ní grafu do hloubky. Parametrem uživatelsky definované funkce \texttt{dfs()} je libovolný vrchol grafu. Pokud už byl daný vrchol navštíven, větev procházeného stromu se ukončí, v opačném případě se označí vrchol za navštívený a funkce se rekurzivně zavolá nad všemi jeho sousedy.
 
@@ -860,7 +863,7 @@ Součet bude v syntaktickém stromu uložen celkem ve třech uzlech. Listy vrace
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[width=4cm]{img/execute.pdf}
-\caption{Vyhodnocení příkazu "return 1 + 2;"}
+\caption[Vyhodnocení příkazu]{Vyhodnocení příkazu "return 1 + 2;"}
 \label{fig:execute}
 \end{center}
 \end{figure}
@@ -974,12 +977,12 @@ string& StringTable::getString(identifier id)
 Hlavní výhodou této techniky je vyšší rychlost interpretace, porovnání dvou čísel trvá mnohem kratší dobu než porovnání dvou řetězců. Úspora vzniká při každém přístupu k hodnotě proměnné a při volání funkcí. Druhá z výhod spočívá ve snížených paměťových nárocích, všechny řetězce jsou uloženy bez duplicit na jednom místě a ve skriptu je reprezentují pouze celočíselné hodnoty. Jak už bylo zmíněno, jediné zpomalení nastává při vytváření tabulky symbolů, je přímo úměrné počtu různých identifikátorů ve zdrojovém textu a jejich délce.
 
 
-\subsection{Gramatika, Bison}
+\subsection{Gramatika}
 
-Gramatiku vytvořeného jazyka je možné najít v souboru \texttt{parser.y}, alternativně v příloze \ref{gramatika_jazyka} na straně \pageref{gramatika_jazyka}. Jedná se o standardní vstupní kód pro generátor gramatik Bison, který má za úkol vystavět abstraktní strom syntaxe.
+Gramatiku vytvořeného jazyka je možné najít v příloze \ref{gramatika_jazyka} na straně \pageref{gramatika_jazyka}, alternativně v souboru \texttt{parser.y}. Jedná se o standardní vstupní kód pro generátor gramatik Bison, který má za úkol vystavět abstraktní strom syntaxe. Při vytváření se vycházelo z předpisu pro jazyk Ansi C \cite{c_grammar}.
 
 
-\subsection{Hierarchie tříd, třída BaseObject}
+\subsection{Hierarchie tříd, základní třída BaseObject}
 
 V objektově orientovaném návrhu aplikace je vždy dobré vytvořit kořen hierarchie tříd, který bude poskytovat, či pouze definovat, základní obecné operace nad všemi používanými objekty. V jazyce Java se taková třída jmenuje \texttt{Object}, knihovna Qt zavádí \texttt{QObject}, vyvíjená aplikace použije jméno \texttt{BaseObject}.
 
@@ -1242,7 +1245,7 @@ Kód funkce umí zavolat třída \texttt{NodeFunctionCall}. Ta se ji nejdříve 
 V textu byl již několikrát zmíněn, do této chvíle bez dostatečného vysvětlení, termín \textit{kontext skriptu}. V kódu se jedná o jednu z funkcionálně nejbohatších tříd aplikace pojmenovanou \texttt{Context}. Tato třída mimo jiné ukládá zabudované i uživatelské funkce, globální proměnné a zásobník volání funkcí spolu s lokálními proměnnými. Dále si vede záznam o aktuální pozici ve zdrojových kódech, který slouží především při vypisování chybových zpráv, a také umí pomocí databáze řetězců převádět jména identifikátorů skriptu z řetězcové do ID/číselné formy a naopak (viz kapitola \ref{identifikatory} na straně \pageref{identifikatory}).
 
 
-\subsubsection{Funkce ve skriptu, volání funkcí, spuštění skriptu}
+\subsubsection{Funkce ve skriptu, jejich volání a spuštění skriptu}
 
 Všechny definované a tudíž i volatelné funkce se ukládají do asociativního pole indexovaného jménem funkce, datová položka se skládá z ukazatele na abstraktního předka \texttt{NodeFunction*}. Kontext nepotřebuje znát, o který z obou typů se jedná, samotné objekty to ví a díky polymorfismu se při spuštění volají správné metody. Hledání pouze podle jména znemožňuje přetěžování funkcí, k jeho zprovoznění by bylo potřeba ukládat dodatečné informace, na\-pří\-klad počet argumentů, a používat je i při vyhledávání.
 
@@ -1285,7 +1288,7 @@ Uložení pozic v jednoduchém demostračním příkazu \texttt{c = a + b;} je z
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[width=10cm]{img/nodeposition.pdf}
-\caption{Dva možné přístupy k ukládání pozic (kolečko označuje vlastní data)}
+\caption[Dva možné přístupy k ukládání pozic]{Dva možné přístupy k ukládání pozic (kolečko označuje vlastní data)}
 \label{fig:nodeposition}
 \end{center}
 \end{figure}
@@ -1559,7 +1562,7 @@ Zobrazená čísla řádků se musí měnit zároveň s posunem dokumentu. Poža
 Vlastní vykreslení čísel řádků se provádí ve funkci \texttt{lineNumberAreaPaintEvent()}, jenž si najde číslo prvního viditelného řádku a poté v cyklu kreslí číslice. Téměř celý kód byl převzat z oficiálního tutoriálu knihovny Qt \cite{code_editor_example}.
 
 
-\subsubsection{Indikace šířky řádku}
+\subsubsection{Indikace přednastavené šířky řádku}
 
 Programátoři často zarovnávají své zdrojové kódy na 80 znaků, některé textové editory umožňují zobrazit vertikální linku, jež specifikuje tento pravý okraj dokumentu. Zdrojový kód pro její vykreslení je umístěn ve funkci \texttt{paintEvent()}.
 
@@ -1613,7 +1616,7 @@ Po přidržení kurzoru myši nad jménem souboru se zobrazí \textit{tool tip} 
 
 \subsection{Vizualizace grafu}
 
-\subsubsection{Propojení skriptu s vizualizacemi}
+\subsubsection{Propojení skriptu a vizualizací}
 
 Programátor skriptu komunikuje s vizualizačním oknem výhradně pomocí zabudovaných funkcí, jejich jména začínají na předponu \textit{vis-}. Podobně jako logování z kapitoly \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku} i tato funkcionalita musí být zobecněna, aby se dala používat s grafickou aplikací a zároveň negenerovala chyby o neexistujících funkcích při běhu z konzole.
 
@@ -2015,20 +2018,136 @@ start
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
 
+\twocolumn
+
 \chapter{Hierarchie tříd}
 
+\begin{verbatim}
+CountPtr< TYPE >
+ObjectCreator
+BaseObject
+    CallStackItem
+    CodePosition
+    Context
+        GuiContext (+ QObject)
+    ExitValue
+    Lexan
+    LexanIterator
+        LexanIteratorFile
+        LexanIteratorString
+    Logger
+        CliLogger
+        GuiLogger (+ QObject)
+    Node
+        NodeBinary
+            NodeBinaryAdd
+            NodeBinaryAnd
+            NodeBinaryAss
+            NodeBinaryAssAdd
+            NodeBinaryAssDiv
+            NodeBinaryAssMod
+            NodeBinaryAssMult
+            NodeBinaryAssRef
+            NodeBinaryAssSub
+            NodeBinaryDiv
+            NodeBinaryEq
+            NodeBinaryGe
+            NodeBinaryGt
+            NodeBinaryIndex
+            NodeBinaryLe
+            NodeBinaryLt
+            NodeBinaryMember
+            NodeBinaryMod
+            NodeBinaryMult
+            NodeBinaryNe
+            NodeBinaryOr
+            NodeBinarySub
+        NodeBlock
+        NodeCondition
+        NodeEmptyCommand
+        NodeForeach
+        NodeFunction
+            NodeFunctionBuiltin
+                NodeBuiltinArray
+                NodeBuiltinAssert
+                etc.
+            NodeFunctionScript
+        NodeFunctionCall
+        NodeGlobal
+        NodeJumpBreak
+        NodeJumpContinue
+        NodeLoop
+        NodePosition
+        NodeUnary
+            NodeUnaryDecPost
+            NodeUnaryDecPre
+            NodeUnaryIncPost
+            NodeUnaryIncPre
+            NodeUnaryNot
+            NodeUnaryReturn
+            NodeUnarySub
+        NodeValue
+    ObjectFactory
+        CliFactory
+        GuiFactory
+    StringTable
+    Tests
+    Value
+        ValueArray
+        ValueBool
+        ValueEdge
+        ValueFloat
+        ValueGraph
+        ValueIdentifier
+        ValueInt
+        ValueNull
+        ValueReference
+        ValueSet
+        ValueString
+        ValueStruct
+        ValueVertex
+    VisualizationConnector
+        GuiVisualizationConnector (+ QObject)
+MutexLocker
+Mutex
+    CliMutex
+    GuiMutex
+Settings
+QObject
+    VisualizationItemData
+    VisualizationView
+    Qt classes
+        QMainWindow
+            MainWindow
+        QDockWidget
+            DockCallStack
+            DockFiles
+            DockScriptOutput
+            DockVariables
+            DockVisualization
+        QDialog
+            DialogFind
+            DialogIncludeDirs
+            DialogReplace
+            DialogReplaceConfirmation
+            DialogScriptParameters
+            DialogSettings
+            DialogSettingsEditor
+            DialogSettingsVisualization
+        QPlainTextEdit
+            TextEditorProgrammers
+                TextEditor
+        QWidget
+            TextEditorLines
+        QSyntaxHighlighter
+            TextEditorHighlighter
+        QGLWidget
+            Visualization
+        QThread
+            ScriptThread
+\end{verbatim}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%
-
-\chapter{Vývojové prostředí}
-
-\section{Vývojové nástroje, verze}
-\section{Kompilování}
-\section{Spuštění, parametry příkazové řádky}
-\section{Grafické uživatelské rozhraní}
-
-base code for the application qt4/examples/mainwindows/mdi
+\onecolumn
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2039,7 +2158,7 @@ base code for the application qt4/examples/mainwindows/mdi
 \begin{description}
 \setlength{\labelwidth}{2.5cm}
 \setlength{\itemindent}{1.5cm}
-\item[LALR] Look Ahead Left to Right (typ gramatiky)
+\item[LALR] Look Ahead Left to Right
 \item[STL] Standard Template Library
 \item[AST] Abstract Syntax Tree
 \item[CLI] Command Line Interface
@@ -2052,21 +2171,9 @@ base code for the application qt4/examples/mainwindows/mdi
 \item[XML] eXtensible Markup Language
 \item[HTML] Hyper Text Markup Language
 \item[URL] Uniform Resource Locator
-\item[RGB] Red Green Blue (barevné složky)
+\item[RGB] Red Green Blue
 \end{description}
 \vdots
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%
-
-\chapter{UML diagramy}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%
-
-\chapter{Instalační a uživatelská příručka}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -12,7 +12,7 @@ BaseObject
 		LexanIteratorString
 	Logger
 		CliLogger
-		GuiLogger
+		GuiLogger (+ QObject)
 	Node
 		NodeBinary
 			NodeBinaryAdd
