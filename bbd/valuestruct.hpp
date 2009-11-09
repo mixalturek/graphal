@@ -56,22 +56,22 @@ public:
 
 	void setPropertyToAllStructItems(identifier name, CountPtr<Value> value);
 
-	virtual PTR_Value add(const Value&      right) const; // +
-	virtual PTR_Value sub(const Value&      right) const; // -
-	virtual PTR_Value mult(const Value&     right) const; // *
-	virtual PTR_Value div(const Value&      right) const; // /
-	virtual PTR_Value mod(const Value&      right) const; // %
-	virtual PTR_Value eq(const Value&       right) const; // ==
-	virtual PTR_Value eq(const ValueStruct&  left) const;
-	virtual PTR_Value ne(const Value&       right) const; // !=
-	virtual PTR_Value ne(const ValueStruct&  left) const;
-	virtual PTR_Value le(const Value&       right) const; // <=
-	virtual PTR_Value ge(const Value&       right) const; // >=
-	virtual PTR_Value lt(const Value&       right) const; // <
-	virtual PTR_Value gt(const Value&       right) const; // >
-	virtual PTR_Value member(const Value&   right) const; // .
-	virtual PTR_Value index(const Value&    right) const; // []
-	virtual PTR_Value logNOT(void)                 const; // !
+	virtual CountPtr<Value> add(const Value&      right) const; // +
+	virtual CountPtr<Value> sub(const Value&      right) const; // -
+	virtual CountPtr<Value> mult(const Value&     right) const; // *
+	virtual CountPtr<Value> div(const Value&      right) const; // /
+	virtual CountPtr<Value> mod(const Value&      right) const; // %
+	virtual CountPtr<Value> eq(const Value&       right) const; // ==
+	virtual CountPtr<Value> eq(const ValueStruct&  left) const;
+	virtual CountPtr<Value> ne(const Value&       right) const; // !=
+	virtual CountPtr<Value> ne(const ValueStruct&  left) const;
+	virtual CountPtr<Value> le(const Value&       right) const; // <=
+	virtual CountPtr<Value> ge(const Value&       right) const; // >=
+	virtual CountPtr<Value> lt(const Value&       right) const; // <
+	virtual CountPtr<Value> gt(const Value&       right) const; // >
+	virtual CountPtr<Value> member(const Value&   right) const; // .
+	virtual CountPtr<Value> index(const Value&    right) const; // []
+	virtual CountPtr<Value> logNOT(void)                 const; // !
 
 private:
 	map<identifier, CountPtr<Value> > m_val;

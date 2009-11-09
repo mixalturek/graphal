@@ -701,10 +701,10 @@ Odpovědí na všechny výše uvedené problémy je návrhový vzor \textit{Mult
 class Value
 {
     // +
-    virtual PTR_Value add(const Value&     right) const = 0;
-    virtual PTR_Value add(const ValueBool&  left) const;
-    virtual PTR_Value add(const ValueInt&   left) const;
-    virtual PTR_Value add(const ValueFloat& left) const;
+    virtual CountPtr<Value> add(const Value&     right) const = 0;
+    virtual CountPtr<Value> add(const ValueBool&  left) const;
+    virtual CountPtr<Value> add(const ValueInt&   left) const;
+    virtual CountPtr<Value> add(const ValueFloat& left) const;
     // ...
 };
 \end{verbatim}
@@ -712,7 +712,7 @@ class Value
 Při sčítání celého čísla s~ostatními datovými typy je nejdříve nutné definovat sčítání celého čísla s~neznámým datovým typem na pravé straně. V~takovém případě funkce neví, jak tuto operaci provést, a proto požádá tento neznámý typ o~sečtení se sebou samým. Zároveň mu oznámí, že se jedná o~sčítání s~celým číslem, protože typ ukazatele \texttt{this} je zde \texttt{ValueInt*}.
 
 \begin{verbatim}
-PTR_Value ValueInt::add(const Value& right) const
+CountPtr<Value> ValueInt::add(const Value& right) const
 {
     return right.add(*this);
 }
@@ -721,26 +721,26 @@ PTR_Value ValueInt::add(const Value& right) const
 Dejme tomu, že se jednalo také o~celé číslo, zavolala se tedy třetí z~výše uvedených metod a provedlo se sečtení celých čísel, jehož výsledkem je taktéž celé číslo. V~tuto chvíli byly již všechny potřebné datové typy známy a operace se mohla vykonat.
 
 \begin{verbatim}
-PTR_Value ValueInt::add(const ValueBool& left) const
+CountPtr<Value> ValueInt::add(const ValueBool& left) const
 {
-    return PTR_Value(new ValueInt(left.getVal() + m_val));
+    return CountPtr<Value>(new ValueInt(left.getVal() + m_val));
 }
 
-PTR_Value ValueInt::add(const ValueInt& left) const
+CountPtr<Value> ValueInt::add(const ValueInt& left) const
 {
-    return PTR_Value(new ValueInt(left.getVal() + m_val));
+    return CountPtr<Value>(new ValueInt(left.getVal() + m_val));
 }
 
-PTR_Value ValueInt::add(const ValueFloat& left) const
+CountPtr<Value> ValueInt::add(const ValueFloat& left) const
 {
-    return PTR_Value(new ValueFloat(left.getVal() + m_val));
+    return CountPtr<Value>(new ValueFloat(left.getVal() + m_val));
 }
 \end{verbatim}
 
 Jednou z~výhod Double dispatching patternu je také to, že není nutné definovat všechny metody pro všechny kombinace datových typů. Pokud operace s~danými parametry nedává smysl, například sčítání čísla s~vrcholem grafu, ponechá se vykonání operace na rodičovské třídě \texttt{Value}, jež může kupříkladu vypsat chybu a vrátit \texttt{null} hodnotu.
 
 \begin{verbatim}
-PTR_Value Value::add(const ValueGraph& /* left */) const
+CountPtr<Value> Value::add(const ValueGraph& /* left */) const
 {
     cerr << "Operation is not supported" << endl;
     return VALUENULL;
@@ -1123,15 +1123,15 @@ V~případě, že proměnná daného jména, popř. položka struktury, ještě 
 
 \subsubsection{Grafové třídy}
 
-Všechny grafové třídy jsou, stejně jako ostatní hodnoty, potomky abstraktní třídy \texttt{Value}, a tudíž musí implementovat Double dispatching operace pro vyhodnocování operátorů. Třída \texttt{ValueGraph} reprezentuje graf na principu množin vrcholů a hran, který byl představen v~kapitole \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}. Graf může být vytvořen ručně opakovaným voláním funkcí \texttt{generateVertex()} a \texttt{generateEdge()}, či automaticky z~datového souboru funkcí \texttt{lo\-ad\-From\-Fi\-le()}.
+Všechny grafové třídy jsou, stejně jako ostatní hodnoty, potomky abstraktní třídy \texttt{Value}, a tudíž musí implementovat Double dispatching metody vyhodnocování operátorů. Třída \texttt{ValueGraph} reprezentuje graf na principu množin vrcholů a hran, který byl představen v~kapitole \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}.
+
+Graf může být vytvořen ručně opakovaným voláním funkcí \texttt{generateVertex()} a \texttt{ge\-ne\-ra\-te\-Ed\-ge()}, či automaticky z~datového souboru funkcí \texttt{lo\-ad\-From\-Fi\-le()}. Formát souborů je specifikován v příloze \ref{format_datovych_souboru_s_grafem} na straně \pageref{format_datovych_souboru_s_grafem}.
 
 Vykonávané operace rozlišují, zda je graf orientovaný či ne, orientace hran může být také kdykoli invertována. Matice sousednosti není přímo přístupná, protože se s~ní vnitřně nepočítá, ale může být na žádost \texttt{getAdjacencyMatrix()} vygenerována a vrácena.
 
-Třídy \texttt{ValueVertex} i \texttt{ValueEdge} v~sobě obsahují \texttt{ValueStruct} atribut a mapují na něj nedostupné operace, aby jejich rozhraní bylo ekvivalentní. Skládání dostalo přednost před dědičností, protože vrchol ani hrana \textit{nejsou} ve své podstatě strukturou. Návrh funkcionality je pouze takový, že poskytují stejné služby, ale to není dostatečným důvodem pro dědičnost.
+Třídy \texttt{ValueVertex} i \texttt{ValueEdge} v~sobě obsahují \texttt{ValueStruct} atribut a mapují na něj všechny nedostupné operace, aby jejich rozhraní bylo ekvivalentní. Skládání dostalo přednost před dědičností, protože vrchol ani hrana \textit{nejsou} ve své podstatě strukturou. Návrh funkcionality je pouze takový, že poskytují stejné služby, ale to není dostatečným důvodem pro dědičnost.
 
-Poslání množin vrcholů a hran \texttt{ValueVertexSet} a \texttt{ValueEdgeSet} je především udržovat záznamy o~registrovaných objektech. Kromě toho se navíc mohou iterovat a je s~nimi možné vykonávat operace průniku, sjednocení či rozdílu.
-
-TODO: nahrávání grafu ze souboru, jeho formát
+Poslání množin vrcholů a hran reprezentovaných třídou \texttt{ValueSet} je především udržovat záznamy o~registrovaných objektech. Kromě toho se navíc mohou iterovat a je s~nimi možné vykonávat operace průniku, sjednocení či rozdílu.
 
 
 \subsection{Abstraktní strom syntaxe, Node* hierarchie tříd}
@@ -1663,9 +1663,9 @@ bool Tests::testDoubleDispatching(void)
 {
     bool result = true;
 
-    PTR_Value a(new ValueInt(5));
-    PTR_Value b(new ValueFloat(3.4f));
-    PTR_Value c(new ValueFloat(2.0f));
+    CountPtr<Value> a(new ValueInt(5));
+    CountPtr<Value> b(new ValueFloat(3.4f));
+    CountPtr<Value> c(new ValueFloat(2.0f));
 
     verify(a->add(*b)->div(*c)->toString() == "4.2");// (5 + 3.4) / 2
     verify(a->mult(*c)->sub(*b)->toString() == "6.6");// (5 * 2) - 3.4
@@ -1987,7 +1987,7 @@ start
 \chapter{Formát datových souborů s~grafem}
 \label{format_datovych_souboru_s_grafem}
 
-Soubory ukládající grafy používají následující strukturu. Jedná se o~textový formát, oddělovačem může být libovolný počet bílých znaků (mezera, tabulátor, nový řádek).
+Soubory ukládající grafy používají následující strukturu. Jedná se o~textový formát, od\-dě\-lo\-va\-čem může být libovolný počet bílých znaků (mezera, tabulátor, nový řádek).
 
 \begin{verbatim}
 is_directed

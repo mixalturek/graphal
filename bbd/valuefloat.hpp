@@ -44,84 +44,84 @@ public:
 	virtual void dump(ostream& os, uint indent) const;
 
 	// +
-	virtual PTR_Value add(const Value&      right) const;
-	virtual PTR_Value add(const ValueBool&   left) const;
-	virtual PTR_Value add(const ValueInt&    left) const;
-	virtual PTR_Value add(const ValueFloat&  left) const;
+	virtual CountPtr<Value> add(const Value&      right) const;
+	virtual CountPtr<Value> add(const ValueBool&   left) const;
+	virtual CountPtr<Value> add(const ValueInt&    left) const;
+	virtual CountPtr<Value> add(const ValueFloat&  left) const;
 
 	// -
-	virtual PTR_Value sub(const Value&      right) const;
-	virtual PTR_Value sub(const ValueBool&   left) const;
-	virtual PTR_Value sub(const ValueInt&    left) const;
-	virtual PTR_Value sub(const ValueFloat&  left) const;
+	virtual CountPtr<Value> sub(const Value&      right) const;
+	virtual CountPtr<Value> sub(const ValueBool&   left) const;
+	virtual CountPtr<Value> sub(const ValueInt&    left) const;
+	virtual CountPtr<Value> sub(const ValueFloat&  left) const;
 
 	// *
-	virtual PTR_Value mult(const Value&      right) const;
-	virtual PTR_Value mult(const ValueBool&   left) const;
-	virtual PTR_Value mult(const ValueInt&    left) const;
-	virtual PTR_Value mult(const ValueFloat&  left) const;
+	virtual CountPtr<Value> mult(const Value&      right) const;
+	virtual CountPtr<Value> mult(const ValueBool&   left) const;
+	virtual CountPtr<Value> mult(const ValueInt&    left) const;
+	virtual CountPtr<Value> mult(const ValueFloat&  left) const;
 
 	// /
-	virtual PTR_Value div(const Value&      right) const;
-	virtual PTR_Value div(const ValueBool&   left) const;
-	virtual PTR_Value div(const ValueInt&    left) const;
-	virtual PTR_Value div(const ValueFloat&  left) const;
+	virtual CountPtr<Value> div(const Value&      right) const;
+	virtual CountPtr<Value> div(const ValueBool&   left) const;
+	virtual CountPtr<Value> div(const ValueInt&    left) const;
+	virtual CountPtr<Value> div(const ValueFloat&  left) const;
 
 	// %
-	virtual PTR_Value mod(const Value&      right) const;
-	virtual PTR_Value mod(const ValueBool&   left) const;
-	virtual PTR_Value mod(const ValueInt&    left) const;
-	virtual PTR_Value mod(const ValueFloat&  left) const;
+	virtual CountPtr<Value> mod(const Value&      right) const;
+	virtual CountPtr<Value> mod(const ValueBool&   left) const;
+	virtual CountPtr<Value> mod(const ValueInt&    left) const;
+	virtual CountPtr<Value> mod(const ValueFloat&  left) const;
 
 	// ==
-	virtual PTR_Value eq(const Value&      right) const;
-	virtual PTR_Value eq(const ValueBool&   left) const;
-	virtual PTR_Value eq(const ValueInt&    left) const;
-	virtual PTR_Value eq(const ValueFloat&  left) const;
+	virtual CountPtr<Value> eq(const Value&      right) const;
+	virtual CountPtr<Value> eq(const ValueBool&   left) const;
+	virtual CountPtr<Value> eq(const ValueInt&    left) const;
+	virtual CountPtr<Value> eq(const ValueFloat&  left) const;
 
 	// !=
-	virtual PTR_Value ne(const Value&      right) const;
-	virtual PTR_Value ne(const ValueBool&   left) const;
-	virtual PTR_Value ne(const ValueInt&    left) const;
-	virtual PTR_Value ne(const ValueFloat&  left) const;
+	virtual CountPtr<Value> ne(const Value&      right) const;
+	virtual CountPtr<Value> ne(const ValueBool&   left) const;
+	virtual CountPtr<Value> ne(const ValueInt&    left) const;
+	virtual CountPtr<Value> ne(const ValueFloat&  left) const;
 
 	// <=
-	virtual PTR_Value le(const Value&      right) const;
-	virtual PTR_Value le(const ValueBool&   left) const;
-	virtual PTR_Value le(const ValueInt&    left) const;
-	virtual PTR_Value le(const ValueFloat&  left) const;
+	virtual CountPtr<Value> le(const Value&      right) const;
+	virtual CountPtr<Value> le(const ValueBool&   left) const;
+	virtual CountPtr<Value> le(const ValueInt&    left) const;
+	virtual CountPtr<Value> le(const ValueFloat&  left) const;
 
 	// >=
-	virtual PTR_Value ge(const Value&      right) const;
-	virtual PTR_Value ge(const ValueBool&   left) const;
-	virtual PTR_Value ge(const ValueInt&    left) const;
-	virtual PTR_Value ge(const ValueFloat&  left) const;
+	virtual CountPtr<Value> ge(const Value&      right) const;
+	virtual CountPtr<Value> ge(const ValueBool&   left) const;
+	virtual CountPtr<Value> ge(const ValueInt&    left) const;
+	virtual CountPtr<Value> ge(const ValueFloat&  left) const;
 
 	// <
-	virtual PTR_Value lt(const Value&      right) const;
-	virtual PTR_Value lt(const ValueBool&   left) const;
-	virtual PTR_Value lt(const ValueInt&    left) const;
-	virtual PTR_Value lt(const ValueFloat&  left) const;
+	virtual CountPtr<Value> lt(const Value&      right) const;
+	virtual CountPtr<Value> lt(const ValueBool&   left) const;
+	virtual CountPtr<Value> lt(const ValueInt&    left) const;
+	virtual CountPtr<Value> lt(const ValueFloat&  left) const;
 
 	// >
-	virtual PTR_Value gt(const Value&      right) const;
-	virtual PTR_Value gt(const ValueBool&   left) const;
-	virtual PTR_Value gt(const ValueInt&    left) const;
-	virtual PTR_Value gt(const ValueFloat&  left) const;
+	virtual CountPtr<Value> gt(const Value&      right) const;
+	virtual CountPtr<Value> gt(const ValueBool&   left) const;
+	virtual CountPtr<Value> gt(const ValueInt&    left) const;
+	virtual CountPtr<Value> gt(const ValueFloat&  left) const;
 
 	// !
-	virtual PTR_Value logNOT(void) const;
+	virtual CountPtr<Value> logNOT(void) const;
 
 	// - (unary)
-	virtual PTR_Value subUn(void) const;
+	virtual CountPtr<Value> subUn(void) const;
 
 	// .
-	virtual PTR_Value member(const Value& right) const;
+	virtual CountPtr<Value> member(const Value& right) const;
 
 	// []
-	virtual PTR_Value index(const Value&  right) const;
-	virtual PTR_Value index(const ValueString& left) const;
-	virtual PTR_Value index(const ValueArray& left) const;
+	virtual CountPtr<Value> index(const Value&  right) const;
+	virtual CountPtr<Value> index(const ValueString& left) const;
+	virtual CountPtr<Value> index(const ValueArray& left) const;
 
 private:
 	const float m_val;

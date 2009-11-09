@@ -288,22 +288,22 @@ void ValueSet::resetIterator(void)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueSet::add(const Value& right)        const { return right.add(*this); } // +
-PTR_Value ValueSet::sub(const Value& right)        const { return right.sub(*this); } // -
-PTR_Value ValueSet::mult(const Value& right)       const { return right.mult(*this); } // *
-PTR_Value ValueSet::div(const Value& right)        const { return right.div(*this); } // /
-PTR_Value ValueSet::mod(const Value& right)        const { return right.mod(*this); } // %
-PTR_Value ValueSet::eq(const Value& right)         const { return right.eq(*this); } // ==
-PTR_Value ValueSet::eq(const ValueSet& left) const { return (left.m_val == m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
-PTR_Value ValueSet::ne(const Value& right)         const { return right.ne(*this); } // !=
-PTR_Value ValueSet::ne(const ValueSet& left) const { return (left.m_val != m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
-PTR_Value ValueSet::le(const Value& right)         const { return right.le(*this); } // <=
-PTR_Value ValueSet::ge(const Value& right)         const { return right.ge(*this); } // >=
-PTR_Value ValueSet::lt(const Value& right)         const { return right.lt(*this); } // <
-PTR_Value ValueSet::gt(const Value& right)         const { return right.gt(*this); } // >
-PTR_Value ValueSet::member(const Value& right)     const { return right.member(*this); } // .
-PTR_Value ValueSet::index(const Value& right)      const { return right.index(*this); } // []
-PTR_Value ValueSet::logNOT(void)                   const { ACCESS_MUTEX_LOCKER; return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
+CountPtr<Value> ValueSet::add(const Value& right)        const { return right.add(*this); } // +
+CountPtr<Value> ValueSet::sub(const Value& right)        const { return right.sub(*this); } // -
+CountPtr<Value> ValueSet::mult(const Value& right)       const { return right.mult(*this); } // *
+CountPtr<Value> ValueSet::div(const Value& right)        const { return right.div(*this); } // /
+CountPtr<Value> ValueSet::mod(const Value& right)        const { return right.mod(*this); } // %
+CountPtr<Value> ValueSet::eq(const Value& right)         const { return right.eq(*this); } // ==
+CountPtr<Value> ValueSet::eq(const ValueSet& left) const { return (left.m_val == m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+CountPtr<Value> ValueSet::ne(const Value& right)         const { return right.ne(*this); } // !=
+CountPtr<Value> ValueSet::ne(const ValueSet& left) const { return (left.m_val != m_val) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; }
+CountPtr<Value> ValueSet::le(const Value& right)         const { return right.le(*this); } // <=
+CountPtr<Value> ValueSet::ge(const Value& right)         const { return right.ge(*this); } // >=
+CountPtr<Value> ValueSet::lt(const Value& right)         const { return right.lt(*this); } // <
+CountPtr<Value> ValueSet::gt(const Value& right)         const { return right.gt(*this); } // >
+CountPtr<Value> ValueSet::member(const Value& right)     const { return right.member(*this); } // .
+CountPtr<Value> ValueSet::index(const Value& right)      const { return right.index(*this); } // []
+CountPtr<Value> ValueSet::logNOT(void)                   const { ACCESS_MUTEX_LOCKER; return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
 
 
 /////////////////////////////////////////////////////////////////////////////

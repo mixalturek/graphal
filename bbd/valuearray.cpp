@@ -301,20 +301,20 @@ ostream& operator<<(ostream& os, const ValueArray& node)
 /////////////////////////////////////////////////////////////////////////////
 ////
 
-PTR_Value ValueArray::add(const Value& right)     const { return right.add(*this); } // +
-PTR_Value ValueArray::sub(const Value& right)     const { return right.sub(*this); } // -
-PTR_Value ValueArray::mult(const Value& right)    const { return right.mult(*this); } // *
-PTR_Value ValueArray::div(const Value& right)     const { return right.div(*this); } // /
-PTR_Value ValueArray::mod(const Value& right)     const { return right.mod(*this); } // %
-PTR_Value ValueArray::eq(const Value& right)      const { return right.eq(*this); } // ==
-PTR_Value ValueArray::eq(const ValueArray& /*left*/) const { return VALUEBOOL_FALSE; }
-PTR_Value ValueArray::ne(const Value& right)      const { return right.ne(*this); } // !=
-PTR_Value ValueArray::ne(const ValueArray& /*left*/) const { return VALUEBOOL_TRUE; }
-PTR_Value ValueArray::le(const Value& right)      const { return right.le(*this); } // <=
-PTR_Value ValueArray::ge(const Value& right)      const { return right.ge(*this); } // >=
-PTR_Value ValueArray::lt(const Value& right)      const { return right.lt(*this); } // <
-PTR_Value ValueArray::gt(const Value& right)      const { return right.gt(*this); } // >
-PTR_Value ValueArray::member(const Value& right)  const { return right.member(*this); } // .
+CountPtr<Value> ValueArray::add(const Value& right)     const { return right.add(*this); } // +
+CountPtr<Value> ValueArray::sub(const Value& right)     const { return right.sub(*this); } // -
+CountPtr<Value> ValueArray::mult(const Value& right)    const { return right.mult(*this); } // *
+CountPtr<Value> ValueArray::div(const Value& right)     const { return right.div(*this); } // /
+CountPtr<Value> ValueArray::mod(const Value& right)     const { return right.mod(*this); } // %
+CountPtr<Value> ValueArray::eq(const Value& right)      const { return right.eq(*this); } // ==
+CountPtr<Value> ValueArray::eq(const ValueArray& /*left*/) const { return VALUEBOOL_FALSE; }
+CountPtr<Value> ValueArray::ne(const Value& right)      const { return right.ne(*this); } // !=
+CountPtr<Value> ValueArray::ne(const ValueArray& /*left*/) const { return VALUEBOOL_TRUE; }
+CountPtr<Value> ValueArray::le(const Value& right)      const { return right.le(*this); } // <=
+CountPtr<Value> ValueArray::ge(const Value& right)      const { return right.ge(*this); } // >=
+CountPtr<Value> ValueArray::lt(const Value& right)      const { return right.lt(*this); } // <
+CountPtr<Value> ValueArray::gt(const Value& right)      const { return right.gt(*this); } // >
+CountPtr<Value> ValueArray::member(const Value& right)  const { return right.member(*this); } // .
 
 /*
 TODO: ??? gcc bug ???
@@ -334,9 +334,9 @@ There is no problem with indexing of ValueString, why? It is the same!
 
 Temporary fixed in Value::index() by dynamic_cast
 */
-PTR_Value ValueArray::index(const Value& right)   const { return right.index(*this); } // []
+CountPtr<Value> ValueArray::index(const Value& right)   const { return right.index(*this); } // []
 
-PTR_Value ValueArray::logNOT(void)                const { ACCESS_MUTEX_LOCKER; return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
+CountPtr<Value> ValueArray::logNOT(void)                const { ACCESS_MUTEX_LOCKER; return (m_val.empty()) ? VALUEBOOL_TRUE : VALUEBOOL_FALSE; } // !
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -197,9 +197,9 @@ bool Tests::testDoubleDispatching(void)
 {
 	bool result = true;
 
-	PTR_Value a(new ValueInt(5));
-	PTR_Value b(new ValueFloat(3.4f));
-	PTR_Value c(new ValueFloat(2.0f));
+	CountPtr<Value> a(new ValueInt(5));
+	CountPtr<Value> b(new ValueFloat(3.4f));
+	CountPtr<Value> c(new ValueFloat(2.0f));
 
 	verify(a->add(*b)->div(*c)->toString() == "4.2");// (5 + 3.4) / 2
 	verify(a->mult(*c)->sub(*b)->toString() == "6.6");// (5 * 2) - 3.4
@@ -230,11 +230,11 @@ bool Tests::testValueString(void)
 {
 	bool result = true;
 
-	PTR_Value var_left(new ValueString("left "));
-	PTR_Value var_str(new ValueString("bagr"));
-	PTR_Value var_bool(VALUEBOOL_TRUE);
-	PTR_Value var_int(new ValueInt(3));
-	PTR_Value var_float(new ValueFloat(5.5f));
+	CountPtr<Value> var_left(new ValueString("left "));
+	CountPtr<Value> var_str(new ValueString("bagr"));
+	CountPtr<Value> var_bool(VALUEBOOL_TRUE);
+	CountPtr<Value> var_int(new ValueInt(3));
+	CountPtr<Value> var_float(new ValueFloat(5.5f));
 
 	verify(var_left->add(*var_str)->toString() == "left bagr");
 	verify(var_left->add(*var_bool)->toString() == "left true");
@@ -249,9 +249,9 @@ bool Tests::testValueReference(void)
 {
 	bool result = true;
 
-	PTR_Value valref(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueInt(5)))));
-	PTR_Value valref2(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueFloat(5.5)))));
-	PTR_Value val(new ValueInt(3));
+	CountPtr<Value> valref(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueInt(5)))));
+	CountPtr<Value> valref2(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueFloat(5.5)))));
+	CountPtr<Value> val(new ValueInt(3));
 
 	verify(valref->add(*val)->toString() == "8");
 	verify(valref->sub(*val)->toString() == "2");
@@ -279,9 +279,9 @@ bool Tests::testValueIdentifier(void)
 {
 	bool result = true;
 
-	PTR_Value valref(CountPtr<Value>(new ValueIdentifier(STR2ID("var"))));
-	PTR_Value valref2(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueFloat(5.5)))));
-	PTR_Value val(new ValueInt(3));
+	CountPtr<Value> valref(CountPtr<Value>(new ValueIdentifier(STR2ID("var"))));
+	CountPtr<Value> valref2(CountPtr<Value>(new ValueReference(CountPtr<Value>(new ValueFloat(5.5)))));
+	CountPtr<Value> val(new ValueInt(3));
 
 	valref->assign(CountPtr<Value>(new ValueInt(5)));
 
@@ -331,10 +331,10 @@ bool Tests::testValueArray(void)
 	a->resize(1);
 	a->setItem(0, CountPtr<Value>(new ValueString("bagr")));
 
-	//PTR_Value array(new ValueString("abc"));
-	PTR_Value str(new ValueString("abc"));
-	PTR_Value array(a);
-	PTR_Value ind(new ValueInt(0));
+	//CountPtr<Value> array(new ValueString("abc"));
+	CountPtr<Value> str(new ValueString("abc"));
+	CountPtr<Value> array(a);
+	CountPtr<Value> ind(new ValueInt(0));
 
 	//str->index(*ind)->dump(cout, 0);
 	//array->index(*ind)->dump(cout, 0);

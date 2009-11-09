@@ -85,27 +85,27 @@ ostream& operator<<(ostream& os, const ValueBool& node)
 ////
 
 // +
-PTR_Value ValueBool::add(const Value& right)       const { return right.add(*this); }
-PTR_Value ValueBool::add(const ValueBool& left)    const { return PTR_Value(new ValueBool(left.getVal() + m_val)); }
-PTR_Value ValueBool::add(const ValueInt& left)     const { return PTR_Value(new ValueInt(left.getVal() + m_val)); }
-PTR_Value ValueBool::add(const ValueFloat& left)   const { return PTR_Value(new ValueFloat(left.getVal() + m_val)); }
+CountPtr<Value> ValueBool::add(const Value& right)       const { return right.add(*this); }
+CountPtr<Value> ValueBool::add(const ValueBool& left)    const { return CountPtr<Value>(new ValueBool(left.getVal() + m_val)); }
+CountPtr<Value> ValueBool::add(const ValueInt& left)     const { return CountPtr<Value>(new ValueInt(left.getVal() + m_val)); }
+CountPtr<Value> ValueBool::add(const ValueFloat& left)   const { return CountPtr<Value>(new ValueFloat(left.getVal() + m_val)); }
 
 // -
-PTR_Value ValueBool::sub(const Value& right)       const { return right.sub(*this); }
-PTR_Value ValueBool::sub(const ValueBool& left)    const { return PTR_Value(new ValueBool(left.getVal() - m_val)); }
-PTR_Value ValueBool::sub(const ValueInt& left)     const { return PTR_Value(new ValueInt(left.getVal() - m_val)); }
-PTR_Value ValueBool::sub(const ValueFloat& left)   const { return PTR_Value(new ValueFloat(left.getVal() - m_val)); }
+CountPtr<Value> ValueBool::sub(const Value& right)       const { return right.sub(*this); }
+CountPtr<Value> ValueBool::sub(const ValueBool& left)    const { return CountPtr<Value>(new ValueBool(left.getVal() - m_val)); }
+CountPtr<Value> ValueBool::sub(const ValueInt& left)     const { return CountPtr<Value>(new ValueInt(left.getVal() - m_val)); }
+CountPtr<Value> ValueBool::sub(const ValueFloat& left)   const { return CountPtr<Value>(new ValueFloat(left.getVal() - m_val)); }
 
 // *
-PTR_Value ValueBool::mult(const Value& right)      const { return right.mult(*this); }
-PTR_Value ValueBool::mult(const ValueBool& left)   const { return PTR_Value(new ValueBool(left.getVal() * m_val)); }
-PTR_Value ValueBool::mult(const ValueInt& left)    const { return PTR_Value(new ValueInt(left.getVal() * m_val)); }
-PTR_Value ValueBool::mult(const ValueFloat& left)  const { return PTR_Value(new ValueFloat(left.getVal() * m_val)); }
+CountPtr<Value> ValueBool::mult(const Value& right)      const { return right.mult(*this); }
+CountPtr<Value> ValueBool::mult(const ValueBool& left)   const { return CountPtr<Value>(new ValueBool(left.getVal() * m_val)); }
+CountPtr<Value> ValueBool::mult(const ValueInt& left)    const { return CountPtr<Value>(new ValueInt(left.getVal() * m_val)); }
+CountPtr<Value> ValueBool::mult(const ValueFloat& left)  const { return CountPtr<Value>(new ValueFloat(left.getVal() * m_val)); }
 
 // /
-PTR_Value ValueBool::div(const Value& right)       const { return right.div(*this); }
+CountPtr<Value> ValueBool::div(const Value& right)       const { return right.div(*this); }
 
-PTR_Value ValueBool::div(const ValueBool& left)    const
+CountPtr<Value> ValueBool::div(const ValueBool& left)    const
 {
 	if(m_val == 0)
 	{
@@ -114,11 +114,11 @@ PTR_Value ValueBool::div(const ValueBool& left)    const
 	}
 	else
 	{
-		return PTR_Value(new ValueBool(left.getVal() / m_val));
+		return CountPtr<Value>(new ValueBool(left.getVal() / m_val));
 	}
 }
 
-PTR_Value ValueBool::div(const ValueInt& left)     const
+CountPtr<Value> ValueBool::div(const ValueInt& left)     const
 {
 	if(m_val == 0)
 	{
@@ -127,11 +127,11 @@ PTR_Value ValueBool::div(const ValueInt& left)     const
 	}
 	else
 	{
-		return PTR_Value(new ValueInt(left.getVal() / m_val));
+		return CountPtr<Value>(new ValueInt(left.getVal() / m_val));
 	}
 }
 
-PTR_Value ValueBool::div(const ValueFloat& left)   const
+CountPtr<Value> ValueBool::div(const ValueFloat& left)   const
 {
 	if(m_val == 0)
 	{
@@ -140,14 +140,14 @@ PTR_Value ValueBool::div(const ValueFloat& left)   const
 	}
 	else
 	{
-		return PTR_Value(new ValueFloat(left.getVal() / m_val));
+		return CountPtr<Value>(new ValueFloat(left.getVal() / m_val));
 	}
 }
 
 // %
-PTR_Value ValueBool::mod(const Value& right)       const { return right.mod(*this); }
+CountPtr<Value> ValueBool::mod(const Value& right)       const { return right.mod(*this); }
 
-PTR_Value ValueBool::mod(const ValueBool& left)    const
+CountPtr<Value> ValueBool::mod(const ValueBool& left)    const
 {
 	if(m_val == 0)
 	{
@@ -156,11 +156,11 @@ PTR_Value ValueBool::mod(const ValueBool& left)    const
 	}
 	else
 	{
-		return PTR_Value(new ValueBool(left.getVal() % m_val));
+		return CountPtr<Value>(new ValueBool(left.getVal() % m_val));
 	}
 }
 
-PTR_Value ValueBool::mod(const ValueInt& left)     const
+CountPtr<Value> ValueBool::mod(const ValueInt& left)     const
 {
 	if(m_val == 0)
 	{
@@ -169,65 +169,65 @@ PTR_Value ValueBool::mod(const ValueInt& left)     const
 	}
 	else
 	{
-		return PTR_Value(new ValueInt(left.getVal() % m_val));
+		return CountPtr<Value>(new ValueInt(left.getVal() % m_val));
 	}
 }
 
-PTR_Value ValueBool::mod(const ValueFloat& /* left */)   const
+CountPtr<Value> ValueBool::mod(const ValueFloat& /* left */)   const
 {
 	WARN_P(_("Invalid operands of types float and bool to modulo operator"));
 	return VALUENULL;
 }
 
 // ==
-PTR_Value ValueBool::eq(const Value& right)        const { return right.eq(*this); }
-PTR_Value ValueBool::eq(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
-PTR_Value ValueBool::eq(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
-PTR_Value ValueBool::eq(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() == m_val)); }
+CountPtr<Value> ValueBool::eq(const Value& right)        const { return right.eq(*this); }
+CountPtr<Value> ValueBool::eq(const ValueBool& left)     const { return CountPtr<Value>(new ValueBool(left.getVal() == m_val)); }
+CountPtr<Value> ValueBool::eq(const ValueInt& left)      const { return CountPtr<Value>(new ValueBool(left.getVal() == m_val)); }
+CountPtr<Value> ValueBool::eq(const ValueFloat& left)    const { return CountPtr<Value>(new ValueBool(left.getVal() == m_val)); }
 
 // !=
-PTR_Value ValueBool::ne(const Value& right)        const { return right.ne(*this); }
-PTR_Value ValueBool::ne(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
-PTR_Value ValueBool::ne(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
-PTR_Value ValueBool::ne(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() != m_val)); }
+CountPtr<Value> ValueBool::ne(const Value& right)        const { return right.ne(*this); }
+CountPtr<Value> ValueBool::ne(const ValueBool& left)     const { return CountPtr<Value>(new ValueBool(left.getVal() != m_val)); }
+CountPtr<Value> ValueBool::ne(const ValueInt& left)      const { return CountPtr<Value>(new ValueBool(left.getVal() != m_val)); }
+CountPtr<Value> ValueBool::ne(const ValueFloat& left)    const { return CountPtr<Value>(new ValueBool(left.getVal() != m_val)); }
 
 // <=
-PTR_Value ValueBool::le(const Value& right)        const { return right.le(*this); }
-PTR_Value ValueBool::le(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
-PTR_Value ValueBool::le(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
-PTR_Value ValueBool::le(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() <= m_val)); }
+CountPtr<Value> ValueBool::le(const Value& right)        const { return right.le(*this); }
+CountPtr<Value> ValueBool::le(const ValueBool& left)     const { return CountPtr<Value>(new ValueBool(left.getVal() <= m_val)); }
+CountPtr<Value> ValueBool::le(const ValueInt& left)      const { return CountPtr<Value>(new ValueBool(left.getVal() <= m_val)); }
+CountPtr<Value> ValueBool::le(const ValueFloat& left)    const { return CountPtr<Value>(new ValueBool(left.getVal() <= m_val)); }
 
 // >=
-PTR_Value ValueBool::ge(const Value& right)        const { return right.ge(*this); }
-PTR_Value ValueBool::ge(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
-PTR_Value ValueBool::ge(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
-PTR_Value ValueBool::ge(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() >= m_val)); }
+CountPtr<Value> ValueBool::ge(const Value& right)        const { return right.ge(*this); }
+CountPtr<Value> ValueBool::ge(const ValueBool& left)     const { return CountPtr<Value>(new ValueBool(left.getVal() >= m_val)); }
+CountPtr<Value> ValueBool::ge(const ValueInt& left)      const { return CountPtr<Value>(new ValueBool(left.getVal() >= m_val)); }
+CountPtr<Value> ValueBool::ge(const ValueFloat& left)    const { return CountPtr<Value>(new ValueBool(left.getVal() >= m_val)); }
 
 // <
-PTR_Value ValueBool::lt(const Value& right)        const { return right.lt(*this); }
-PTR_Value ValueBool::lt(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
-PTR_Value ValueBool::lt(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
-PTR_Value ValueBool::lt(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() < m_val)); }
+CountPtr<Value> ValueBool::lt(const Value& right)        const { return right.lt(*this); }
+CountPtr<Value> ValueBool::lt(const ValueBool& left)     const { return CountPtr<Value>(new ValueBool(left.getVal() < m_val)); }
+CountPtr<Value> ValueBool::lt(const ValueInt& left)      const { return CountPtr<Value>(new ValueBool(left.getVal() < m_val)); }
+CountPtr<Value> ValueBool::lt(const ValueFloat& left)    const { return CountPtr<Value>(new ValueBool(left.getVal() < m_val)); }
 
 // >
-PTR_Value ValueBool::gt(const Value& right)        const { return right.gt(*this); }
-PTR_Value ValueBool::gt(const ValueBool& left)     const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
-PTR_Value ValueBool::gt(const ValueInt& left)      const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
-PTR_Value ValueBool::gt(const ValueFloat& left)    const { return PTR_Value(new ValueBool(left.getVal() > m_val)); }
+CountPtr<Value> ValueBool::gt(const Value& right)        const { return right.gt(*this); }
+CountPtr<Value> ValueBool::gt(const ValueBool& left)     const { return CountPtr<Value>(new ValueBool(left.getVal() > m_val)); }
+CountPtr<Value> ValueBool::gt(const ValueInt& left)      const { return CountPtr<Value>(new ValueBool(left.getVal() > m_val)); }
+CountPtr<Value> ValueBool::gt(const ValueFloat& left)    const { return CountPtr<Value>(new ValueBool(left.getVal() > m_val)); }
 
 // !
-PTR_Value ValueBool::logNOT(void)  const { return PTR_Value(new ValueBool(!m_val)); }
+CountPtr<Value> ValueBool::logNOT(void)  const { return CountPtr<Value>(new ValueBool(!m_val)); }
 
 // - (unary)
-PTR_Value ValueBool::subUn(void)   const { return PTR_Value(new ValueBool(-m_val)); }
+CountPtr<Value> ValueBool::subUn(void)   const { return CountPtr<Value>(new ValueBool(-m_val)); }
 
-PTR_Value ValueBool::member(const Value& right)    const { return right.member(*this); } // .
-PTR_Value ValueBool::index(const Value& right)     const { return right.index(*this); } // []
+CountPtr<Value> ValueBool::member(const Value& right)    const { return right.member(*this); } // .
+CountPtr<Value> ValueBool::index(const Value& right)     const { return right.index(*this); } // []
 
-PTR_Value ValueBool::index(const ValueString& left) const
+CountPtr<Value> ValueBool::index(const ValueString& left) const
 {
 	if(m_val < left.getVal().length())
-		return PTR_Value(new ValueString(char2string(left.getVal()[m_val])));
+		return CountPtr<Value>(new ValueString(char2string(left.getVal()[m_val])));
 	else
 	{
 		stringstream ss;
@@ -239,4 +239,4 @@ PTR_Value ValueBool::index(const ValueString& left) const
 	}
 }
 
-PTR_Value ValueBool::index(const ValueArray& left) const { return left.getItem(m_val); }
+CountPtr<Value> ValueBool::index(const ValueArray& left) const { return left.getItem(m_val); }

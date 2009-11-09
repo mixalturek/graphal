@@ -69,22 +69,22 @@ public:
 	set_container::const_iterator end(void) const { ACCESS_MUTEX_LOCKER; return m_val.end(); }
 
 public:
-	virtual PTR_Value add(const Value&    right) const; // +
-	virtual PTR_Value sub(const Value&    right) const; // -
-	virtual PTR_Value mult(const Value&   right) const; // *
-	virtual PTR_Value div(const Value&    right) const; // /
-	virtual PTR_Value mod(const Value&    right) const; // %
-	virtual PTR_Value eq(const Value&     right) const; // ==
-	virtual PTR_Value eq(const ValueSet&  left) const;
-	virtual PTR_Value ne(const Value&     right) const; // !=
-	virtual PTR_Value ne(const ValueSet&  left) const;
-	virtual PTR_Value le(const Value&     right) const; // <=
-	virtual PTR_Value ge(const Value&     right) const; // >=
-	virtual PTR_Value lt(const Value&     right) const; // <
-	virtual PTR_Value gt(const Value&     right) const; // >
-	virtual PTR_Value member(const Value& right) const; // .
-	virtual PTR_Value index(const Value&  right) const; // []
-	virtual PTR_Value logNOT(void)               const; // !
+	virtual CountPtr<Value> add(const Value&    right) const; // +
+	virtual CountPtr<Value> sub(const Value&    right) const; // -
+	virtual CountPtr<Value> mult(const Value&   right) const; // *
+	virtual CountPtr<Value> div(const Value&    right) const; // /
+	virtual CountPtr<Value> mod(const Value&    right) const; // %
+	virtual CountPtr<Value> eq(const Value&     right) const; // ==
+	virtual CountPtr<Value> eq(const ValueSet&  left) const;
+	virtual CountPtr<Value> ne(const Value&     right) const; // !=
+	virtual CountPtr<Value> ne(const ValueSet&  left) const;
+	virtual CountPtr<Value> le(const Value&     right) const; // <=
+	virtual CountPtr<Value> ge(const Value&     right) const; // >=
+	virtual CountPtr<Value> lt(const Value&     right) const; // <
+	virtual CountPtr<Value> gt(const Value&     right) const; // >
+	virtual CountPtr<Value> member(const Value& right) const; // .
+	virtual CountPtr<Value> index(const Value&  right) const; // []
+	virtual CountPtr<Value> logNOT(void)               const; // !
 
 private:
 	set_container m_val;
