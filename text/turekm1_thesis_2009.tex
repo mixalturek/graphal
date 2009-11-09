@@ -188,6 +188,7 @@ Základní kód interpretu a rozhraní pro příkazovou řádku je napsáno v ja
 %%%%
 
 \chapter{Popis problému, specifikace cíle}
+\label{popis_problemu_specifikace_cile}
 
 %\begin{itemize}
 %\item Popis řešeného problému, vymezení cílů DP/BP a požadavků na implementovaný systém.
@@ -254,14 +255,14 @@ Textový editor by měl být programátorsky zaměřený, zvýrazňování synta
 
 \subsection{Zobrazovací jednotka, vizualizace}
 
-Vizualizační jednotka zobrazuje aktuálně zpracovávaný graf ve 3D, nemusí to být editor, ve kterém je možné měnit strukturu grafu. Uživatel má možnost graf interaktivně natáčet, přibližovat, oddalovat a posouvat v libovolném směru. Dále vůže zapnout a vypnout zobrazování jednotlivých částí grafu, aby bylo možné dosáhnout méně přeplněného výstupu.
+Vizualizační jednotka zobrazuje aktuálně zpracovávaný graf ve 3D, nemusí to být editor, ve kterém je možné měnit strukturu grafu. Uživatel má možnost graf interaktivně natáčet, přibližovat, oddalovat a posouvat v libovolném směru. Dále může zapnout a vypnout zobrazování jednotlivých částí grafu, aby bylo možné dosáhnout méně přeplněného výstupu.
 
 Pokud bude v jazyce možnost přidávat barevné (texturové) atributy vrcholům, hranám nebo jejich množinám, promítaly by se i do zobrazení. Zobrazovací okno má vlastní možnost načtení grafu, aplikace umožní volit, zda má algoritmus pracovat s grafem, který je v grafickém okně nebo zda si jej načte sám podle zápisu v kódu.
 
 
 \subsection{Manipulace s grafem, krokování skriptu}
 
-Interpretace kódu může být krokována, při jejím pozastavení se překreslí vizualizační okno a tím se aktualizauje i pohled na graf. Dokud není vydán příkaz k dalšímu kroku, je možné s grafem posouvat, natáčet ho a podobně. Parametry samotného grafu během průběhu programu není vhodné měnit, avšak parametry zobrazení nejspíše ano (barvy, měřítka a podobně). Debugging není třeba nijak zvlášť podporovat, postačí konzole, kam si programátor může vypsat ladící a trasovací tisky.
+Interpretace kódu může být krokována, při jejím pozastavení se překreslí vizualizační okno a tím se aktualizuje i pohled na graf. Dokud není vydán příkaz k dalšímu kroku, je možné s grafem posouvat, natáčet ho a podobně. Parametry samotného grafu během průběhu programu není vhodné měnit, avšak parametry zobrazení nejspíše ano (barvy, měřítka a podobně). Debugging není třeba nijak zvlášť podporovat, postačí konzole, kam si programátor může vypsat ladící a trasovací tisky.
 
 
 %\subsection{Systémové požadavky}
@@ -1791,6 +1792,7 @@ function testFactorial()
 
 
 \section{Rychlost vykonávání skriptu, srovnávací testy}
+\label{rychlost_vykonavani_skriptu_srovnavaci_testy}
 
 Po vytvožení nového kompilátoru či interpretu nějakého programacího jazyka je jistě důležité znát, jak rychle dokáže vykonávat napsané programy. Byla navržena sada tří jednoduchých testů, které odpovídají na tuto otázku.
 
@@ -1835,11 +1837,16 @@ Cílem těchto testů bylo především získání orientačních hodnot. Interp
 
 \chapter{Závěr}
 
-% TODO: delete
-\begin{itemize}
-\item Zhodnocení splnění cílů DP/BP a  vlastního přínosu práce (při formulaci je třeba vzít v potaz zadání práce).
-\item Diskuse dalšího možného pokračování práce.
-\end{itemize}
+%\begin{itemize}
+%\item Zhodnocení splnění cílů DP/BP a  vlastního přínosu práce (při formulaci je třeba vzít v potaz zadání práce).
+%\item Diskuse dalšího možného pokračování práce.
+%\end{itemize}
+
+V této práci byl navržen programovací jazyk pro psaní grafových algoritmů a vytvořen jeho interpret včetně komplexního vývojového prostředí. Jako implementační prostředí byl pro základní kód zvolen jazyk C++, grafická verze aplikace je napsána s pomocí knihovny Qt a vizualizace grafů dále využívají služeb OpenGL. Použité knihovny jsou multiplatformní, a tudíž je zaručena velice snadná přenositelnost mezi nejrůznými operačními systémy.
+
+Všechny požadavky vyplývající ze zadání byly splněny, v mnoha případech i v nevyžadované zobecněné formě. Příkladem budiž volitelná implementace orientovaných grafů, požadavek na krokování skriptu či schopnosti textového editoru pro psaní kódu. Aplikace ve výsledku umí pracovat s naprosto všemi typy grafů, jednoduché krokování skriptu se vyvinulo v obecný debugger a editor poskytuje nejen zvýrazňování syntaxe, ale i automatické odsazování kódu, číslování řádků a další vymoženosti běžných programátorských editorů.
+
+Jak ukázalo závěrečné testování, interpret má zřejmé nedostatky v rychlosti vykonávání kódu. Při porovnání s ekvivalentními programy zapsanými v jazyce Perl vychází přibližně osmi až patnáctinásobně pomalejší běh. Je pravda, že se vyvinutý interpret v současné verzi nesnaží o naprosto žádné optimalizace, zde se do budoucna zcela jistě nachází prostor pro další zlepšování.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2180,6 +2187,32 @@ QObject
 %%%%
 
 \chapter{Obsah přiloženého CD}
+
+\begin{verbatim}
+cd
+|-- bbd
+|-- bbdgui
+|-- samples
+|-- graphs
+|   |-- generator
+|-- man
+|   |-- html
+|   |-- php
+|-- doc
+|-- benchmarks
+|-- text
+|-- presentation
+|-- svn
+|-- svnstat
+\end{verbatim}
+
+Adresáře \texttt{bbd} a \texttt{bbdgui} obsahují kompletní zdrojové kódy konzolové a grafické aplikace. Projektové soubory zahrnují vývojová prostředí Qt Creator, Code::Blocks a klasické Makefile skripty. Adresáře \texttt{samples} a \texttt{graphs} obsahují ukázkové skripty ve vytvořeném programovacím jazyce a několik datových souborů s testovacími grafy. Kompilace a spuštění jsou plně popsány v uživatelském manuálu, který se nachází v adresáři \texttt{man}. Vývojářská dokumentace generovaná ze zdrojových kódů nástrojem Doxygen je uložena v \texttt{doc}.
+
+V \texttt{benchmarks} jsou k nalezení všechny prostředky sloužící k měření výkonu interpretu z kapitoly \ref{rychlost_vykonavani_skriptu_srovnavaci_testy} na straně \pageref{rychlost_vykonavani_skriptu_srovnavaci_testy}. Jedná se o zdrojové kódy testovacích sestav pro vyvinutý interpret, Perl a C++, spouštěcí skripty, formátování logů a konfigurační soubory pro Gnuplot s výstupem ve formátu PNG a SVG, včetně následné konverze SVG na PDF. Vše je plně automatizováno, stačí nainstalovat potřebné nástroje a spustit příkaz \texttt{make run}.
+
+Ve složce \texttt{text} je uložen kompletní text diplomové práce ve formátu PDF a zdrojové soubory pro typografický systém \LaTeX. Prezentace diplomové práce se nachází v \texttt{presentation}, jedná se o formát PDF a zdrojové kódy napsané v \LaTeX~Beamer.
+
+Adresář \texttt{svn} obsahuje dump SVN repozitáře sloužícího pro vývoj a \texttt{svnstat} statistiky o tomto repozitáři vygenerované nástrojem StatSVN.
 
 
 \end{document}

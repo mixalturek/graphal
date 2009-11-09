@@ -20,7 +20,7 @@ func: func.cpp
 clean:
 	rm -f var array func core *.dat log*.txt *.png *.svg *.pdf
 
-run:
+run: all
 	if [ -e $(LOGFILE) ] ; then mv $(LOGFILE) log_`date +%F_%T | tr ':' '-'`.txt ; fi
 	if [ -e $(GRAPHPNG) ] ; then mv $(GRAPHPNG) log_`date +%F_%T | tr ':' '-'`.png ; fi
 	if [ -e $(GRAPHSVG) ] ; then mv $(GRAPHSVG) log_`date +%F_%T | tr ':' '-'`.svg ; fi

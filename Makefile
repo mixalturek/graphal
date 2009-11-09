@@ -35,7 +35,7 @@ svnlog:
 
 statsvn:
 	svn log -v --xml > logfile.log
-	statsvn -output-dir statsvn -title bbd logfile.log .
+	statsvn -output-dir svnstat -title bbd logfile.log .
 	rm logfile.log
 
 clean:
@@ -47,5 +47,5 @@ clean:
 	make -C ./graphs/generator/ clean
 	make -C ./man/ clean
 	rm -rf ./doc/
-	rm -rf ./statsvn/
+	rm -rf ./svnstat/
 	make -C ./text/ clean

@@ -16,6 +16,9 @@ ref:	$(PROJECT).tex
 bib:
 	$(BIBTEX) $(PROJECT)
 
+vlna:
+	vlna -m -n -w -f $(PROJECT).tex bak_$(PROJECT).tex
+
 $(PROJECT).pdf: $(PROJECT).tex
 	$(PDFLATEX) $<
 	$(PDFLATEX) $<
