@@ -1984,6 +1984,34 @@ start
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
 
+\chapter{Formát datových souborů s~grafem}
+\label{format_datovych_souboru_s_grafem}
+
+Soubory ukládající grafy používají následující strukturu. Jedná se o~textový formát, oddělovačem může být libovolný počet bílých znaků (mezera, tabulátor, nový řádek).
+
+\begin{verbatim}
+is_directed
+
+number_of_vertices   number_of_edges
+
+number_of_properties_for_vertices   names_of_properties_for_vertices
+number_of_properties_for_edges      names_of_properties_for_edges
+
+vertex_id   values_of_properties
+vertex_id   values_of_properties
+vertex_id   values_of_properties
+...
+
+vertex_id   vertex_id   values_of_properties
+vertex_id   vertex_id   values_of_properties
+vertex_id   vertex_id   values_of_properties
+...
+\end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
 \twocolumn
 
 \chapter{Hierarchie tříd}

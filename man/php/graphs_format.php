@@ -8,19 +8,19 @@ include 'p_begin.php';
 <pre class="spec">
 is_directed
 
-number_of_vertices number_of_edges
+number_of_vertices   number_of_edges
 
-number_of_properties_for_vertices names_of_properties_for_vertices
-number_of_properties_for_edges names_of_properties_for_edges
+number_of_properties_for_vertices   names_of_properties_for_vertices
+number_of_properties_for_edges      names_of_properties_for_edges
 
-vertex_id values_of_properties
-vertex_id values_of_properties
-vertex_id values_of_properties
+vertex_id   values_of_properties
+vertex_id   values_of_properties
+vertex_id   values_of_properties
 ...
 
-vertex_id vertex_id values_of_properties
-vertex_id vertex_id values_of_properties
-vertex_id vertex_id values_of_properties
+vertex_id   vertex_id   values_of_properties
+vertex_id   vertex_id   values_of_properties
+vertex_id   vertex_id   values_of_properties
 ...
 </pre>
 
