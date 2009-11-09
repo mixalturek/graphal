@@ -24,7 +24,7 @@ include 'p_begin.php';
 <pre class="code">
 alias &amp;= structure.some_array[57];
 structure.some_array[57] = "some new value";
-// alias variable contaions the new value too
+// alias variable contains the new value too
 </pre>
 
 
