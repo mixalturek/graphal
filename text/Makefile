@@ -17,7 +17,10 @@ bib:
 	$(BIBTEX) $(PROJECT)
 
 vlna:
-	vlna -m -n -w -f $(PROJECT).tex bak_$(PROJECT).tex
+	iconv -f utf8 -t ISO_8859-2 < $(PROJECT).tex > $(PROJECT)_iso.tex
+	vlna -m -n -w -f $(PROJECT)_iso.tex $(PROJECT)_iso.tex.bak
+	iconv -f ISO_8859-2 -t utf8 < $(PROJECT)_iso.tex.bak > $(PROJECT).tex
+	rm $(PROJECT)_iso.tex $(PROJECT)_iso.tex.bak
 
 $(PROJECT).pdf: $(PROJECT).tex
 	$(PDFLATEX) $<
