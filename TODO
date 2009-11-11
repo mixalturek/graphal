@@ -10,3 +10,8 @@ Bison
 		array() - array0()
 		array(size) - array1()
 	add switch
+
+vertex/edge pointer m_graph can be invalid!
+
+text
+	spojit úvod a závěr, diffuse algoritmy
