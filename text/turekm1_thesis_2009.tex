@@ -735,7 +735,7 @@ V~případě přidání nového datového typu se žádná z~již existujících
 
 Zdrojový soubor skriptu se překládá pomocí lexikálního analyzátoru a parseru do vnitřní reprezentace. Jejím základním prvkem je abstraktní třída \texttt{Node}, ze které jsou odvozeny všechny ostatní třídy, například třída pro větvení, třída pro cykly a další.
 
-Posláním parseru je sestavit \textit{abstraktní strom syntaxe}, který bude následně použit pro vykonávání programu. Povinností stavebních kamenů je definovat metodu \texttt{execute()}, jež se bude při vykonávání volat rekurzivně na všech úrovních stromu.
+Posláním parseru je sestavit \textit{abstraktní strom syntaxe}, který bude následně použit pro vykonávání programu. Povinností jednotlivých stavebních kamenů je definovat metodu \texttt{e\-xe\-cu\-te()}, jež se bude volat rekurzivně na všech úrovních stromu.
 
 \begin{verbatim}
 class Node
@@ -753,11 +753,11 @@ Alternativní možností vykonávání skriptu by mohl být překlad do instrukc
 \subsection{Podpora krokování a debuggingu}
 \label{podpora_debuggingu}
 
-Výhodou lineárního pole instrukcí a virtuálního procesoru je snadná implementace de\-bug\-gin\-gu. V~kterémkoli okamžiku je možné pozastavit vykonávání, protože je kód skriptu, včetně pozice, uložen výhradně v~datové struktuře. Po případném opuštění interpretující funkce zůstane stav vir\-tu\-ál\-ní\-ho procesoru zachován a pozastavený skript může být kdykoli opětovně spuštěn.
+Výhodou lineárního pole instrukcí a virtuálního procesoru je snadná implementace de\-bug\-gin\-gu. V~kterémkoli okamžiku je možné pozastavit vykonávání, protože kód skriptu je včetně pozice uložen výhradně v~datové struktuře. Po případném opuštění interpretující funkce zůstane stav vir\-tu\-ál\-ní\-ho procesoru zachován a pozastavený skript může být kdykoli opětovně spuštěn.
 
-Naproti tomu, při použití abstraktního stromu syntaxe, je kód reprezentován především datovými typy uzlů a jejich strukturou. Vykonávání spočívá v~rekurzivním volání, kteréžto není možné přerušit a na stejném místě později obnovit. Vzniká otázka, jak pozastavit toto rekurzivní vykonávání.
+Naproti tomu, při použití abstraktního stromu syntaxe, je kód reprezentován především datovými typy uzlů a jejich strukturou. Vykonávání spočívá v~rekurzivním volání, kteréžto není možné přerušit a na stejném místě později obnovit. Vzniká otázka, jak pozastavit tato rekurzivní volání.
 
-Odpovědí je \textit{vícevláknové programování} a jeho synchronizační prostředky. V~případě řádkové utility se debugging nepředpokládá, u~grafického rozhraní je další vlákno pro vykonávání skriptu naopak nezbytné. Bez něj by aplikace po spuštění déletrvajícího skriptu nemohla reagovat na žádné požadavky a uživateli by se jevila jako zamrzlá.
+Odpovědí je \textit{vícevláknové programování} a jeho synchronizační prostředky. V~případě řádkové utility se debugging nepředpokládá, u~grafického rozhraní je další vlákno pro skript naopak nezbytné. Bez něj by aplikace po spuštění déletrvajícího skriptu nemohla reagovat na žádné požadavky a uživateli by se jevila jako zamrzlá.
 
 Princip pozastavení skriptu demonstruje následující výpis kódu používající synchronizační prostředky knihovny Qt. Pokud skript narazí například na breakpoint, zavolá funkci \texttt{pause()}, jež ve \texttt{wait()} čeká na signál k~opětovnému spuštění. Tento příkaz vydává hlavní vlákno aplikace -- kupříkladu po kliknutí uživatele na tlačítko \textit{Pokračovat}.
 
@@ -785,7 +785,7 @@ Ač se to nemusí zdát, je výše uvedené řešení plně funkční. Bylo impl
 
 \subsection{Úniky paměti, správce paměti}
 
-V~kapitole \ref{abstraktni_strom_syntaxe} na straně \pageref{abstraktni_strom_syntaxe} byla představena virtuální funkce \texttt{execute()}, jejíž rekurzivní volání umožňuje interpretaci skriptu. Jednou ze zcela zásadních věcí je její návratová hodnota, která slouží především pro získání výsledku aritmetických výrazů.
+V~kapitole \ref{abstraktni_strom_syntaxe} na straně \pageref{abstraktni_strom_syntaxe} byla představena virtuální funkce \texttt{execute()}, jejíž rekurzivní volání umožňují interpretaci skriptu. Jednou ze zcela zásadních věcí je její návratová hodnota, která slouží především pro získání výsledku aritmetických výrazů.
 
 Mějme například následující jednoduchý skript, jehož úkolem je sečíst dvě čísla.
 
@@ -806,36 +806,36 @@ Součet bude v~syntaktickém stromu uložen celkem ve třech uzlech. Listy vrace
 \end{center}
 \end{figure}
 
-Je jasné, že třída pro sčítání nezná datový typ návratové hodnoty při kompilaci, může jím být například \texttt{null}, \texttt{int}, \texttt{float} aj., a tudíž návratovou hodnotou funkce musí být abstraktní objekt typu \texttt{Value} představený v~sekci \ref{double_dispatching_pattern} na straně \pageref{double_dispatching_pattern}.
+Je jasné, že třída pro sčítání nezná při kompilaci datový typ návratové hodnoty, může jím být například \texttt{null}, \texttt{int}, \texttt{float} aj., a tudíž návratovou hodnotou funkce musí být ukazatel na abstraktní objekt typu \texttt{Value} představený v~sekci \ref{double_dispatching_pattern} na straně \pageref{double_dispatching_pattern}.
 
-Z~toho dále vyplývá, že se musí objekty vytvářet dynamicky. S~tím bohužel souvisí velice častý problém programátorů v~jazycích C a C++: \textit{Kdy je možné tyto objekty smazat a která část kódu se o~to postará}.
+Z~toho dále vyplývá, že se musí objekty vytvářet dynamicky, a s~tím bohužel souvisí velice častý problém programátorů v~jazycích C a C++: \textit{Kdy je možné tyto objekty smazat a která část kódu se o~to postará}.
 
 
 \subsubsection{Garbage collector}
 
-Jednou z~možností je naprogramovat a poté používat \textit{Garbage collector} obdobný javovskému. Velkou výhodou by bylo vyřešení naprosto všech, současných i budoucích, problémů s~u\-vol\-ňo\-vá\-ním dynamické paměti. Nevýhodou zůstává složitá implementace a dodatečná režie při vykonávání. V~případě použití nějakého již existujícího garbage collectoru vzniká závislost na externí knihovně a s~tím souvisí i nižší či složitější přenositelnost programu.
+Jednou z~možností je používat \textit{Garbage collector} obdobný javovskému. Velkou výhodou by bylo vyřešení naprosto všech, současných i budoucích, problémů s~u\-vol\-ňo\-vá\-ním dynamické paměti. Nevýhodou zůstává složitá implementace a dodatečná režie při vykonávání. V~případě použití nějakého již existujícího garbage collectoru vzniká závislost na externí knihovně a s~tím souvisí i nižší či složitější přenositelnost programu.
 
-V~tomto případě se zdá, že nevýhody převažují nad výhodami. Navíc se přece jedná o~ná\-vra\-to\-vou hodnotu \textit{výhradně} jedné funkce, možná by stačilo zapouzdřit ukazatel na návratovou hodnotu do pomocné třídy, která by se postarala o~smazání, až objekt nebude potřeba.
+V~tomto případě se zdá, že nevýhody převažují nad výhodami. Navíc se přece jedná o~ná\-vra\-to\-vou hodnotu \textit{výhradně} jedné funkce. Možná by stačilo zapouzdřit ukazatel na návratovou hodnotu do pomocné třídy, která by se postarala o~smazání, až objekt nebude potřeba.
 
 
 \subsubsection{Chytré ukazatele}
 
-Nejjednodušší implementací chytrých ukazatelů je šablona \texttt{auto\_ptr} ze standardní kni\-hov\-ny. Bude stačit nebo bude potřeba silnější nástroj? Po požádání se \texttt{auto\_ptr} stává výhradním vlastníkem ukazatele a při své destrukci smaže i předanou dynamickou paměť. Výhradní vlastník znamená, že v~jednom okamžiku může existovat právě jedna \texttt{auto\_ptr} reference, na danou paměť.
+Nejjednodušší implementací chytrých ukazatelů je šablona \texttt{auto\_ptr} ze standardní kni\-hov\-ny STL. Bude stačit nebo bude potřeba silnější nástroj? Po požádání se \texttt{auto\_ptr} stává výhradním vlastníkem ukazatele a při své destrukci maže i předanou dynamickou paměť. Výhradní vlastník znamená, že v~jednom okamžiku může existovat právě jedna \texttt{auto\_ptr} reference na danou paměť.
 
-Splnit tento požadavek bohužel nelze. Chceme-li například vrátit hodnotu uloženou v~pro\-měn\-né interpretovaného skriptu, první referencí bude původní proměnná a druhou vracená hodnota. Musíme tedy hledat silnější nástroj.
+Splnit tento požadavek bohužel nelze. Chceme-li například vrátit hodnotu uloženou v~pro\-měn\-né interpretovaného skriptu, první referencí zůstane původní proměnná a druhá vznikne ve formě vracené hodnoty. Musíme tedy hledat silnější nástroj.
 
-Pokud je jediným problémem \texttt{auto\_ptr} pouze možný větší počet odkazů, můžeme použít chytrý ukazatel na bázi čítání referencí \cite{smartp}. Ten zapouzdřuje ukazatel na dynamický objekt spolu s~čítačem, který se při vytvoření objektu nastaví na jedna a při každém zavolání kopírovacího konstruktoru nebo operátoru přiřazení inkrementuje. V~destruktoru se naopak počet referencí dekrementuje a při dosažení nulové hodnoty se objekt automaticky smaže.
+Pokud je jediným problémem \texttt{auto\_ptr} pouze možný větší počet odkazů, může se použít chytrý ukazatel na bázi čítání referencí \cite{smartp}. Ten zapouzdřuje ukazatel na dynamický objekt spolu s~čítačem, který se při vytvoření objektu nastaví na jedna a při každém zavolání kopírovacího konstruktoru nebo operátoru přiřazení inkrementuje. V~destruktoru se naopak počet referencí dekrementuje a při dosažení nulové hodnoty se objekt automaticky smaže.
 
-Toto řešení by mohlo fungovat, je však nutné si dát pozor na cyklické reference, kdy první objekt odkazuje na druhý a zároveň druhý objekt odkazuje na první, paměť by se nikdy neuvolnila. Zmíněná situace bohužel může v~interpretu nastat, protože právě tímto způsobem je uložena struktura grafu (viz kapitola \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}). Vrcholy obsahují seznam incidujících hran a hrany odkaz na počáteční a koncový uzel.
+Toto řešení by mohlo fungovat, je však nutné si dát pozor na cyklické reference, kdy první objekt odkazuje na druhý a zároveň druhý objekt odkazuje na první, paměť by se nikdy neuvolnila. Zmíněná situace bohužel může nastat, protože právě tímto způsobem je uložena struktura grafu (viz kapitola \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}). Vrcholy obsahují seznam incidujících hran a hrany odkaz na počáteční a koncový uzel.
 
 Z~toho plyne, že pokud nebude na tomto konkrétním místě chytrý ukazatel s~čítáním referencí použit, což není žádné zásadní omezení, bude efektivním řešením problému návratové hodnoty \texttt{execute()}.
 
 
 \section{Grafické uživatelské rozhraní}
 
-Grafické uživatelské rozhraní bude naprogramováno s~použitím knihovny Qt. Sestává z~hlav\-ní\-ho okna aplikace \texttt{QMainWindow}, jehož centrálním widgetem bude textový editor pro programátory na bázi \texttt{QPlainTextEdit}. Jedná se o~MDI aplikaci, jednotlivé editory je možné přepínat, po vzoru webových prohlížečů, pomocí panelů či listů. Menu, nástrojová lišta a stavový řádek jsou pro daný typ aplikace samozřejmostí.
+Grafické uživatelské rozhraní se naprogramuje s~použitím knihovny Qt. Sestává z~hlav\-ní\-ho okna aplikace \texttt{QMainWindow}, jehož centrálním widgetem bude textový editor pro programátory na bázi \texttt{QPlainTextEdit}. Jedná se o~MDI aplikaci, jednotlivé editory je možné přepínat, po vzoru webových prohlížečů, pomocí panelů či listů. Menu, nástrojová lišta a stavový řádek jsou pro daný typ aplikace samozřejmostí.
 
-Knihovna Qt poskytuje možnost vkládat do okrajů hlavního okna plovoucí panely, objekty třídy \texttt{QDockWidget}, jež mohou být přesunuty na jiné místo a také \textit{vytrhnuty} do samostatného okna. Tato funkcionalita se určitě hodí u~vizualizací, v~případě jednoho monitoru budou widget panelem v~hlavním okně aplikace, zároveň však existuje možnost zobrazit ho i v~samostatném okně například na druhém monitoru.
+Knihovna Qt poskytuje možnost vkládat do okrajů hlavního okna plovoucí panely, objekty třídy \texttt{QDockWidget}, jež mohou být přesunuty na jiné místo v aplikaci a také \textit{vytrhnuty} do samostatného okna. Tato funkcionalita se určitě hodí u~vizualizací, v~případě jednoho monitoru bude OpenGL widget panelem v~hlavním okně aplikace, zároveň však existuje možnost zobrazit ho i v~samostatném okně například na druhém monitoru.
 
 Panelů může být definováno libovolné množství, pro začátek se kromě vizualizací před\-po\-klá\-dá i zobrazování výstupu z~vykonávaného skriptu, seznam definovaných proměnných spolu s~jejich hodnotami a zásobník volání funkcí.
 
@@ -846,11 +846,11 @@ V~této kapitole byly definovány základní myšlenky a rozhodnutí pro tvorbu 
 
 Analýza odhalila nemožnost reprezentovat graf maticí sousednosti ani jinými technikami, ve kterých je struktura grafu uložena centrálně. Navržené řešení spočívá v~obecných množinách uzlů a hran, kde si uzly udržují seznam incidujících hran a hrany odkazy na svůj počáteční a koncový uzel. Díky této technice může být podporován libovolný typ grafů bez jakéhokoli omezení a hlavně s~rozumnými složitostmi vykonávání všech operací.
 
-Hodnoty a proměnné ve skriptu budou implementovány pomocí hierarchie tříd, jednotlivé operace budou pracovat na bázi návrhového vzoru Double dispatching.
+Hodnoty a proměnné ve skriptu budou implementovány pomocí hierarchie tříd, jednotlivé operace pracují na bázi návrhového vzoru Double dispatching.
 
-Skript bude v~interpretu reprezentován abstraktním stromem syntaxe. Jeho vykonávání spočívá v~rekurzivním volání metody \texttt{execute()} nad každým uzlem tohoto stromu. Ná\-vra\-to\-vou hodnotou bude chytrý ukazatel na bázi čítání referencí zapouzdřující obecnou hodnotu. Skript může být, v~případě debuggingu, pozastaven technikami ví\-ce\-vlák\-no\-vé\-ho programování.
+Skript je v~interpretu reprezentován abstraktním stromem syntaxe. Jeho vykonávání spočívá v~rekurzivním volání metody \texttt{execute()} nad každým uzlem tohoto stromu. Ná\-vra\-to\-vou hodnotou bude chytrý ukazatel na bázi čítání referencí zapouzdřující obecnou hodnotu. Skript může být, v~případě debuggingu, pozastaven technikami ví\-ce\-vlák\-no\-vé\-ho programování.
 
-Grafické uživatelské rozhraní bude zahrnovat hlavní okno s~textovým editorem pro programátory a několika speciálními plovoucí panely, které mohou být uživatelem vytrhnuty do samostatného okna.
+Grafické uživatelské rozhraní zahrnuje hlavní okno s~textovým editorem pro programátory a několik speciálních plovoucích panelů, které mohou být uživatelem vytrhnuty do samostatného okna.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
