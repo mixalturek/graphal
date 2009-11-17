@@ -876,23 +876,23 @@ include("filename");
 
 \subsubsection{Procházení zdrojových dat}
 
-Makra i soubory se ve svém principu zpracovávají naprosto stejně. Lexikální analyzátor obsahuje zásobník objektů typu \texttt{LexanIterator}, který slouží pro zanoření se do další úrovně ve zdrojových kódech skriptu. Například při inkluzi souboru se na vrcholu zásobníku vytvoří nová položka, při dokončení jeho zpracování se naopak odstraní. Překlad končí ve chvíli, kdy je zásobník vyprázdněn.
+Makra i soubory se v principu zpracovávají naprosto stejně. Lexikální analyzátor obsahuje zásobník objektů typu \texttt{LexanIterator}, který slouží pro zanoření se do další úrovně ve zdrojových kódech skriptu. Například při inkluzi souboru se na vrcholu zásobníku vytvoří nová položka a při dokončení zpracování se odstraní. Překlad končí ve chvíli, kdy je zásobník vyprázdněn.
 
-Abstraktní třída \texttt{LexanIterator} definuje rozhraní pro nejnižší vrstvu -- vlastní čtení znaků ze vstupního proudu. Jediný požadavek na jeho potomky je specifikace metody \texttt{get()}, která má za úkol vrátit následující znak v~pořadí a \texttt{unget()} sloužící pro návrat o~znak zpátky. Třída dále ukládá pozici ve zdrojových kódech používanou především ve zprávách v~případě chyby.
+Abstraktní třída \texttt{LexanIterator} definuje rozhraní pro nejnižší vrstvu -- vlastní čtení znaků ze vstupního proudu. Jediný požadavek na potomky je specifikace metody \texttt{get()}, která má za úkol vrátit následující znak v~pořadí a \texttt{unget()} sloužící pro návrat o~znak zpátky. Třída dále ukládá pozici ve zdrojových kódech používanou především v chybových zprávách.
 
-Aktuálně jsou definováni pouze dva potomci. \texttt{LexanIteratorFile} má za úkol iterovat přes znaky v~souboru, používá ho konstrukce \texttt{include}. \texttt{Le\-xan\-Ite\-ra\-tor\-String} zpracovává ře\-těz\-ce, slouží pro rozbalování \texttt{define} maker. V~budoucnu je možné, bez větších zásahů do aplikace, přidat další zdroje, například soubory nahrávané z~internetu.
+Aktuálně jsou definováni pouze dva potomci. \texttt{LexanIteratorFile} má za úkol iterovat přes znaky v~souboru, používá ho konstrukce \texttt{include}. Řetězce, nebo-li \texttt{define} makra, se zpracovávají třídou \texttt{Le\-xan\-Ite\-ra\-tor\-String}. V~budoucnu je možné, bez větších zásahů do aplikace, přidat další zdroje kódu, například soubory nahrávané z~internetu.
 
 
 \subsubsection{Identifikátory}
 \label{identifikatory}
 
-Řetězcové identifikátory ve skriptu, jména proměnných a funkcí, jsou během lexikální analýzy nahrazovány za celočíselné, stejnou myšlenku používá i interpret JavaScriptu ve webovém prohlížeči Links \cite[str. 25]{links}.
+Řetězce ve skriptu, jména proměnných a funkcí, se během lexikální analýzy nahrazují za celočíselné identifikátory, stejnou myšlenku používá i interpret JavaScriptu ve webovém pro\-hlí\-že\-či Links \cite[str. 25]{links}.
 
-Ve chvíli, kdy lexikální analyzátor narazí ve zdrojovém proudu na shluk znaků, který by mohl být identifikátorem, zkontroluje nejdříve, zda se nejedná o~klíčové slovo. V~případě negativního výsledku projde seznam skriptem definovaných maker a pokusí se je rozbalit. Neuspěje-li ani zde, použije makro \texttt{STR2ID(string)}, které požádá tabulku symbolů, třídu \texttt{StringTable}, o~překlad řetězce na celočíselný identifikátor. Opačný směr umožňuje makro \texttt{ID2STR(identifier)}.
+Ve chvíli, kdy lexikální analyzátor narazí ve zdrojovém proudu na shluk znaků, který by mohl být identifikátorem, zkontroluje nejdříve, zda se nejedná o~klíčové slovo. V~případě negativního výsledku projde seznam skriptem definovaných maker a pokusí se je rozbalit. Neuspěje-li ani zde, použije makro \texttt{STR2ID()}, které požádá tabulku symbolů, třídu \texttt{StringTable}, o~překlad řetězce na celočíselný identifikátor. Opačný směr umožňuje makro \texttt{ID2STR()}.
 
-Algoritmus překladu je velice jednoduchý. Tabulka symbolů obsahuje obyčejné pole, jehož jednotlivé položky ukládají řetězcovou reprezentaci, hodnota indexu představuje reprezentaci číselnou. Při žádosti o~překlad z~řetězce na identifikátor, zkusí třída najít a vrátit pozici již existujícího prvku. Pokud neuspěje, přidá řetězec na konec pole a vrátí jeho pozici.
+Algoritmus překladu je velice jednoduchý. Tabulka symbolů je tvořena obyčejným polem, jehož jednotlivé položky ukládají řetězcovou reprezentaci, hodnota indexu představuje reprezentaci číselnou. Při žádosti o~překlad z~řetězce na identifikátor zkusí třída najít a vrátit pozici již existujícího prvku. Pokud neuspěje, přidá řetězec na konec pole a vrátí jeho pozici.
 
-Složitost operace vychází v~nejhorším případě lineární, protože se musí projít všechny prvky, pokud se jedná o~první výskyt řetězce. Její snížení, například seřazením prvků podle abecedy, není možné. Pořadí v~poli se nesmí změnit, jinak by se zneplatnily již existující překlady. Opačný směr představuje operaci s~konstantní složitostí, identifikátor je současně indexem do pole.
+Asymptotická složitost operace vychází v~nejhorším případě lineární, protože se musí při prvním výskytu řetězce projít kompletně všechny dříve definované prvky. Její snížení, například seřazením položek podle abecedy, není možné, pořadí v~poli se nesmí změnit, protože by se zneplatnily již existující překlady. Opačný směr představuje operaci s~konstantní složitostí, identifikátor je současně indexem do pole.
 
 \begin{verbatim}
 identifier StringTable::getID(const string& str)
@@ -907,7 +907,6 @@ identifier StringTable::getID(const string& str)
 
 string& StringTable::getString(identifier id)
 {
-    assert(id < m_data.size());
     return m_data[id];
 }
 \end{verbatim}
@@ -917,23 +916,19 @@ Hlavní výhodou této techniky je vyšší rychlost interpretace, porovnání d
 
 \subsection{Gramatika, parser}
 
-Gramatiku vytvořeného jazyka je možné najít v~příloze \ref{gramatika_jazyka} na straně \pageref{gramatika_jazyka}, alternativně v~souboru \texttt{parser.y}. Jedná se o~standardní vstupní kód pro generátor gramatik Bison, který má za úkol vystavět abstraktní strom syntaxe. Při vytváření se vycházelo z~předpisu pro jazyk Ansi C \cite{c_grammar}.
+Gramatiku vytvořeného jazyka je možné najít v~příloze \ref{gramatika_jazyka} na straně \pageref{gramatika_jazyka}, alternativně ve zdrojovém souboru \texttt{parser.y}. Jedná se o~standardní vstupní kód pro generátor gramatik GNU Bison, který má za úkol vystavět abstraktní strom syntaxe. Při vytváření se vycházelo z~předpisu pro jazyk Ansi~C~\cite{c_grammar}.
 
 
 \subsection{Hierarchie tříd, základní třída BaseObject}
 
-V~objektově orientovaném návrhu aplikace je vždy dobré vytvořit kořen hierarchie tříd, který bude poskytovat, či pouze definovat, základní obecné operace nad všemi používanými objekty. V~jazyce Java se taková třída jmenuje \texttt{Object}, knihovna Qt zavádí \texttt{QObject}, vyvíjená aplikace použije jméno \texttt{BaseObject}.
+V~objektově orientovaném návrhu aplikačního rozhraní je vždy dobré zavést kořen hierarchie tříd, který bude poskytovat, či pouze definovat, základní obecné operace nad všemi používanými objekty. V~jazyce Java se taková třída jmenuje \texttt{Object}, knihovna Qt zavádí \texttt{QObject}, \texttt{CObject} je k nalezení v knihovně MFC. Vyvíjená aplikace použije jméno \texttt{BaseObject}.
 
 
 \subsubsection{Výpis struktury objektů, metoda dump()}
 
-\texttt{BaseObject} v~první řadě definuje čistě virtuální metodu, díky níž bude v~budoucnosti snazší hledat případné chyby ve skládání objektů. Využití se předpokládá především při stavbě a ověřování abstraktního stromu syntaxe skriptu, metoda umožní jeho přehledný výpis.
+\texttt{BaseObject} v~první řadě definuje čistě virtuální metodu \texttt{dump()}, díky níž je možné vypsat obsah daného objektu. Využití je předpokládáno především při stavbě a ověřování abstraktního stromu syntaxe, metoda umožňuje jeho přehledný výpis.
 
-\begin{verbatim}
-virtual void dump(ostream& os, uint indent) const = 0;
-\end{verbatim}
-
-Pokud každá třída definuje svoji metodu \texttt{dump()} -- a ony ji definovat musí, protože je čistě virtuální -- může do předaného proudu vypsat informace o~sobě a o~objektech, které v~sobě uchovává. Parametr \texttt{indent} slouží pro odsazování řádků a zpřehlednění výpisu. Mějme na\-přík\-lad jednoduchý demonstrační skript.
+Pokud každá odvozená třída definuje svoji metodu \texttt{dump()} -- a ony ji definovat musí, protože je čistě virtuální -- může do předaného proudu vypsat informace o~sobě a o~objektech, které v~sobě uchovává. Mějme na\-přík\-lad jednoduchý demonstrační skript.
 
 \begin{verbatim}
 function main(argv)
@@ -942,99 +937,89 @@ function main(argv)
 }
 \end{verbatim}
 
-Po přeložení zdrojových kódů do vnitřní reprezentace a zavolání výpisu bude struktura objektů vypadat následovně.
+Po přeložení kódu do vnitřní reprezentace a zavolání \texttt{dump()} bude vypsaná struktura objektů vypadat následovně.
 
 \begin{verbatim}
-    <Function name="main" id="63">
-        <Parameter name="argv" id="64" />
-        <NodeBinaryAss>
-            <ValueIdentifier name="value" id="65">
-                <NoValue />
-            </ValueIdentifier>
-            <NodeBinaryAdd>
-                <ValueInt value="1" />
-                <NodeBinaryMult>
-                    <ValueInt value="2" />
-                    <ValueInt value="3" />
-                </NodeBinaryMult>
-            </NodeBinaryAdd>
-        </NodeBinaryAss>
-    </Function>
+<Function name="main" id="63">
+    <Parameter name="argv" id="64" />
+    <NodeBinaryAss>
+        <ValueIdentifier name="value" id="65">
+            <NoValue />
+        </ValueIdentifier>
+        <NodeBinaryAdd>
+            <ValueInt value="1" />
+            <NodeBinaryMult>
+                <ValueInt value="2" />
+                <ValueInt value="3" />
+            </NodeBinaryMult>
+        </NodeBinaryAdd>
+    </NodeBinaryAss>
+</Function>
 \end{verbatim}
 
-XML formát výstupu samozřejmě není nutný, byl použit pouze kvůli své pře\-hled\-nos\-ti.
+XML formát výstupu samozřejmě není nutný, byl použit pouze kvůli pře\-hled\-nos\-ti výpisu strukturovaných dat.
 
 
 \subsubsection{Kontrola úniků paměti}
 \label{kontrola_uniku_pameti}
 
-Druhou funkcionalitou poskytovanou základní třídou \texttt{BaseObject} jsou testy na úniky dynamické paměti. Jedná se pouze o~rychlé ověření, zda změny provedené při vývoji nezpůsobily nějaký problém, a proto záměrně není implementace nijak složitá.
+Druhou funkcionalitou poskytovanou základní třídou \texttt{BaseObject} jsou testy na úniky dynamické paměti. Jedná se pouze o~rychlé ověření, zda změny provedené při vývoji nezpůsobily nějaký nečekaný problém, a proto záměrně není ani implementace nijak složitá.
 
-Třída definuje statické úložiště adres alokovaných objektů. Při své konstrukci do něj vloží ukazatel na právě vytvořený objekt, v~destruktoru ho smaže, toť vše. Jelikož se jedná o~kořen hierarchie tříd, tento konstruktor se z~definice zavolá u~naprosto všech vytvořených objektů.
+Třída definuje statické úložiště adres alokovaných objektů. Při své konstrukci do něj vloží ukazatel na právě vytvořený objekt, v~destruktoru ho smaže, toť vše. Jelikož se jedná o~kořen hierarchie tříd, tento konstruktor a destruktor se z~definice volá u~naprosto všech vytvářených objektů.
 
-\begin{verbatim}
-BaseObject::BaseObject(void)
-{
-    m_allocated_objects.insert(this);
-}
+Těsně před ukončením funkce \texttt{main()} se zjistí aktuální počet alokovaných dat. Pokud není nulový, je jasné, že se někde v~aplikaci objevil únik paměti a tato skutečnost je signalizována vývojáři. Díky RTTI, které jazyk C++ podporuje operátorem \texttt{typeid}, je možné získat i datový typ neuvolněných objektů.
 
-BaseObject::~BaseObject(void)
-{
-    m_allocated_objects.erase(this);
-}
-\end{verbatim}
-
-Těsně před ukončením funkce \texttt{main()} se zjistí aktuální počet alokovaných objektů. Pokud není nulový (nutné brát v~úvahu i staticky definované objekty), je jasné, že se někde v~aplikaci objevil únik paměti a tato skutečnost je signalizována vývojáři. Díky RTTI, které jazyk C++ podporuje operátorem \texttt{typeid}, je možné získat i datový typ neuvolněných objektů.
-
-Kód pro testy může způsobovat výrazné zpomalení běhu aplikace, a proto byl obalen do podmíněné sekce preprocesoru \texttt{CHECK\_MEMORY\_LEAKS}, jež je zapnutá pouze při \texttt{debug} kompilaci. Ve výsledné verzi samozřejmě nejsou testy potřeba a nebudou přítomny.
+Kód pro testy může způsobovat výrazné zpomalení běhu aplikace, a proto byl obalen do podmíněné sekce preprocesoru \texttt{CHECK\_MEMORY\_LEAKS}, jež je zapnutá pouze při \textit{debug} kompilaci. Ve výsledné verzi samozřejmě nejsou tyto testy potřeba a ve spustitelném souboru nebudou ani fyzicky přítomny.
 
 Pozorný čtenář si pravděpodobně uvědomil, že nejsou kontrolovány pouze dynamické, ale i statické alokace. Možná by stálo za úvahu vložit kód do přetížených operátorů \texttt{new} a \texttt{delete}, nicméně statické objekty jsou uvolněny vždy, a proto nemají žádný vliv na správnost zjištěné informace.
+
+Dále se nekontrolují alokace paměti, která nepatří do \texttt{BaseObject} hierarchie, ty se však v kódu vyskytují spíše zřídka. Pro zjištění jejich úniků slouží, taktéž používaný, nástroj Valgrind.
 
 
 \subsubsection{Pořadí inicializace statických objektů}
 
-Učebnice jazyka C++ se pouze velice zřídka věnují tématu \textit{pořadí inicializace statických objektů} (v~angličtině Static object initialization order), jednou z~mála výjimek je \cite{industrial_strength_cpp}. Jedná se o~situaci, kdy linker při spojování jednotlivých modulů může způsobit zásadní nefunkčnost naprosto správného kódu!
+Učebnice jazyka C++ se pouze velice zřídka věnují tématu \textit{pořadí inicializace statických objektů} (anglicky static object initialization order), jednou z~mála výjimek je \cite{industrial_strength_cpp}. Jedná se o~situaci, kdy linker při spojování jednotlivých modulů může způsobit zásadní nefunkčnost naprosto správného kódu!
 
-Termín \textit{statický objekt} je zde používán ve významu atributu třídy deklarovaného s~modifikátorem \texttt{static}, jenž způsobí sdílení mezi všemi objekty dané třídy. Druhým problémovým typem mohou teoreticky být i globálně deklarované proměnné, to však autor práce nemá nijak ověřeno. Jako praktickou ukázku nastanuvší chyby můžeme použít statickou proměnnou \texttt{BaseObject::m\_allocated\_objects} z~kapitoly \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}.
+Termín \textit{statický objekt} je zde používán ve významu atributu třídy deklarovaného s~modifikátorem \texttt{static}, jenž způsobuje sdílení mezi odpovídajícími objekty. Jako praktickou ukázku nastanuvší chyby můžeme použít statickou proměnnou \texttt{m\_allocated\_objects} třídy \texttt{BaseObject} z~kapitoly \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}.
 
-Statický objekt je vytvářen a inicializován ještě před vlastním spuštěním funkce \texttt{main()}, jazyk C++ pro inicializaci používá speciální konstrukci zapsanou vně všech funkcí a tříd.
+Statický objekt je vytvářen a inicializován ještě před vlastním spuštěním funkce \texttt{main()}, jazyk C++ pro instanciaci a inicializaci používá speciální konstrukci zapsanou vně všech funkcí a tříd.
 
 \begin{verbatim}
 class BaseObject
 {
-private:
     static set<BaseObject*> m_allocated_objects;
 };
-
 set<BaseObject*> BaseObject::m_allocated_objects;
 \end{verbatim}
 
-Definujme ještě jednu třídu, singleton poděděný od \texttt{BaseObject}, jenž bude v~sobě obsahovat taktéž statický objekt.
+Definujme ještě jednu třídu, singleton poděděný od \texttt{BaseObject}, jenž v~sobě bude obsahovat taktéž statický objekt.
 
 \begin{verbatim}
 class Singleton : public BaseObject
 {
-private:
     static Singleton m_instance;
 };
-
 Singleton Singleton::m_instance;
 \end{verbatim}
 
-A~nyní přichází otázka: Bude \texttt{BaseObject::m\_allocated\_objects} inicializováno přeloženým kódem dříve než \texttt{Singleton::m\_instance}, či naopak? Jedná se o~zásadní otázku, protože \texttt{Singleton} dědí od \texttt{BaseObject} a pracuje s~\texttt{m\_allocated\_objects}, které v~tuto chvíli ještě nemusí existovat.
+Inicializuje vygenerovaný kód \texttt{m\_allocated\_objects} dříve než proměnnou \texttt{m\_in\-stan\-ce}, či naopak? Jedná se o~zásadní otázku, protože \texttt{Singleton} dědí od \texttt{BaseObject}, a tudíž pracuje s~proměnnou \texttt{m\_allocated\_objects}, která však v~tuto chvíli ještě nemusí existovat. Vše tedy závisí na linkeru, nevhodné pořadí spojení modulů může způsobit neoprávněný přístup do paměti a následný pád aplikace ještě před vlastním spuštěním funkce \texttt{main()}.
 
-Vše tedy závisí na linkeru, nevhodné pořadí spojování modulů může způsobit pád aplikace ještě před vlastním spuštěním funkce \texttt{main()} -- \textit{neoprávněný přístup do paměti}.
+Pokud nejde použití statických objektů v~aplikaci zamezit nebo je jiné řešení silně nepraktické, existuje proti chybě relativně snadná obrana. Stačí založit nový soubor se zdrojovými kódy a přesunout do něj všechny problematické inicializace.
 
-Pokud nejde použití statických objektů v~aplikaci zamezit nebo je jiné řešení silně nepraktické, existuje proti chybě relativně snadná obrana. Stačí založit nový soubor se zdrojovými kódy a do něj přesunout naprosto všechny statické inicializace. Jazyk C++ garantuje pořadí inicializace objektů v~rámci jednotlivých modulů. Nahoru je tedy třeba zapsat ty, jenž se mají provést nejdříve, a dolů ty, které na nich závisí. V~naší demonstraci by obsah souboru vypadal následovně.
+Jazyk C++ garantuje pořadí inicializací v~rámci jednotlivých modulů. Nahoru je tedy třeba zapsat ty, jež se mají provést nejdříve, a dolů ty, které na nich závisí. Obsah souboru by tedy vypadal následovně.
 
 \begin{verbatim}
 set<BaseObject*> BaseObject::m_allocated_objects;
 Singleton Singleton::m_instance;
 \end{verbatim}
 
-Je pravda, že výše uvedená ukázka je k~chybě výrazně náchylnější než běžná použití statických objektů, nicméně autor se již v~minulosti setkal s~podobným problémem, který ovšem nezpůsoboval tak zásadní nefunkčnost. V~obou případech se navíc jednalo o~dva různé kompilátory -- Microsoft Visual Studio 2005 oproti GNU gcc.
+Vyvíjená aplikace nakonec používá zcela jiné řešení. Statické nejsou samotné objekty (singletony), ale pouze ukazatele na ně, inicializace na \texttt{NULL} vždy proběhne bezchybně. O~vytvoření a smazání vlastních objektů se stará kód na začátku a konci funkce \texttt{main()}, který může explicitně ovlivnit pořadí.
 
-Vyvíjená aplikace nakonec používá zcela jiné řešení. Statické nejsou samotné objekty, ale pouze ukazatele na ně, inicializace na \texttt{NULL} vždy proběhne bezchybně. O~vytvoření a smazání vlastního objektu se stará kód na začátku a konci funkce \texttt{main()}.
+Další možností by mohlo být nastavení priorit modulů při linkování, například u Makefile/gcc se jedná pouze o pořadí zápisu na příkazové řádce. Problémy spojené s tímto řešením nejspíše vyvstanou až někdy v budoucnu.
+
+Už bylo řečeno, že chyba není fyzicky přítomná v kódu, a tudíž se na ni při libovolné změně může snadno zapomenout. Typicky se jedná o přidání nového souboru, či o aktualizaci nebo změnu buildovacího systému. Používaná vývojová prostředí, současná i budoucí, tato nastavení také nemusí vůbec podporovat, a proto je lepší vzít v úvahu spíše řešení spočívající ve změně zdrojových kódů.
+
+Je pravda, že výše uvedená ukázka je k~chybě výrazně náchylnější než běžná použití statických objektů. Na druhou stranu, autor se již dříve, při portaci legacy aplikací na nový operační systém, setkal s~obdobným problémem. V~obou případech se navíc jedná o~dva různé kompilátory -- Microsoft Visual Studio 2003/2005 oproti GNU gcc.
 
 
 \subsection{Hodnoty a proměnné ve skriptu, Value* hierarchie tříd}
