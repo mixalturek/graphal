@@ -819,6 +819,7 @@ V~tomto případě se zdá, že nevýhody převažují nad výhodami. Navíc se 
 
 
 \subsubsection{Chytré ukazatele}
+\label{chytre_ukazatele}
 
 Nejjednodušší implementací chytrých ukazatelů je šablona \texttt{auto\_ptr} ze standardní kni\-hov\-ny STL. Bude stačit nebo bude potřeba silnější nástroj? Po požádání se \texttt{auto\_ptr} stává výhradním vlastníkem ukazatele a při své destrukci maže i předanou dynamickou paměť. Výhradní vlastník znamená, že v~jednom okamžiku může existovat právě jedna \texttt{auto\_ptr} reference na danou paměť.
 
@@ -1024,9 +1025,7 @@ Je pravda, že výše uvedená ukázka je k~chybě výrazně náchylnější ne�
 
 \subsection{Hodnoty a proměnné ve skriptu, Value* hierarchie tříd}
 
-Jak už bylo zmíněno v~kapitole \ref{double_dispatching_pattern} analýzy na straně \pageref{double_dispatching_pattern}, binární operace nad hodnotami ve skriptu jsou vykonávány s~využitím návrhového vzoru Double dispatching.
-
-Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \texttt{ValueNull}, \texttt{Va\-lue\-Bool}, \texttt{ValueInt}, \texttt{ValueFloat} atd., každá ze zavedených tříd může být použita v~libovolné operaci. Class diagram je uveden na obrázku \ref{fig:value_hierarchy}. Hodnota \texttt{null}, respektive \texttt{false} u~logických operátorů, je vrácena v~případě, kdy není operace nad danou kombinací typů definována.
+Jak už bylo zmíněno v~kapitole \ref{double_dispatching_pattern} analýzy na straně \pageref{double_dispatching_pattern}, binární operace nad hodnotami ve skriptu jsou vykonávány s~využitím návrhového vzoru Double dispatching. Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \texttt{ValueNull}, \texttt{Va\-lue\-Bool}, \texttt{ValueInt}, \texttt{ValueFloat} atd., class diagram této skupiny tříd je uveden na obrázku \ref{fig:value_hierarchy}.
 
 \begin{figure}[ht]
 \begin{center}
@@ -1036,27 +1035,14 @@ Kořenem hierarchie je abstraktní třída \texttt{Value}, potomci se jmenují \
 \end{center}
 \end{figure}
 
-% \begin{enumerate}
-% \item aritmetické sčítání \texttt{+}, odčítání \texttt{-}, násobení \texttt{*}, dělení \texttt{/}, dělení modulo \texttt{\%}
-% \item logická ekvivalence \texttt{==}, nonekvivalence \texttt{!=}
-% \item logické menší nebo rovno \texttt{<=}, větší nebo rovno \texttt{>=}, menší \texttt{<}, větší \texttt{>}
-% \item logické AND \texttt{\&\&} a logické OR \texttt{||}
-% \item přístup k prvkům struktury \texttt{.}, přístup k prvkům pole \texttt{[]}
-% \item unární negace \texttt{!}, unární mínus \texttt{-}
-% \end{enumerate}
+Iterování přes prvky složených datových typů je podporováno čtyřmi, taktéž virtuálními, metodami \texttt{iterator()}, \texttt{hasNext()}, \texttt{next()} a \texttt{resetIterator()}. Jednoduché datové typy nejsou iterovatelné, a proto jakékoli pokusy o~procházení hned na začátku odmítnou.
 
-% Třída \texttt{Value} dále definuje metodu \texttt{toBool()}, jež umožňuje přetypování libovolného objektu na logickou hodnotu, využívána je především operátory AND a OR. Metoda \texttt{isNull()} slouží pro dotaz, zda se jedná o \textit{plnohodnotný} typ, či o \texttt{ValueNull} hodnotu. Konverzi na textovou reprezentaci zapouzdřené hodnoty je možné provést zavoláním metody \texttt{toString()}.
-
-K~dotazu, zda je možné do objektu přiřadit jinou hodnotu, poslouží metoda \texttt{isLValue()}. Vlastní přiřazení je následně možné provést pomocí funkcí \texttt{assign()} a \texttt{assignRef()} -- detaily viz kapitola \ref{valuereference_a_prirazovani_do_promennych} na straně \pageref{valuereference_a_prirazovani_do_promennych}.
-
-Iterování přes prvky složených datových typů je podporováno čtyřmi metodami \texttt{iterator()}, \texttt{hasNext()}, \texttt{next()} a \texttt{resetIterator()}. Jednoduché datové typy nejsou iterovatelné, a proto jakékoli pokusy o~procházení hned na začátku odmítnou.
-
-Potomci, především grafové třídy, definují i další metody, není reálné, aby všechny operace, včetně silně specifických, byly virtuální. Ke konverzi z~obecného \texttt{Value} ukazatele na konkrétní datový typ slouží skupina virtuálních funkcí \texttt{toValueBool()}, \texttt{toValueInt()} atd., které vracejí \texttt{NULL}, pokud se nejedná o~daný datový typ. Na tomto místě by šlo samozřejmě použít i RTTI přetypování \texttt{dynamic\_cast}, obě techniky jsou ekvivalentní. Použití leží především v~zabudovaných funkcích interpretu, které v~parametrech předpokládají konkrétní datové typy a volají jejich specifické operace.
+Potomci, především grafové třídy, definují i další metody, není reálné, aby všechny operace, včetně silně specifických, byly virtuální. Ke konverzi z~obecného \texttt{Value} ukazatele na konkrétní datový typ slouží skupina virtuálních funkcí \texttt{toValueBool()}, \texttt{toValueInt()} atd., které vracejí \texttt{NULL}, pokud se nejedná o~daný datový typ. Na tomto místě by šlo samozřejmě použít i RTTI přetypování \texttt{dynamic\_cast<>}, obě techniky jsou ekvivalentní. Použití leží především v~zabudovaných funkcích interpretu, které v~parametrech předpokládají konkrétní datové typy a volají jejich specifické operace.
 
 
 \subsubsection{ValueNull a ValueBool}
 
-Obě tyto třídy jsou definovány jako singleton a v~kódu mohou být používány pomocí zkrá\-ce\-né\-ho zápisu \texttt{VALUENULL}, \texttt{VALUEBOOL\_TRUE} a \texttt{VALUEBOOL\_FALSE}. Jedná se o~makro, které volá statickou metodu \texttt{getInstance()}.
+Obě tyto třídy jsou definovány jako singleton a v~kódu mohou být používány pomocí zkrá\-ce\-né\-ho zápisu \texttt{VALUENULL}, \texttt{VALUEBOOL\_TRUE} a \texttt{VALUEBOOL\_FALSE}. Jedná se o~makra, která volají statické metody \texttt{getInstance()}.
 
 Implementace pomocí singletonu byla zvolena z~důvodu, aby nebylo nutné neustále vytvářet nové a nové ekvivalentní objekty.
 
@@ -1064,9 +1050,11 @@ Implementace pomocí singletonu byla zvolena z~důvodu, aby nebylo nutné neust�
 \subsubsection{Přiřazování do proměnných}
 \label{valuereference_a_prirazovani_do_promennych}
 
+K~dotazu, zda je možné do nějakého \texttt{Value} objektu přiřadit jinou hodnotu, slouží metoda \texttt{isLValue()}. Vlastní přiřazení je následně možné provést funkcí \texttt{assign()} nebo \texttt{assignRef()} v případě přiřazování reference.
+
 Proměnné jsou ve skriptu reprezentovány třídou \texttt{ValueIdentifier}, která v~sobě u\-cho\-vá\-vá identifikátor hodnoty odkazující do kontextu skriptu. Všechny operace se vykonávají stejně jako u~ostatních tříd, rozdíl spočívá pouze v~tom, že se neprovádějí přímo s~daným objektem, ale s~odkazovaným.
 
-Jelikož je navržený jazyk beztypový, proměnné musejí umět měnit nejen svou hodnotu, ale i datový typ, jedná se tedy o~složitější operaci, než je pouhá záměna jednoho čísla za jiné. Interpret tuto situaci řeší obalením vlastní hodnoty další třídou pojmenovanou \texttt{ValueReference}, přiřazení poté probíhá podle následujícího schématu.
+Jelikož je navržený jazyk beztypový, proměnné musejí umět měnit nejen svou hodnotu, ale i datový typ, jedná se tedy o~složitější operaci, než je například pouhá záměna jednoho čísla za jiné. Interpret tuto situaci řeší obalením vlastní hodnoty další třídou pojmenovanou \texttt{ValueReference}, přiřazení poté probíhá podle následujícího schématu.
 
 \begin{enumerate}
 \item Operátor přiřazení vyhodnotí výraz na své levé straně
@@ -1076,7 +1064,7 @@ Jelikož je navržený jazyk beztypový, proměnné musejí umět měnit nejen s
 	\item Struktura najde prvek specifikovaného jména
 	\item Kombinace předchozích
 	\end{itemize}
-\item Výsledkem je vždy hodnota obalená ve třídě \texttt{ValueReference}
+\item Výsledkem je vždy nějaká hodnota obalená ve třídě \texttt{ValueReference}
 \item Operátor přiřazení vyhodnotí výraz na své pravé straně
 \item \texttt{ValueReference} je požádáno o~záměnu obalené hodnoty za novou
 \end{enumerate}
@@ -1086,20 +1074,24 @@ V~případě, že proměnná daného jména, popř. položka struktury, ještě 
 
 \subsubsection{Grafové třídy}
 
-Všechny grafové třídy jsou, stejně jako ostatní hodnoty, potomky abstraktní třídy \texttt{Value}, a tudíž musí implementovat Double dispatching metody vyhodnocování operátorů. Třída \texttt{ValueGraph} reprezentuje graf na principu množin vrcholů a hran, který byl představen v~kapitole \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}.
+Všechny grafové třídy jsou, stejně jako ostatní hodnoty, potomky abstraktní třídy \texttt{Value}, a tudíž musí i ony implementovat Double dispatching metody vyhodnocování operátorů. Třída \texttt{ValueGraph} reprezentuje graf na principu množin vrcholů a hran, který byl představen v~kapitole \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}.
+
+Pro ukládání vrcholů a hran se nepoužívá původně preferovaná standardní šablona \texttt{set}, ale vlastní třída \texttt{ValueSet}, která zobecňuje práci s těmito množinami a současně zpřístupňuje interpretu i nový datový typ. Toto řešení vychází především z problémů s \textit{dangling} ukazateli v případě, kdy jsou veškerá data grafu uvolněna, ale z interpretu stále existují odkazy na vrcholy a hrany -- například reference v proměnné nebo v některé z množin.
+
+K řešení se opět využívá principu čítání ukazatelů. Aby nedocházelo ke dříve zmíněným kruhovým závislostem mezi vrcholy a hranami (kapitola \ref{chytre_ukazatele} na straně \pageref{chytre_ukazatele}), musí hrany ukládat pouze obyčejné ukazatele na počáteční a koncový vrchol a vždy testovat jejich platnost.
 
 Graf může být vytvořen ručně opakovaným voláním funkcí \texttt{generateVertex()} a \texttt{ge\-ne\-ra\-te\-Ed\-ge()}, či automaticky z~datového souboru funkcí \texttt{lo\-ad\-From\-Fi\-le()}. Formát souborů je specifikován v příloze \ref{format_datovych_souboru_s_grafem} na straně \pageref{format_datovych_souboru_s_grafem}.
 
 Vykonávané operace rozlišují, zda je graf orientovaný či ne, orientace hran může být také kdykoli invertována. Matice sousednosti není přímo přístupná, protože se s~ní vnitřně nepočítá, ale může být na žádost \texttt{getAdjacencyMatrix()} vygenerována a vrácena.
 
-Třídy \texttt{ValueVertex} i \texttt{ValueEdge} v~sobě obsahují \texttt{ValueStruct} atribut a mapují na něj všechny nedostupné operace, aby jejich rozhraní bylo ekvivalentní. Skládání dostalo přednost před dědičností, protože vrchol ani hrana \textit{nejsou} ve své podstatě strukturou. Návrh funkcionality je pouze takový, že poskytují stejné služby, ale to není dostatečným důvodem pro dědičnost.
+Třídy \texttt{ValueVertex} i \texttt{ValueEdge} v~sobě obsahují \texttt{ValueStruct} atribut a mapují na něj všechny nedostupné operace, aby jejich rozhraní bylo ekvivalentní -- jedná se o variaci na návrhový vzor \textit{Proxy}. Skládání dostalo přednost před dědičností, protože vrchol ani hrana \textit{nejsou} ve své podstatě strukturou. Návrh funkcionality je pouze takový, že poskytují stejné služby, ale to není dostatečným důvodem pro dědičnost.
 
-Poslání množin vrcholů a hran reprezentovaných třídou \texttt{ValueSet} je především udržovat záznamy o~registrovaných objektech. Kromě toho se navíc mohou iterovat a je s~nimi možné vykonávat operace průniku, sjednocení či rozdílu.
+Poslání množin vrcholů a hran reprezentovaných třídou \texttt{ValueSet} je především udržovat záznamy o~registrovaných objektech. Kromě toho se navíc mohou iterovat a je s~nimi možné vykonávat operace průniku, sjednocení či rozdílu. \texttt{ValueSet} neslouží výhradně pro vrcholy a hrany, ale pro libovolný typ \texttt{Value} objektů.
 
 
 \subsection{Abstraktní strom syntaxe, Node* hierarchie tříd}
 
-Abstraktní třída \texttt{Node} byla již představena v~analýze, v~kapitole \ref{abstraktni_strom_syntaxe} na straně \pageref{abstraktni_strom_syntaxe}. Z~ní vycházejí všechny ostatní třídy, jejichž objekty budou tvořit abstraktní strom syntaxe skriptu. Class diagram je uveden na obrázku \ref{fig:node_hierarchy}.
+Abstraktní třída \texttt{Node} byla již představena v~analýze, v~kapitole \ref{abstraktni_strom_syntaxe} na straně \pageref{abstraktni_strom_syntaxe}. Z~ní vycházejí všechny ostatní třídy, jejichž objekty ve výsledku vytvářejí strukturu abstraktního stromu syntaxe. Zjednodušený class diagram je uveden na obrázku \ref{fig:node_hierarchy}.
 
 \begin{figure}[ht]
 \begin{center}
@@ -1111,10 +1103,12 @@ Abstraktní třída \texttt{Node} byla již představena v~analýze, v~kapitole 
 
 Unární operátory jsou potomky třídy \texttt{NodeUnary}, která předpokládá jeden poduzel ve stromě, \texttt{NodeBinary} logicky dva. Ternální operátor je interně mapován na \texttt{if-else} větvení poskytované třídou \texttt{NodeCondition}. Dalšími podtřídami jsou například \texttt{Node\-Loop} a \texttt{NodeForeach} cykly, \texttt{NodeBlock} zapouzdřuje skupinu příkazů, \texttt{Node\-Function\-Call} slouží pro volání funkcí. Prázdný příkaz \texttt{NodeEmptyCommand} se využívá spíše interně.
 
+Třída \texttt{NodeValue} definuje spojnici mezi \texttt{Node} a \texttt{Value} hierarchiemi, \texttt{NodeGlobal} poskytuje propagaci globálních proměnných do lokálního kontextu funkce. \texttt{NodePosition} slouží pro aktualizaci pozice odkazující do zdrojových kódů skriptu.
+
 
 \subsubsection{Strukturované skoky}
 
-Strukturované skoky \texttt{break}, \texttt{continue} a \texttt{return} používají mechanismus výjimek, což je jedna z~mála výraznějších daní za jednoduchost vykonávání skriptu pomocí rekurzivního volání metody \texttt{execute()}. Příkaz skoku, byť strukturovaný, musí být nějakým způsobem schopen opustit zanořené volání a vystoupat do požadovaného místa. Výjimky jsou zde opravdu tou nejelegantnější cestou k~naprogramování této funkcionality.
+Strukturované skoky \texttt{break}, \texttt{continue} a \texttt{return} používají mechanismus výjimek, což je jedna z~mála výraznějších daní za jednoduchost vykonávání skriptu pomocí rekurzivního volání metody \texttt{execute()}. Příkaz skoku, byť strukturovaný, musí být nějakým způsobem schopen opustit zanořené volání a vystoupat do požadovaného místa. Výjimky jsou zde opravdu tou nejelegantnější cestou.
 
 Vlastní skok spočívá v~jediném řádku obsahujícím \texttt{throw}, například pro \texttt{break} vypadá kód následovně.
 
@@ -1151,38 +1145,39 @@ CountPtr<Value> NodeLoop::execute(void)
 
 Protože volání cyklů probíhá od vnějších k~vnitřním, je případná výjimka vždy zachycena v~nejvnitřnějším možném cyklu. Výkonnostní poměry u~těchto typů konstrukcí příliš neutrpí, \texttt{break} a \texttt{continue} se v~reálných programech vyskytují spíše zřídka.
 
-U~návratových hodnot je situace opačná, \texttt{return} se vyskytuje téměř v~každé z~funkcí. Ano, zde jsou výjimky bolestné, nicméně, z~druhé strany pohledu, ne tak moc jako implementace bez jejich služeb.
+U~návratových hodnot funkcí je situace opačná, \texttt{return} se vyskytuje téměř v~každé. Ano, zde jsou výjimky bolestné, nicméně, z~druhé strany pohledu, ne tak moc jako implementace bez jejich služeb.
 
-Bylo by možné, aby příkaz \texttt{return} nastavil hodnotu nějaké sdílené proměnné v~kontextu na výstupní hodnotu z~funkce a zároveň v~další proměnné signalizoval, že probíhá návrat z~funkce. Metoda \texttt{execute()} by u~naprosto všech tříd musela testovat tuto signalizační proměnnou, a v~době mezi \texttt{return} až do ukončení těla funkce by se nezanořovala do dalších příkazů. Obrovské množství těchto větvení by jistě přesáhlo režii jedné nastanuvší výjimky.
+Příkaz \texttt{return} by mohl nastavit hodnotu sdílené proměnné v~kontextu na výstupní hodnotu z~funkce a zároveň v~další proměnné signalizoval, že probíhá návrat z~funkce. Metoda \texttt{execute()} by u~naprosto všech tříd musela testovat tuto signalizační proměnnou, a v~době mezi \texttt{return} až do ukončení těla funkce by se nezanořovala do dalších příkazů. Obrovské množství těchto větvení by jistě přesáhlo režii jedné nastanuvší výjimky.
 
 
 \subsubsection{Funkce}
 
-Funkce, potomci třídy \texttt{NodeFunction} se dělí na dvě skupiny -- na zapsané ve skriptu a na zabudované do interpretu. Každou z~nich identifikuje jméno a parametry, při volání se ovšem používá pouze jméno. První typ funkcí také očekává tělo s~příkazy a pozici ve zdrojových kódech, kde je definována. U~zabudovaných funkcí, potomků \texttt{Node\-Function\-Builtin}, tyto informace nemají význam, tělo je specifikováno přímo C++ kódem metody \texttt{execute()}.
+Funkce, potomci třídy \texttt{NodeFunction}, se dělí na dvě skupiny -- na zapsané ve skriptu a na zabudované do interpretu. Každou z~nich identifikuje jméno a parametry, při volání se ovšem používá pouze jméno. První typ při inicializaci očekává tělo s~příkazy a pozici ve zdrojových kódech, kde je definována. U~zabudovaných funkcí, potomků \texttt{Node\-Function\-Builtin}, tyto informace nemají význam, tělo je specifikováno přímo C++ kódem metody \texttt{execute()}.
 
-Kód funkce umí zavolat třída \texttt{NodeFunctionCall}. Ta se ji nejdříve pokusí pomocí uloženého jména najít a zkontroluje počty deklarovaných a předaných parametrů. Pokud vše souhlasí, vyhodnotí parametry, vloží na zásobník volání novou položku, podle specifikovaných jmen parametrů definuje požadované proměnné a spustí tělo funkce.
+Funkci umí zavolat třída \texttt{NodeFunctionCall}. Ta se ji nejdříve pokusí najít pomocí uloženého jména a zkontroluje počty deklarovaných a předaných parametrů. Pokud vše souhlasí, vyhodnotí parametry, vloží na zásobník volání novou položku, podle specifikovaných jmen parametrů definuje požadované proměnné a spustí tělo funkce.
 
 
 \subsection{Kontext skriptu}
 
-V~textu byl již několikrát zmíněn, do této chvíle bez dostatečného vysvětlení, termín \textit{kontext skriptu}. V~kódu se jedná o~jednu z~funkcionálně nejbohatších tříd aplikace pojmenovanou \texttt{Context}. Tato třída mimo jiné ukládá zabudované i uživatelské funkce, globální proměnné a zásobník volání funkcí spolu s~lokálními proměnnými. Dále si vede záznam o~aktuální pozici ve zdrojových kódech, který slouží především při vypisování chybových zpráv, a také umí pomocí databáze řetězců převádět jména identifikátorů skriptu z~řetězcové do ID/číselné formy a naopak (viz kapitola \ref{identifikatory} na straně \pageref{identifikatory}).
+V~textu byl již několikrát zmíněn, do této chvíle bez dostatečného vysvětlení, termín \textit{kontext skriptu}. V~kódu se jedná o~jednu z~funkcionálně nejbohatších tříd aplikace pojmenovanou \texttt{Context}. Tato třída mimo jiné ukládá zabudované i uživatelské funkce, globální proměnné a zásobník volání funkcí spolu s~lokálními proměnnými. Dále si vede záznam o~aktuální pozici ve zdrojových kódech, který slouží především při vypisování chybových zpráv, a také umí pomocí databáze řetězců převádět jména identifikátorů skriptu z~řetězcové do číselné formy a naopak (viz kapitola \ref{identifikatory} na straně \pageref{identifikatory}).
 
 
 \subsubsection{Funkce ve skriptu, jejich volání a spuštění skriptu}
 
-Všechny definované a tudíž i volatelné funkce se ukládají do asociativního pole indexovaného jménem funkce, datová položka se skládá z~ukazatele na abstraktního předka \texttt{NodeFunction*}. Kontext nepotřebuje znát, o~který z~obou typů se jedná, samotné objekty to ví a díky polymorfismu se při spuštění volají správné metody. Hledání pouze podle jména znemožňuje přetěžování funkcí, k~jeho zprovoznění by bylo potřeba ukládat dodatečné informace, na\-pří\-klad počet argumentů, a používat je i při vyhledávání.
+Všechny definované a tudíž i volatelné funkce se ukládají do asociativního pole indexovaného číselným identifikátorem, datová položka se skládá z~ukazatele na abstraktní nadtřídu \texttt{NodeFunction}. Kontext nepotřebuje znát, o~který z~obou typů funkcí se jedná, samotné objekty to vědí a díky polymorfismu se při spuštění volají odpovídající metody. Hledání pouze podle jména znemožňuje přetěžování funkcí, k~jeho zprovoznění by bylo potřeba ukládat dodatečné informace, na\-pří\-klad počet argumentů, a používat je i při vyhledávání.
 
 Zásobník volání je taktéž uložen v~kontextu skriptu. Jedná se o~pole objektů typu \texttt{Call\-Stack\-Item}, jež v~sobě ukládají jméno právě spuštěné funkce, pozici v~kódu, odkud byla zavolána, a hodnoty lokálních proměnných na dané úrovni.
 
 Vlastní spuštění funkce je úkolem třídy \texttt{NodeFunctionCall}. Objekty tohoto datového typu si v~sobě uchovávají identifikátor volané funkce, kód nutný pro zjištění hodnot parametrů a pozici v~kódu, odkud je funkce volána. Celý životní cyklus funkce vypadá následovně.
 
 \begin{enumerate}
-\item V~kontextu je nalezen objekt \texttt{NodeFunction*}
+\item V~kontextu je podle jména nalezen objekt \texttt{NodeFunction*}
 \item Ověří se počet deklarovaných a předaných parametrů
 \item Vyhodnotí se kód nutný pro získání hodnot parametrů
 \item Na vrchol zásobníku volání je přidána nově vytvořená položka
 \item Nastaví se hodnoty argumentů (lokální proměnné) na hodnoty předané v~parametrech
 \item Zavolá se \texttt{execute()} metoda objektu funkce
+\item Vykonají se všechny příkazy obsažené v těle funkce
 \item Po skončení se z~vrcholu zásobníku volání odstraní dříve přidaná položka
 \item Vrátí se návratová hodnota
 \end{enumerate}
@@ -1192,7 +1187,7 @@ Již bylo řečeno, že skript se spouští voláním funkce \texttt{main(argv)}
 
 \subsubsection{Globální proměnné}
 
-Seznam globálních proměnných je taktéž definován pomocí asociativního pole. Kontext neposkytuje žádné metody pro získání nebo nastavení hodnoty globální proměnné. Naproti tomu umožňuje funkcí \texttt{propagateGlobalVariable()} namapovat její hodnotu do adresního prostoru právě zavolané lokální funkce, což ve skriptu přesně odpovídá chování operátoru \texttt{global} představeného v~kapitole \ref{datove_typy_a_promenne} na straně \pageref{datove_typy_a_promenne}.
+Seznam lokálních i globálních proměnných je stejně jako kontejner definovaných funkcí reprezentován asociativním polem. Kontext neposkytuje žádné metody pro získání nebo nastavení hodnoty globální proměnné. Naproti tomu umožňuje funkcí \texttt{propagateGlobalVariable()} namapovat její hodnotu do adresního prostoru právě zavolané lokální funkce, což ve skriptu přesně odpovídá chování operátoru \texttt{global} představeného v~kapitole \ref{datove_typy_a_promenne} na straně \pageref{datove_typy_a_promenne}.
 
 Celý mechanismus funguje na principu sdílení \texttt{ValueReference} objektu mezi globálními a lo\-kál\-ní\-mi proměnnými. Změní-li se hodnota lokální proměnné, která odkazuje na stejný objekt jako globální proměnná, je automaticky aktualizována i ta, protože sídlí na stejném místě v~paměti.
 
@@ -1200,18 +1195,18 @@ Celý mechanismus funguje na principu sdílení \texttt{ValueReference} objektu 
 \subsubsection{Pozice v~kódu}
 \label{pozice_v_kodu}
 
-Není potřeba, aby byla pozice ve zdrojových kódech přítomna v~naprosto každém z~uzlů stromu syntaxe. Dokud by se nezměnilo jméno vstupního souboru ani číslo řádky, docházelo by pouze k~duplikacím, které by při vykonávání nepřinášely žádnou novou informaci.
+Je jasné, že není potřeba, aby byla pozice ve zdrojových kódech přítomna v~naprosto každém z~uzlů stromu syntaxe. Dokud by se nezměnilo jméno vstupního souboru ani číslo řádky, docházelo by pouze k~paměťově náročným duplikacím, které by při vykonávání nepřinášely žádnou novou informaci.
 
-Bylo by žádoucí, aby každá řádka vstupního souboru měla svou uzlovou reprezentaci ve stromu, avšak syntaktický analyzátor v~dané implementaci nepracuje po řádcích, ale po tokenech. Pokud se budou brát v~úvahu \textit{příkazy} namísto řádků, je možné se k~tomuto požadavku přiblížit. Téměř každý příkaz (výraz zakončený středníkem) bývá uveden na samostatné řádce, v~některých méně častých případech i na dvou či třech. To ale nevadí, pozice v~chybových hlášeních budou mít pouze o~něco menší přesnost, stále však dostatečnou.
+Bylo by žádoucí, aby každá řádka vstupního souboru měla svou uzlovou reprezentaci ve stromu, avšak syntaktický analyzátor v~dané implementaci nepracuje po řádcích, ale po tokenech. Pokud se berou v~úvahu \textit{příkazy} namísto řádků, je možné se k~tomuto požadavku přiblížit. Téměř každý příkaz (výraz zakončený středníkem) bývá uveden na samostatné řádce, v~některých méně častých případech i na dvou či třech. To ale nevadí, pozice v~chybových hlášeních bude mít pouze o~něco menší přesnost, stále však naprosto dostatečnou.
 
-Pozice ve zdrojových kódech budou tedy uchovávány pouze ve speciálních uzlech stromu, příkazy budou obaleny objekty typu \texttt{NodePosition}, jejichž prací bude aktualizovat pozici v~kontextu a zavolat metodu svého ná\-sled\-ní\-ka ve stromu.
+Místa ve zdrojových kódech jsou tedy uchovávány pouze ve speciálních uzlech stromu, příkazy se obalují objekty typu \texttt{NodePosition}, jejichž prací je aktualizovat pozici v~kontextu a zavolat metodu svého ná\-sled\-ní\-ka ve stromu.
 
 Uložení pozic v~jednoduchém demonstračním příkazu \texttt{c = a + b;} je zobrazeno ve schématu \ref{fig:nodeposition}. Na první pohled je jasné, že ukládání pozic do každého uzlu stromu by bylo zbytečné a navíc by docházelo ke značnému plýtvání pamětí.
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[width=10cm]{img/nodeposition.pdf}
-\caption[Dva možné přístupy k~ukládání pozic]{Dva možné přístupy k~ukládání pozic (kolečko označuje vlastní data)}
+\caption[Dva možné přístupy k~ukládání pozic]{Dva možné přístupy k~ukládání pozic (kolečko označuje data pozice)}
 \label{fig:nodeposition}
 \end{center}
 \end{figure}
@@ -1230,7 +1225,9 @@ Pokud by vznikla potřeba vícevláknového programování, existuje v~zásadě 
 
 \subsection{Logování, textový výstup}
 
-Logování výstupu ze skriptu, varovných a chybových zpráv zajišťuje třída \texttt{Logger}. Aplikace definuje několik maker, například \texttt{ERR(str)}, \texttt{WARN(str)} nebo \texttt{INFO(str)}, které slouží jako rozhraní pro výstup chybových a jiných zpráv uživateli. Přímý přístup k~vstupně výstupním proudům jazyka C++ není používán, aby bylo jednodušší přesměrovat veškerý výstup skriptu do některého z~oken aplikace při běhu v~grafickém rozhraní.
+Výpis textového výstupu ze skriptu, varovných, chybových a ladících zpráv kompletně za\-jiš\-ťu\-je třída \texttt{Logger}. Aplikace definuje několik maker, například \texttt{ERR()}, \texttt{WARN()} nebo \texttt{INFO()}, které slouží jako aplikační rozhraní pro výpis zpráv uživateli.
+
+Přímý přístup ke vstupně/výstupním proudům jazyka C++ není používán, aby bylo jednodušší přesměrovat veškerý výstup skriptu do některého z~oken aplikace při běhu v~grafickém rozhraní. Tomuto tématu se více věnuje kapitola \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku}.
 
 
 \subsection{Generátory zdrojových kódů}
@@ -1248,7 +1245,7 @@ Nepříliš vhodné řešení této situace je využití C++ maker, jimiž lze g
 
 \begin{verbatim}
 #define UNARYOPERATOR(NAME, CODE)             \
-class NAME : public NodeBinary                \
+class NAME : public NodeUnary                 \
 {                                             \
 public:                                       \
     NAME(Node* next) : NodeUnary(next) { }    \
@@ -1258,63 +1255,19 @@ public:                                       \
         CODE                                  \
     }                                         \
 };
+
+UNARYOPERATOR(NodeUnarySub, return m_next->execute()->subUn();)
+UNARYOPERATOR(NodeUnaryNot, return m_next->execute()->logNOT();)
 \end{verbatim}
 
-Jedná se o~plně funkční kód v~profesionální praxi běžně používaný, ale obecně hodně špatný a naprosto nevhodný pro libovolnou situaci. Kvůli těmto konstrukcím není možný debugging a při psaní kódu také nefunguje automatické do\-pl\-ňo\-vá\-ní, protože s~podobným zápisem tvůrci žádného IDE zkrátka nepočítali. Počáteční úsporu času a zrychlení vývoje velice rychle, při prvních problémech a neúspěšných pokusech o~ladění, vystřídají myšlenky na kompletní přepsání.
+Jedná se o~plně funkční kód v~profesionální praxi běžně používaný, ale obecně hodně špatný a naprosto nevhodný pro libovolnou situaci. Kvůli těmto konstrukcím především není možné ladění programu. Při psaní také nefunguje automatické do\-pl\-ňo\-vá\-ní kódu, protože s~podobným zápisem tvůrci žádného IDE zkrátka nepočítali. Počáteční úsporu času a zrychlení vývoje velice rychle, při prvních problémech a neúspěšných pokusech o~ladění, vystřídají myšlenky na kompletní přepsání ručním rozbalením maker.
 
 Řešením situace je sáhnout po externím skriptu, jehož jediným posláním bude podle při\-pra\-ve\-né šablony generovat C++ soubory s~definicí jednotlivých tříd. Pokud vznikne požadavek na úpravu, změní se šablona a skript všechny soubory během krátké chvíle automaticky přegeneruje.
 
-Ve vyvinuté aplikaci toto navržené řešení používají perlovské skripty \texttt{gen\_\-ope\-ra\-tors.pl} a \texttt{gen\_builtin.pl}, které generují C++ kód unárních operátorů, binárních operátorů a také zabudovaných funkcí.
+Ve vyvinuté aplikaci toto navržené řešení používají perlovské skripty \texttt{gen\_\-ope\-ra\-tors.pl} a \texttt{gen\_builtin.pl}, které generují C++ kód unárních operátorů, binárních operátorů a také všech zabudovaných funkcí. Návod na vytvoření nové zabudavané funkce je uveden v příloze~\ref{vytvoreni_nove_zabudovane_funkce} na straně \pageref{vytvoreni_nove_zabudovane_funkce}.
 
 
-\subsubsection{Vytvoření nové zabudované funkce}
-
-Při vytváření nějaké nové zabudované funkce, je dobré postupovat podle následujících kroků.
-
-\begin{enumerate}
-\item Vytvořit \texttt{../samples/tests.txt} unit test (viz kapitola \ref{unit_testy} na straně \pageref{unit_testy})
-\item V~souboru \texttt{gen\_builtin.pl}
-\begin{enumerate}
-\item Napsat \texttt{\$funcdecl} deklaraci/dokumentaci funkce
-\item Definovat kód pro vložení hlavičkových souborů
-\item Definovat tělo zabudované funkce
-\item Zavolat funkci \texttt{genBFClass()}
-\end{enumerate}
-\item Přegenerovat zdrojové kódy pomocí \texttt{make builtin} nebo \texttt{make rebuild}
-\item Přidat nové soubory \texttt{classname.hpp} a \texttt{classname.cpp} do projektových souborů
-\item Zkompilovat aplikaci
-\item Otestovat kód pomocí \texttt{valgrind ./bbd --unit-tests ../samples/tests.txt}
-\end{enumerate}
-
-Následuje kompletní výpis kódu zabudované funkce \texttt{getAdjacencyMatrix()}, která pro\-gra\-má\-to\-ro\-vi skriptu zpřístupňuje matici sousednosti grafu.
-
-\begin{verbatim}
-$funcdecl = 'getAdjacencyMatrix(graph) : array';
-
-$include = <<END_OF_CODE;
-#include "valuegraph.hpp"
-END_OF_CODE
-
-$code = <<END_OF_CODE;
-    ValueGraph* g = NULL;
-
-    if((g = par[0]->toValueGraph()) != NULL)
-        return g->getAdjacencyMatrix();
-    else
-    {
-        WARN_P(_("Bad parameters type: $funcdecl"));
-        return VALUENULL;
-    }
-END_OF_CODE
-
-genBFClass('getAdjacencyMatrix',
-    'NodeBuiltinGetAdjacencyMatrix',
-    1, $code, $include);
-\end{verbatim}
-
-Při dodržení výše uvedeného postupu stačí pouze vytvořit tento zdrojový kód, přegenerovat zabudované funkce, přidat novou třídu do projektových souborů a začít nově vytvořenou funkci používat.
-
-
+\clearpage
 \section{Grafické uživatelské rozhraní}
 
 \subsection{Oddělení od interpretu pro příkazovou řádku}
@@ -2105,6 +2058,58 @@ QObject
 \end{verbatim}
 
 \onecolumn
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+
+\chapter{Vytvoření nové zabudované funkce}
+\label{vytvoreni_nove_zabudovane_funkce}
+
+Při vytváření nové zabudované funkce, je dobré postupovat podle následujících kroků.
+
+\begin{enumerate}
+\item V souboru \texttt{../samples/tests.txt} vytvořit unit test (viz kapitola \ref{unit_testy} na straně \pageref{unit_testy})
+\item V~souboru \texttt{gen\_builtin.pl}
+\begin{enumerate}
+\item Napsat \texttt{\$funcdecl} deklaraci/dokumentaci funkce
+\item Definovat kód pro vložení hlavičkových souborů
+\item Definovat tělo zabudované funkce
+\item Zavolat funkci \texttt{genBFClass()}
+\end{enumerate}
+\item Přegenerovat zdrojové kódy pomocí \texttt{make builtin} nebo \texttt{make rebuild}
+\item Přidat nové \texttt{.hpp} a \texttt{.cpp} soubory do projektů
+\item Zkompilovat aplikaci
+\item Otestovat kód pomocí \texttt{valgrind ./bbd --unit-tests ../samples/tests.txt}
+\end{enumerate}
+
+Následuje kompletní výpis kódu zabudované funkce \texttt{getAdjacencyMatrix()}, která pro\-gra\-má\-to\-ro\-vi skriptu zpřístupňuje matici sousednosti grafu.
+
+\begin{verbatim}
+$funcdecl = 'getAdjacencyMatrix(graph) : array';
+
+$include = <<END_OF_CODE;
+#include "valuegraph.hpp"
+END_OF_CODE
+
+$code = <<END_OF_CODE;
+    ValueGraph* g = NULL;
+
+    if((g = par[0]->toValueGraph()) != NULL)
+        return g->getAdjacencyMatrix();
+    else
+    {
+        WARN_P(_("Bad parameters type: $funcdecl"));
+        return VALUENULL;
+    }
+END_OF_CODE
+
+genBFClass('getAdjacencyMatrix',
+    'NodeBuiltinGetAdjacencyMatrix',
+    1, $code, $include);
+\end{verbatim}
+
+Při dodržení výše uvedeného postupu stačí pouze vytvořit tento zdrojový kód, přegenerovat zabudované funkce, přidat novou třídu do projektových souborů a začít nově vytvořenou funkci používat.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
