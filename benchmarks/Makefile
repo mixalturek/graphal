@@ -2,9 +2,11 @@ CC      = g++
 CFLAGS  = -std=c++98 -pedantic -Wall -O2 -s -DNDEBUG
 LDFLAGS =
 LOGFILE = log.txt
+LOGFILEFUNC = logfunc.txt
 GRAPHPNG = log.png
 GRAPHSVG = log.svg
 TIME_CMD = /usr/bin/time -f %U -o $(LOGFILE) -a
+TIMEFUNC_CMD = /usr/bin/time -f %U -o $(LOGFILEFUNC) -a
 
 all: var array func
 
@@ -39,3 +41,11 @@ run: all
 	gnuplot log_png.plot
 	gnuplot log_svg.plot
 	rsvg-convert -f pdf -o log.pdf log.svg
+
+runfunc: all
+	if [ -e $(LOGFILEFUNC) ] ; then mv $(LOGFILEFUNC) logfunc_`date +%F_%T | tr ':' '-'`.txt ; fi
+	echo -n '0 ' >> $(LOGFILEFUNC) ; $(TIMEFUNC_CMD) ../bbd/bbd func_noret.txt
+	echo -n '1 ' >> $(LOGFILEFUNC) ; $(TIMEFUNC_CMD) ../bbd/bbd func_ret.txt
+	gnuplot logfunc_png.plot
+	gnuplot logfunc_svg.plot
+	rsvg-convert -f pdf -o logfunc.pdf logfunc.svg

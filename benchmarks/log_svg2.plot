@@ -1,11 +1,11 @@
-set terminal svg
+set terminal svg size 640,300
 set output "log.svg"
 
 set xrange [0:3]
 set xtic ("" 0,"" 1,"" 2, "" 3)
-set label 1 "variables" at 0.5, graph -0.03, 0 centre norotate
-set label 2 "arrays" at 1.5, graph -0.03, 0 centre norotate
-set label 3 "functions" at 2.5, graph -0.03, 0 centre norotate
+set label 1 "variables" at 0.5, graph -0.04, 0 centre norotate
+set label 2 "arrays" at 1.5, graph -0.04, 0 centre norotate
+set label 3 "functions" at 2.5, graph -0.04, 0 centre norotate
 
 set ylabel "time [s]"
 
