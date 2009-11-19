@@ -867,13 +867,7 @@ Grafické uživatelské rozhraní zahrnuje hlavní okno s~textovým editorem pro
 
 Jako základ pro lexikální analyzátor byl použit zdrojový kód z~předchozího autorova projektu. Jeho jádrem je rozsáhlý stavový automat, který zpracovává příchozí znaky a v~závislosti na nich vrací lexikální tokeny.
 
-Analyzátor bere v~úvahu konstanty \texttt{\_\_FILE\_\_}, \texttt{\_\_LINE\_\_} a \texttt{\_\_FUNCTION\_\_}, které se při svém použití automaticky nahrazují za pozice ve zdrojových kódech. Dalšími vnitřními příkazy jsou jednoduchá bezparametrická makra a vkládání externích souborů.
-
-\begin{verbatim}
-define("name", "value");
-include("filename");
-\end{verbatim}
-
+Analyzátor bere v~úvahu konstanty \texttt{\_\_FILE\_\_}, \texttt{\_\_LINE\_\_} a \texttt{\_\_FUNCTION\_\_}, které se při svém použití automaticky nahrazují za pozice ve zdrojových kódech. Dalšími vnitřními příkazy jsou jednoduchá bezparametrická makra \texttt{define("name", "value")} a vkládání externích souborů pomocí konstrukce \texttt{include("filename")}.
 
 \subsubsection{Procházení zdrojových dat}
 
@@ -1111,15 +1105,6 @@ Třída \texttt{NodeValue} definuje spojnici mezi \texttt{Node} a \texttt{Value}
 
 Strukturované skoky \texttt{break}, \texttt{continue} a \texttt{return} používají mechanismus výjimek, což je jedna z~mála výraznějších daní za jednoduchost vykonávání skriptu pomocí rekurzivního volání metody \texttt{execute()}. Příkaz skoku, byť strukturovaný, musí být nějakým způsobem schopen opustit zanořené volání a vystoupat do požadovaného místa. Výjimky jsou zde opravdu tou nejelegantnější cestou.
 
-Vlastní skok spočívá v~jediném řádku obsahujícím \texttt{throw}, například pro \texttt{break} vypadá kód následovně.
-
-\begin{verbatim}
-CountPtr<Value> NodeJumpBreak::execute(void)
-{
-    throw this;
-}
-\end{verbatim}
-
 Místo, kde se má skok zastavit je definováno strukturou objektů ve stromu. Například výše uvedený příkaz \texttt{break} by se měl zastavit za koncem nejzanořenějšího cyklu. V~případě \texttt{continue} se samozřejmě jedná o~návrat na začátek před další iteraci. Přesně podle této definice funguje uzel \texttt{NodeLoop}, výjimka typu \texttt{NodeJumpBreak} je zachytávána za vlastním tělem cyklu, \texttt{NodeJumpContinue} uvnitř.
 
 \begin{verbatim}
@@ -1206,8 +1191,8 @@ Uložení pozic v~jednoduchém demonstračním příkazu \texttt{c = a + b;} je 
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[width=10cm]{img/nodeposition.pdf}
-\caption[Dva možné přístupy k~ukládání pozic]{Dva možné přístupy k~ukládání pozic (kolečko označuje data pozice)}
+\includegraphics[width=12cm]{img/nodeposition.pdf}
+\caption{Dva možné přístupy k~ukládání pozic v~abstrakntím stromu syntaxe}
 \label{fig:nodeposition}
 \end{center}
 \end{figure}
@@ -1405,9 +1390,17 @@ Nevýhodou tohoto řešení je určitě statičnost, není možné definovat nov
 
 \subsection{Hlavní okno}
 
-Hlavní okno aplikace dědí ze třídy \texttt{QMainWindow} a používá standardní rozvržení sestávající z~hlavního menu, nástrojových lišt a stavového řádku. Jedná se o~MDI aplikaci, centrální widget tvoří textové editory pro úpravu kódu, které se dají přepínat pomocí záložek.
+Hlavní okno aplikace dědí ze třídy \texttt{QMainWindow} a používá standardní rozvržení sestávající z~menu, nástrojových lišt a stavového řádku. Jedná se o~MDI aplikaci, centrální widget tvoří textové editory pro úpravu kódu, které se dají přepínat pomocí záložek.
 
 Posledním výrazným prvkem jsou dokovatelná okna, která se dají libovolně přesouvat po celé ploše hlavního okna, skrývat a znovu zobrazovat a také kompletně vytrhávat ven do samostatných oken. Aplikace si pamatuje rozložení ovládacích prvků mezi jednotlivými spuštěními.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=\textwidth]{img/screenshot.png}
+\caption{Snímek okna grafické aplikace}
+\label{fig:main_window}
+\end{center}
+\end{figure}
 
 
 \subsection{Textový editor}

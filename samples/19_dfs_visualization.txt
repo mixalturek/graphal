@@ -13,6 +13,7 @@ function dfs(v)
 		return;
 
 	breakpoint(true);
+	println("Closing vertex: " + v.__id);
 	v.visSetColor(CLOSED_COLOR);
 	v.state = CLOSED;
 
