@@ -20,11 +20,11 @@ OBJECTS = $(shell ls *.cpp | sed 's/.cpp/.o/')
 .PHONY: version
 #.PHONY: install
 
-build: $(TARGET)
+build: version $(TARGET)
 
 rebuild: clean all
 
-all: bison operators builtin depend $(TARGET)
+all: version bison operators builtin depend $(TARGET)
 
 %.o: %.cpp
 	$(CC) -c $< $(CFLAGS)
@@ -42,6 +42,9 @@ builtin: gen_builtin.pl
 	perl gen_builtin.pl
 
 version:
+	if [ ! -e version.hpp ] ; then echo '#define SVN_VERSION _("undefined")' > version.hpp ; fi
+
+version_svn:
 	echo '#define SVN_VERSION' $(shell svnversion | tr 'A-Z' ' ' | cut -d ':' -f 1) > version.hpp
 
 depend:
