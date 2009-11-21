@@ -86,7 +86,7 @@ unicode=true,
 %%%%
 
 % TODO: update information
-\declaration{V~Praze dne 18.\,11.\,2009}
+\declaration{V~Praze dne 21.\,11.\,2009}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -129,9 +129,19 @@ Jádrem diplomové práce je návrh a implementace speciálního programovacího
 \chapter{Úvod}
 
 % TODO: odkaz na literaturu
-Algoritmy \textit{difuze} slouží pro zpracování obrazů. Každý, kdo se jimi zabývá, ví, že fungují, ale nikdo neví, jakým způsobem \textit{přesně} fungují. Výstupem tohoto projektu bude integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
+Algoritmy \textit{difúze} slouží pro zpracování obrazů. Každý, kdo se jimi zabývá, ví, že fungují, ale nikdo neví, jakým způsobem \textit{přesně} fungují. Výstupem tohoto projektu bude integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
 
-Vstupními daty jsou pixely obrázku a výstupem například, ve které jeho části se nachází objekt s~definovanými vlastnostmi, kde se vyskytuje pozadí a podobně. Obrázek je převeden na speciální graf s~několika vrcholy pro každý pixel a pospojovanými ohodnocenými hranami. Difuzní algoritmus pracuje s~lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Zadání může být tedy zobecněno z~práce s~obrázky na jednoduché grafové operace.
+Vstupními daty jsou pixely obrázku a výstupem například, ve které jeho části se nachází objekt s~definovanými vlastnostmi, kde se vyskytuje pozadí a podobně. Obrázek je převeden na speciální graf s~několika vrcholy pro každý pixel a pospojovanými ohodnocenými hranami, při zobrazení ve 3D prostoru může vytvořený graf vypadat podobně jako na schématu \ref{fig:graf_difuze}.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=10cm]{img/graf_difuze.pdf}
+\caption{Typ grafů, jež se používají pro difúzní algoritmy}
+\label{fig:graf_difuze}
+\end{center}
+\end{figure}
+
+Difuzní algoritmus pracuje s~lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Zadání může být tedy zobecněno z~práce s~obrázky na jednoduché grafové operace.
 
 Cílem diplomové práce je návrh a implementace jazyka založeného na syntaxi C, který slouží pro manipulaci s~grafy. Jazyk má podporu pro základní datové typy, jako jsou celá a desetinná čísla, řetězce, pole a struktury. Proměnné mohou být lokální i globální, bez deklarací. Výčet kontrolních struktur sestává z~\texttt{if-else} podmínek, \texttt{for}, \texttt{while} a \texttt{foreach} cyklů, deklarace funkcí a jejich volání. \texttt{Include} a \texttt{define} direktivy preprocesoru jsou implementovány na úrovni lexikálního analyzátoru. Jazyk nepodporuje ukazatele ani objektově orientované programování.
 
@@ -420,9 +430,9 @@ foreach(vertex; v1.getNeighbors())
 Pro vytváření množin vrcholů a hran slouží opět zabudované funkce.
 
 
-\subsection{Ukázka kompletního skriptu}
+\subsection{Ukázka skriptu}
 
-Příkladem kompletního skriptu zapsaného ve vytvářeném jazyce budiž rekurzivní pro\-hle\-dá\-vá\-ní grafu do hloubky. Parametrem uživatelsky definované funkce \texttt{dfs()} je libovolný vrchol grafu. Pokud už byl daný vrchol navštíven, větev procházeného stromu se ukončí, v~opačném případě se označí vrchol za navštívený a funkce se rekurzivně zavolá nad všemi jeho sousedy.
+Příkladem skriptu zapsaného ve vytvářeném jazyce budiž rekurzivní pro\-hle\-dá\-vá\-ní grafu do hloubky. Parametrem uživatelsky definované funkce \texttt{dfs()} je libovolný vrchol grafu. Pokud už byl daný vrchol navštíven, větev procházeného stromu se ukončí, v~opačném případě se označí vrchol za navštívený a funkce se rekurzivně zavolá nad všemi jeho sousedy.
 
 \begin{verbatim}
 define("NEW", "0");
@@ -527,7 +537,7 @@ Problémem je i složité procházení vrcholů a hran a hledání sebe sama v~g
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[width=7cm]{img/update_indices.pdf}
-\caption{Vrcholy, které musejí být aktualizování po smazání některého z~nich}
+\caption{Vrcholy, které musejí být aktualizovány po smazání některého z~nich}
 \label{fig:update_indices}
 \end{center}
 \end{figure}
@@ -1379,7 +1389,7 @@ Druhou obrovskou výhodou je možnost parametrizace zabudované funkce, aktuáln
 breakpoint(true);// Aktivní
 breakpoint(false);// Neaktivní
 
-breakpoint(cond1 || cond2);// Aktivní v~závislosti na hodnotě proměnných
+breakpoint(cond1 || cond2);// Aktivní v závislosti na hodnotě proměnných
 
 for(i = 0; i < 1000; ++i)
     breakpoint(i % 100 == 99);// Aktivní při každém stém průchodu cyklem
@@ -1397,7 +1407,7 @@ Posledním výrazným prvkem jsou dokovatelná okna, která se dají libovolně 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[width=\textwidth]{img/screenshot.png}
-\caption{Snímek okna grafické aplikace}
+\caption{Okno grafické aplikace}
 \label{fig:main_window}
 \end{center}
 \end{figure}
@@ -2016,125 +2026,125 @@ Při dodržení výše uvedeného postupu stačí pouze vytvořit tento zdrojov�
 CountPtr< TYPE >
 ObjectCreator
 BaseObject
-    CallStackItem
-    CodePosition
-    Context
-        GuiContext (+ QObject)
-    ExitValue
-    Lexan
-    LexanIterator
-        LexanIteratorFile
-        LexanIteratorString
-    Logger
-        CliLogger
-        GuiLogger (+ QObject)
-    Node
-        NodeBinary
-            NodeBinaryAdd
-            NodeBinaryAnd
-            NodeBinaryAss
-            NodeBinaryAssAdd
-            NodeBinaryAssDiv
-            NodeBinaryAssMod
-            NodeBinaryAssMult
-            NodeBinaryAssRef
-            NodeBinaryAssSub
-            NodeBinaryDiv
-            NodeBinaryEq
-            NodeBinaryGe
-            NodeBinaryGt
-            NodeBinaryIndex
-            NodeBinaryLe
-            NodeBinaryLt
-            NodeBinaryMember
-            NodeBinaryMod
-            NodeBinaryMult
-            NodeBinaryNe
-            NodeBinaryOr
-            NodeBinarySub
-        NodeBlock
-        NodeCondition
-        NodeEmptyCommand
-        NodeForeach
-        NodeFunction
-            NodeFunctionBuiltin
-                NodeBuiltinArray
-                NodeBuiltinAssert
-                etc.
-            NodeFunctionScript
-        NodeFunctionCall
-        NodeGlobal
-        NodeJumpBreak
-        NodeJumpContinue
-        NodeLoop
-        NodePosition
-        NodeUnary
-            NodeUnaryDecPost
-            NodeUnaryDecPre
-            NodeUnaryIncPost
-            NodeUnaryIncPre
-            NodeUnaryNot
-            NodeUnaryReturn
-            NodeUnarySub
-        NodeValue
-    ObjectFactory
-        CliFactory
-        GuiFactory
-    StringTable
-    Tests
-    Value
-        ValueArray
-        ValueBool
-        ValueEdge
-        ValueFloat
-        ValueGraph
-        ValueIdentifier
-        ValueInt
-        ValueNull
-        ValueReference
-        ValueSet
-        ValueString
-        ValueStruct
-        ValueVertex
-    VisualizationConnector
-        GuiVisualizationConnector (+ QObject)
+.   CallStackItem
+.   CodePosition
+.   Context
+.   .   GuiContext (+ QObject)
+.   ExitValue
+.   Lexan
+.   LexanIterator
+.   .   LexanIteratorFile
+.   .   LexanIteratorString
+.   Logger
+.   .   CliLogger
+.   .   GuiLogger (+ QObject)
+.   Node
+.   .   NodeBinary
+.   .   .   NodeBinaryAdd
+.   .   .   NodeBinaryAnd
+.   .   .   NodeBinaryAss
+.   .   .   NodeBinaryAssAdd
+.   .   .   NodeBinaryAssDiv
+.   .   .   NodeBinaryAssMod
+.   .   .   NodeBinaryAssMult
+.   .   .   NodeBinaryAssRef
+.   .   .   NodeBinaryAssSub
+.   .   .   NodeBinaryDiv
+.   .   .   NodeBinaryEq
+.   .   .   NodeBinaryGe
+.   .   .   NodeBinaryGt
+.   .   .   NodeBinaryIndex
+.   .   .   NodeBinaryLe
+.   .   .   NodeBinaryLt
+.   .   .   NodeBinaryMember
+.   .   .   NodeBinaryMod
+.   .   .   NodeBinaryMult
+.   .   .   NodeBinaryNe
+.   .   .   NodeBinaryOr
+.   .   .   NodeBinarySub
+.   .   NodeBlock
+.   .   NodeCondition
+.   .   NodeEmptyCommand
+.   .   NodeForeach
+.   .   NodeFunction
+.   .   .   NodeFunctionBuiltin
+.   .   .   .   NodeBuiltinArray
+.   .   .   .   NodeBuiltinAssert
+.   .   .   .   etc.
+.   .   .   NodeFunctionScript
+.   .   NodeFunctionCall
+.   .   NodeGlobal
+.   .   NodeJumpBreak
+.   .   NodeJumpContinue
+.   .   NodeLoop
+.   .   NodePosition
+.   .   NodeUnary
+.   .   .   NodeUnaryDecPost
+.   .   .   NodeUnaryDecPre
+.   .   .   NodeUnaryIncPost
+.   .   .   NodeUnaryIncPre
+.   .   .   NodeUnaryNot
+.   .   .   NodeUnaryReturn
+.   .   .   NodeUnarySub
+.   .   NodeValue
+.   ObjectFactory
+.   .   CliFactory
+.   .   GuiFactory
+.   StringTable
+.   Tests
+.   Value
+.   .   ValueArray
+.   .   ValueBool
+.   .   ValueEdge
+.   .   ValueFloat
+.   .   ValueGraph
+.   .   ValueIdentifier
+.   .   ValueInt
+.   .   ValueNull
+.   .   ValueReference
+.   .   ValueSet
+.   .   ValueString
+.   .   ValueStruct
+.   .   ValueVertex
+.   VisualizationConnector
+.   .   GuiVisualizationConnector (+ QObject)
 MutexLocker
 Mutex
-    CliMutex
-    GuiMutex
+.   CliMutex
+.   GuiMutex
 Settings
 QObject
-    VisualizationItemData
-    VisualizationView
-    Qt classes
-        QMainWindow
-            MainWindow
-        QDockWidget
-            DockCallStack
-            DockFiles
-            DockScriptOutput
-            DockVariables
-            DockVisualization
-        QDialog
-            DialogFind
-            DialogIncludeDirs
-            DialogReplace
-            DialogReplaceConfirmation
-            DialogScriptParameters
-            DialogSettings
-            DialogSettingsEditor
-            DialogSettingsVisualization
-        QPlainTextEdit
-            TextEditorProgrammers
-                TextEditor
-        QWidget
-            TextEditorLines
-        QSyntaxHighlighter
-            TextEditorHighlighter
-        QGLWidget
-            Visualization
-        QThread
-            ScriptThread
+.   VisualizationItemData
+.   VisualizationView
+.   Qt classes
+.   .   QMainWindow
+.   .   .   MainWindow
+.   .   QDockWidget
+.   .   .   DockCallStack
+.   .   .   DockFiles
+.   .   .   DockScriptOutput
+.   .   .   DockVariables
+.   .   .   DockVisualization
+.   .   QDialog
+.   .   .   DialogFind
+.   .   .   DialogIncludeDirs
+.   .   .   DialogReplace
+.   .   .   DialogReplaceConfirmation
+.   .   .   DialogScriptParameters
+.   .   .   DialogSettings
+.   .   .   DialogSettingsEditor
+.   .   .   DialogSettingsVisualization
+.   .   QPlainTextEdit
+.   .   .   TextEditorProgrammers
+.   .   .   .   TextEditor
+.   .   QWidget
+.   .   .   TextEditorLines
+.   .   QSyntaxHighlighter
+.   .   .   TextEditorHighlighter
+.   .   QGLWidget
+.   .   .   Visualization
+.   .   QThread
+.   .   .   ScriptThread
 \end{verbatim}
 
 \onecolumn

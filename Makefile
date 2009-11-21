@@ -14,6 +14,7 @@ build:
 	make -C ./benchmarks/
 	make -C ./graphs/generator/
 	make -C ./man/
+	make -C ./presentation/
 	make -C ./text/
 
 install: build
@@ -46,6 +47,7 @@ clean:
 	make -C ./benchmarks/ clean
 	make -C ./graphs/generator/ clean
 	make -C ./man/ clean
+	make -C ./presentation/ clean
 	rm -rf ./doc/
 	rm -rf ./svnstat/
 	make -C ./text/ clean
