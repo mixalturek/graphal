@@ -48,7 +48,13 @@ ValueGraph::ValueGraph(bool directed)
 
 ValueGraph::~ValueGraph(void)
 {
+	set_container::iterator it;
 
+	for(it = m_vertices.begin(); it != m_vertices.end(); ++it)
+		(*it)->toValueVertex()->setGraphToNULL();
+
+	for(it = m_edges.begin(); it != m_edges.end(); ++it)
+		(*it)->toValueEdge()->setGraphToNULL();
 }
 
 

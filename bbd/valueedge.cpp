@@ -22,6 +22,7 @@
 #include "valueedge.hpp"
 #include "valuebool.hpp"
 #include "valuevertex.hpp"
+#include "logger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -71,12 +72,26 @@ void ValueEdge::invertDirection(void)
 CountPtr<Value> ValueEdge::getBeginVertex(void)
 {
 	ACCESS_MUTEX_LOCKER;
+
+	if(m_graph == NULL)
+	{
+		WARN_P(_("The graph is invalid (deleted?)"));
+		return VALUENULL;
+	}
+
 	return (m_begin == NULL) ? VALUENULL : m_graph->findVertex(m_begin);
 }
 
 CountPtr<Value> ValueEdge::getEndVertex(void)
 {
 	ACCESS_MUTEX_LOCKER;
+
+	if(m_graph == NULL)
+	{
+		WARN_P(_("The graph is invalid (deleted?)"));
+		return VALUENULL;
+	}
+
 	return (m_end == NULL) ? VALUENULL : m_graph->findVertex(m_end);
 }
 

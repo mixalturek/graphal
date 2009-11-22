@@ -51,6 +51,7 @@ public:
 	void removeVertex(ValueVertex* vertex);
 
 	ValueGraph* getGraph(void) { return m_graph; }
+	void setGraphToNULL(void) { m_graph = NULL; }
 
 	CountPtr<Value> setItem(identifier name, CountPtr<Value> value) { return m_properties->setItem(name, value); }
 	CountPtr<Value> getItem(identifier name) { return m_properties->getItem(name); }

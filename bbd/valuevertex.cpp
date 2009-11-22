@@ -25,6 +25,7 @@
 #include "valueedge.hpp"
 #include "context.hpp"
 #include "valueset.hpp"
+#include "logger.hpp"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -90,7 +91,14 @@ CountPtr<Value> ValueVertex::getNeighbors(void)
 {
 	ACCESS_MUTEX_LOCKER;
 	ValueSet* ret = new ValueSet;
+	CountPtr<Value> retval(ret);
 	set_container::iterator it;
+
+	if(m_graph == NULL)
+	{
+		WARN_P(_("The graph is invalid (deleted?)"));
+		return VALUENULL;
+	}
 
 	if(m_graph->isDirected())
 	{
@@ -117,7 +125,7 @@ CountPtr<Value> ValueVertex::getNeighbors(void)
 		}
 	}
 
-	return CountPtr<Value>(ret);
+	return retval;
 }
 
 
