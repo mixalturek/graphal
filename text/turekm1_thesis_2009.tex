@@ -4,10 +4,10 @@
 \documentclass[11pt,twoside,a4paper]{book}
 \usepackage[czech, english]{babel}
 
-%\usepackage[T1]{fontenc} % pouzije EC fonty
+%\usepackage[T1]{fontenc} % EC fonty
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-%\usepackage{indentfirst} %1. odstavec jako v cestine.
+%\usepackage{indentfirst} % 1. odstavec jako v češtině.
 \usepackage{tocloft}
 
 \usepackage{k336_thesis_macros}
@@ -40,6 +40,21 @@ linkcolor=blue,
 unicode=true,
 ]
 {hyperref}
+
+
+% PRINT VERSION
+%\usepackage[
+%pdftitle={\WorkTitle},
+%pdfauthor={\FirstandFamilyName},
+%bookmarks=true,
+%colorlinks=true,
+%breaklinks=true,
+%urlcolor=black,
+%citecolor=black,
+%linkcolor=black,
+%unicode=true,
+%]
+%{hyperref}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,14 +94,14 @@ unicode=true,
 \acknowledgements
 \noindent
 
-\noindent Rád bych poděkoval svému vedoucímu RNDr. Marku Genyk-Berezovskému za jeho při\-po\-mín\-ky a cenné rady při tvoření práce.
+\noindent Rád bych poděkoval vedoucímu práce, RNDr. Marku Genyk-Berezovskému, za jeho při\-po\-mín\-ky a cenné rady.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
 
 % TODO: update information
-\declaration{V~Praze dne 21.\,11.\,2009}
+\declaration{V~Praze dne 22.\,11.\,2009}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,7 +146,7 @@ Jádrem diplomové práce je návrh a implementace speciálního programovacího
 % TODO: odkaz na literaturu
 Algoritmy \textit{difúze} slouží pro zpracování obrazů. Každý, kdo se jimi zabývá, ví, že fungují, ale nikdo neví, jakým způsobem \textit{přesně} fungují. Výstupem tohoto projektu bude integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
 
-Vstupními daty jsou pixely obrázku a výstupem například, ve které jeho části se nachází objekt s~definovanými vlastnostmi, kde se vyskytuje pozadí a podobně. Obrázek je převeden na speciální graf s~několika vrcholy pro každý pixel a pospojovanými ohodnocenými hranami, při zobrazení ve 3D prostoru může vytvořený graf vypadat podobně jako na schématu \ref{fig:graf_difuze}.
+Za vstupní data se považují pixely obrázku a výstupem je například, ve které jeho části se nachází objekt s~definovanými vlastnostmi, kde se vyskytuje pozadí a podobně. Obrázek je převeden na speciální graf s~několika vrcholy pro každý pixel a pospojovanými ohodnocenými hranami. Při zobrazení ve 3D prostoru může vytvořený graf vypadat podobně jako na schématu \ref{fig:graf_difuze}.
 
 \begin{figure}[ht]
 \begin{center}
@@ -143,15 +158,17 @@ Vstupními daty jsou pixely obrázku a výstupem například, ve které jeho č�
 
 Difuzní algoritmus pracuje s~lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Zadání může být tedy zobecněno z~práce s~obrázky na jednoduché grafové operace.
 
-Cílem diplomové práce je návrh a implementace jazyka založeného na syntaxi C, který slouží pro manipulaci s~grafy. Jazyk má podporu pro základní datové typy, jako jsou celá a desetinná čísla, řetězce, pole a struktury. Proměnné mohou být lokální i globální, bez deklarací. Výčet kontrolních struktur sestává z~\texttt{if-else} podmínek, \texttt{for}, \texttt{while} a \texttt{foreach} cyklů, deklarace funkcí a jejich volání. \texttt{Include} a \texttt{define} direktivy preprocesoru jsou implementovány na úrovni lexikálního analyzátoru. Jazyk nepodporuje ukazatele ani objektově orientované programování.
+Cílem diplomové práce je návrh a implementace jazyka založeného na syntaxi C, který slouží pro manipulaci s~grafy. Jazyk má podporu pro základní datové typy, jako jsou celá a desetinná čísla, řetězce, pole a struktury. Proměnné mohou být lokální i globální, bez deklarací.
+
+Výčet kontrolních struktur sestává z~\texttt{if-else} podmínek, \texttt{for}, \texttt{while} a \texttt{foreach} cyklů, deklarace funkcí a jejich volání. \texttt{Include} a \texttt{define} direktivy preprocesoru jsou implementovány na úrovni lexikálního analyzátoru. Jazyk nepodporuje ukazatele ani objektově orientované programování.
 
 Speciální datové typy zahrnují grafy, vrcholy, hrany a jejich množiny. Interpret obsahuje zabudované funkce pro vytváření a rušení těchto proměnných, vracení sousedů daného vrcholu a další operace. Každému vrcholu a hraně může být přiřazen libovolný počet dalších hodnot, k~přístupu k~nim slouží jméno předávané tečkovou notací \texttt{objekt.vlastnost}. Speciální řídící struktury pro zpracování komplexních proměnných jsou implementovány na bázi iterátorů, jež jsou interně volané i ve \texttt{foreach} cyklu.
 
 Grafické uživatelské rozhraní sestává především z~programátorsky zaměřeného textového editoru, který poskytuje zvýrazňování syntaxe, číslování řádků, zvýraznění aktuálního řádku, automatické odsazování a inteligentní klávesu \texttt{Home}. Všechny ostatní části aplikace jsou tvořeny panely, jež mohou být uživatelem libovolně přesunuty na jiné místo, skryty a nebo také \textit{vytrhnuty} z~hlavního do samostatného okna. To je výhodné především při používání dvou monitorů. V~panelech je možné zobrazit výstup z~parsování a interpretace skriptu, zásobník volání funkcí, seznam definovaných proměnných a vizualizační okno.
 
-Vizualizace jsou přímo propojené s~laděním skriptu. Vykonávání kódu může být pozastaveno breakpointem a poté krokováno s~možností vstupování do funkcí (step in), opuštění dané funkce (step out) či vykonání následujícího příkazu (step over). Při každém zastavení skriptu se aktualizuje panel zásobníku volání, seznam definovaných proměnných a vizualizace. S~grafem se dá následně otáčet, přibližovat ho, oddalovat a provádět další 3D operace. Graf může být nahrán jak kódem skriptu, tak explicitně uživatelem.
+Vizualizace jsou přímo propojené s~laděním skriptu. Vykonávání kódu může být pozastaveno breakpointem a poté krokováno s~možností vstupování do funkcí (step in), opuštění dané funkce (step out) či vykonání následujícího příkazu (step over). Při každém zastavení skriptu se aktualizuje panel zásobníku volání, seznam definovaných proměnných a vizualizace. Se zobrazeným grafem se dá následně otáčet, přibližovat ho, oddalovat a provádět další 3D operace. Graf může být nahrán jak kódem skriptu, tak explicitně uživatelem.
 
-Základní kód interpretu a rozhraní pro příkazovou řádku je napsáno v~jazyce C++ s~využitím parser generátoru Bison (LALR gramatika) a nezávisí na žádné další knihovně kromě standardního STL. Tato část je tudíž zkompilovatelná na libovolné platformě, pro kterou existuje C++ kompilátor. Grafická část aplikace používá Qt a vizualizace OpenGL, obě knihovny jsou dostupné na všech majoritních operačních systémech.
+Základní kód interpretu a rozhraní pro příkazovou řádku je napsáno v~jazyce C++ s~využitím parser generátoru GNU Bison (LALR gramatika) a nezávisí na žádné další knihovně kromě standardního STL. Tato část je tudíž zkompilovatelná na libovolné platformě, pro kterou existuje C++ kompilátor. Grafická část aplikace používá Qt a vizualizace OpenGL, obě knihovny jsou dostupné na všech majoritních operačních systémech.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -260,7 +277,7 @@ Interpretace kódu může být krokována, při pozastavení se překreslí vizu
 
 \chapter{Analýza a návrh řešení}
 
-% Analýza a návrh implementace (včetně diskuse různých alternativ a volby im\-ple\-men\-tač\-ní\-ho prostředí).
+% Analýza a návrh implementace (včetně diskuse různých alternativ a volby implementačního prostředí).
 
 Základním cílem tohoto projektu je vyvinout integrované vývojové prostředí pro programovací jazyk orientovaný na manipulace s~grafy. Tato komplexní úloha může být rozdělena na několik oddělených částí, které budou řešeny v~následujícím pořadí.
 
@@ -280,7 +297,7 @@ Na samém začátku je možné pro tvorbu sys\-té\-mo\-vých aplikací uvažova
 
 Obrovskými výhodami Javy je její automatický správce paměti a spousta existujících knihoven a frameworků. Na druhou stranu, kvůli kompilaci do strojového kódu a z~ní vyplývající rychlosti provádění, je naprostá většina kompilátorů a interpretů napsaná v~C nebo C++.
 
-Autor práce preferuje při vývoji systémových aplikací C++ a má s~ním také mnohem více zku\-še\-no\-stí, a proto byl nakonec zvolen právě tento jazyk. Žádná knihovna, kromě standardního STL, není při tvorbě základního kódu použita -- interpret pro příkazovou řádku by měl mít co nejméně externích závislostí. Díky tomu je bez větších problémů portovatelný na všechny platformy, pro které existuje C++ kompilátor.
+Autor práce preferuje při vývoji systémových aplikací C++ a má s~ním také mnohem více zku\-še\-nos\-tí, a proto byl nakonec zvolen právě tento jazyk. Žádná knihovna, kromě standardního STL, není při tvorbě základního kódu použita -- interpret pro příkazovou řádku by měl mít co nejméně externích závislostí. Díky tomu je bez větších problémů portovatelný na všechny platformy, pro které existuje C++ kompilátor.
 
 Grafická část aplikace je naprogramovaná s~použitím knihovny Qt. Je jednou z~nejlépe navržených knihoven pro tvorbu GUI aplikací, přenositelná na všechny majoritní operační systémy a bezplatná pro nekomerční použití. Vizualizace grafů používají OpenGL, jedná se o~standard pro 3D grafiku. Druhá možná volba, Direct3D, není použitelná na ne-Microsoft platformách, a proto je zbytečné o~ní uvažovat.
 
@@ -831,7 +848,7 @@ V~tomto případě se zdá, že nevýhody převažují nad výhodami. Navíc se 
 \subsubsection{Chytré ukazatele}
 \label{chytre_ukazatele}
 
-Nejjednodušší implementací chytrých ukazatelů je šablona \texttt{auto\_ptr} ze standardní kni\-hov\-ny STL. Bude stačit nebo bude potřeba silnější nástroj? Po požádání se \texttt{auto\_ptr} stává výhradním vlastníkem ukazatele a při své destrukci maže i předanou dynamickou paměť. Výhradní vlastník znamená, že v~jednom okamžiku může existovat právě jedna \texttt{auto\_ptr} reference na danou paměť.
+Nejjednodušší implementací chytrých ukazatelů je šablona \texttt{auto\_ptr} z knihovny STL. Stačí nebo bude potřeba nalézt silnější nástroj? \texttt{Auto\_ptr} se po požádání stává výhradním vlast\-ní\-kem ukazatele a při své destrukci maže i předanou dynamickou paměť. \textit{Výhradní vlastník} znamená, že v~jednom okamžiku existuje vždy právě jedna \texttt{auto\_ptr} reference na danou paměť.
 
 Splnit tento požadavek bohužel nelze. Chceme-li například vrátit hodnotu uloženou v~pro\-měn\-né interpretovaného skriptu, první referencí zůstane původní proměnná a druhá vznikne ve formě vracené hodnoty. Musíme tedy hledat silnější nástroj.
 
@@ -897,7 +914,7 @@ Ve chvíli, kdy lexikální analyzátor narazí ve zdrojovém proudu na shluk zn
 
 Algoritmus překladu je velice jednoduchý. Tabulka symbolů je tvořena obyčejným polem, jehož jednotlivé položky ukládají řetězcovou reprezentaci, hodnota indexu představuje reprezentaci číselnou. Při žádosti o~překlad z~řetězce na identifikátor zkusí třída najít a vrátit pozici již existujícího prvku. Pokud neuspěje, přidá řetězec na konec pole a vrátí jeho pozici.
 
-Asymptotická složitost operace vychází v~nejhorším případě lineární, protože se musí při prvním výskytu řetězce projít kompletně všechny dříve definované prvky. Její snížení, na\-přík\-lad seřazením položek podle abecedy, není možné, pořadí v~poli se nesmí změnit, protože by se zneplatnily již existující překlady. Opačný směr představuje operaci s~konstantní složitostí, identifikátor je současně indexem do pole.
+Asymptotická složitost operace vychází v~nejhorším případě lineární, protože se musí při prvním výskytu řetězce projít kompletně všechny dříve definované prvky. Její snížení, na\-pří\-klad seřazením položek podle abecedy, není možné, pořadí v~poli se nesmí změnit, protože by se zneplatnily již existující překlady. Opačný směr představuje operaci s~konstantní složitostí, identifikátor je současně indexem do pole.
 
 \begin{verbatim}
 identifier StringTable::getID(const string& str)
@@ -933,7 +950,7 @@ V~objektově orientovaném návrhu aplikačního rozhraní je vždy dobré zavé
 
 \texttt{BaseObject} v~první řadě definuje čistě virtuální metodu \texttt{dump()}, díky níž je možné vypsat obsah daného objektu. Využití je předpokládáno především při stavbě a ověřování abstraktního stromu syntaxe, metoda umožňuje jeho přehledný výpis.
 
-Pokud každá odvozená třída definuje svoji metodu \texttt{dump()} -- a ony ji definovat musí, protože je čistě virtuální -- může do předaného proudu vypsat informace o~sobě a o~objektech, které v~sobě uchovává. Mějme na\-přík\-lad jednoduchý demonstrační skript.
+Pokud každá odvozená třída definuje svoji metodu \texttt{dump()} -- a ony ji definovat musí, protože je čistě virtuální -- může do předaného proudu vypsat informace o~sobě a o~objektech, které v~sobě uchovává. Mějme na\-pří\-klad jednoduchý demonstrační skript.
 
 \begin{verbatim}
 function main(argv)
@@ -962,7 +979,7 @@ Po přeložení kódu do vnitřní reprezentace a zavolání \texttt{dump()} bud
 </Function>
 \end{verbatim}
 
-XML formát výstupu samozřejmě není nutný, byl použit pouze kvůli pře\-hled\-nos\-ti výpisu strukturovaných dat.
+XML formát výstupu samozřejmě není nutný, byl použit pouze kvůli přehlednosti výpisu strukturovaných dat.
 
 
 \subsubsection{Kontrola úniků paměti}
@@ -1202,7 +1219,7 @@ Uložení pozic v~jednoduchém demonstračním příkazu \texttt{c = a + b;} je 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[width=12cm]{img/nodeposition.pdf}
-\caption{Dva možné přístupy k~ukládání pozic v~abstrakntím stromu syntaxe}
+\caption{Dva možné přístupy k~ukládání pozic v~abstraktním stromu syntaxe}
 \label{fig:nodeposition}
 \end{center}
 \end{figure}
@@ -1260,7 +1277,7 @@ Jedná se o~plně funkční kód v~profesionální praxi běžně používaný, 
 
 Řešením situace je sáhnout po externím skriptu, jehož jediným posláním bude podle při\-pra\-ve\-né šablony generovat C++ soubory s~definicí jednotlivých tříd. Pokud vznikne požadavek na úpravu, změní se šablona a skript všechny soubory během krátké chvíle automaticky přegeneruje.
 
-Ve vyvinuté aplikaci toto navržené řešení používají perlovské skripty \texttt{gen\_\-ope\-ra\-tors.pl} a \texttt{gen\_builtin.pl}, které generují C++ kód unárních operátorů, binárních operátorů a také všech zabudovaných funkcí. Návod na vytvoření nové zabudavané funkce je uveden v~příloze~\ref{vytvoreni_nove_zabudovane_funkce} na straně \pageref{vytvoreni_nove_zabudovane_funkce}.
+Ve vyvinuté aplikaci toto navržené řešení používají perlovské skripty \texttt{gen\_\-ope\-ra\-tors.pl} a \texttt{gen\_builtin.pl}, které generují C++ kód unárních operátorů, binárních operátorů a také všech zabudovaných funkcí. Návod na vytvoření nové zabudované funkce je uveden v~příloze~\ref{vytvoreni_nove_zabudovane_funkce} na straně \pageref{vytvoreni_nove_zabudovane_funkce}.
 
 
 \clearpage
@@ -1325,7 +1342,7 @@ void GuiContext::pauseExecution(void)
 }
 \end{verbatim}
 
-Implementovaný debugging podporuje celkem čtyři níže uvedené způsoby obnovění běhu skriptu známé z~běžných vývojových prostředí.
+Implementovaný debugging podporuje celkem čtyři níže uvedené způsoby obnovení běhu skriptu známé z~běžných vývojových prostředí.
 
 \begin{itemize}
 \item continue -- zastavit se na následujícím breakpointu
@@ -1499,7 +1516,7 @@ Po přidržení kurzoru myši nad jménem souboru se zobrazí \textit{tool tip} 
 
 Skript komunikuje s~vizualizačním oknem výhradně pomocí zabudovaných funkcí, jejich jména začínají na předponu \textit{vis-}. Podobně jako logování z~kapitoly \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku} i tato funkcionalita musí být zobecněna, aby se dala používat s~grafickou aplikací a zároveň negenerovala chyby o~neexistujících funkcích při běhu z~konzole.
 
-Rodičovská třída \texttt{VisualizationConnector} definuje potřebné rozhraní, současně implementuje těla všech svých metod jako prázdná. Nejedná se tedy o~čistě abstraktní třídu jako v~minulých případech. Zabudované funkce pro vizualizace komunikují s~GUI výhradně s~jejím pro\-střed\-nict\-vím, resp. jejího potomka. Pokus o~přístup k~oknu z~konzolové aplikace proto nezpůsobí žádnou chybu, pouze se zavolá prázdná metoda komunikačního objektu, a to ničemu nevadí.
+Rodičovská třída \texttt{VisualizationConnector} definuje potřebné rozhraní, současně implementuje těla všech svých metod jako prázdná. Nejedná se tedy o~čistě abstraktní třídu jako v~minulých případech. Zabudované funkce pro vizualizace komunikují s~GUI výhradně s~jejím prostřednictvím, resp. jejího potomka. Pokus o~přístup k~oknu z~konzolové aplikace proto nezpůsobí žádnou chybu, pouze se zavolá prázdná metoda komunikačního objektu, a to ničemu nevadí.
 
 Odvozený \texttt{GuiVisualizationConnector} je o~něco zajímavější. Všechny zabudované vizualizační funkce mají obdobu v~některé z~metod konektoru, ten dále v~jejich těle generuje Qt signály, které jsou napojeny na obslužné sloty okna. Opačný směr komunikace probíhá pomocí obyčejného volání metod -- vizualizační okno nepotřebuje žádný zobecňovací mechanismus, ví že konektor vždy existuje.
 
@@ -1707,7 +1724,7 @@ Tyto jednoduché testy byly dále přepsány do jazyků C++ a Perl, aby se mohlo
 \begin{figure}[hb]
 \begin{center}
 \includegraphics[width=11.5cm]{img/benchmark_func.pdf}
-\caption{Režije výjimek při návratu z~funkce}
+\caption{Režie výjimek při návratu z~funkce}
 \label{fig:benchmark_func}
 \end{center}
 \end{figure}
@@ -1734,7 +1751,7 @@ Všechny požadavky vyplývající ze zadání byly splněny, v~mnoha případec
 
 Jak ukázalo závěrečné testování, interpret má bohužel výrazné nedostatky v~rychlosti vykonávání kódu. Při porovnání s~ekvivalentními programy zapsanými v~jazyce Perl vychází přibližně osmi až patnáctinásobně pomalejší běh. Je pravda, že se vyvinutý interpret v~sou\-čas\-né verzi nesnaží o~naprosto žádné optimalizace, zde se zcela jistě nachází prostor pro další zlepšování.
 
-Budoucnost aplikace a schopnosti nově vytvořeného jazyka leží především na rozšíření o~nové zabudované funkce, které zatím poskytují pouze velice málo možností k~praktickému nasazení například pro skriptování na úrovni operačního systému. Grafická část spolu s~výkonnými vizualizacemi grafů bude zcela jistě využívána při zkoumání difuzních algoritmů, o~nichž byla řeč na samém úvodu práce. Je jasné, že během této činnosti určitě vznikne spousta nových požadavků na nejrůznější rozšíření a zlepšení.
+Budoucnost aplikace a schopnosti nově vytvořeného jazyka leží především na rozšíření o~nové zabudované funkce, které zatím poskytují pouze velice málo možností k~praktickému nasazení například pro skriptování na úrovni operačního systému. Grafická část spolu s~výkonnými vizualizacemi grafů bude zcela jistě využívána při zkoumání difuzních algoritmů, o~nichž byla řeč v~samém úvodu práce. Je jasné, že během této činnosti určitě vznikne spousta nových požadavků na nejrůznější rozšíření a zlepšení.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1916,7 +1933,7 @@ start
 \chapter{Formát datových souborů s~grafem}
 \label{format_datovych_souboru_s_grafem}
 
-Soubory ukládající grafy používají strukturu uvedenou níže. Jedná se o~textový formát, od\-dě\-lo\-va\-čem může být libovolný počet bílých znaků (mezera, tabulátor, nový řádek).
+Soubory ukládající grafy používají strukturu uvedenou níže. Jedná se o~textový formát, od\-dě\-lo\-va\-čem hodnot může být libovolný počet bílých znaků (mezera, tabulátor, nový řádek).
 
 \begin{verbatim}
 is_directed
@@ -2160,6 +2177,7 @@ QObject
 \setlength{\itemindent}{1.5cm}
 \item[AST] Abstract Syntax Tree
 \item[CLI] Command Line Interface
+\item[GNU] GNU's Not Unix!
 \item[GUI] Graphics User Interface
 \item[HTML] Hyper Text Markup Language
 \item[I/O] Input/Output
