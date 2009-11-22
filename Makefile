@@ -10,6 +10,7 @@ PREFIX = /usr/local/bin
 
 build:
 	make -C ./bbd/
+	cd ./bbdgui/ ; qmake ; cd -
 	make -C ./bbdgui/
 	make -C ./benchmarks/
 	make -C ./graphs/generator/
