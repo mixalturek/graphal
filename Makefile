@@ -13,7 +13,7 @@ build:
 	cd ./bbdgui/ ; qmake ; cd -
 	make -C ./bbdgui/
 	make -C ./benchmarks/
-	make -C ./graphs/generator/
+	make -C ./graphs_generator/
 	make -C ./man/
 	make -C ./presentation/
 	make -C ./text/
@@ -46,7 +46,7 @@ clean:
 	make -C ./bbdgui/ clean
 	rm -f ./bbdgui/bbdgui
 	make -C ./benchmarks/ clean
-	make -C ./graphs/generator/ clean
+	make -C ./graphs_generator/ clean
 	make -C ./man/ clean
 	make -C ./presentation/ clean
 	rm -rf ./doc/
