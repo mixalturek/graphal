@@ -6,6 +6,7 @@ include 'p_begin.php';
 <p>ChangeLog and TODO files are attached to the archives.</p>
 
 <ul>
+<li><a href="down/bbd_svn269.tar.gz">Tue, 24 Nov 09 12:58:10 +0100, svn v269</a> - Bugfixes, text, presentation (final?)</li>
 <li><a href="down/bbd_svn242.tar.gz">Thu, 05 Nov 09 18:35:48 +0100, svn v242</a> - Bugfixes, text</li>
 <li><a href="down/bbd_svn218.tar.gz">Fri, 25 Sep 09 15:09:54 +0200, svn v218</a> - Final</li>
 <li><a href="down/bbd_svn200.tar.gz">Wed, 09 Sep 09 23:36:27 +0200, svn v200</a> - Visualizations</li>
