@@ -143,7 +143,7 @@ Jádrem diplomové práce je návrh a implementace speciálního programovacího
 \chapter{Úvod}
 
 % TODO: odkaz na literaturu
-Algoritmy \textit{difúze} slouží pro zpracování obrazů. Každý, kdo se jimi zabývá, ví, že fungují, ale nikdo neví, jakým způsobem \textit{přesně} fungují. Výstupem tohoto projektu bude integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
+Algoritmy \textit{difúze} slouží pro zpracování obrazů. Každý, kdo se jimi zabývá, ví, že fungují, ale nikdo přesně neví, proč vlastně fungují. Výstupem tohoto projektu je integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
 
 Za vstupní data se považují pixely obrázku a výstupem je například, ve které jeho části se nachází objekt s~definovanými vlastnostmi, kde se vyskytuje pozadí a podobně. Obrázek je převeden na speciální graf s~několika vrcholy pro každý pixel a pospojovanými ohodnocenými hranami. Při zobrazení ve 3D prostoru může vytvořený graf vypadat podobně jako na schématu \ref{fig:graf_difuze}.
 
@@ -157,11 +157,11 @@ Za vstupní data se považují pixely obrázku a výstupem je například, ve kt
 
 Difuzní algoritmus pracuje s~lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Zadání může být tedy zobecněno z~práce s~obrázky na jednoduché grafové operace.
 
-Cílem diplomové práce je návrh a implementace jazyka založeného na syntaxi C, který slouží pro manipulaci s~grafy. Jazyk má podporu pro základní datové typy, jako jsou celá a desetinná čísla, řetězce, pole a struktury. Proměnné mohou být lokální i globální, bez deklarací.
+Cílem diplomové práce je návrh a implementace jazyka založeného na syntaxi C, který slouží pro manipulaci s~grafy. Jazyk má podporu pro základní datové typy, jako jsou celá a desetinná čísla, řetězce, pole a struktury. Proměnné mohou být lokální i~globální, bez deklarací.
 
 Výčet kontrolních struktur sestává z~\texttt{if-else} podmínek, \texttt{for}, \texttt{while} a \texttt{foreach} cyklů, deklarace funkcí a jejich volání. \texttt{Include} a \texttt{define} direktivy preprocesoru jsou implementovány na úrovni lexikálního analyzátoru. Jazyk nepodporuje ukazatele ani objektově orientované programování.
 
-Speciální datové typy zahrnují grafy, vrcholy, hrany a jejich množiny. Interpret obsahuje zabudované funkce pro vytváření a rušení těchto proměnných, vracení sousedů daného vrcholu a další operace. Každému vrcholu a hraně může být přiřazen libovolný počet dalších hodnot, k~přístupu k~nim slouží jméno předávané tečkovou notací \texttt{objekt.vlastnost}. Speciální řídící struktury pro zpracování komplexních proměnných jsou implementovány na bázi iterátorů, jež jsou interně volané i ve \texttt{foreach} cyklu.
+Speciální datové typy zahrnují grafy, vrcholy, hrany a jejich množiny. Interpret obsahuje zabudované funkce pro vytváření a rušení těchto proměnných, vracení sousedů daného vrcholu a další operace. Každému vrcholu a hraně může být přiřazen libovolný počet dalších hodnot, k~přístupu k~nim slouží jméno předávané tečkovou notací \texttt{objekt.vlastnost}. Speciální řídící struktury pro zpracování komplexních proměnných jsou implementovány na bázi iterátorů, jež jsou interně volané i~ve \texttt{foreach} cyklu.
 
 Grafické uživatelské rozhraní sestává především z~programátorsky zaměřeného textového editoru, který poskytuje zvýrazňování syntaxe, číslování řádků, zvýraznění aktuálního řádku, automatické odsazování a inteligentní klávesu \texttt{Home}. Všechny ostatní části aplikace jsou tvořeny panely, jež mohou být uživatelem libovolně přesunuty na jiné místo, skryty a nebo také \textit{vytrhnuty} z~hlavního do samostatného okna. To je výhodné především při používání dvou monitorů. V~panelech je možné zobrazit výstup z~parsování a interpretace skriptu, zásobník volání funkcí, seznam definovaných proměnných a vizualizační okno.
 
@@ -245,12 +245,12 @@ Textový editor by měl být programátorsky zaměřený, zvýrazňování synta
 
 Vizualizační jednotka zobrazuje aktuálně zpracovávaný graf ve 3D, nemusí to být editor, ve kterém je možné měnit strukturu grafu. Uživatel má možnost graf interaktivně natáčet, přibližovat, oddalovat a posouvat v~libovolném směru. Dále může zapnout a vypnout zobrazování jednotlivých částí grafu, aby bylo možné dosáhnout méně přeplněného výstupu.
 
-Pokud bude v~jazyce možnost přidávat barevné (texturové) atributy vrcholům, hranám nebo jejich množinám, promítaly by se i do zobrazení. Vizualizační okno má vlastní možnost načtení grafu, aplikace umožní volit, zda má algoritmus pracovat s~grafem, který je v~grafickém okně, nebo zda si jej načte sám podle zápisu v~kódu.
+Pokud bude v~jazyce možnost přidávat barevné (texturové) atributy vrcholům, hranám nebo jejich množinám, promítaly by se i~do zobrazení. Vizualizační okno má vlastní možnost načtení grafu, aplikace umožní volit, zda má algoritmus pracovat s~grafem, který je v~grafickém okně, nebo zda si jej načte sám podle zápisu v~kódu.
 
 
 \subsection{Manipulace s~grafem, krokování skriptu}
 
-Interpretace kódu může být krokována, při pozastavení se překreslí vizualizační okno a tím se aktualizuje i pohled na graf. Dokud není vydán příkaz k~dalšímu kroku, je možné s~grafem posouvat, natáčet ho a podobně. Parametry samotného grafu během průběhu programu není vhodné měnit, avšak parametry zobrazení nejspíše ano (barvy, měřítka a podobně). Debugging není třeba nijak zvlášť podporovat, postačí konzole, kam si programátor může vypsat ladící a trasovací tisky.
+Interpretace kódu může být krokována, při pozastavení se překreslí vizualizační okno a tím se aktualizuje i~pohled na graf. Dokud není vydán příkaz k~dalšímu kroku, je možné s~grafem posouvat, natáčet ho a podobně. Parametry samotného grafu během průběhu programu není vhodné měnit, avšak parametry zobrazení nejspíše ano (barvy, měřítka a podobně). Debugging není třeba nijak zvlášť podporovat, postačí konzole, kam si programátor může vypsat ladící a trasovací tisky.
 
 
 %\subsection{Systémové požadavky}
@@ -280,7 +280,7 @@ Interpretace kódu může být krokována, při pozastavení se překreslí vizu
 
 % Analýza a návrh implementace (včetně diskuse různých alternativ a volby implementačního prostředí).
 
-Základním cílem tohoto projektu je vyvinout integrované vývojové prostředí pro programovací jazyk orientovaný na manipulace s~grafy. Tato komplexní úloha může být rozdělena na několik oddělených částí, které budou řešeny v~následujícím pořadí:
+Základním cílem tohoto projektu je vyvinout integrované vývojové prostředí pro programovací jazyk orientovaný na manipulace s~grafy. Tato komplexní úloha může být rozdělena na několik oddělených částí, které jsou řešeny v~následujícím pořadí:
 
 \begin{enumerate}
 \item Návrh jazyka, který odpovídá všem požadavkům.
@@ -311,7 +311,7 @@ Jak už bylo zmíněno, syntaxe jazyka je z~větší části založena na všeob
 \subsection{Datové typy a proměnné}
 \label{datove_typy_a_promenne}
 
-Proměnné se nedeklarují, v~průběhu vykonávání skriptu mohou libovolně měnit svůj datový typ. Uvnitř interpretu jsou rozlišovány typy \texttt{null}, \texttt{bool}, \texttt{int}, \texttt{float}, \texttt{string}, \texttt{struct}, \texttt{array}, \texttt{graph}, \texttt{vertex}, \texttt{edge} a \texttt{set}. Jazyk nepodporuje modifikátory typu, jako jsou například \texttt{unsigned} nebo \texttt{const}, protože nepřinášejí žádné výrazné vylepšení, programátor se bude muset obejít bez nich.
+Proměnné se nedeklarují, v~průběhu vykonávání skriptu mohou libovolně měnit svůj datový typ. Uvnitř interpretu jsou rozlišovány typy \texttt{null}, \texttt{bool}, \texttt{int}, \texttt{float}, \texttt{string}, \texttt{struct}, \texttt{array}, \texttt{graph}, \texttt{vertex}, \texttt{edge} a \texttt{set}. Jazyk nepodporuje modifikátory typu, jako jsou například \texttt{unsigned} nebo \texttt{const}, protože nepřinášejí žádné výrazné vylepšení, programátor se musí obejít bez nich.
 
 Viditelnost proměnných je definována na úroveň funkcí, tudíž opuštění daného bloku (na\-pří\-klad cyklu) nezpůsobuje zrušení v~něm používaných proměnných. Globální pro\-měn\-nou je možné ve funkci zpřístupnit po vzoru jazyka PHP klíčovým slovem \texttt{global}.
 
@@ -336,7 +336,7 @@ Na první pohled je jasné, že prostřední dvě možnosti nepřinášejí nic 
 
 Výhodou deklarací je snadná detekce mnoha typů chyb a případně možnost větších optimalizací. Na druhou stranu příliš svazují, což je patrné především u~skriptovacích jazyků, které se snaží o~co nejmenší množství kódu na co největší funkcionalitu. Právě z~tohoto důvodu byla zvolena verze bez deklarací.
 
-Poznámka na okraj. Deklarace by se mohly hodit i pro automatizovaný překlad do jiných běžně používaných jazyků, než ve kterém byl napsán vlastní algoritmus. V~tomto případě by se pravděpodobně jednalo o~kompilovatelné C++ nebo Javu. Tato myšlenka je inspirována Google Web Toolkitem, který překládá javovské programy do HTML, CSS a JavaScriptu, nejedná se o~nic nereálného.
+Poznámka na okraj. Deklarace by se mohly hodit i~pro automatizovaný překlad do jiných běžně používaných jazyků, než ve kterém byl napsán vlastní algoritmus. V~tomto případě by se pravděpodobně jednalo o~kompilovatelné C++ nebo Javu. Tato myšlenka je inspirována Google Web Toolkitem, který překládá javovské programy do HTML, CSS a JavaScriptu, nejedná se o~nic nereálného.
 
 
 \subsection{Operátory}
@@ -383,7 +383,7 @@ Předčasné ukončení cyklu je možné provést klasicky pomocí strukturovan�
 
 Funkce se ve skriptu deklarují podobně jako v~jazyce PHP. Klíčové slovo \texttt{function} následuje jméno funkce, v~kulatých závorkách čárkami oddělený seznam parametrů a ve složených závorkách tělo funkce. Při parsování nezáleží na pořadí funkcí v~souboru, interpretace začíná až po zpracování celého zdrojového kódu, kdy už jsou všechny dostupné. Samotný skript se spouští funkcí \texttt{main(argv)} s~polem argumentů v~parametru.
 
-U~volání funkcí jsou k~dispozici dvě ekvivalentní syntaxe. V~první verzi je možné všechny parametry předat klasicky do kulatých závorek, u~druhého způsobu je první parametr zapsán tečkovou notací před jméno funkce a celý zápis potom vypadá, jako volání metody nad daným objektem. Forma je inspirována jazykem Python a jeho \texttt{self} parametrem u~metod třídy.
+U~volání funkcí jsou k~dispozici dvě ekvivalentní syntaxe. V~první verzi je možné všechny parametry předat klasicky do kulatých závorek, u~druhého způsobu je první parametr zapsán tečkovou notací před jméno funkce a celý zápis potom vypadá jako volání metody nad daným objektem. Forma je inspirována jazykem Python a jeho \texttt{self} parametrem u~metod třídy.
 
 \begin{verbatim}
 function someFunc(parameter1, parameter2, parameter3)
@@ -415,7 +415,7 @@ define("name", "value");
 \subsection{Datové kontejnery}
 \label{datove_kontejnery}
 
-Základními datovými kontejnery na úrovni jazyka zůstávají pole, struktury a množiny, ty se však dají jednoduše rozšířit. Zásobník a fronta se z~pole vytvoří definováním operací \texttt{pushFront()}, \texttt{push\-Back()}, \texttt{popFront()}, \texttt{popBack()}, \texttt{front()} a \texttt{back()}. Struktura se může bez jakýchkoli změn po\-u\-ží\-vat jako mapa (asociativní pole) a s~její pomocí se dá jednoduše implementovat i spojový seznam.
+Základními datovými kontejnery na úrovni jazyka zůstávají pole, struktury a množiny, ty se však dají jednoduše rozšířit. Zásobník a fronta se z~pole vytvoří definováním operací \texttt{pushFront()}, \texttt{push\-Back()}, \texttt{popFront()}, \texttt{popBack()}, \texttt{front()} a \texttt{back()}. Struktura se může bez jakýchkoli změn po\-u\-ží\-vat jako mapa (asociativní pole) a s~její pomocí se dá jednoduše implementovat i~spojový seznam.
 
 Na rozdíl od jiných skriptovacích jazyků není definována speciální syntaxe pro deklarace a vytváření netriviálních typů proměnných. Pro zachování jednoduchosti stačí pouze zavolat zabudované funkce \texttt{array()}, \texttt{struct()} a další, které vrátí nově vytvořený objekt daného datového typu, a ná\-sled\-ně jej začít používat.
 
@@ -435,7 +435,7 @@ V~prvcích polí i~struktur mohou být uloženy libovolné datové typy -- tímt
 
 \subsection{Grafy, vrcholy a hrany}
 
-První operací při práci s~grafovými vlastnostmi jazyka je vždy volání zabudované funkce \texttt{graph()}, která vytvoří objekt grafu. Od této chvíle se může přistoupit k~definici vrcholů a hran a následné práci s~nimi. Vrcholy i hrany se zároveň chovají jako struktury, tudíž je u~nich možné používat libovolný počet libovolně pojmenovaných vlastností.
+První operací při práci s~grafovými vlastnostmi jazyka je vždy volání zabudované funkce \texttt{graph()}, která vytvoří objekt grafu. Od této chvíle se může přistoupit k~definici vrcholů a hran a následné práci s~nimi. Vrcholy i~hrany se zároveň chovají jako struktury, tudíž je u~nich možné používat libovolný počet libovolně pojmenovaných vlastností.
 
 \begin{verbatim}
 g = graph();
@@ -475,7 +475,7 @@ function dfs(v)
 }
 \end{verbatim}
 
-Výše definovaný algoritmus funguje nad všemi orientovanými i neorientovanými spojitými grafy. Od začátku vývoje se předpokládá načítání grafů z~externích souborů, nicméně jejich vytváření je možné i v~kódu programu.
+Výše definovaný algoritmus funguje nad všemi orientovanými i~neorientovanými spojitými grafy. Od začátku vývoje se předpokládá načítání grafů z~externích souborů, nicméně jejich vytváření je možné i~v~kódu programu.
 
 
 \section{Analýza reprezentace grafu}
@@ -498,31 +498,31 @@ Jedním ze základních kamenů vytvářené aplikace je reprezentace grafů, vr
 \item paměťový management, paměťové nároky.
 \end{itemize}
 
-První a nejdůležitější z~otázek se ptá, jakou třídu grafů je třeba podporovat. Jelikož je program psán úplně od začátku a neexistují žádná omezení plynoucí z~již existujícího kódu a napojování se na něj, je rozumnou volbou uvažovat maximální možnou množinu všech grafů. Ta zahrnuje orientované i neorientované grafy, spojité i nespojité, několik paralelních hran mezi dvěma vrcholy a samozřejmě také smyčky nad vrcholem -- tj. hrana začíná i končí ve stejném vrcholu. Dále v~textu bude vidět, že toto rozhodnutí silně omezí možné způsoby implementace, popř. je výrazně zesložití.
+První a nejdůležitější z~otázek se ptá, jakou třídu grafů je třeba podporovat. Jelikož je program psán úplně od začátku a neexistují žádná omezení plynoucí z~již existujícího kódu a napojování se na něj, je rozumnou volbou uvažovat maximální možnou množinu všech grafů. Ta zahrnuje orientované i~neorientované grafy, spojité i~nespojité, několik paralelních hran mezi dvěma vrcholy a samozřejmě také smyčky nad vrcholem -- tj. hrana začíná i~končí ve stejném vrcholu. Dále v~textu uvidíme, že toto rozhodnutí silně omezí možné způsoby implementace, popř. je výrazně zkomplikuje.
 
-Ačkoli se předpokládají spíše statické grafy, které se na začátku vytvoří a dále se už měnit nebudou, přidávání a mazání vrcholů a hran by mělo být \textit{rozumně} složité. Kopírovat matici sousednosti o~milionu prvků kvůli jednomu přidanému vrcholu rozhodně není správnou cestou.
+Ačkoli se předpokládají spíše statické grafy, které se na začátku vytvoří a dále se už nemění, přidávání a mazání vrcholů a hran by mělo být \textit{rozumně} složité. Kopírovat matici sousednosti o~milionu prvků kvůli jednomu přidanému vrcholu rozhodně není správnou cestou.
 
-Zadání práce požaduje, aby vrcholy i hrany mohly být nějakým, nespecifikovaným, způsobem ohodnoceny. Opět bude vhodné uvažovat maximalistickou variantu. Budeme předpokládat, že každá z~hran může být ohodnocena libovolným počtem vlastností libovolného typu, to samé platí pro vrcholy. Z~tohoto rozhodnutí plyne, že by vrchol i hrana měly mít svou vlastní třídu (ve významu objektového programování), aby se s~nimi dalo jednodušeji manipulovat.
+Zadání práce požaduje, aby vrcholy i~hrany mohly být nějakým, nespecifikovaným, způsobem ohodnoceny. Opět je vhodné uvažovat maximalistickou variantu. Předpokládáme, že každá z~hran může být ohodnocena libovolným počtem vlastností libovolného typu, to samé platí pro vrcholy. Z~tohoto rozhodnutí plyne, že by vrchol i~hrana měly mít svou vlastní třídu (ve významu objektového programování), aby se s~nimi dalo jednodušeji manipulovat.
 
-Jelikož budou vrcholy a hrany v~interpretu zpřístupnitelné i jako samostatné proměnné, je třeba, aby si nějakým způsobem pamatovaly, ke kterému grafu patří. Tento požadavek bude nejspíše řešen uložením ukazatele na objekt grafu do atributu třídy. Vrcholy i hrany by dále měly být v~grafu schopny identifikovat sebe sama. Pokud by byl graf implementován například maticí sousednosti, je tento požadavek naprosto zásadní, protože bez něj by například nebylo možné najít sousedy daného vrcholu.
+Jelikož jsou vrcholy a hrany v~interpretu zpřístupnitelné i~jako samostatné proměnné, je třeba, aby si nějakým způsobem pamatovaly, ke kterému grafu patří. Tento požadavek se řeší uložením ukazatele na objekt grafu do atributu třídy. Vrcholy i~hrany by dále měly být v~grafu schopny identifikovat sebe sama. Pokud by byl graf implementován například maticí sousednosti, je tento požadavek naprosto zásadní, protože bez něj by například nebylo možné najít sousedy daného vrcholu.
 
-Další z~důležitých otázek je reprezentace množin vrcholů a hran, přidávání a odebírání prvků, množinové a jiné operace. Pokud budou množiny reprezentované identicky jako celý graf, zůstane spousta kódu ekvivalentní nebo alespoň podobná. Předpokládá-li se časté přidávání a odebírání prvků, měly by být tyto operace jednoduché a rychlé.
+Další z~důležitých otázek je reprezentace množin vrcholů a hran, přidávání a odebírání prvků, množinové a jiné operace. Pokud by byly množiny reprezentované identicky jako celý graf, zůstane spousta kódu ekvivalentní nebo alespoň podobná. Předpokládá-li se časté přidávání a odebírání prvků, měly by být tyto operace jednoduché a rychlé.
 
-Očekávaná velikost grafů jsou miliony vrcholů a hran -- ob\-rov\-ské pa\-mě\-ťo\-vé nároky. Každé z~primitiv může být odkazováno proměnnou v~interpretu, či jiného místa, a proto bude pravděpodobně potřeba nějaký druh paměťového managementu, který zamezí chybám při práci s~dynamickou pamětí.
+Očekávaná velikost grafů jsou miliony vrcholů a hran -- ob\-rov\-ské pa\-mě\-ťo\-vé nároky. Každé z~primitiv může být odkazováno proměnnou v~interpretu, či jiného místa, a proto je zajisté potřeba nějaký druh paměťového managementu, který zamezí chybám při práci s~dynamickou pamětí.
 
 
 \subsection{Reprezentace grafu}
 
-Existuje několik možností, jak reprezentovat graf v~programu. Při výuce teorie grafů bývají nejčastěji zmi\-ňo\-vá\-ny maticové reprezentace a spojové seznamy, ale existují i další, méně obvyklé, způsoby. Běžně se používají
+Existuje několik možností, jak reprezentovat graf v~programu. Při výuce teorie grafů bývají nejčastěji zmi\-ňo\-vá\-ny maticové reprezentace a spojové seznamy, ale existují i~další, méně obvyklé, způsoby. Označme množinu vrcholů, resp. hran, symbolem $V$, resp. $H$. Pro uložení grafu se běžně používají
 
 \begin{itemize}
-\item matice incidence $|U| \times |H|$,
-\item matice sousednosti $|U| \times |U|$,
+\item matice incidence $|V| \times |H|$,
+\item matice sousednosti $|V| \times |V|$,
 \item spojové seznamy -- seznam následníků apod.,
 \item jiné reprezentace.
 \end{itemize}
 
-Cílem této části bude najít nejvhodnější reprezentaci grafu, kterou by bylo možné použít ve specifické oblasti interpretu.
+Cílem této části je najít nejvhodnější reprezentaci grafu, kterou by bylo možné použít ve specifické oblasti interpretu.
 
 
 \subsubsection{Standardní maticové reprezentace}
@@ -537,9 +537,9 @@ class Graph
 };
 \end{verbatim}
 
-Parametry datových kontejnerů nemohou být primitivní datové typy, protože každý vrchol i každá hrana musejí umět ukládat dodatečné vlastnosti typu klíč--hodnota definované v~požadavcích na systém.
+Parametry datových kontejnerů nemohou být primitivní datové typy, protože každý vrchol i~každá hrana musejí umět ukládat dodatečné vlastnosti typu klíč--hodnota definované v~požadavcích na systém.
 
-Na první pohled se zdá, že by mohlo být výhodné použít tuto reprezentaci, nicméně existuje několik výrazných problémů. Největším z~nich jsou paralelní hrany, protože počáteční a koncový vrchol neurčují hranu jednoznačně. Řešením by mohlo být přidání dodatečného vrcholu podle schématu \ref{fig:parallel_edges}, kterým se dvojice paralelních hran rozbije na tři jednoznačně identifikovatelné hrany. Druhou, horší, možností zůstává trojrozměrná matice a trojrozměrné indexy. Ani jedno z~řešení rozhodně není hezké.
+Na první pohled se zdá, že by mohlo být výhodné použít tuto reprezentaci, nicméně existuje několik výrazných problémů. Největším z~nich jsou paralelní hrany, protože počáteční a koncový vrchol neurčují hranu jednoznačně. Řešením by mohlo být přidání dodatečného vrcholu podle schématu \ref{fig:parallel_edges}, kterým se dvojice paralelních hran rozbije na tři jednoznačně identifikovatelné hrany. Druhou, horší, možností zůstává trojrozměrné pole a trojrozměrné indexy. Ani jedno z~řešení rozhodně není hezké.
 
 \begin{figure}[ht]
 \begin{center}
@@ -555,7 +555,7 @@ Na první pohled se zdá, že by mohlo být výhodné použít tuto reprezentaci
 
 Další nevýhodou je příliš složité přidávání a mazání vrcholů a z~toho vyplývající časté realokace velkých bloků paměti. Toto řešení by tedy bylo vhodné spíše pro statické grafy, které se na začátku vytvoří a pak zůstanou nezměněny až do konce algoritmu.
 
-Problémem je i složité procházení vrcholů a hran a hledání sebe sama v~grafu. Každý vrchol a hrana musí mít u~sebe uložen index do matice reprezentující graf, který je navíc nutné aktualizovat při libovolné změně matice sousednosti. Kupříkladu schéma \ref{fig:update_indices} ukazuje problémy s~mazáním hrany. Tímto by se výrazně zvýšily nejen paměťové, ale i výpočetní nároky.
+Problémem je i~složité procházení vrcholů a hran a hledání sebe sama v~grafu. Každý vrchol a hrana musí mít u~sebe uložen index do matice reprezentující graf, který je navíc nutné aktualizovat při libovolné změně matice sousednosti. Kupříkladu schéma \ref{fig:update_indices} ukazuje problémy s~mazáním hrany. Tímto by se výrazně zvýšily nejen paměťové, ale i~výpočetní nároky.
 
 \begin{figure}[ht]
 \begin{center}
@@ -565,9 +565,9 @@ Problémem je i složité procházení vrcholů a hran a hledání sebe sama v~g
 \end{center}
 \end{figure}
 
-Další problémy pravděpodobně vzniknou při vytváření množin vrcholů a hran, které budou mít naprosto odlišnou implementaci vzhledem k~vlastní třídě grafu. Paměťový management by byl extrémně složitý a snadno náchylný k~chybám.
+Další problémy pravděpodobně by pravděpodobně vznikly při vytváření množin vrcholů a hran, které by měly naprosto odlišnou implementaci vzhledem k~vlastní třídě grafu. Paměťový management by byl extrémně složitý a snadno náchylný k~chybám.
 
-Výše uvedená diskuze odhalila množství nepřekonatelných problémů, které by vznikly při použití matice sousednosti. Dá se také předpokládat, že se úplně stejné problémy objeví i u~matice incidence a všude tam, kde je vlastní struktura grafu, návaznost vrcholů a hran, definovaná centrálně ve třídě grafu.
+Výše uvedená diskuze odhalila množství nepřekonatelných problémů, které by vznikly při použití matice sousednosti. Dá se také předpokládat, že se úplně stejné problémy objeví i~u~matice incidence a všude tam, kde je vlastní struktura grafu, návaznost vrcholů a hran, definovaná centrálně ve třídě grafu.
 
 
 \subsubsection{Reprezentace množinami vrcholů a hran}
@@ -575,7 +575,7 @@ Výše uvedená diskuze odhalila množství nepřekonatelných problémů, kter�
 
 Tato reprezentace grafů se učí spíše zřídka, nicméně v~tomto konkrétním případě (interpretu), vychází jako velice elegantní. Samotný nápad vznikl při odhalení slepé uličky u~maticových reprezentací, které strukturu grafu definují centrálně v~jediné datové struktuře. Bylo potřeba najít nějaké distribuované řešení.
 
-Datové položky třídy grafu budou tvořeny pouze dvěma množinami nebo seznamy vrcholů a hran. Dá se říci, že ani tyto dva kontejnery ukazatelů by nemusely být ve třídě grafu definovány, nicméně je třeba nějakým způsobem uvolňovat dynamickou paměť, uložení pointerů je proto nutností.
+Datové položky třídy grafu jsou tvořeny pouze dvěma množinami nebo seznamy vrcholů a hran. Dá se říci, že ani tyto dva kontejnery ukazatelů by nemusely být ve třídě grafu definovány, nicméně je třeba nějakým způsobem uvolňovat dynamickou paměť, uložení pointerů je proto nutností.
 
 \begin{verbatim}
 class Graph
@@ -585,7 +585,7 @@ class Graph
 };
 \end{verbatim}
 
-Vlastní struktura grafu je definovaná ne v~jeho třídě, ale přímo u~vrcholů a hran. Vrchol obsahuje množinu hran, které s~ním incidují a hrany ukládají ukazatele na svůj počáteční a koncový vrchol. Referenci na graf je nutné uchovávat kvůli interpretu.
+Vlastní struktura grafu je definovaná ne v~jeho třídě, ale přímo u~vrcholů a hran. Vrchol obsahuje množinu hran, které s~ním incidují, a hrany ukládají ukazatele na svůj počáteční a koncový vrchol. Referenci na graf je nutné uchovávat kvůli interpretu.
 
 \begin{verbatim}
 class Vertex
@@ -602,11 +602,11 @@ class Edge
 };
 \end{verbatim}
 
-Hlavní výhodou této reprezentace je možnost práce s~naprosto obecným grafem, není třeba se starat o~paralelní hrany ani smyčky nad vrcholy. Už bylo zmíněno, že druhý typ reprezentace, matice sousednosti, ve své standardní verzi neumí pracovat s~paralelními hranami.
+Hlavní výhodou této reprezentace je možnost práce s~naprosto obecným grafem, není třeba se starat o~paralelní hrany ani smyčky nad vrcholy. Už bylo zmíněno, že druhý typ reprezentace, matice sousednosti, neumí reprezentovat paralelní hrany.
 
-Druhá obrovská výhoda samozřejmě spočívá v~ekvivalentní implementaci grafu a množin jeho vrcholů a hran. Není nutné programovat identické operace dvakrát a poté je navíc složitě napojovat na sebe. Výhodou je i přirozená iterovatelnost množin, díky níž nebude složité implementovat procházení grafu pomocí cyklu \texttt{foreach}.
+Druhá obrovská výhoda samozřejmě spočívá v~ekvivalentní implementaci grafu a množin jeho vrcholů a hran. Není nutné programovat identické operace dvakrát a poté je navíc složitě napojovat na sebe. Výhodou je i~přirozená iterovatelnost množin, díky níž nebylo složité implementovat procházení grafu pomocí cyklu \texttt{foreach}.
 
-Jedinou možnou nevýhodou je mírná duplicita informací při definici struktury gra\-fu, která je podobná obousměrně propojenému spojovému seznamu. Průchod je možný od vrcholů k~hranám a také naopak od hran k~vrcholům. V~rozhraní tříd bude nutné ošetřit, aby kvůli této duplicitě nemohly vzniknout žádné problémy.
+Jedinou možnou nevýhodou je mírná duplicita informací při definici struktury gra\-fu, která je podobná obousměrně propojenému spojovému seznamu. Průchod je možný od vrcholů k~hranám a také naopak od hran k~vrcholům. V~rozhraní tříd je nutné ošetřit, aby kvůli této duplicitě nemohly vzniknout žádné problémy.
 
 
 \subsubsection{Testovací implementace}
@@ -655,21 +655,21 @@ Výhradně tyto čtyři funkce pracují při vytváření a mazání vrcholů a 
 
 Implementace podmnožin vrcholů a hran je téměř identická jako implementace vlastního grafu. Jediný rozdíl se nachází v~těchto čtyřech metodách -- nepracují s~pamětí, ale pouze se starají o~ukládání a vracení již existujících ukazatelů na objekty.
 
-Přiřazování mezi proměnnými v~interpretu není třeba nějak speciálně ošetřovat. Pokud je proměnná \texttt{vertex} vrcholem grafu, pak jeho přiřazení do jiné proměnné nevytváří v~původním grafu ani v~žádném jiném nový vrchol, nemůže jít o~hlubokou kopii. Protože žádný vrchol nemůže bez grafu existovat, je jasné, že proměnná \texttt{alias} z~příkladu níže musí být identická k~původnímu vrcholu. Stejnou úvahu lze provést i pro hrany.
+Přiřazování mezi proměnnými v~interpretu není třeba nějak speciálně ošetřovat. Pokud je proměnná \texttt{vertex} vrcholem grafu, pak jeho přiřazení do jiné proměnné nevytváří v~původním grafu ani v~žádném jiném nový vrchol, nemůže jít o~hlubokou kopii. Protože žádný vrchol nemůže bez grafu existovat, je jasné, že proměnná \texttt{alias} z~příkladu níže musí odkazovat na stejný vrchol  jako proměnná \texttt{vertex}. Stejnou úvahu lze provést i~pro hrany.
 
 \begin{verbatim}
 vertex = g.generateVertex();
 alias = vertex;
 \end{verbatim}
 
-Výše uvedený kód může vypadat jako nežádoucí a jeho použití okrajové, ale naprosto stejné operace se provádějí při předávání parametrů funkcím, a proto je dobré mít ověřeno, že při jejich volání nenastanou žádné problémy. Jak už bylo řečeno, o~veškerou dynamicky alokovanou paměť grafu se stará třída \texttt{Graf} a nikdo jiný.
+Výše uvedený kód může vypadat jako nežádoucí a jeho použití okrajové, ale naprosto stejné operace se provádějí při předávání parametrů funkcím, a proto je dobré mít ověřeno, že při jejich volání nenastanou žádné problémy. Jak už bylo řečeno, o~veškerou dynamicky alokovanou paměť grafu se stará třída \texttt{Graf} a žádná jiná.
 
 
 \section{Proměnné ve skriptu, typy a operace}
 
 \subsection{Implementace operací větvením}
 
-Existují v~zásadě dvě možnosti, jak implementovat sčítání, odčítání a ostatní operace nad hodnotami a proměnnými ve skriptu. Nejjednodušší z~nich předpokládá použití \texttt{unionu} a pomocné proměnné, která ukládá datový typ uložené hodnoty. Příkladem budiž ukázka z~autorova dřívějšího interpretu.
+Existují v~zásadě dvě možnosti, jak implementovat sčítání, odčítání a ostatní operace nad hodnotami a proměnnými ve skriptu. Nejjednodušší z~nich předpokládá použití \texttt{unionu} a pomocné proměnné, která ukládá datový typ uložené hodnoty. Příkladem budiž ukázka z~autorova dřívějšího interpretu \cite[třída \texttt{CNodeValue}]{borsch}.
 
 \begin{verbatim}
 class CNodeValue
@@ -739,7 +739,7 @@ CountPtr<Value> ValueInt::add(const Value& right) const
 }
 \end{verbatim}
 
-Dejme tomu, že se jednalo také o~celé číslo, zavolala se tedy následující metoda a provedlo sečtení celých čísel, jehož výsledkem je taktéž celé číslo. V~tuto chvíli byly již všechny potřebné datové typy známy a operace se mohla vykonat.
+Dejme tomu, že se jedná také o~celé číslo, zavolá se tedy následující metoda a provede sečtení celých čísel, jehož výsledkem je taktéž celé číslo. V~tuto chvíli jsou již všechny potřebné datové typy známy a operace se může vykonat.
 
 \begin{verbatim}
 CountPtr<Value> ValueInt::add(const ValueInt& left) const
@@ -768,7 +768,7 @@ V~případě přidání nového datového typu se žádná z~již existujících
 
 Zdrojový soubor skriptu se překládá pomocí lexikálního analyzátoru a parseru do vnitřní reprezentace. Jejím základním prvkem je abstraktní třída \texttt{Node}, ze které jsou odvozeny všechny ostatní třídy, například třída pro větvení, třída pro cykly a další.
 
-Posláním parseru je sestavit \textit{abstraktní strom syntaxe}, který bude následně použit pro vykonávání programu. Povinností jednotlivých stavebních kamenů je definovat metodu \texttt{e\-xe\-cu\-te()}, jež se bude volat rekurzivně na všech úrovních stromu.
+Posláním parseru je sestavit \textit{abstraktní strom syntaxe}, který se následně používá pro vykonávání programu. Povinností jednotlivých stavebních kamenů je definovat metodu \texttt{e\-xe\-cu\-te()}, jež se volá rekurzivně na všech úrovních stromu.
 
 \begin{verbatim}
 class Node
@@ -778,7 +778,7 @@ public:
 };
 \end{verbatim}
 
-Kontext skriptu, ve kterém jsou uložené například hodnoty proměnných je vhodné definovat v~externí třídě, pravděpodobně singletonu. Druhou možností by bylo předávat kontext metodám v~parametru, ale to bylo v~současnosti označeno za zbytečné plýtvání výkonem, nepředpokládají se vícevláknové skripty.
+Kontext skriptu (viz kapitola \ref{kontext_skriptu} na straně \pageref{kontext_skriptu}), ve kterém jsou uložené například hodnoty proměnných je vhodné definovat v~externí třídě, pravděpodobně singletonu. Druhou možností by bylo předávat kontext metodám v~parametru, ale to bylo v~současnosti označeno za zbytečné plýtvání výkonem, nepředpokládají se vícevláknové skripty.
 
 Alternativní možností vykonávání skriptu by mohl být překlad do instrukcí virtuálního procesoru a jejich následná interpretace. To se však aktuálně jeví jako zbytečně náročné řešení, které nepřináší téměř nic navíc.
 
@@ -829,7 +829,7 @@ function main(argv)
 }
 \end{verbatim}
 
-Součet bude v~syntaktickém stromu uložen celkem ve třech uzlech. Listy vracejí svoji hodnotu ve formě celých čísel, binární operátor následně tyto dvě hodnoty sečte a vrátí výsledek operátoru \texttt{return}. Vykonávání pokračuje v~podobném duchu až do vynoření se z~kořene stromu. Celá situace je znázorněna ve schématu \ref{fig:execute}.
+Součet se v~syntaktickém stromu uloží celkem do tří uzlů. Listy vracejí svoji hodnotu ve formě celých čísel, binární operátor následně tyto dvě hodnoty sečte a vrátí výsledek operátoru \texttt{return}. Vykonávání pokračuje v~podobném duchu až do vynoření se z~kořene stromu. Celá situace je znázorněna ve schématu \ref{fig:execute}.
 
 \begin{figure}[ht]
 \begin{center}
@@ -846,15 +846,15 @@ Z~toho dále vyplývá, že se musí objekty vytvářet dynamicky, a s~tím bohu
 
 \subsubsection{Garbage collector}
 
-Jednou z~možností je používat \textit{Garbage collector} obdobný javovskému. Velkou výhodou by bylo vyřešení naprosto všech, současných i budoucích, problémů s~u\-vol\-ňo\-vá\-ním dynamické paměti. Nevýhodou zůstává složitá implementace a dodatečná režie při vykonávání. V~případě použití nějakého již existujícího garbage collectoru vzniká závislost na externí knihovně a s~tím souvisí i nižší či složitější přenositelnost programu.
+Jednou z~možností je používat \textit{Garbage collector} obdobný javovskému. Velkou výhodou by bylo vyřešení naprosto všech, současných i~budoucích, problémů s~u\-vol\-ňo\-vá\-ním dynamické paměti. Nevýhodou zůstává složitá implementace a dodatečná režie při vykonávání. V~případě použití nějakého již existujícího garbage collectoru vzniká závislost na externí knihovně a s~tím souvisí i~nižší či složitější přenositelnost programu.
 
-V~tomto případě se zdá, že nevýhody převažují nad výhodami. Navíc se přece jedná o~ná\-vra\-to\-vou hodnotu \textit{výhradně} jedné funkce. Možná by stačilo zapouzdřit ukazatel na návratovou hodnotu do pomocné třídy, která by se postarala o~smazání, až objekt nebude potřeba.
+V~tomto případě se zdá, že nevýhody převažují nad výhodami. Navíc se přece jedná o~ná\-vra\-to\-vou hodnotu \textit{výhradně} jedné funkce. Možná by stačilo zapouzdřit ukazatel na návratovou hodnotu do pomocné třídy, která by se postarala o~smazání ve chvíle, kdy už objekt není potřeba.
 
 
 \subsubsection{Chytré ukazatele}
 \label{chytre_ukazatele}
 
-Nejjednodušší implementací chytrých ukazatelů je šablona \texttt{auto\_ptr} z~knihovny STL. Stačí nebo bude potřeba nalézt silnější nástroj? \texttt{Auto\_ptr} se po požádání stává výhradním vlast\-ní\-kem ukazatele a při své destrukci maže i předanou dynamickou paměť. \textit{Výhradní vlastník} znamená, že v~jednom okamžiku existuje vždy právě jedna \texttt{auto\_ptr} reference na danou paměť.
+Nejjednodušší implementací chytrých ukazatelů je šablona \texttt{auto\_ptr} z~knihovny STL. Stačí nebo je potřeba nalézt silnější nástroj? \texttt{Auto\_ptr} se po požádání stává výhradním vlast\-ní\-kem ukazatele a při své destrukci maže i~předanou dynamickou paměť. \textit{Výhradní vlastník} znamená, že v~jednom okamžiku existuje vždy právě jedna \texttt{auto\_ptr} reference na danou paměť.
 
 Splnit tento požadavek bohužel nelze. Chceme-li například vrátit hodnotu uloženou v~pro\-měn\-né interpretovaného skriptu, první referencí zůstane původní proměnná a druhá vznikne ve formě vracené hodnoty. Musíme tedy hledat silnější nástroj.
 
@@ -862,27 +862,27 @@ Pokud je jediným problémem \texttt{auto\_ptr} pouze možný větší počet od
 
 Toto řešení by mohlo fungovat, je však nutné si dát pozor na cyklické reference, kdy první objekt odkazuje na druhý a zároveň druhý odkazuje na první, paměť by se nikdy neuvolnila. Zmíněná situace bohužel může nastat, protože právě tímto způsobem je uložena struktura grafu (viz kapitola \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}). Vrcholy obsahují seznam incidujících hran a hrany odkaz na počáteční a koncový vrchol.
 
-Z~toho plyne, že pokud nebude na tomto konkrétním místě chytrý ukazatel s~čítáním referencí použit, nedojde ke vzniku cyklických referencí, a tudíž dostáváme řešení problému návratové hodnoty \texttt{execute()}.
+Z~toho plyne, že pokud se na tomto konkrétním místě chytrý ukazatel s~čítáním referencí nepoužije, nedojde ke vzniku cyklických referencí, a tudíž dostáváme řešení problému návratové hodnoty \texttt{execute()}.
 
 
 \section{Grafické uživatelské rozhraní}
 
-Grafické uživatelské rozhraní se naprogramuje s~použitím knihovny Qt. Sestává z~hlav\-ní\-ho okna aplikace \texttt{QMainWindow}, jehož centrálním widgetem bude textový editor pro programátory na bázi \texttt{QPlainTextEdit}. Jedná se o~MDI aplikaci, jednotlivé editory je možné přepínat, po vzoru webových prohlížečů, pomocí panelů či listů. Menu, nástrojová lišta a stavový řádek jsou pro daný typ aplikace samozřejmostí.
+Grafické uživatelské rozhraní je naprogramováno s~použitím knihovny Qt. Sestává z~hlav\-ní\-ho okna aplikace \texttt{QMainWindow}, jehož centrálním widgetem je textový editor pro programátory na bázi \texttt{QPlainTextEdit}. Jedná se o~MDI aplikaci, jednotlivé editory je možné přepínat, po vzoru webových prohlížečů, pomocí panelů či listů. Menu, nástrojová lišta a stavový řádek jsou pro daný typ aplikace samozřejmostí.
 
-Knihovna Qt poskytuje možnost vkládat do okrajů hlavního okna plovoucí panely, objekty třídy \texttt{QDockWidget}, jež mohou být přesunuty na jiné místo v~aplikaci a také \textit{vytrhnuty} do samostatného okna. Tato funkcionalita se určitě hodí u~vizualizací, v~případě jednoho monitoru bude OpenGL widget panelem v~hlavním okně aplikace, zároveň však existuje možnost zobrazit ho i v~samostatném okně například na druhém monitoru.
+Knihovna Qt poskytuje možnost vkládat do okrajů hlavního okna plovoucí panely, objekty třídy \texttt{QDockWidget}, jež mohou být přesunuty na jiné místo v~aplikaci a také \textit{vytrhnuty} do samostatného okna. Tato funkcionalita se určitě hodí u~vizualizací, v~případě jednoho monitoru je OpenGL widget panelem v~hlavním okně aplikace, zároveň však existuje možnost zobrazit ho i~v~samostatném okně například na druhém monitoru.
 
-Panelů může být definováno libovolné množství, pro začátek se kromě vizualizací před\-po\-klá\-dá i zobrazování výstupu z~vykonávaného skriptu, seznam definovaných proměnných spolu s~jejich hodnotami a zásobník volání funkcí.
+Panelů může být definováno libovolné množství, pro začátek se kromě vizualizací před\-po\-klá\-dá i~zobrazování výstupu z~vykonávaného skriptu, seznam definovaných proměnných spolu s~jejich hodnotami a zásobník volání funkcí.
 
 
 \section{Shrnutí}
 
-V~této kapitole byly definovány základní myšlenky a rozhodnutí pro tvorbu interpretu spe\-ci\-ál\-ní\-ho programovacího jazyka pro manipulaci s~grafy. Aplikace bude naprogramována v~jazyce C++ s~využitím standardní knihovny STL, grafická část v~Qt a OpenGL.
+V~této kapitole byly definovány základní myšlenky a rozhodnutí pro tvorbu interpretu spe\-ci\-ál\-ní\-ho programovacího jazyka pro manipulaci s~grafy. Aplikace se naprogramuje v~jazyce C++ s~využitím standardní knihovny STL, grafická část v~Qt a OpenGL.
 
 Analýza odhalila nemožnost reprezentovat graf maticí sousednosti ani jinými technikami, ve kterých je struktura grafu uložena centrálně. Navržené řešení spočívá v~obecných množinách vrcholů a hran, kde si vrcholy udržují seznam incidujících hran a hrany odkazy na svůj počáteční a koncový vrchol. Díky této technice může být podporován libovolný typ grafů bez jakéhokoli omezení a hlavně s~rozumnými složitostmi vykonávání všech operací.
 
-Hodnoty a proměnné ve skriptu budou implementovány pomocí hierarchie tříd, jednotlivé operace pracují na bázi návrhového vzoru Double dispatching.
+Hodnoty a proměnné se ve skriptu implementují pomocí hierarchie tříd, jednotlivé operace pracují na bázi návrhového vzoru Double dispatching.
 
-Skript je v~interpretu reprezentován abstraktním stromem syntaxe. Jeho vykonávání spočívá v~rekurzivním volání metody \texttt{execute()} nad každým uzlem tohoto stromu. Ná\-vra\-to\-vou hodnotou bude chytrý ukazatel na bázi čítání referencí zapouzdřující obecnou hodnotu. Skript může být, v~případě debuggingu, pozastaven technikami ví\-ce\-vlák\-no\-vé\-ho programování.
+Skript je v~interpretu reprezentován abstraktním stromem syntaxe. Jeho vykonávání spočívá v~rekurzivním volání metody \texttt{execute()} nad každým uzlem tohoto stromu. Ná\-vra\-to\-vou hodnotou je chytrý ukazatel na bázi čítání referencí zapouzdřující obecnou hodnotu. Skript může být, v~případě debuggingu, pozastaven technikami ví\-ce\-vlák\-no\-vé\-ho programování.
 
 Grafické uživatelské rozhraní zahrnuje hlavní okno s~textovým editorem pro programátory a několik speciálních plovoucích panelů, které mohou být uživatelem vytrhnuty do samostatného okna.
 
@@ -898,13 +898,13 @@ Grafické uživatelské rozhraní zahrnuje hlavní okno s~textovým editorem pro
 
 \subsection{Lexikální analyzátor}
 
-Jako základ pro lexikální analyzátor byl použit zdrojový kód z~předchozího autorova projektu. Jeho jádrem je rozsáhlý stavový automat, který zpracovává příchozí znaky a v~závislosti na nich vrací lexikální tokeny.
+Jako základ pro lexikální analyzátor byl použit zdrojový kód z~předchozího autorova projektu \cite[třída \texttt{CLexan}]{borsch}. Jeho jádrem je rozsáhlý stavový automat, který zpracovává příchozí znaky a v~závislosti na nich vrací lexikální tokeny.
 
 Analyzátor bere v~úvahu konstanty \texttt{\_\_FILE\_\_}, \texttt{\_\_LINE\_\_} a \texttt{\_\_FUNCTION\_\_}, které se při svém použití automaticky nahrazují za pozice ve zdrojových kódech. Dalšími vnitřními příkazy jsou jednoduchá bezparametrická makra \texttt{define("name", "value")} a vkládání externích souborů pomocí konstrukce \texttt{include("filename")}.
 
 \subsubsection{Procházení zdrojových dat}
 
-Makra i soubory se v~principu zpracovávají naprosto stejně. Lexikální analyzátor obsahuje zásobník objektů typu \texttt{LexanIterator}, který slouží pro zanoření se do další úrovně ve zdrojových kódech skriptu. Například při inkluzi souboru se na vrcholu zásobníku vytvoří nová položka a při dokončení zpracování se odstraní. Překlad končí ve chvíli, kdy je zásobník vyprázdněn.
+Makra i~soubory se v~principu zpracovávají naprosto stejně. Lexikální analyzátor obsahuje zásobník objektů typu \texttt{LexanIterator}, který slouží pro zanoření se do další úrovně ve zdrojových kódech skriptu. Například při inkluzi souboru se na vrcholu zásobníku vytvoří nová položka a při dokončení zpracování se odstraní. Překlad končí ve chvíli, kdy je zásobník vyprázdněn.
 
 Abstraktní třída \texttt{LexanIterator} definuje rozhraní pro nejnižší vrstvu -- vlastní čtení znaků ze vstupního proudu. Jediný požadavek na potomky je specifikace metody \texttt{get()}, která má za úkol vrátit následující znak v~pořadí a \texttt{unget()} sloužící pro návrat o~znak zpátky. Třída dále ukládá pozici ve zdrojových kódech používanou především v~chybových zprávách.
 
@@ -914,7 +914,7 @@ Aktuálně jsou definováni pouze dva potomci. \texttt{LexanIteratorFile} má za
 \subsubsection{Identifikátory}
 \label{identifikatory}
 
-Řetězce ve skriptu, jména proměnných a funkcí, se během lexikální analýzy nahrazují za celočíselné identifikátory, stejnou myšlenku používá i interpret JavaScriptu ve webovém pro\-hlí\-že\-či Links \cite[str. 25]{links}.
+Řetězce ve skriptu, jména proměnných a funkcí, se během lexikální analýzy nahrazují za celočíselné identifikátory, stejnou myšlenku používá i~interpret JavaScriptu ve webovém pro\-hlí\-že\-či Links \cite[str. 25]{links}.
 
 Ve chvíli, kdy lexikální analyzátor narazí ve zdrojovém proudu na shluk znaků, který by mohl být identifikátorem, zkontroluje nejdříve, zda se nejedná o~klíčové slovo. V~případě negativního výsledku projde seznam skriptem definovaných maker a pokusí se je rozbalit. Neuspěje-li ani zde, použije makro \texttt{STR2ID()}, které požádá tabulku symbolů, třídu \texttt{StringTable}, o~překlad řetězce na celočíselný identifikátor. Opačný směr umožňuje makro \texttt{ID2STR()}.
 
@@ -949,7 +949,7 @@ Gramatiku vytvořeného jazyka je možné najít v~příloze \ref{gramatika_jazy
 
 \subsection{Hierarchie tříd, základní třída BaseObject}
 
-V~objektově orientovaném návrhu aplikačního rozhraní je vždy dobré zavést kořen hierarchie tříd, který bude poskytovat, či pouze definovat, základní obecné operace nad všemi používanými objekty. V~jazyce Java se taková třída jmenuje \texttt{Object}, knihovna Qt zavádí \texttt{QObject}, \texttt{CObject} je k~nalezení v~knihovně MFC. Vyvíjená aplikace použije jméno \texttt{Ba\-se\-Ob\-ject}.
+V~objektově orientovaném návrhu aplikačního rozhraní je vždy dobré zavést kořen hierarchie tříd, který poskytuje, či pouze definuje, základní obecné operace nad všemi používanými objekty. V~jazyce Java se taková třída jmenuje \texttt{Object}, knihovna Qt zavádí \texttt{QObject}, \texttt{CObject} je k~nalezení v~knihovně MFC. Vyvíjená aplikace použije jméno \texttt{Ba\-se\-Ob\-ject}.
 
 
 \subsubsection{Výpis struktury objektů, metoda dump()}
@@ -965,7 +965,7 @@ function main(argv)
 }
 \end{verbatim}
 
-Po přeložení kódu do vnitřní reprezentace a zavolání \texttt{dump()} bude vypsaná struktura objektů vypadat následovně.
+Po přeložení kódu do vnitřní reprezentace a zavolání \texttt{dump()} vypadá vypsaná struktura objektů následovně.
 
 \begin{verbatim}
 <Function name="main" id="63">
@@ -995,20 +995,20 @@ Druhou funkcionalitou poskytovanou základní třídou \texttt{BaseObject} jsou 
 
 Třída definuje statické úložiště adres alokovaných objektů. Při své konstrukci do něj vloží ukazatel na právě vytvořený objekt, v~destruktoru ho smaže, toť vše. Jelikož se jedná o~kořen hierarchie tříd, tento konstruktor a destruktor se z~definice volá u~naprosto všech vytvářených objektů.
 
-Těsně před ukončením funkce \texttt{main()} se zjistí aktuální počet alokovaných dat. Pokud není nulový, je jasné, že se někde v~aplikaci objevil únik paměti a tato skutečnost je signalizována vývojáři. Díky RTTI, které jazyk C++ podporuje operátorem \texttt{typeid}, je možné získat i datový typ neuvolněných objektů.
+Těsně před ukončením funkce \texttt{main()} se zjistí aktuální počet alokovaných dat. Pokud není nulový, je jasné, že se někde v~aplikaci objevil únik paměti a tato skutečnost je signalizována vývojáři. Díky RTTI, které jazyk C++ podporuje operátorem \texttt{typeid}, je možné získat i~datový typ neuvolněných objektů.
 
-Kód pro testy může způsobovat výrazné zpomalení běhu aplikace, a proto byl obalen do podmíněné sekce preprocesoru \texttt{CHECK\_MEMORY\_LEAKS}, jež je zapnutá pouze při \textit{debug} kompilaci. Ve výsledné verzi samozřejmě nejsou tyto testy potřeba a ve spustitelném souboru nebudou ani fyzicky přítomny.
+Kód pro testy může způsobovat výrazné zpomalení běhu aplikace, a proto byl obalen do podmíněné sekce preprocesoru \texttt{CHECK\_MEMORY\_LEAKS}, jež je zapnutá pouze při \textit{debug} kompilaci. Ve výsledné verzi samozřejmě nejsou tyto testy potřeba a ve spustitelném souboru se ani fyzicky nenacházejí.
 
-Pozorný čtenář si pravděpodobně uvědomil, že nejsou kontrolovány pouze dynamické, ale i statické alokace. Možná by stálo za úvahu vložit kód do přetížených operátorů \texttt{new} a \texttt{delete}, nicméně statické objekty jsou uvolněny vždy, a proto nemají žádný vliv na správnost zjištěné informace.
+Pozorný čtenář si pravděpodobně uvědomil, že nejsou kontrolovány pouze dynamické, ale i~statické alokace. Možná by stálo za úvahu vložit kód do přetížených operátorů \texttt{new} a \texttt{delete}, nicméně statické objekty jsou uvolněny vždy, a proto nemají žádný vliv na správnost zjištěné informace.
 
-Dále se nekontrolují alokace paměti, která nepatří do \texttt{BaseObject} hierarchie, ty se však v~kódu vyskytují spíše zřídka. Pro zjištění jejich úniků slouží, taktéž používaný, nástroj Valgrind.
+Dále se nekontrolují alokace paměti, která nepatří do \texttt{BaseObject} hierarchie, ty se však v~kódu vyskytují spíše zřídka. Pro zjištění jejich úniků slouží, taktéž používaný, nástroj Valgrind (\url{http://www.valgrind.org/}).
 
 
 \subsubsection{Pořadí inicializace statických objektů}
 
 Učebnice jazyka C++ se pouze velice zřídka věnují tématu \textit{pořadí inicializace statických objektů} (angl. static object initialization order), jednou z~mála výjimek je \cite{industrial_strength_cpp}. Jedná se o~situaci, kdy linker při spojování jednotlivých modulů může způsobit zásadní nefunkčnost naprosto správného kódu!
 
-Termín \textit{statický objekt} je zde používán ve významu atributu třídy deklarovaného s~modifikátorem \texttt{static}, jenž způsobuje sdílení mezi odpovídajícími objekty. Jako praktickou ukázku nastanuvší chyby můžeme použít statickou proměnnou \texttt{m\_allocated\_objects} třídy \texttt{BaseObject} z~kapitoly \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}.
+Termín \textit{statický objekt} je zde používán ve významu atributu třídy deklarovaného s~modifikátorem \texttt{static}, jenž způsobuje sdílení mezi odpovídajícími objekty. Jako praktickou ukázku nastavší chyby můžeme použít statickou proměnnou \texttt{m\_allocated\_objects} třídy \texttt{BaseObject} z~kapitoly \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}.
 
 Statický objekt je vytvářen a inicializován ještě před vlastním spuštěním funkce \texttt{main()}, jazyk C++ pro instanciaci a inicializaci používá speciální konstrukci zapsanou vně všech funkcí a tříd.
 
@@ -1020,7 +1020,7 @@ class BaseObject
 set<BaseObject*> BaseObject::m_allocated_objects;
 \end{verbatim}
 
-Definujme ještě jednu třídu, singleton poděděný od \texttt{BaseObject}, jenž v~sobě bude obsahovat taktéž statický objekt.
+Definujme ještě jednu třídu, singleton poděděný od \texttt{BaseObject}, jenž v~sobě obsahuje taktéž statický objekt.
 
 \begin{verbatim}
 class Singleton : public BaseObject
@@ -1045,7 +1045,7 @@ Vyvíjená aplikace nakonec používá zcela jiné řešení. Statické nejsou s
 
 Další možností by mohlo být nastavení priorit modulů při linkování, například u~Makefile/gcc se jedná pouze o~pořadí zápisu na příkazové řádce. Problémy spojené s~tímto řešením nejspíše vyvstanou až někdy v~budoucnu.
 
-Už bylo řečeno, že chyba není fyzicky přítomná v~kódu, a tudíž se na ni při libovolné změně může snadno zapomenout. Typicky se jedná o~přidání nového souboru, či o~aktualizaci nebo změnu buildovacího systému. Používaná vývojová prostředí, současná i budoucí, tato nastavení také nemusí vůbec podporovat, a proto je lepší vzít v~úvahu spíše řešení spočívající ve změně zdrojových kódů.
+Už bylo řečeno, že chyba není fyzicky přítomná v~kódu, a tudíž se na ni při libovolné změně může snadno zapomenout. Typicky se jedná o~přidání nového souboru, či o~aktualizaci nebo změnu buildovacího systému. Používaná vývojová prostředí, současná i~budoucí, tato nastavení také nemusí vůbec podporovat, a proto je lepší vzít v~úvahu spíše řešení spočívající ve změně zdrojových kódů.
 
 Je pravda, že výše uvedená ukázka je k~chybě výrazně náchylnější než běžná použití statických objektů. Na druhou stranu, autor se již dříve, při portaci legacy aplikací na nový operační systém, setkal s~obdobným problémem. V~obou případech se navíc jedná o~dva různé kompilátory -- Microsoft Visual Studio 2003/2005 oproti GNU gcc.
 
@@ -1064,7 +1064,7 @@ Jak už bylo zmíněno v~kapitole \ref{double_dispatching_pattern} analýzy na s
 
 Iterování přes prvky složených datových typů je podporováno čtyřmi, taktéž virtuálními, metodami \texttt{iterator()}, \texttt{hasNext()}, \texttt{next()} a \texttt{resetIterator()}. Jednoduché datové typy nejsou iterovatelné, a proto jakékoli pokusy o~procházení hned na začátku odmítnou.
 
-Potomci, především grafové třídy, definují i další metody, není reálné, aby všechny operace, včetně silně specifických, byly virtuální. Ke konverzi z~obecného \texttt{Value} ukazatele na konkrétní datový typ slouží skupina virtuálních funkcí \texttt{toValueBool()}, \texttt{toValueInt()} atd., které vracejí \texttt{NULL}, pokud se nejedná o~daný datový typ. Na tomto místě by šlo samozřejmě použít i RTTI přetypování \texttt{dynamic\_cast<>}, obě techniky jsou ekvivalentní. Použití leží především v~zabudovaných funkcích interpretu, které v~parametrech předpokládají konkrétní datové typy a volají jejich specifické operace.
+Potomci, především grafové třídy, definují i~další metody, není reálné, aby všechny operace, včetně silně specifických, byly virtuální. Ke konverzi z~obecného \texttt{Value} ukazatele na konkrétní datový typ slouží skupina virtuálních funkcí \texttt{toValueBool()}, \texttt{toValueInt()} atd., které vracejí \texttt{NULL}, pokud se nejedná o~daný datový typ. Na tomto místě by šlo samozřejmě použít i~RTTI přetypování \texttt{dynamic\_cast<>}, obě techniky jsou ekvivalentní. Použití leží především v~zabudovaných funkcích interpretu, které v~parametrech předpokládají konkrétní datové typy a volají jejich specifické operace.
 
 
 \subsubsection{ValueNull a ValueBool}
@@ -1081,7 +1081,7 @@ K~dotazu, zda je možné do nějakého \texttt{Value} objektu přiřadit jinou h
 
 Proměnné jsou ve skriptu reprezentovány třídou \texttt{ValueIdentifier}, která v~sobě u\-cho\-vá\-vá identifikátor hodnoty odkazující do kontextu skriptu. Všechny operace se vykonávají stejně jako u~ostatních tříd, rozdíl spočívá pouze v~tom, že se neprovádějí přímo s~daným objektem, ale s~odkazovaným.
 
-Jelikož je navržený jazyk beztypový, proměnné musejí umět měnit nejen svou hodnotu, ale i datový typ, jedná se tedy o~složitější operaci, než je například pouhá záměna jednoho čísla za jiné. Interpret tuto situaci řeší obalením vlastní hodnoty další třídou pojmenovanou \texttt{ValueReference}, přiřazení poté probíhá podle následujícího schématu:
+Jelikož je navržený jazyk beztypový, proměnné musejí umět měnit nejen svou hodnotu, ale i~datový typ, jedná se tedy o~složitější operaci, než je například pouhá záměna jednoho čísla za jiné. Interpret tuto situaci řeší obalením vlastní hodnoty další třídou pojmenovanou \texttt{ValueReference}, přiřazení poté probíhá podle následujícího schématu:
 
 \begin{enumerate}
 \item Operátor přiřazení vyhodnotí výraz na své levé straně:
@@ -1101,9 +1101,9 @@ V~případě, že proměnná daného jména, popř. položka struktury, ještě 
 
 \subsubsection{Grafové třídy}
 
-Všechny grafové třídy jsou, stejně jako ostatní hodnoty, potomky abstraktní třídy \texttt{Value}, a tudíž musí i ony implementovat Double dispatching metody vyhodnocování operátorů. Třída \texttt{ValueGraph} reprezentuje graf na principu množin vrcholů a hran, který byl představen v~kapitole \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}.
+Všechny grafové třídy jsou, stejně jako ostatní hodnoty, potomky abstraktní třídy \texttt{Value}, a tudíž musí i~ony implementovat Double dispatching metody vyhodnocování operátorů. Třída \texttt{ValueGraph} reprezentuje graf na principu množin vrcholů a hran, který byl představen v~kapitole \ref{reprezentace_mnozinami_vrcholu_a_hran} na straně \pageref{reprezentace_mnozinami_vrcholu_a_hran}.
 
-Pro ukládání vrcholů a hran se nepoužívá původně preferovaná standardní šablona \texttt{set}, ale vlastní třída \texttt{ValueSet}, která zobecňuje práci s~těmito množinami a současně zpřístupňuje interpretu i nový datový typ. Toto řešení vychází především z~problémů s~\textit{dangling} ukazateli v~případě, kdy jsou veškerá data grafu uvolněna, ale z~interpretu stále existují odkazy na vrcholy a hrany -- například reference v~proměnné nebo v~některé z~množin.
+Pro ukládání vrcholů a hran se nepoužívá původně preferovaná standardní šablona \texttt{set}, ale vlastní třída \texttt{ValueSet}, která zobecňuje práci s~těmito množinami a současně zpřístupňuje interpretu i~nový datový typ. Toto řešení vychází především z~problémů s~\textit{dangling} ukazateli v~případě, kdy jsou veškerá data grafu uvolněna, ale z~interpretu stále existují odkazy na vrcholy a hrany -- například reference v~proměnné nebo v~některé z~množin.
 
 K~řešení se opět využívá principu čítání ukazatelů. Aby nedocházelo ke dříve zmíněným kruhovým závislostem mezi vrcholy a hranami (kapitola \ref{chytre_ukazatele} na straně \pageref{chytre_ukazatele}), musí hrany ukládat pouze obyčejné ukazatele na počáteční a koncový vrchol a vždy testovat jejich platnost.
 
@@ -1111,24 +1111,16 @@ Graf může být vytvořen ručně opakovaným voláním funkcí \texttt{generat
 
 Vykonávané operace rozlišují, zda je graf orientovaný či ne, orientace hran může být také kdykoli invertována. Matice sousednosti není přímo přístupná, protože se s~ní vnitřně nepočítá, ale může být na žádost \texttt{getAdjacencyMatrix()} vygenerována a vrácena.
 
-Třídy \texttt{ValueVertex} i \texttt{ValueEdge} v~sobě obsahují \texttt{ValueStruct} atribut a mapují na něj všechny nedostupné operace, aby jejich rozhraní bylo ekvivalentní -- jedná se o~variaci na návrhový vzor \textit{Proxy}. Skládání dostalo přednost před dědičností, protože vrchol ani hrana \textit{nejsou} ve své podstatě strukturou. Návrh funkcionality je pouze takový, že poskytují stejné služby, ale to není dostatečným důvodem pro dědičnost.
+Třídy \texttt{ValueVertex} i~\texttt{ValueEdge} v~sobě obsahují \texttt{ValueStruct} atribut a mapují na něj všechny nedostupné operace, aby jejich rozhraní bylo ekvivalentní -- jedná se o~variaci na návrhový vzor \textit{Proxy}. Skládání dostalo přednost před dědičností, protože vrchol ani hrana \textit{nejsou} ve své podstatě strukturou. Návrh funkcionality je pouze takový, že poskytují stejné služby, ale to není dostatečným důvodem pro dědičnost.
 
 Poslání množin vrcholů a hran reprezentovaných třídou \texttt{ValueSet} je především udržovat záznamy o~registrovaných objektech. Kromě toho se navíc mohou iterovat a je s~nimi možné vykonávat operace průniku, sjednocení či rozdílu. \texttt{ValueSet} neslouží výhradně pro vrcholy a hrany, ale pro libovolný typ \texttt{Value} objektů.
 
 
 \subsection{Abstraktní strom syntaxe, Node* hierarchie tříd}
 
-Abstraktní třída \texttt{Node} byla již představena v~analýze, v~kapitole \ref{abstraktni_strom_syntaxe} na straně \pageref{abstraktni_strom_syntaxe}. Z~ní vycházejí všechny ostatní třídy, jejichž objekty ve výsledku vytvářejí strukturu abstraktního stromu syntaxe. Zjednodušený class diagram je uveden na obrázku \ref{fig:node_hierarchy}.
+Abstraktní třída \texttt{Node} byla již představena v~analýze, v~kapitole \ref{abstraktni_strom_syntaxe} na straně \pageref{abstraktni_strom_syntaxe}. Z~ní vycházejí všechny ostatní třídy, jejichž objekty ve výsledku vytvářejí strukturu abstraktního stromu syntaxe. Hierarchie tříd je k~nalezení v~příloze~\ref{hierarchie_trid} na straně~\pageref{hierarchie_trid}.
 
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[height=14.9cm]{img/classNode__inherit__graph.pdf}
-\caption{Hierarchie Node* tříd}
-\label{fig:node_hierarchy}
-\end{center}
-\end{figure}
-
-Unární operátory jsou potomky třídy \texttt{NodeUnary}, která předpokládá jeden poduzel ve stromě, \texttt{NodeBinary} logicky dva. Ternální operátor je interně mapován na \texttt{if-else} větvení poskytované třídou \texttt{NodeCondition}. Dalšími podtřídami jsou například \texttt{Node\-Loop} a \texttt{NodeForeach} cykly, \texttt{NodeBlock} zapouzdřuje skupinu příkazů, \texttt{Node\-Function\-Call} slouží pro volání funkcí. Prázdný příkaz \texttt{NodeEmptyCommand} se využívá spíše interně.
+Unární operátory jsou potomky třídy \texttt{NodeUnary}, která předpokládá jednoho následníka ve stromě, \texttt{NodeBinary} logicky dva. Ternální operátor je interně mapován na \texttt{if-else} větvení poskytované třídou \texttt{NodeCondition}. Dalšími podtřídami jsou například \texttt{Node\-Loop} a \texttt{No\-de\-For\-each} cykly, \texttt{NodeBlock} zapouzdřuje skupinu příkazů, \texttt{Node\-Function\-Call} slouží pro volání funkcí. Prázdný příkaz \texttt{NodeEmptyCommand} se využívá spíše interně.
 
 Třída \texttt{NodeValue} definuje spojnici mezi \texttt{Node} a \texttt{Value} hierarchiemi, \texttt{NodeGlobal} poskytuje propagaci globálních proměnných do lokálního kontextu funkce. \texttt{NodePosition} slouží pro aktualizaci pozice odkazující do zdrojových kódů skriptu.
 
@@ -1138,7 +1130,7 @@ Třída \texttt{NodeValue} definuje spojnici mezi \texttt{Node} a \texttt{Value}
 
 Strukturované skoky \texttt{break}, \texttt{continue} a \texttt{return} používají mechanismus výjimek, což je jedna z~mála výraznějších daní za jednoduchost vykonávání skriptu pomocí rekurzivního volání metody \texttt{execute()}. Příkaz skoku, byť strukturovaný, musí být nějakým způsobem schopen opustit zanořené volání a vystoupat do požadovaného místa. Výjimky jsou zde opravdu tou nejelegantnější cestou.
 
-Místo, kde se má skok zastavit je definováno strukturou objektů ve stromu. Například výše uvedený příkaz \texttt{break} by se měl zastavit za koncem nejzanořenějšího cyklu. V~případě \texttt{continue} se samozřejmě jedná o~návrat na začátek před další iteraci. Přesně podle této definice funguje uzel \texttt{NodeLoop}, výjimka typu \texttt{NodeJumpBreak} je zachytávána za vlastním tělem cyklu, \texttt{NodeJumpContinue} uvnitř.
+Místo, kde se má skok zastavit, je definováno strukturou objektů ve stromu. Například výše uvedený příkaz \texttt{break} by se měl zastavit za koncem nejzanořenějšího cyklu. V~případě \texttt{continue} se samozřejmě jedná o~návrat na začátek před další iteraci. Přesně podle této definice funguje uzel \texttt{NodeLoop}, výjimka typu \texttt{NodeJumpBreak} je zachytávána za vlastním tělem cyklu, \texttt{NodeJumpContinue} uvnitř.
 
 \begin{verbatim}
 CountPtr<Value> NodeLoop::execute(void)
@@ -1166,7 +1158,7 @@ Protože volání cyklů probíhá od vnějších k~vnitřním, je případná v
 
 U~návratových hodnot funkcí je situace opačná, \texttt{return} se vyskytuje téměř v~každé. Ano, zde jsou výjimky bolestné, nicméně, z~druhé strany pohledu, ne tak moc jako implementace bez jejich služeb.
 
-Příkaz \texttt{return} by mohl nastavit hodnotu sdílené proměnné v~kontextu na výstupní hodnotu z~funkce a zároveň v~další proměnné signalizoval, že probíhá návrat z~funkce. Metoda \texttt{execute()} by u~naprosto všech tříd musela testovat tuto signalizační proměnnou, a v~době mezi \texttt{return} až do ukončení těla funkce by se nezanořovala do dalších příkazů. Obrovské množství těchto větvení by jistě přesáhlo režii jedné nastanuvší výjimky.
+Příkaz \texttt{return} by mohl nastavit hodnotu sdílené proměnné v~kontextu na výstupní hodnotu z~funkce a zároveň v~další proměnné signalizovat, že probíhá návrat z~funkce. Metoda \texttt{execute()} by u~naprosto všech tříd musela testovat tuto signalizační proměnnou, a v~době mezi \texttt{return} až do ukončení těla funkce by se nezanořovala do dalších příkazů. Obrovské množství těchto větvení by jistě přesáhlo režii jedné nastavší výjimky.
 
 
 \subsubsection{Funkce}
@@ -1177,13 +1169,14 @@ Funkci umí zavolat třída \texttt{NodeFunctionCall}. Ta se ji nejdříve pokus
 
 
 \subsection{Kontext skriptu}
+\label{kontext_skriptu}
 
-V~textu byl již několikrát zmíněn, do této chvíle bez dostatečného vysvětlení, termín \textit{kontext skriptu}. V~kódu se jedná o~jednu z~funkcionálně nejbohatších tříd aplikace pojmenovanou \texttt{Context}. Tato třída mimo jiné ukládá zabudované i uživatelské funkce, globální proměnné a zásobník volání funkcí spolu s~lokálními proměnnými. Dále si vede záznam o~aktuální pozici ve zdrojových kódech, který slouží především při vypisování chybových zpráv, a také umí pomocí databáze řetězců převádět jména identifikátorů skriptu z~řetězcové do číselné formy a naopak (viz kapitola \ref{identifikatory} na straně \pageref{identifikatory}).
+V~textu byl již několikrát zmíněn, do této chvíle bez dostatečného vysvětlení, termín \textit{kontext skriptu}. V~kódu se jedná o~jednu z~funkcionálně nejbohatších tříd aplikace pojmenovanou \texttt{Context}. Tato třída mimo jiné ukládá zabudované i~uživatelské funkce, globální proměnné a zásobník volání funkcí spolu s~lokálními proměnnými. Dále si vede záznam o~aktuální pozici ve zdrojových kódech, který slouží především při vypisování chybových zpráv, a také umí pomocí databáze řetězců převádět jména identifikátorů skriptu z~řetězcové do číselné formy a naopak (viz kapitola \ref{identifikatory} na straně \pageref{identifikatory}).
 
 
 \subsubsection{Funkce ve skriptu, jejich volání a spuštění skriptu}
 
-Všechny definované a tudíž i volatelné funkce se ukládají do asociativního pole indexovaného číselným identifikátorem, datová položka se skládá z~ukazatele na abstraktní nadtřídu \texttt{NodeFunction}. Kontext nepotřebuje znát, o~který z~obou typů funkcí se jedná, samotné objekty to vědí a díky polymorfismu se při spuštění volají odpovídající metody. Hledání pouze podle jména znemožňuje přetěžování funkcí, k~jeho zprovoznění by bylo potřeba ukládat dodatečné informace, na\-pří\-klad počet argumentů, a používat je i při vyhledávání.
+Všechny definované a tudíž i~volatelné funkce se ukládají do asociativního pole indexovaného číselným identifikátorem, datová položka se skládá z~ukazatele na abstraktní nadtřídu \texttt{NodeFunction}. Kontext nepotřebuje znát, o~který z~obou typů funkcí se jedná, samotné objekty to vědí a díky polymorfismu se při spuštění volají odpovídající metody. Hledání pouze podle jména znemožňuje přetěžování funkcí, k~jeho zprovoznění by bylo potřeba ukládat dodatečné informace, na\-pří\-klad počet argumentů, a používat je i~při vyhledávání.
 
 Zásobník volání je taktéž uložen v~kontextu skriptu. Jedná se o~pole objektů typu \texttt{Call\-Stack\-Item}, jež v~sobě ukládají jméno právě spuštěné funkce, pozici v~kódu, odkud byla zavolána, a hodnoty lokálních proměnných na dané úrovni.
 
@@ -1206,21 +1199,21 @@ Již bylo řečeno, že skript se spouští voláním funkce \texttt{main(argv)}
 
 \subsubsection{Globální proměnné}
 
-Seznam lokálních i globálních proměnných je stejně jako kontejner definovaných funkcí reprezentován asociativním polem. Kontext neposkytuje žádné metody pro získání nebo nastavení hodnoty globální proměnné. Naproti tomu umožňuje funkcí \texttt{propagateGlobalVariable()} namapovat její hodnotu do adresního prostoru právě zavolané lokální funkce, což ve skriptu přesně odpovídá chování operátoru \texttt{global} představeného v~kapitole \ref{datove_typy_a_promenne} na straně \pageref{datove_typy_a_promenne}.
+Seznam lokálních i~globálních proměnných je stejně jako kontejner definovaných funkcí reprezentován asociativním polem. Kontext neposkytuje žádné metody pro získání nebo nastavení hodnoty globální proměnné. Naproti tomu umožňuje funkcí \texttt{propagateGlobalVariable()} namapovat její hodnotu do adresního prostoru právě zavolané lokální funkce, což ve skriptu přesně odpovídá chování operátoru \texttt{global} představeného v~kapitole \ref{datove_typy_a_promenne} na straně \pageref{datove_typy_a_promenne}.
 
-Celý mechanismus funguje na principu sdílení \texttt{ValueReference} objektu mezi globálními a lo\-kál\-ní\-mi proměnnými. Změní-li se hodnota lokální proměnné, která odkazuje na stejný objekt jako globální proměnná, je automaticky aktualizována i ta, protože sídlí na stejném místě v~paměti.
+Celý mechanismus funguje na principu sdílení \texttt{ValueReference} objektu mezi globálními a lo\-kál\-ní\-mi proměnnými. Změní-li se hodnota lokální proměnné, která odkazuje na stejný objekt jako globální proměnná, je automaticky aktualizována i~ta, protože sídlí na stejném místě v~paměti.
 
 
 \subsubsection{Pozice v~kódu}
 \label{pozice_v_kodu}
 
-Je jasné, že není potřeba, aby byla pozice ve zdrojových kódech přítomna v~naprosto každém z~uzlů stromu syntaxe. Dokud by se nezměnilo jméno vstupního souboru ani číslo řádky, docházelo by pouze k~paměťově náročným duplikacím, které by při vykonávání nepřinášely žádnou novou informaci.
+Je jasné, že není potřeba, aby byla pozice ve zdrojových kódech reprezentovaná třídou \texttt{CodePosition} přítomna v~naprosto každém z~uzlů stromu syntaxe. Dokud by se nezměnilo jméno vstupního souboru ani číslo řádky, docházelo by pouze k~paměťově náročným duplikacím, které by při vykonávání nepřinášely žádnou novou informaci.
 
-Bylo by žádoucí, aby každá řádka vstupního souboru měla svou uzlovou reprezentaci ve stromu, avšak syntaktický analyzátor v~dané implementaci nepracuje po řádcích, ale po tokenech. Pokud se berou v~úvahu \textit{příkazy} namísto řádků, je možné se k~tomuto požadavku přiblížit. Téměř každý příkaz (výraz zakončený středníkem) bývá uveden na samostatné řádce, v~některých méně častých případech i na dvou či třech. To ale nevadí, pozice v~chybových hlášeních bude mít pouze o~něco menší přesnost, stále však naprosto dostatečnou.
+Bylo by žádoucí, aby každá řádka vstupního souboru měla svou uzlovou reprezentaci ve stromu, avšak syntaktický analyzátor v~dané implementaci nepracuje po řádcích, ale po tokenech. Pokud se berou v~úvahu \textit{příkazy} namísto řádků, je možné se k~tomuto požadavku přiblížit. Téměř každý příkaz (výraz zakončený středníkem) bývá uveden na samostatné řádce, v~některých méně častých případech i~na dvou či třech. To ale nevadí, pozice v~chybových hlášeních mají pouze o~něco menší přesnost, stále však naprosto dostatečnou.
 
 Místa ve zdrojových kódech jsou tedy uchovávány pouze ve speciálních uzlech stromu, příkazy se obalují objekty typu \texttt{NodePosition}, jejichž prací je aktualizovat pozici v~kontextu a zavolat metodu svého ná\-sled\-ní\-ka ve stromu.
 
-Uložení pozic v~jednoduchém demonstračním příkazu \texttt{c = a + b;} je zobrazeno ve schématu \ref{fig:nodeposition}. Na první pohled je jasné, že ukládání pozic do každého uzlu stromu by bylo zbytečné a navíc by docházelo ke značnému plýtvání pamětí.
+Oba způsoby ukládání pozic v~jednoduchém demonstračním příkazu \texttt{c = a + b;} jsou zobrazeny ve schématu \ref{fig:nodeposition}. Třída \texttt{NodeBinaryAdd} odpovídá sčítání a \texttt{NodeBinaryAss} přiřazení. Na první pohled je jasné, že ukládání pozic do každého uzlu stromu by bylo zbytečné a navíc by docházelo ke značnému plýtvání pamětí.
 
 \begin{figure}[ht]
 \begin{center}
@@ -1239,14 +1232,14 @@ Kontext skriptu obsahuje datovou \texttt{CodePosition} položku, jež je během 
 
 Kontext skriptu je ostatními třídami používán téměř jako singleton, přistupují k~němu pomocí makra \texttt{CONTEXT}, které se rozbaluje na volání \texttt{getContext()} třídy \texttt{ObjectCreator}. V~průběhu vykonávání skriptu existuje vždy právě jeden kontext, a tudíž není paralelní běh na úrovni skriptu aktuálně podporován.
 
-Pokud by vznikla potřeba vícevláknového programování, existuje v~zásadě pouze jediná mož\-nost, jak doprogramovat jeho podporu. Spočívá v~dodatečném argumentu \texttt{execute()} metod, který si budou uzly stromu při rekurzivním vykonávání předávat. Nevýhody jsou zřejmé, naprostá většina uzlů kontext ke své činnosti nepotřebuje, a tudíž by jeho neustálé kopírování, byť i ve formě reference, zpomalovalo běh skriptu.
+Pokud by vznikla potřeba vícevláknového programování, existuje v~zásadě pouze jediná mož\-nost, jak doprogramovat jeho podporu. Spočívá v~dodatečném argumentu \texttt{execute()} metod, který si uzly stromu předávají při rekurzivním vykonávání. Nevýhody jsou zřejmé, naprostá většina uzlů kontext ke své činnosti nepotřebuje, a tudíž by jeho neustálé kopírování, byť i~ve formě reference, zpomalovalo běh skriptu.
 
 
 \subsection{Logování, textový výstup}
 
 Výpis textového výstupu ze skriptu, varovných, chybových a ladících zpráv kompletně za\-jiš\-ťu\-je třída \texttt{Logger}. Aplikace definuje několik maker, například \texttt{ERR()}, \texttt{WARN()} nebo \texttt{INFO()}, které slouží jako aplikační rozhraní pro výpis zpráv uživateli.
 
-Přímý přístup ke vstupně/výstupním proudům jazyka C++ není používán, aby bylo jednodušší přesměrovat veškerý výstup skriptu do některého z~oken aplikace při běhu v~grafickém rozhraní. Tomuto tématu se více věnuje kapitola \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku}.
+Přímý přístup k~vstupně/výstupním proudům jazyka C++ není používán, aby bylo jednodušší přesměrovat veškerý výstup skriptu do některého z~oken aplikace při běhu v~grafickém rozhraní. Tomuto tématu se více věnuje kapitola \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku}.
 
 
 \subsection{Generátory zdrojových kódů}
@@ -1260,7 +1253,7 @@ return m_left->execute()->sub(*(m_right->execute()));
 
 Kromě těchto dvou je potřeba dalších dvacet binárních operátorů, k~tomu několik unárních operátorů a nesmí se zapomenout ani na zabudované funkce. Vytvářet všechny třídy ručně je zdlouhavé a neefektivní, v~případě změn je třeba manuálně upravovat stejným způsobem spoustu souborů.
 
-Nepříliš vhodné řešení této situace je využití C++ maker, jimiž lze generovat libovolný kód, tedy i třídy. Jedna z~primitivnějších a ne moc hezkých implementací by mohla vypadat například následovně.
+Nepříliš vhodné řešení této situace je využití C++ maker, jimiž lze generovat libovolný kód, tedy i~třídy. Jedna z~primitivnějších a ne moc hezkých implementací by mohla vypadat například následovně.
 
 \begin{verbatim}
 #define UNARYOPERATOR(NAME, CODE)             \
@@ -1281,7 +1274,7 @@ UNARYOPERATOR(NodeUnaryNot, return m_next->execute()->logNOT();)
 
 Jedná se o~plně funkční kód v~profesionální praxi běžně používaný, ale obecně hodně špatný a naprosto nevhodný pro libovolnou situaci. Kvůli těmto konstrukcím především není možné ladění programu. Při psaní také nefunguje automatické do\-pl\-ňo\-vá\-ní kódu, protože s~podobným zápisem tvůrci žádného IDE zkrátka nepočítali. Počáteční úsporu času a zrychlení vývoje velice rychle, při prvních problémech a neúspěšných pokusech o~ladění, vystřídají myšlenky na kompletní přepsání ručním rozbalením maker.
 
-Řešením situace je sáhnout po externím skriptu, jehož jediným posláním bude podle při\-pra\-ve\-né šablony generovat C++ soubory s~definicí jednotlivých tříd. Pokud vznikne požadavek na úpravu, změní se šablona a skript všechny soubory během krátké chvíle automaticky přegeneruje.
+Řešením situace je sáhnout po externím skriptu, jehož jediným posláním je podle při\-pra\-ve\-né šablony generovat C++ soubory s~definicí jednotlivých tříd. Pokud vznikne požadavek na úpravu, změní se šablona a skript všechny soubory během krátké chvíle automaticky přegeneruje.
 
 Ve vyvinuté aplikaci toto navržené řešení používají perlovské skripty \texttt{gen\_\-ope\-ra\-tors.pl} a \texttt{gen\_builtin.pl}, které generují C++ kód unárních operátorů, binárních operátorů a také všech zabudovaných funkcí. Návod na vytvoření nové zabudované funkce je uveden v~příloze~\ref{vytvoreni_nove_zabudovane_funkce} na straně \pageref{vytvoreni_nove_zabudovane_funkce}.
 
@@ -1305,11 +1298,11 @@ Nyní se vrátíme zpět k~singletonu \texttt{ObjectCreator}, jenž poskytuje vl
 
 \subsection{Vlákna a jejich synchronizace}
 
-Rozdíl mezi oběma verzemi aplikace je i ve způsobu, jakým je skript spouštěn. Konzolový program se nemusí starat o~interakci s~uživatelem, a tudíž mu i pro běh skriptu postačuje pouze jedno vlákno.
+Rozdíl mezi oběma verzemi aplikace je i~ve způsobu, jakým je skript spouštěn. Konzolový program se nemusí starat o~interakci s~uživatelem, a tudíž mu i~pro běh skriptu postačuje pouze jedno vlákno.
 
-Okenní rozhraní, na rozdíl od něj, neslouží pouze pro jednorázové vykonání skriptu, ale umožňuje i psaní kódu v~editoru, vizualizace a další činnosti, a proto musí být vykonávání skriptu vloženo do dalšího, pracovního, vlákna. Bez něj by déletrvající skript způsobil zamrznutí GUI a nemožnost debuggingu ani vizualizací.
+Okenní rozhraní, na rozdíl od něj, neslouží pouze pro jednorázové vykonání skriptu, ale umožňuje i~psaní kódu v~editoru, vizualizace a další činnosti, a proto musí být vykonávání skriptu vloženo do dalšího, pracovního, vlákna. Bez něj by déletrvající skript způsobil zamrznutí GUI a nemožnost debuggingu ani vizualizací.
 
-Spolu s~druhým a dalšími vlákny v~aplikaci automaticky přichází i požadavek na jejich synchronizaci. Podobně jako u~logování v~kapitole \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku} bude vhodné napsat tento kód pro obě aplikace zvlášť.
+Spolu s~druhým a dalšími vlákny v~aplikaci automaticky přichází i~požadavek na jejich synchronizaci. Podobně jako u~logování v~kapitole \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku} je vhodné napsat tento kód pro obě aplikace zvlášť.
 
 Opět vytvoříme tři třídy, obecné rozhraní \texttt{Mutex} a konkrétní \texttt{CliMutex} a \texttt{GuiMutex}. Ro\-di\-čov\-ská třída požaduje po svých potomcích definovat pouze metody \texttt{lock()} a \texttt{unlock()}. Už bylo řečeno, že konzolová aplikace nepotřebuje synchronizaci vláken, a proto může \texttt{CliMutex} definovat tyto dvě funkce jako prázdné. \texttt{GuiMutex} využije služeb knihovny Qt a její třídu \texttt{QMutex}, ten je nutné definovat jako rekurzivní (\texttt{QMutex::Recursive}), aby mohl být se zanořením do funkcí zamknut v~daném vláknu opakovaně.
 
@@ -1329,7 +1322,7 @@ Aby se omezil počet možných chyb se synchronizací, byla dále, po vzoru \tex
 
 Z~uživatelského hlediska se skript spouští kliknutím na tlačítko \textit{Run}, které je namapováno na slot \texttt{runScript()} hlavního okna. Při jeho aktivaci se automaticky uloží všechny otevřené soubory, z~dokumentu v~aktivním editoru se vezme disková cesta se jménem skriptu, inicializuje se \texttt{ScriptThread} objekt (dědí ze třídy \texttt{QThread}) a spustí se nové pracovní vlákno.
 
-V~metodě \texttt{run()} vlákna se nejdříve resetuje kontextu skriptu do výchozího stavu a nastaví se požadované běhové parametry. Dále je naparsován vstupní soubor, vytvořen abstraktní strom syntaxe a spuštěna hlavní funkce skriptu.
+V~metodě \texttt{run()} vlákna se nejdříve resetuje kontext skriptu do výchozího stavu a nastaví se požadované běhové parametry. Dále je naparsován vstupní soubor, vytvořen abstraktní strom syntaxe a spuštěna hlavní funkce skriptu.
 
 Samotný skript komunikuje s~GUI vláknem spíše zřídka. Výjimkou je zasílání chybových a informačních zpráv k~zobrazení v~panelu s~textovým výstupem a signál o~pozastavení běhu breakpointem. Ten má za následek aktualizaci uživatelského rozhraní včetně panelu aktuálně definovaných proměnných a překreslení vizualizací.
 
@@ -1447,7 +1440,7 @@ Programátorský textový editor poskytuje zvýrazňování syntaxe, číslován
 
 Pravidla a vlastní funkcionalitu zvýrazňování syntaxe definuje třída \texttt{Text\-E\-di\-tor\-High\-ligh\-ter}, jež vychází ze standardního \texttt{QSyntaxHighlighter} a je zaregistrována k~zobrazovanému dokumentu. V~jejím konstruktoru je definováno, jak se mají obarvovat klíčová slova, řetězce, čísla, komentáře a další elementy jazyka, tyto formáty jsou dále přiřazeny k~regulárním výrazům, pomocí kterých se hledají jejich textové reprezentace v~kódu skriptu.
 
-Vlastní obarvování probíhá v~metodě \texttt{highlightBlock()}, jež prochází řetězec s~textem zvýrazňované řádky, hledá v~něm specifikované regulární výrazy a při nalezení aplikuje daný formát textu. Celé řešení vychází z~oficiálního tutoriálu dodávanému ke knihovně Qt \cite{syntax_highlighter_example}.
+Vlastní obarvování probíhá v~metodě \texttt{highlightBlock()}, jež prochází řetězec s~textem zvýrazňované řádky, v~něm hledá text odpovídající specifikovanému regulárním výrazu a při nalezení aplikuje daný formát. Celé řešení vychází z~oficiálního tutoriálu dodávanému ke knihovně Qt \cite{syntax_highlighter_example}.
 
 
 \subsubsection{Zvýraznění aktuálního řádku}
@@ -1457,7 +1450,7 @@ Změní-li se pozice textového kurzoru v~dokumentu, editor emituje signál \tex
 
 \subsubsection{Číslování řádek}
 
-Převážná část kódu pro přidání čísel řádek do levého okraje editoru se nachází ve třídě \texttt{TextEditorProgrammers}. Nejdříve je nutné vytvořit prázdné místo, do kterého se později budou kreslit. K~tomu slouží funkce \texttt{updateLineNumberAreaWidth()} volaná například při přidání nového řádku do dokumentu nebo při změně velikosti okna. Požadovaná hodnota se získá vynásobením šířky jednoho znaku s~počtem znaků (číslic) v~textové reprezentaci počtu řádků.
+Převážná část kódu pro přidání čísel řádek do levého okraje editoru se nachází ve třídě \texttt{TextEditorProgrammers}. Nejdříve je nutné vytvořit prázdné místo, do kterého se později vykreslí. K~tomu slouží funkce \texttt{updateLineNumberAreaWidth()} volaná například při přidání nového řádku do dokumentu nebo při změně velikosti okna. Požadovaná hodnota se získá vynásobením šířky jednoho znaku s~počtem znaků (číslic) v~textové reprezentaci počtu řádků.
 
 Zobrazená čísla řádků se musí měnit zároveň s~posunem v~dokumentu. Požadavek na rolování oznamuje editor signálem \texttt{updateRequest}, stačí ho namapovat na slot \texttt{up\-da\-te\-Li\-ne\-Num\-ber\-A\-re\-a()}, ve kterém se pomocí standardní funkce \texttt{scroll()} posune viewport o~požadovaný počet pixelů.
 
@@ -1492,7 +1485,7 @@ V~kapitole \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref
 
 \texttt{GuiLogger} poskytuje funkce pro předávání informačních, varovných a chybových zpráv a také pro standardní výstup ze skriptu. V~jejich tělech emituje signály s~textovými parametry, které jsou na druhém konci napojeny na obslužné sloty výstupního okna.
 
-Panel je tvořen třídou \texttt{DockScriptOutput}, jež dědí od \texttt{QDockWidget} a zároveň zapouzdřuje \texttt{QTextBrowser}. Obslužné sloty převezmou text, podle jeho typu definují barvu a všechno předají metodě \texttt{append()}. Pozice ve zdrojových kódech se obalí HTML odkazem a vloží se, spolu s~obarveným textem, na konec logu.
+Panel je tvořen třídou \texttt{DockScriptOutput}, jež dědí od \texttt{QDockWidget} a zároveň zapouzdřuje \texttt{QTextBrowser}. Obslužné sloty převezmou text, podle jeho typu definují barvu a všechno předají metodě \texttt{append()}. Pozice ve zdrojových kódech se obalí HTML odkazem a vloží se spolu s~obarveným textem na konec logu.
 
 Jediným důvodem pro použití třídy \texttt{QTextBrowser} namísto \texttt{QPlainTextEdit} je interní podpora odkazů. Jméno souboru a číslo řádku, na kterém se vyskytla chyba, je v~logu vždy klikací, daný soubor se otevírá v~editoru a kurzor je přesunut na požadovaný řádek.
 
@@ -1503,7 +1496,7 @@ Toto samozřejmě není standardní chování \texttt{QTextBrowser}, třída mus
 
 Panel s~výpisem hodnot lokálních proměnných obsahuje dva sloupce, jméno proměnné a její hodnotu. Aktualizace informací probíhá po každém pozastavení skriptu, všechny potřebné informace dodává kontext a jeho zásobník volání. Proměnné se procházejí v~cyklu a v~textové formě se vkládají do seznamu položek okna.
 
-Hodnoty prvků, jež jsou uložené ve strukturovaných proměnných (pole, množina, graf atd.), se nezobrazují, místo nich je předáván pouze datový typ. Vypisovat všechny položky stoprvkového pole nebo grafu s~milionem vrcholů by bylo jednak nepřehledné a jednak neefektivně vytěžovalo procesor i paměť. Místo toho je ve skriptu možné vyžít služeb přiřazení reference, kdy se prvek strukturovaného datového typu namapuje na jméno obyčejné proměnné a s~její pomocí se zobrazí požadovaná hodnota.
+Hodnoty prvků, jež jsou uložené ve strukturovaných proměnných (pole, množina, graf atd.), se nezobrazují, místo nich je předáván pouze datový typ. Vypisovat všechny položky stoprvkového pole nebo grafu s~milionem vrcholů by bylo jednak nepřehledné a jednak neefektivně vytěžovalo procesor i~paměť. Místo toho je ve skriptu možné vyžít služeb přiřazení reference, kdy se prvek strukturovaného datového typu namapuje na jméno obyčejné proměnné a s~její pomocí se zobrazí požadovaná hodnota.
 
 \begin{verbatim}
 alias &= structure.some_array[57];
@@ -1520,27 +1513,28 @@ Po přidržení kurzoru myši nad jménem souboru se zobrazí \textit{tool tip} 
 
 \subsubsection{Propojení skriptu a vizualizací}
 
-Skript komunikuje s~vizualizačním oknem výhradně pomocí zabudovaných funkcí, jejich jména začínají na předponu \textit{vis-}. Podobně jako logování z~kapitoly \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku} i tato funkcionalita musí být zobecněna, aby se dala používat s~grafickou aplikací a zároveň negenerovala chyby o~neexistujících funkcích při běhu z~konzole.
+Skript komunikuje s~vizualizačním oknem výhradně pomocí zabudovaných funkcí, jejich jména začínají předponou \textit{vis-}. Podobně jako logování z~kapitoly \ref{oddeleni_od_interpretu_pro_prikazovou_radku} na straně \pageref{oddeleni_od_interpretu_pro_prikazovou_radku} i~tato funkcionalita musí být zobecněna, aby se dala používat s~grafickou aplikací a zároveň negenerovala chyby o~neexistujících funkcích při běhu z~konzole.
 
 Rodičovská třída \texttt{VisualizationConnector} definuje potřebné rozhraní, současně implementuje těla všech svých metod jako prázdná. Nejedná se tedy o~čistě abstraktní třídu jako v~minulých případech. Zabudované funkce pro vizualizace komunikují s~GUI výhradně s~jejím prostřednictvím, resp. jejího potomka. Pokus o~přístup k~oknu z~konzolové aplikace proto nezpůsobí žádnou chybu, pouze se zavolá prázdná metoda komunikačního objektu, a to ničemu nevadí.
 
-Odvozený \texttt{GuiVisualizationConnector} je o~něco zajímavější. Všechny zabudované vizualizační funkce mají obdobu v~některé z~metod konektoru, ten dále v~jejich těle generuje Qt signály, které jsou napojeny na obslužné sloty okna. Opačný směr komunikace probíhá pomocí obyčejného volání metod -- vizualizační okno nepotřebuje žádný zobecňovací mechanismus, ví že konektor vždy existuje.
+Odvozený \texttt{GuiVisualizationConnector} je o~něco zajímavější. Všechny zabudované vizualizační funkce mají obdobu v~některé z~metod konektoru, ten dále v~jejich těle generuje Qt signály, které jsou napojeny na obslužné sloty okna. Opačný směr komunikace probíhá pomocí obyčejného volání metod -- vizualizační okno nepotřebuje žádný zobecňovací mechanismus, ví, že konektor vždy existuje.
 
 
 \subsubsection{Registrace objektů a rendering grafu}
 
 Chce-li programátor skriptu zaregistrovat graf pro zobrazení ve vizualizačním okně, zavolá zabudovanou funkci \texttt{visRegister()}. Ta se přes metodu a signál konektoru spojí se slotem widgetu, jenž si uloží předaný objekt pro další použití.
 
-Aplikace v~této části rozlišuje množiny a celé grafy. Současně s~objektem se předává i řetězec se jménem pro menu, s~jehož pomocí bude moci uživatel vypínat a opětovně zapínat zobrazování.
+Aplikace v~této části rozlišuje množiny a celé grafy. Současně s~objektem se předává i~řetězec se jménem pro menu, s~jehož pomocí může uživatel vypínat a opětovně zapínat zobrazování.
 
-Vlastní rendering používá grafickou knihovnu OpenGL. Vrcholy se vykreslují jako \texttt{GL\_POINTS} body ve 3D prostoru, jež jsou pospojovány \texttt{GL\_LINES} čárami reprezentujícími hrany. Sou\-řad\-ni\-co\-vé koordináty se přebírají z~vlastností vrcholů pojmenovaných \textit{\_\_x}, \textit{\_\_y} a \textit{\_\_z}, jsou tedy implicitně přístupné i kódu skriptu, jenž je může obyčejným přiřazením kdykoli změnit. U~hran je situace obdobná, při renderingu se ovšem používá pozice počátečního a koncového vrcholu.
+Vlastní rendering používá grafickou knihovnu OpenGL. Vrcholy se vykreslují jako \texttt{GL\_POINTS} body ve 3D prostoru, jež jsou pospojovány \texttt{GL\_LINES} čárami reprezentujícími hrany. Sou\-řad\-ni\-co\-vé koordináty se přebírají z~vlastností vrcholů pojmenovaných \textit{\_\_x}, \textit{\_\_y} a \textit{\_\_z}, jsou tedy implicitně přístupné i~kódu skriptu, jenž je může obyčejným přiřazením kdykoli změnit. U~hran je situace obdobná, při renderingu se ovšem používá pozice počátečního a koncového vrcholu.
 
 Nutno podotknout, že není úkolem vizualizací ani skriptu souřadnicové koordináty nějakým způsobem vytvářet. Nestarají se, jak se jejich hodnoty dostaly do vrcholů, jednoduše před\-po\-klá\-da\-jí, že tam jsou, a používají je. O~jejich vytvoření se musí postarat tvůrce poskytovaného grafu -- ať už specifikací v~datovém souboru (viz příloha \ref{format_datovych_souboru_s_grafem} na straně \pageref{format_datovych_souboru_s_grafem}) či přímo v~kódu skriptu.
 
 Další vlastnosti, které mohou ovlivnit rendering se jmenují \textit{\_\_r}, \textit{\_\_g}, \textit{\_\_b} a \textit{\_\_w}. První tři z~nich definují barvu ve formátu RGB, při jejím nalezení se pro tento konkrétní vrchol (hranu) nepoužije obecná barva množiny, se kterou byl registrován, ale tato konkrétní.
 
-Čtvrtý z~parametrů umožňuje dodatečné vychýlení hrany ve směru souřadnicové osy \textit{z}. Je-li definován a zároveň je ovlivňování pozic povoleno (zabudovaná funkce \texttt{vis\-Use\-Weight\-When\-Pa\-in\-ting\-Ed\-ges()}), bere se při výpočtu pozice hrany v~úvahu i její ohodnocení. Představená funkcionalita souvisí se speciálním požadavkem vedoucího práce, popis přesahuje rámec tohoto textu.
-% TODO: případný odkaz na doplňující kapitolu
+Čtvrtý z~parametrů umožňuje dodatečné vychýlení hrany ve směru souřadnicové osy \textit{z}. Je-li definován a zároveň je ovlivňování pozic povoleno (zabudovaná funkce \texttt{vis\-Use\-Weight\-When\-Pa\-in\-ting\-Ed\-ges()}), bere se při výpočtu pozice hrany v~úvahu i~její ohodnocení.
+
+Představená funkcionalita souvisí s~požadavkem vedoucího práce. Jde o~to, že při vizualizaci speciálních grafů a při studiu difúzních algoritmů je výhodné graf zobrazovat tak, že se vrcholy zakreslí do roviny a hrany se zobrazí jako úsečky vedené paralelně \textit{nad} touto rovinou, přičemž výška hrany nad rovinou odpovídá její váze.
 
 
 \subsubsection{Změna pohledu kamery na scénu}
@@ -1615,7 +1609,7 @@ bool Tests::testDoubleDispatching(void)
 }
 \end{verbatim}
 
-Pozorný čtenář si jistě všiml slůvka \texttt{verify()}, jímž jsou obaleny testovací podmínky. Nejedná se o~funkci, ale o~makro, které vyhodnotí kód v~parametru, aktualizuje stavovou proměnnou \texttt{result} a v~případě chyby vypíše jméno souboru s~číslem řádku, kde k~ní došlo. Dále je zobrazena i textová reprezentace testovacího kódu. V~podstatě se jedná o~alternativu ke standardnímu makru \texttt{assert()}, která však, v~případě neúspěchu, nemá za následek ukončení programu.
+Pozorný čtenář si jistě všiml slůvka \texttt{verify()}, jímž jsou obaleny testovací podmínky. Nejedná se o~funkci, ale o~makro, které vyhodnotí kód v~parametru, aktualizuje stavovou proměnnou \texttt{result} a v~případě chyby vypíše jméno souboru s~číslem řádku, kde k~ní došlo. Dále je zobrazena i~textová reprezentace testovacího kódu. V~podstatě se jedná o~alternativu ke standardnímu makru \texttt{assert()}, která však, v~případě neúspěchu, nemá za následek ukončení programu.
 
 \begin{verbatim}
 #define verify(expr)                                                   \
@@ -1626,7 +1620,7 @@ Pozorný čtenář si jistě všiml slůvka \texttt{verify()}, jímž jsou obale
 }
 \end{verbatim}
 
-Změníme-li pokusně hodnotu proměnné \textit{a} (jednoduchá emulace chyby), bude výstup z~provedených testů vypadat ná\-sle\-dov\-ně.
+Změníme-li pokusně hodnotu proměnné \textit{a} (jednoduchá emulace chyby), vypadá výstup z~provedených testů ná\-sle\-dov\-ně.
 
 \begin{verbatim}
 [ OK ]     testMemoryLeaks
@@ -1640,20 +1634,20 @@ Number of failed tests: 1
 Number of memory leaks: 0
 \end{verbatim}
 
-Ke spuštění všech testovacích sekvencí slouží u~konzolové aplikace dodatečný argument pří\-ka\-zo\-vé řádky \texttt{--unit-tests}. Následující příkaz současně testuje i úniky dynamické paměti, a to nejen nástrojem \textit{valgrind}, ale i vlastním kódem - viz kapitola \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}.
+Ke spuštění všech testovacích sekvencí slouží u~konzolové aplikace dodatečný argument pří\-ka\-zo\-vé řádky \texttt{--unit-tests}. Následující příkaz současně testuje i~úniky dynamické paměti, a to nejen nástrojem \textit{valgrind}, ale i~vlastním kódem - viz kapitola \ref{kontrola_uniku_pameti} na straně \pageref{kontrola_uniku_pameti}.
 
 \begin{verbatim}
 valgrind ./bbd --unit-tests ../samples/tests.txt
 \end{verbatim}
 
-Je nutné podotknout, že vytvořené unit testy poskytly neocenitelné služby při vývoji aplikace a především při testování změn ve fungování jednotlivých částí programu. Dokázaly velice rychle a efektivně detekovat místa v~kódu, která nepracují tak, jak by měly -- mnohdy i v~na první pohled nesouvisejících částech aplikace.
+Je nutné podotknout, že vytvořené unit testy poskytly neocenitelné služby při vývoji aplikace a především při testování změn ve fungování jednotlivých částí programu. Dokázaly velice rychle a efektivně detekovat místa v~kódu, která nepracovala tak, jak by měla -- mnohdy i~v~na první pohled nesouvisejících částech aplikace.
 
 
 \section{Unit testy ve skriptu}
 
-Obdobným způsobem, jakým jsou implementovány jednotkové testy z~předchozí kapitoly, funguje i testovací skript \textit{samples/tests.txt}. Jedná se v~podstatě o~unit test zapsaný v~kódu skriptu a vykonávaný interpretem. Jeho obrovskou výhodou je, že se netestují pouze umělé případy navržené programátorem, ale přímo reálné interakce mezi všemi objekty interpretu.
+Obdobným způsobem, jakým jsou implementovány jednotkové testy z~předchozí kapitoly, funguje i~testovací skript \textit{samples/tests.txt}. Jedná se v~podstatě o~unit test zapsaný v~kódu skriptu a vykonávaný interpretem. Jeho obrovskou výhodou je, že se netestují pouze umělé případy navržené programátorem, ale přímo reálné interakce mezi všemi objekty interpretu.
 
-Skript definuje testovací makro \texttt{tverify()} (jméno \texttt{verify()} se již používá pro zabudovanou funkci), které se opět rozbaluje na aktualizaci stavové proměnné. Jazyk nepodporuje výpis předaného kódu, a proto si bude muset programátor vystačit pouze se jménem souboru a číslem řádku, na kterém nastala chyba. Tato informace je však plně dostatečná, zvlášť ve spojení s~grafickým prostředím, kde se po kliknutí otevře místo chyby v~editoru.
+Skript definuje testovací makro \texttt{tverify()} (jméno \texttt{verify()} se již používá pro zabudovanou funkci), které se opět rozbaluje na aktualizaci stavové proměnné. Jazyk nepodporuje výpis předaného kódu, a proto si musí programátor vystačit pouze se jménem souboru a číslem řádku, na kterém nastala chyba. Tato informace je však plně dostatečná, zvlášť ve spojení s~grafickým prostředím, kde se po kliknutí otevře místo chyby v~editoru.
 
 \begin{verbatim}
 define("tverify", "result = result && verify");
@@ -1753,7 +1747,7 @@ Cílem těchto testů bylo především získání orientačních hodnot. Interp
 
 V~této práci byl navržen programovací jazyk pro psaní grafových algoritmů a vytvořen jeho interpret včetně komplexního vývojového prostředí. Jako implementační platforma byl pro základní kód zvolen jazyk C++, grafická verze aplikace je napsána s~pomocí knihovny Qt a vizualizace grafů dále využívají služeb OpenGL. Použité knihovny jsou multiplatformní, a tudíž je zaručena velice snadná přenositelnost mezi nejrůznějšími operačními systémy.
 
-Všechny požadavky vyplývající ze zadání byly splněny, v~mnoha případech i v~nevyžadované rozšířené formě. Příkladem budiž volitelná implementace orientovaných grafů, požadavek na krokování skriptu či schopnosti textového editoru pro psaní kódu. Aplikace ve výsledku umí pracovat s~naprosto všemi typy grafů, jednoduché krokování skriptu se vyvinulo v~obecný debugger a editor poskytuje nejen zvýrazňování syntaxe, ale i automatické odsazování kódu, číslování řádků a další vymoženosti běžných programátorských editorů.
+Všechny požadavky vyplývající ze zadání byly splněny, v~mnoha případech i~v~nevyžadované rozšířené formě. Příkladem budiž volitelná implementace orientovaných grafů, požadavek na krokování skriptu či schopnosti textového editoru pro psaní kódu. Aplikace ve výsledku umí pracovat s~naprosto všemi typy grafů, jednoduché krokování skriptu se vyvinulo v~obecný debugger a editor poskytuje nejen zvýrazňování syntaxe, ale i~automatické odsazování kódu, číslování řádků a další vymoženosti běžných programátorských editorů.
 
 Jak ukázalo závěrečné testování, interpret má bohužel výrazné nedostatky v~rychlosti vykonávání kódu. Při porovnání s~ekvivalentními programy zapsanými v~jazyce Perl vychází přibližně osmi až patnáctinásobně pomalejší běh. Je pravda, že se vyvinutý interpret v~sou\-čas\-né verzi nesnaží o~naprosto žádné optimalizace, zde se zcela jistě nachází prostor pro další zlepšování.
 
@@ -2044,6 +2038,7 @@ Při dodržení výše uvedeného postupu stačí pouze vytvořit tento zdrojov�
 \twocolumn
 
 \chapter{Hierarchie tříd}
+\label{hierarchie_trid}
 
 \begin{verbatim}
 CountPtr< TYPE >
