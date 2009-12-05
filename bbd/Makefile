@@ -8,7 +8,6 @@ OBJECTS = $(shell ls *.cpp | sed 's/.cpp/.o/')
 .PHONY: build
 .PHONY: rebuild
 .PHONY: all
-.PHONY: depend
 .PHONY: run
 .PHONY: clean
 .PHONY: todo
@@ -20,11 +19,11 @@ OBJECTS = $(shell ls *.cpp | sed 's/.cpp/.o/')
 .PHONY: version
 #.PHONY: install
 
-build: version $(TARGET)
+build: Makefile.dep $(TARGET)
 
 rebuild: clean all
 
-all: version bison operators builtin depend $(TARGET)
+all: version bison operators builtin build
 
 %.o: %.cpp
 	$(CC) -c $< $(CFLAGS)
@@ -42,13 +41,12 @@ builtin: gen_builtin.pl
 	perl gen_builtin.pl
 
 version:
-	if [ ! -e version.hpp ] ; then echo '#define SVN_VERSION _("undefined")' > version.hpp ; fi
-
-version_svn:
 	echo '#define SVN_VERSION' $(shell svnversion | tr 'A-Z' ' ' | cut -d ':' -f 1) > version.hpp
 
-depend:
-	makedepend -Y -m $(shell ls *.cpp) 2>&1 | grep -v '\(cassert\|cstdio\|algorithm\|set\|stream\|fstream\|iostream\|map\|deque\|vector\|stack\|list\|typeinfo\|stdexcept\|cmath\)'
+Makefile.dep: $(shell ls *.cpp *.hpp)
+	touch Makefile.dep
+	makedepend -f Makefile.dep -Y -m $(shell ls *.cpp) 2>&1 | grep -v '\(cassert\|cstdio\|algorithm\|set\|stream\|fstream\|iostream\|map\|deque\|vector\|stack\|list\|typeinfo\|stdexcept\|cmath\)'
+	rm Makefile.dep.bak
 
 run:
 	./$(TARGET)
@@ -57,7 +55,7 @@ memoryleaks:
 	valgrind ./$(TARGET) --unit-tests ../samples/tests.txt
 
 clean:
-	rm -f $(TARGET) *.o core Makefile.bak
+	rm -f $(TARGET) *.o core
 
 todo:
 	grep -rI TODO . | grep -v './.svn/'
@@ -65,4 +63,4 @@ todo:
 listbuiltin:
 	grep '\$funcdecl =' gen_builtin.pl | sed "s/.*'\(.*\)'.*/\1/"
 
-# DO NOT DELETE
+include Makefile.dep
