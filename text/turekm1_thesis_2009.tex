@@ -1343,10 +1343,10 @@ void GuiContext::pauseExecution(void)
 Implementovaný debugging podporuje celkem čtyři níže uvedené způsoby obnovení běhu skriptu známé z~běžných vývojových prostředí:
 
 \begin{itemize}
-\item Continue -- zastavit se na následujícím breakpointu.
-\item Step into -- zastavit se na následujícím příkazu (i uvnitř volané funkce).
-\item Step over -- zastavit se na následujícím příkazu, ignorovat příkazy uvnitř volaných funkcí.
-\item Step out -- zastavit se po opuštění aktuálně prováděné funkce.
+\item Continue -- zastavit na následujícím breakpointu.
+\item Step into -- zastavit na následujícím příkazu (i uvnitř volané funkce).
+\item Step over -- zastavit na následujícím příkazu, ignorovat příkazy uvnitř volaných funkcí.
+\item Step out -- zastavit po opuštění aktuálně prováděné funkce.
 \end{itemize}
 
 Zdrojový kód definuje tyto čtyři způsoby jako výčet \texttt{SteppingType}, jenž nabývá hodnot \texttt{ST\_NONE}, \texttt{ST\_INTO}, \texttt{ST\_OVER} a \texttt{ST\_OUT}. Aktuálně používané krokování je uloženo v~kontextu v~proměnné \texttt{m\_step\-ping\-Type}.
@@ -1401,13 +1401,13 @@ Jasnou výhodou z~implementačního hlediska je snadnost řešení. Kontext si n
 Druhou obrovskou výhodou je možnost parametrizace zabudované funkce, aktuální implementace zastavuje skript pouze, když je předán argument odpovídající logickému true. Jak ukazují následující příklady, díky jediné dodatečné podmínce ve zdrojových kódech, dostává programátor k~dispozici opravdu komplexní nástroj.
 
 \begin{verbatim}
-breakpoint(true);// Aktivní
-breakpoint(false);// Neaktivní
+breakpoint(true);// Active
+breakpoint(false);// Nonactive
 
-breakpoint(cond1 || cond2);// Aktivní v závislosti na hodnotě proměnných
+breakpoint(cond1 || cond2);// Depends on the values
 
 for(i = 0; i < 1000; ++i)
-    breakpoint(i % 100 == 99);// Aktivní při každém stém průchodu cyklem
+    breakpoint(i % 100 == 99);// Every hundredth iteration
 \end{verbatim}
 
 Nevýhodou tohoto řešení je určitě statičnost, není možné definovat nový breakpoint po spuštění skriptu, protože zdrojový kód je již zpracován a změny se nevezmou v~úvahu. Další možnou ne\-vý\-ho\-dou je nestandardnost řešení oproti tomu, na co jsou programátoři zvyklí.
@@ -1498,9 +1498,9 @@ Panel s~výpisem hodnot lokálních proměnných obsahuje dva sloupce, jméno pr
 Hodnoty prvků, jež jsou uložené ve strukturovaných proměnných (pole, množina, graf atd.), se nezobrazují, místo nich je předáván pouze datový typ. Vypisovat všechny položky stoprvkového pole nebo grafu s~milionem vrcholů by bylo jednak nepřehledné a jednak neefektivně vytěžovalo procesor i~paměť. Místo toho je ve skriptu možné vyžít služeb přiřazení reference, kdy se prvek strukturovaného datového typu namapuje na jméno obyčejné proměnné a s~její pomocí se zobrazí požadovaná hodnota.
 
 \begin{verbatim}
-alias &= structure.some_array[57];
-structure.some_array[57] = "some new value";
-// alias variable contains the new value too
+alias &= structure.array[57];
+structure.array[57] = "a new value";
+// Alias variable contains the new value too
 \end{verbatim}
 
 Výpis zásobníku volání funguje téměř ekvivalentním způsobem jako zobrazování hodnot proměnných. Obsahuje tři sloupce, jméno funkce, jméno souboru a řádek, ze kterého byla funkce zavolána.
