@@ -1,0 +1,80 @@
+function main(argv)
+{
+	// v1 ---- v2 ---- v3 ---- v4
+	//     e1      e2      e3
+	g = graph();
+
+	v1 = g.generateVertex();
+	v2 = g.generateVertex();
+	v3 = g.generateVertex();
+	v4 = g.generateVertex();
+
+	verify(g.getNumVertices() == 4);
+	verify(g.getNumEdges() == 0);
+
+	e1 = g.generateEdge(v1, v2);
+	e2 = g.generateEdge(v2, v3);
+	e3 = g.generateEdge(v3, v4);
+
+	verify(g.getNumVertices() == 4);
+	verify(g.getNumEdges() == 3);
+
+	verify(e1.getBeginVertex() == v1);
+	verify(e1.getEndVertex() == v2);
+	verify(e2.getBeginVertex() == v2);
+	verify(e2.getEndVertex() == v3);
+	verify(e3.getBeginVertex() == v3);
+	verify(e3.getEndVertex() == v4);
+
+	verify(g.getNumVertices() == 4);
+	verify(g.getNumEdges() == 3);
+	verify(v1.getDegree() == 1);
+	verify(v2.getDegree() == 2);
+	verify(v3.getDegree() == 2);
+	verify(v4.getDegree() == 1);
+
+	g.deleteEdge(e1);
+//	e1 = null;
+
+	verify(g.getNumVertices() == 4);
+	verify(g.getNumEdges() == 2);
+	verify(v1.getDegree() == 0);
+	verify(v2.getDegree() == 1);
+	verify(v3.getDegree() == 2);
+	verify(v4.getDegree() == 1);
+
+	g.deleteVertex(v2);
+	// v2 = null; // Commented out to test that the segmentation fault will not occur
+
+	verify(g.getNumVertices() == 3);
+	verify(g.getNumEdges() == 1);
+	verify(v1.getDegree() == 0);
+	verify(v2.getDegree() == 0); // deleted
+	verify(v3.getDegree() == 1);
+	verify(v4.getDegree() == 1);
+
+
+	// VertexSet tests
+	vs = set();
+	vs.insert(v1);
+	vs.insert(v4);
+
+	verify(vs.size() == 2);
+	verify(vs.contains(v1));
+	verify(!vs.contains(v3));
+	verify(vs.contains(v4));
+
+	vs.remove(v1);
+	verify(!vs.contains(v1));
+	verify(vs.contains(v4));
+
+	// EdgeSet tests
+	es = set();
+	es.insert(e3);
+
+	verify(es.size() == 1);
+	verify(es.contains(e3));
+
+	es.remove(e3);
+	verify(!es.contains(e3));
+}

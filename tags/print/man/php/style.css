@@ -1,0 +1,50 @@
+body
+{
+	font-family: Verdana, "Bitstream Vera Sans", Geneva, sans-serif;
+	background-color: white;
+	color: black;
+	font-size: 10pt;
+	text-align: justify;
+	line-height: 1.6em;
+	margin: 0px;
+}
+
+#header		{ width: 100%; text-align: center; margin-bottom: 50px; border-bottom: 1px solid gray; }
+#footer		{ clear: both; width: 100%; text-align: center; margin-top: 50px; border-top: 1px solid gray; }
+
+#sidebar	{ background: transparent url("images/website/logo.png") no-repeat; width: 17%; margin-left: 3%; padding-top: 100px; display: inline; float: left; text-align: left; }
+#page		{ margin: 0px 3% 50px 20%; }
+
+#sidebar ul		{ margin-left: 1.5em; padding: 0px; }
+#screenshot		{ float: right; }
+
+
+p			{ margin-bottom: 1em; }
+a, .m			{ color: blue; text-decoration: none; }
+a:hover, .m:hover	{ text-decoration: underline; }
+.blank:after		{ content: " " url("images/website/blank.gif"); }
+.down:after		{ content: " " url("images/website/down.gif"); }
+.active			{ font-weight: bold; }
+.active:hover		{ text-decoration: none; }
+
+.warn			{ color: red; font-weight: bold; }
+.todo			{ /*color: red; font-weight: bold; */ }
+.todo:before		{ /*content: "TODO: ";*/ }
+.invalid_link		{ color: green; }
+.cleaner		{ clear: both; }
+.img			{ text-align: center; font-style: italic; }
+
+pre
+{
+	font-family: Clean, "Courier New", Courier, monospace;
+	text-align: left;
+	padding: 1em;
+	line-height: 1.1em;
+	overflow: auto;
+	border: 1px solid silver;
+}
+
+pre:hover	{ border: 1px solid gray; }
+pre.spec	{ background-color: rgb(200, 200, 255); border: 1px solid black; }
+pre.code	{ background-color: rgb(200, 255, 200); border: 1px solid black; }
+pre.screen	{ background-color: rgb(255, 200, 200); border: 1px solid black; }

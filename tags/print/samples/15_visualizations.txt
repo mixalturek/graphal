@@ -1,0 +1,11 @@
+function main(argv)
+{
+	g = graph();
+	assert(g.loadFromFile("../graphs/01_house.txt"));
+	breakpoint(true);
+	visRegister(g.getVertices(), "vertices", 255, 0, 0);
+	visRegister(g.getEdges(), "edges", 0, 255, 0);
+	g.setDirected(false);
+
+	return;
+}

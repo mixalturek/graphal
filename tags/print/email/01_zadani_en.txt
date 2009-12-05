@@ -1,0 +1,67 @@
+
+Graph algorithms interpreter
+============================
+
+Design and implement language interpreter, which will be targeted to the graph manipulations. The language will contain basic data structures necessary for the graphs and will have support for effective writing of the graph algoritms. Interpreter will have graphic user interface consisting of a text editor for algorithms writing and a window for graph visualization during execution of the algorithm. Use OpenGL library for the graph visualization.
+
+----------------------------
+
+Graphs without orientation are fundamental, oriented are not needed so much.
+
+Language contains basic data types, data and control structures
+	numbers
+	floating point numbers
+	arrays
+	conditions, loops, declarations and functions calling
+	text output to the own console
+	#include directive in simple version (not headers but whole files)
+
+	Consider
+		pointers and structures like in C language
+		OOP is not probably needed
+		simple I/O, mainly reading/writing of the graphs from/to text files
+		boolean type, maybe not needed
+		simple strings and characters, no difficult functions for manipulation with them
+
+	Specific language elements
+		primitive types
+			graph, vertex, edge, vertex set, edge set
+		basic functions
+			create/delete graph/vertex/edge
+			evaluate vertex/edge
+			return all neighbors of the vertex
+			create/delete vertex/edge set, add/remove vertex/edge
+			return degree of vertex
+		control structures
+			for all neighbors of vertex execute <command>
+			for all vertices/edges in the set execute <command>
+			for all verteces/edges in the graph execute <command>
+
+Editor
+	classic text editor for programmers
+	syntax highlighting will be appreciated
+	other features will be discussed
+
+Display unit, visualization
+	display actually processed graph in 3D
+	it is not editor for graph editing
+	user can interactively translate, rotate and resize the graph
+	user can enable/disable displaying of specific parts of the graph
+	if language supports color/texture attributes of the vertices/edges/sets it should be displayed too
+	visualization window should have an option for loading of the graph, user can choose to use this graph or graph loaded by the code
+
+Manipulation
+Code interpretation can be stepped. Actual state in graph window will be displayed after command is executed and graph view can be changed now. Parameters of the graph during algorithm execution won't be changed, visualization parameters yes (colors, scale, etc.). There is no need to support classic debugging, console for debugging and trace outputs is enough.
+
+Minimal configuration
+	CLI version
+		i386 and amd64 platform, support for other will be appreciated
+		GNU/Linux, MS Windows (NT based) or MacOS operating systems, support for other will be appreciated
+		processor min. 1 GHz
+		memory min. 2 GB RAM (millions of vertices are expected)
+
+	GUI version
+		graphic card with OpenGL support (ie. nVidia GeForce 2 and newer)
+		OpenGL drivers and Qt4 libraries
+		min. 1024x768 monitor resolution
+

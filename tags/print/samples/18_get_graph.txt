@@ -1,0 +1,14 @@
+function main(argc)
+{
+	if((g = visGetGraph()) == null)
+	{
+		println("No graph was set in GUI, using predefined one in the script.");
+		g = graph();
+		assert(g.loadFromFile("../graphs/00_simple.txt"));
+	}
+
+	// Use the graph
+	breakpoint(true);
+	visRegister(g, "graph", 255, 255, 255);
+	return 0;
+}

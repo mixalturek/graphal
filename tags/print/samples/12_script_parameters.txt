@@ -1,0 +1,9 @@
+function main(argv)
+{
+	num = argv.size();
+	for(i = 0; i < num; i++)
+		println("argv[" + i + "]: " + argv[i]);
+
+//	foreach(arg; argv)
+//		println(arg);
+}

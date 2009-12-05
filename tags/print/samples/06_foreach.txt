@@ -1,0 +1,81 @@
+function main(argv)
+{
+	// Array
+	arr = array(5);
+	i = 0;
+
+	foreach(var ; arr)
+		var = i++;
+
+	println("--- array items ---");
+	foreach(var ; arr)
+		println(var);
+
+	// Struct
+	st = struct();
+	st.number = 42;
+	st.pi = 3.14;
+	st.str = "bagr";
+
+	println("--- struct items ---");
+	foreach(var ; st)
+		println(var);
+
+	println("--- struct items using iterator ---");
+	it = st.iterator();
+	while(it.hasNext())
+		println(it.next());
+
+	// Graph
+	g = graph();
+
+	v1 = g.generateVertex();
+	v2 = g.generateVertex();
+	v3 = g.generateVertex();
+	e1 = g.generateEdge(v1, v2);
+	e2 = g.generateEdge(v2, v3);
+
+	v1.color = "red";
+	v2.color = "green";
+	v3.color = "blue";
+	e1.value = 0.5;
+	e2.value = 0.4;
+
+	println("--- vertex set ---");
+	foreach(var ; g.getVertices())
+		println("" + var + ": " + var.color);
+
+	println("--- edge set ---");
+	foreach(var ; g.getEdges())
+		println("" + var + ": " + var.value);
+
+	println("--- vertex neighbors ---");
+	foreach(var ; v2.getNeighbors())
+		println("" + var + ": " + var.color);
+
+	foreach(var ; g.getVertices())
+		var.state = "new";
+
+	v2.state = "closed";
+
+	println("--- graph dump ---");
+	g.dumpGraph();
+}
+
+function dumpGraph(g)
+{
+	println(g);
+	foreach(vertex ; g.getVertices())
+	{
+		println("\t" + vertex);
+		foreach(item ; vertex)
+			println("\t\t" + item);
+	}
+
+	foreach(edge ; g.getEdges())
+	{
+		println("\t" + edge);
+		foreach(item ; edge)
+			println("\t\t" + item);
+	}
+}

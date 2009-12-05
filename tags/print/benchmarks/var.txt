@@ -1,0 +1,16 @@
+define("NUM", "10000000");
+define("DISP", "100000");
+
+function main(argv)
+{
+	for(i = 0; i < NUM; i++)
+	{
+		tmp = i * 2;
+		tmp++;
+
+//		if(i % DISP == 0)
+//			println("debug: " + i);
+	}
+
+	return 0;
+}

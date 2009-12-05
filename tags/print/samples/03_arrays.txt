@@ -1,0 +1,23 @@
+function main(argv)
+{
+	num = argv.size();
+	for(i = 0; i < num; i++)
+		println("argv[" + i + "]: " + argv[i]);
+
+	arr = array(5);
+	arr[0] = "bagr";
+	arr[1] = 5.5;
+	arr[4] = 3;
+
+	for(i = 0; i < 5; i++)
+		println("arr[" + i + "]: " + arr[i]);
+
+	st = struct();
+	st.bagr = "bagr";
+	st.brm = true;
+
+	println("st.bagr: " + st.bagr);
+	println("st.brm: " + st.brm);
+	st.bagr = "jiny bagr";
+	println("st.bagr: " + st.bagr);
+}

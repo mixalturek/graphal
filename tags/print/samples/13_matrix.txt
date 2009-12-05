@@ -1,0 +1,43 @@
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function createMatrix(size)
+{
+	num = 0;
+
+	matrix = array(size);
+	foreach(row; matrix)
+	{
+		row = array(size);
+		foreach(item; row)
+			item = num++;
+	}
+
+	return matrix;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function displayMatrix(matrix)
+{
+	foreach(row; matrix)
+	{
+		foreach(item; row)
+		{
+			echo(item);
+			echo(" ");
+		}
+		echo("\n");
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////
+////
+
+function main(argv)
+{
+	matrix = createMatrix(3);
+	matrix.displayMatrix();
+}

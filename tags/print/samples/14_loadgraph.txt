@@ -1,0 +1,29 @@
+function displayAdjacencyMatrix(matrix, vertices)
+{
+	echo("  |");
+	foreach(vertex; vertices.iterator())
+		echo("" + vertex.__id + " ");
+
+	echo("\n--+-------\n");
+
+	it = vertices.iterator();
+
+	foreach(line; matrix.iterator())
+	{
+		if(it.hasNext())
+			vertex = it.next();
+
+		echo("" + vertex.__id + " |");
+		foreach(item; line.iterator())
+			echo("" + item + " ");
+
+		echo("\n");
+	}
+}
+
+function main(argv)
+{
+	g = graph();
+	assert(g.loadFromFile("../graphs/00_simple.txt"));
+	displayAdjacencyMatrix(g.getAdjacencyMatrix(), g.getVertices());
+}

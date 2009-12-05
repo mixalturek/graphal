@@ -1,0 +1,7 @@
+define("PI", "3.14159");
+include("02_included.txt");
+
+function main(argv)
+{
+	return fromIncludedFile(PI);
+}

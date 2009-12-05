@@ -1,0 +1,10 @@
+function doSomething(par)
+{
+	println(par);
+}
+
+function fromIncludedFile(param)
+{
+	doSomething(param);
+	return param;
+}

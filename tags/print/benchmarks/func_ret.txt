@@ -1,0 +1,15 @@
+define("NUM", "10000000");
+
+
+function func(val)
+{
+	return val * 2;
+}
+
+function main(argv)
+{
+	for(i = 0; i < NUM; i++)
+		func(i);
+
+	return 0;
+}
