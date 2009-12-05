@@ -1613,8 +1613,9 @@ Pozorný čtenář si jistě všiml slůvka \texttt{verify()}, jímž jsou obale
 \begin{verbatim}
 #define verify(expr)                                                   \
 {                                                                      \
-    result = result && (expr);                                         \
-    if(!(expr))                                                        \
+    bool cur_result = (expr);                                          \
+    result = result && cur_result;                                     \
+    if(!cur_result)                                                    \
         cerr << __FILE__ << ":" << __LINE__ << "   " << #expr << endl; \
 }
 \end{verbatim}

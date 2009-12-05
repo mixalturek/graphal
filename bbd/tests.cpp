@@ -57,8 +57,9 @@
 // Verify macro, like assert but without exiting
 #define verify(expr)                                          \
 {                                                             \
-	result = result && (expr);                                \
-	if(!(expr))                                               \
+	bool cur_result = (expr);                                 \
+	result = result && cur_result;                            \
+	if(!cur_result)                                           \
 	{                                                         \
 		stringstream ss;                                      \
 		ss << __FILE__ << ":" << __LINE__ << "   " << #expr;  \
