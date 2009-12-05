@@ -144,7 +144,7 @@ Jádrem diplomové práce je návrh a implementace speciálního programovacího
 
 Algoritmy \textit{difúze} \cite{werner} slouží pro zpracování obrazů. Každý, kdo se jimi zabývá, ví, že fungují, ale nikdo přesně neví, proč vlastně fungují. Výstupem tohoto projektu je integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
 
-Za vstupní data se považují pixely obrázku a výstupem je například, ve které jeho části se nachází objekt s~definovanými vlastnostmi, kde se vyskytuje pozadí a podobně. Obrázek je převeden na speciální graf s~několika vrcholy pro každý pixel a pospojovanými ohodnocenými hranami. Při zobrazení ve 3D prostoru může vytvořený graf vypadat podobně jako na schématu \ref{fig:graf_difuze}.
+Za vstupní data se považují pixely obrázku a výstupem je například, ve které jeho části se nachází objekt s~definovanými vlastnostmi, kde se vyskytuje pozadí a podobně. Obrázek je převeden na speciální graf s~několika vrcholy pro každý pixel a pospojovaný ohodnocenými hranami. Při zobrazení ve 3D prostoru může vytvořený graf vypadat podobně jako na schématu \ref{fig:graf_difuze}.
 
 \begin{figure}[ht]
 \begin{center}
@@ -154,7 +154,7 @@ Za vstupní data se považují pixely obrázku a výstupem je například, ve kt
 \end{center}
 \end{figure}
 
-Algoritmus pracuje s~lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Difúze je velmi blízká \textit{loopy belief propagation} strategii \cite{belief_propagation}. Snaží se podobným způsobem o~totéž - tj. v~ohodnoceném grafu nalézt podgraf s~celkově maximální vahou hran a uzlů, přičemž množina přípustných podgrafů, na nichž se maximum hledá, je nějakým způsobem omezena. Zadání může být tedy zobecněno z~práce s~obrázky na jednoduché grafové operace.
+Algoritmus pracuje s~lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Difúze je blízká \textit{loopy belief propagation} strategii \cite{belief_propagation}. Snaží se podobným způsobem o~totéž -- tj. nalézt v~ohodnoceném grafu podgraf s~celkově maximální vahou hran a uzlů, přičemž množina přípustných podgrafů, na nichž se maximum hledá, je nějakým způsobem omezena.
 
 Cílem diplomové práce je návrh a implementace jazyka založeného na syntaxi C, který slouží pro manipulaci s~grafy. Jazyk má podporu pro základní datové typy, jako jsou celá a desetinná čísla, řetězce, pole a struktury. Proměnné mohou být lokální i~globální, bez deklarací.
 
@@ -1751,7 +1751,7 @@ Všechny požadavky vyplývající ze zadání byly splněny, v~mnoha případec
 
 Jak ukázalo závěrečné testování, interpret má bohužel výrazné nedostatky v~rychlosti vykonávání kódu. Při porovnání s~ekvivalentními programy zapsanými v~jazyce Perl vychází přibližně osmi až patnáctinásobně pomalejší běh. Je pravda, že se vyvinutý interpret v~sou\-čas\-né verzi nesnaží o~naprosto žádné optimalizace, zde se zcela jistě nachází prostor pro další zlepšování.
 
-Budoucnost aplikace a schopnosti nově vytvořeného jazyka leží především na rozšíření o~nové zabudované funkce, které zatím poskytují pouze velice málo možností k~praktickému nasazení například pro skriptování na úrovni operačního systému. Grafická část spolu s~výkonnými vizualizacemi grafů bude zcela jistě využívána při zkoumání difuzních algoritmů, o~nichž byla řeč v~samém úvodu práce. Je jasné, že během této činnosti určitě vznikne spousta nových požadavků na nejrůznější rozšíření a zlepšení.
+Budoucnost aplikace a schopnosti nově vytvořeného jazyka leží především na rozšíření o~nové zabudované funkce, které zatím poskytují pouze velice málo možností k~praktickému nasazení například pro skriptování na úrovni operačního systému. Grafická část spolu s~výkonnými vizualizacemi grafů bude zcela jistě využívána při zkoumání difuzních algoritmů, o~nichž byla řeč na samém úvodu práce. Je jasné, že během této činnosti určitě vznikne spousta nových požadavků na nejrůznější rozšíření a zlepšení.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
