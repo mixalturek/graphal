@@ -142,8 +142,7 @@ Jádrem diplomové práce je návrh a implementace speciálního programovacího
 
 \chapter{Úvod}
 
-% TODO: odkaz na literaturu
-Algoritmy \textit{difúze} slouží pro zpracování obrazů. Každý, kdo se jimi zabývá, ví, že fungují, ale nikdo přesně neví, proč vlastně fungují. Výstupem tohoto projektu je integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
+Algoritmy \textit{difúze} \cite{werner} slouží pro zpracování obrazů. Každý, kdo se jimi zabývá, ví, že fungují, ale nikdo přesně neví, proč vlastně fungují. Výstupem tohoto projektu je integrované vývojové prostředí pro psaní, ladění a vizualizaci průběhu takovýchto algoritmů.
 
 Za vstupní data se považují pixely obrázku a výstupem je například, ve které jeho části se nachází objekt s~definovanými vlastnostmi, kde se vyskytuje pozadí a podobně. Obrázek je převeden na speciální graf s~několika vrcholy pro každý pixel a pospojovanými ohodnocenými hranami. Při zobrazení ve 3D prostoru může vytvořený graf vypadat podobně jako na schématu \ref{fig:graf_difuze}.
 
@@ -155,7 +154,7 @@ Za vstupní data se považují pixely obrázku a výstupem je například, ve kt
 \end{center}
 \end{figure}
 
-Difuzní algoritmus pracuje s~lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Zadání může být tedy zobecněno z~práce s~obrázky na jednoduché grafové operace.
+Algoritmus pracuje s~lokálními částmi grafu, iterativně aktualizuje ohodnocení hran a končí poté, co je splněna globální podmínka. Difúze je velmi blízká \textit{loopy belief propagation} strategii \cite{belief_propagation}. Snaží se podobným způsobem o~totéž - tj. v~ohodnoceném grafu nalézt podgraf s~celkově maximální vahou hran a uzlů, přičemž množina přípustných podgrafů, na nichž se maximum hledá, je nějakým způsobem omezena. Zadání může být tedy zobecněno z~práce s~obrázky na jednoduché grafové operace.
 
 Cílem diplomové práce je návrh a implementace jazyka založeného na syntaxi C, který slouží pro manipulaci s~grafy. Jazyk má podporu pro základní datové typy, jako jsou celá a desetinná čísla, řetězce, pole a struktury. Proměnné mohou být lokální i~globální, bez deklarací.
 
@@ -167,7 +166,7 @@ Grafické uživatelské rozhraní sestává především z~programátorsky zamě
 
 Vizualizace jsou přímo propojené s~laděním skriptu. Vykonávání kódu může být pozastaveno breakpointem a poté krokováno s~možností vstupování do funkcí (step in), opuštění dané funkce (step out) či vykonání následujícího příkazu (step over). Při každém zastavení skriptu se aktualizuje panel zásobníku volání, seznam definovaných proměnných a vizualizace. Se zobrazeným grafem se dá následně otáčet, přibližovat ho, oddalovat a provádět další 3D operace. Graf může být nahrán jak kódem skriptu, tak explicitně uživatelem.
 
-Základní kód interpretu a rozhraní pro příkazovou řádku je napsáno v~jazyce C++ s~využitím parser generátoru GNU Bison (LALR gramatika) a nezávisí na žádné další knihovně kromě standardního STL. Tato část je tudíž zkompilovatelná na libovolné platformě, pro kterou existuje C++ kompilátor. Grafická část aplikace používá Qt a vizualizace OpenGL, obě knihovny jsou dostupné na všech majoritních operačních systémech.
+Základní kód interpretu a rozhraní pro příkazovou řádku je napsáno v~jazyce C++ s~využitím parser generátoru GNU Bison (LALR gramatika) a nezávisí na žádné další knihovně kromě standardní STL. Tato část je tudíž zkompilovatelná na libovolné platformě, pro kterou existuje C++ kompilátor. Grafická část aplikace používá Qt a vizualizace OpenGL, obě knihovny jsou dostupné na všech majoritních operačních systémech.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
