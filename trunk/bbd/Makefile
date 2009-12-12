@@ -17,13 +17,14 @@ OBJECTS = $(shell ls *.cpp | sed 's/.cpp/.o/')
 .PHONY: builtin
 .PHONY: listbuiltin
 .PHONY: version
+.PHONY: depend
 #.PHONY: install
 
-build: Makefile.dep $(TARGET)
+build: $(TARGET)
 
 rebuild: clean all
 
-all: version bison operators builtin build
+all: version bison operators builtin depend build
 
 %.o: %.cpp
 	$(CC) -c $< $(CFLAGS)
@@ -43,10 +44,12 @@ builtin: gen_builtin.pl
 version:
 	echo '#define SVN_VERSION' $(shell svnversion | tr 'A-Z' ' ' | cut -d ':' -f 1) > version.hpp
 
-Makefile.dep: $(shell ls *.cpp *.hpp)
+depend:
 	touch Makefile.dep
-	makedepend -f Makefile.dep -Y -m $(shell ls *.cpp) 2>&1 | grep -v '\(cassert\|cstdio\|algorithm\|set\|stream\|fstream\|iostream\|map\|deque\|vector\|stack\|list\|typeinfo\|stdexcept\|cmath\)'
-	rm Makefile.dep.bak
+	makedepend -f Makefile.dep -Y -m $(shell ls *.cpp) 2>&1 | grep -v '\(cassert\|cstdio\|algorithm\|set\|stream\|fstream\|iostream\|map\|deque\|vector\|stack\|list\|typeinfo\|stdexcept\|cmath\)' ; rm Makefile.dep.bak
+
+Makefile.dep:
+	touch Makefile.dep
 
 run:
 	./$(TARGET)
