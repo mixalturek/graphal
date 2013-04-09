@@ -1,69 +1,97 @@
-TARGET  = bbd
-CC      = g++
-CFLAGS  = -std=c++98 -pedantic -Wall
-# CFLAGS  = -std=c++98 -pedantic -Wall -O2 -s -DNDEBUG
+# Copyright 2013 Michal Turek <http://woq.nipax.cz/>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+# MA 02110-1301, USA.
+
+
+LIBRARY = libgraphal.so
+VERSION_MAJOR = 0
+VERSION_MINOR = 0
+
+TARGET = $(LIBRARY).$(VERSION_MAJOR).$(VERSION_MINOR)
+BUILD_DIR = ../build/$(TARGET)
+
+CC = g++
+
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(addprefix $(BUILD_DIR)/,$(SOURCES:.cpp=.o))
+
+CFLAGS = -MMD -std=c++98 -pedantic -Wall
+INCLUDE_DIRS =
 LDFLAGS =
-OBJECTS = $(shell ls *.cpp | sed 's/.cpp/.o/')
+LDLIBS =
+LIB_DIRS =
 
-.PHONY: build
-.PHONY: rebuild
+# Release is a default configuration
+ifndef CONF
+CONF = release
+endif
+
+ifeq ($(CONF), release)
+# Two part executable is generated in release
+CFLAGS += -DNDEBUG -O2 -g
+else
+CFLAGS += -g
+endif
+
+
+###############################################################################
+#### Default
+
 .PHONY: all
-.PHONY: run
+all: bison $(BUILD_DIR)/$(TARGET)
+
+
+###############################################################################
+#### Bison
+
+bison: parser.cpp
+
+parser.cpp: parser.y
+	bison --defines=parser.h -o parser.cpp parser.y
+
+
+###############################################################################
+#### Compile
+
+$(BUILD_DIR)/$(TARGET): $(OBJECTS)
+	$(CC) $(LDFLAGS) $(OBJECTS) $(LDLIBS) $(LIB_DIRS) -o $@
+	$(CC) $(LDFLAGS) -shared -Wl,-soname,$(LIBRARY).$(VERSION_MAJOR) -o $(TARGET) $(OBJECTS) $(LIB_DIRS) $(LDLIBS)
+	ln -sf $(TARGET) $(LIBRARY).$(VERSION_MAJOR)
+	ln -sf $(TARGET) $(LIBRARY)
+ifeq ($(CONF), release)
+	# Two part executable is generated in release
+	objcopy --only-keep-debug $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET).debug
+	objcopy --strip-unneeded $(BUILD_DIR)/$(TARGET)
+	objcopy --add-gnu-debuglink=$(BUILD_DIR)/$(TARGET).debug $(BUILD_DIR)/$(TARGET)
+	objdump -s -j .gnu_debuglink $(BUILD_DIR)/$(TARGET)
+endif
+
+
+$(BUILD_DIR)/%.o: %.cpp
+	@mkdir -p `dirname $@`
+	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
+
+
+# Dependencies for recompilation
+-include $(SOURCES:%.cpp=$(BUILD_DIR)/%.d)
+
+
+###############################################################################
+#### Clean
+
 .PHONY: clean
-.PHONY: todo
-.PHONY: lines
-.PHONY: bison
-.PHONY: operators
-.PHONY: builtin
-.PHONY: listbuiltin
-.PHONY: version
-.PHONY: depend
-#.PHONY: install
-
-build: $(TARGET)
-
-rebuild: clean all
-
-all: version bison operators builtin depend build
-
-%.o: %.cpp
-	$(CC) -c $< $(CFLAGS)
-
-$(TARGET): $(OBJECTS)
-	$(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS)
-
-bison:
-	bison -d -o parser.cpp parser.y
-
-operators: gen_operators.pl
-	perl gen_operators.pl
-
-builtin: gen_builtin.pl
-	perl gen_builtin.pl
-
-version:
-	echo '#define SVN_VERSION' $(shell svnversion | tr 'A-Z' ' ' | cut -d ':' -f 1) > version.hpp
-
-depend:
-	touch Makefile.dep
-	makedepend -f Makefile.dep -Y -m $(shell ls *.cpp) 2>&1 | grep -v '\(cassert\|cstdio\|algorithm\|set\|stream\|fstream\|iostream\|map\|deque\|vector\|stack\|list\|typeinfo\|stdexcept\|cmath\)' ; rm Makefile.dep.bak
-
-Makefile.dep:
-	touch Makefile.dep
-
-run:
-	./$(TARGET)
-
-memoryleaks:
-	valgrind ./$(TARGET) --unit-tests ../samples/tests.txt
-
 clean:
-	rm -f $(TARGET) *.o core
-
-todo:
-	grep -rI TODO . | grep -v './.svn/'
-
-listbuiltin:
-	grep '\$funcdecl =' gen_builtin.pl | sed "s/.*'\(.*\)'.*/\1/"
-
-include Makefile.dep
+	rm -rf $(BUILD_DIR)

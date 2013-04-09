@@ -10,3 +10,8 @@ Bison
 		array() - array0()
 		array(size) - array1()
 	add switch
+
+
+Licensing
+	libgraphal LGPL, fix file headers
+	other GPL
