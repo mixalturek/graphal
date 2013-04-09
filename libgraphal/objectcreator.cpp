@@ -19,12 +19,12 @@
 
 
 #include <cassert>
-#include "objectcreator.hpp"
-#include "objectfactory.hpp"
-#include "logger.hpp"
-#include "context.hpp"
-#include "visualizationconnector.hpp"
-#include "mutex.hpp"
+#include "objectcreator.h"
+#include "objectfactory.h"
+#include "logger.h"
+#include "context.h"
+#include "visualizationconnector.h"
+#include "mutex.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

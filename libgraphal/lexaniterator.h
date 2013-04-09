@@ -20,8 +20,8 @@
 #ifndef LEXANITERATOR_HPP
 #define LEXANITERATOR_HPP
 
-#include "general.hpp"
-#include "baseobject.hpp"
+#include "general.h"
+#include "baseobject.h"
 
 class LexanIterator : public BaseObject
 {

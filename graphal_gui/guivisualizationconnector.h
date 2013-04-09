@@ -22,8 +22,8 @@
 #define GUIVISUALIZATIONCONNECTOR_H
 
 #include <QObject>
-#include "general.hpp"
-#include "visualizationconnector.hpp"
+#include "general.h"
+#include "visualizationconnector.h"
 #include "visualizationitemdata.h"
 
 class GuiVisualizationConnector : public QObject, public VisualizationConnector

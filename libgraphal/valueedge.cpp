@@ -19,10 +19,10 @@
 
 
 #include <cassert>
-#include "valueedge.hpp"
-#include "valuebool.hpp"
-#include "valuevertex.hpp"
-#include "logger.hpp"
+#include "valueedge.h"
+#include "valuebool.h"
+#include "valuevertex.h"
+#include "logger.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

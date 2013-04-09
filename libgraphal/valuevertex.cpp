@@ -19,13 +19,13 @@
 
 
 #include <cassert>
-#include "valuevertex.hpp"
-#include "valuebool.hpp"
-#include "valuegraph.hpp"
-#include "valueedge.hpp"
-#include "context.hpp"
-#include "valueset.hpp"
-#include "logger.hpp"
+#include "valuevertex.h"
+#include "valuebool.h"
+#include "valuegraph.h"
+#include "valueedge.h"
+#include "context.h"
+#include "valueset.h"
+#include "logger.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

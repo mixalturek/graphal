@@ -21,8 +21,8 @@
 #ifndef NODEBINARY_HPP
 #define NODEBINARY_HPP
 
-#include "general.hpp"
-#include "node.hpp"
+#include "general.h"
+#include "node.h"
 
 class NodeBinary : public Node
 {

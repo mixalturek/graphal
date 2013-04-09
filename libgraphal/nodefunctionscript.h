@@ -21,9 +21,9 @@
 #ifndef NODEFUNCTIONSCRIPT_HPP
 #define NODEFUNCTIONSCRIPT_HPP
 
-#include "general.hpp"
-#include "nodefunction.hpp"
-#include "codeposition.hpp"
+#include "general.h"
+#include "nodefunction.h"
+#include "codeposition.h"
 
 
 class NodeFunctionScript : public NodeFunction

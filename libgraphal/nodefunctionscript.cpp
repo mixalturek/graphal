@@ -18,13 +18,13 @@
  */
 
 
-#include "nodefunctionscript.hpp"
-#include "nodeemptycommand.hpp"
-#include "nodejumpcontinue.hpp"
-#include "nodejumpbreak.hpp"
-#include "valuenull.hpp"
-#include "context.hpp"
-#include "logger.hpp"
+#include "nodefunctionscript.h"
+#include "nodeemptycommand.h"
+#include "nodejumpcontinue.h"
+#include "nodejumpbreak.h"
+#include "valuenull.h"
+#include "context.h"
+#include "logger.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

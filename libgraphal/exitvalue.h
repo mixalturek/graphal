@@ -20,10 +20,10 @@
 #ifndef EXITVALUE_HPP
 #define EXITVALUE_HPP
 
-#include "general.hpp"
-#include "baseobject.hpp"
-#include "countptr.hpp"
-#include "value.hpp"
+#include "general.h"
+#include "baseobject.h"
+#include "countptr.h"
+#include "value.h"
 
 
 class ExitValue : public BaseObject

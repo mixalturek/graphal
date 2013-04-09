@@ -20,8 +20,8 @@
 
 #include <cassert>
 #include <algorithm>
-#include "stringtable.hpp"
-#include "objectcreator.hpp"
+#include "stringtable.h"
+#include "objectcreator.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

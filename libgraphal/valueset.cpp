@@ -18,10 +18,10 @@
  */
 
 
-#include "valueset.hpp"
-#include "valuebool.hpp"
-#include "valuenull.hpp"
-#include "valuestruct.hpp"
+#include "valueset.h"
+#include "valuebool.h"
+#include "valuenull.h"
+#include "valuestruct.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

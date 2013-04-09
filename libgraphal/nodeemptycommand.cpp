@@ -18,8 +18,8 @@
  */
 
 
-#include "nodeemptycommand.hpp"
-#include "valuenull.hpp"
+#include "nodeemptycommand.h"
+#include "valuenull.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

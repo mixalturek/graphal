@@ -19,8 +19,8 @@
 
 
 #include <sstream>
-#include "codeposition.hpp"
-#include "context.hpp"
+#include "codeposition.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

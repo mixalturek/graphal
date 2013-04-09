@@ -18,8 +18,8 @@
  */
 
 
-#include "nodeglobal.hpp"
-#include "context.hpp"
+#include "nodeglobal.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

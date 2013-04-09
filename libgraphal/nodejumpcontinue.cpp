@@ -18,8 +18,8 @@
  */
 
 
-#include "nodejumpcontinue.hpp"
-#include "valuenull.hpp"
+#include "nodejumpcontinue.h"
+#include "valuenull.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

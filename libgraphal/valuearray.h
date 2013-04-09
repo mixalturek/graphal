@@ -21,9 +21,9 @@
 #define VALUEARRAY_HPP
 
 #include <deque>
-#include "general.hpp"
-#include "value.hpp"
-#include "valuenull.hpp"
+#include "general.h"
+#include "value.h"
+#include "valuenull.h"
 
 class ValueReference;
 

@@ -22,9 +22,9 @@
 #define NODEFUNCTIONBUILTIN_HPP
 
 #include <vector>
-#include "general.hpp"
-#include "nodefunction.hpp"
-#include "context.hpp"
+#include "general.h"
+#include "nodefunction.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

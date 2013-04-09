@@ -18,13 +18,13 @@
  */
 
 
-#include "value.hpp"
-#include "valuenull.hpp"
-#include "valuebool.hpp"
-#include "valueint.hpp"
-#include "valuefloat.hpp"
-#include "valuestring.hpp"
-#include "valuestruct.hpp"
+#include "value.h"
+#include "valuenull.h"
+#include "valuebool.h"
+#include "valueint.h"
+#include "valuefloat.h"
+#include "valuestring.h"
+#include "valuestruct.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -21,8 +21,8 @@
 #ifndef GUIFACTORY_HPP
 #define GUIFACTORY_HPP
 
-#include "general.hpp"
-#include "objectfactory.hpp"
+#include "general.h"
+#include "objectfactory.h"
 
 
 class GuiFactory : public ObjectFactory

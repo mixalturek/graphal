@@ -22,9 +22,9 @@
 #define VALUEREFERENCE_HPP
 
 #include <cassert>
-#include "general.hpp"
-#include "value.hpp"
-#include "countptr.hpp"
+#include "general.h"
+#include "value.h"
+#include "countptr.h"
 
 class ValueReference : public Value
 {

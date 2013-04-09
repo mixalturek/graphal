@@ -18,8 +18,8 @@
  */
 
 
-#include "nodejumpbreak.hpp"
-#include "valuenull.hpp"
+#include "nodejumpbreak.h"
+#include "valuenull.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

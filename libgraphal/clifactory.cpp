@@ -18,11 +18,11 @@
  */
 
 
-#include "clifactory.hpp"
-#include "clilogger.hpp"
-#include "climutex.hpp"
-#include "visualizationconnector.hpp"
-#include "context.hpp"
+#include "clifactory.h"
+#include "clilogger.h"
+#include "climutex.h"
+#include "visualizationconnector.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

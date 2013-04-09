@@ -21,8 +21,8 @@
 #ifndef NODELOOP_HPP
 #define NODELOOP_HPP
 
-#include "general.hpp"
-#include "node.hpp"
+#include "general.h"
+#include "node.h"
 
 
 class NodeLoop : public Node

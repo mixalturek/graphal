@@ -21,8 +21,8 @@
 #ifndef NODEJUMPBREAK_HPP
 #define NODEJUMPBREAK_HPP
 
-#include "general.hpp"
-#include "node.hpp"
+#include "general.h"
+#include "node.h"
 
 
 class NodeJumpBreak : public Node

@@ -21,17 +21,17 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
-#include "valuegraph.hpp"
-#include "logger.hpp"
-#include "valuebool.hpp"
-#include "valuevertex.hpp"
-#include "valueedge.hpp"
-#include "context.hpp"
-#include "valueint.hpp"
-#include "valuefloat.hpp"
-#include "objectcreator.hpp"
-#include "valuearray.hpp"
-#include "valueset.hpp"
+#include "valuegraph.h"
+#include "logger.h"
+#include "valuebool.h"
+#include "valuevertex.h"
+#include "valueedge.h"
+#include "context.h"
+#include "valueint.h"
+#include "valuefloat.h"
+#include "objectcreator.h"
+#include "valuearray.h"
+#include "valueset.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

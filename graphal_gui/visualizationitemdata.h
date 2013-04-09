@@ -22,8 +22,8 @@
 #define VISUALIZATIONITEMDATA_H
 
 #include <QColor>
-#include "general.hpp"
-#include "value.hpp"
+#include "general.h"
+#include "value.h"
 
 class VisualizationItemData : public QObject
 {

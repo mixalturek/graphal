@@ -18,9 +18,9 @@
  */
 
 
-#include "visualizationconnector.hpp"
-#include "logger.hpp"
-#include "valuenull.hpp"
+#include "visualizationconnector.h"
+#include "logger.h"
+#include "valuenull.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

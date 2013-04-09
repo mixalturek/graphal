@@ -39,8 +39,8 @@ sub generateUnaryOperatorClass
 #ifndef $hpp_define
 #define $hpp_define
 
-#include "general.hpp"
-#include "nodeunary.hpp"
+#include "general.h"
+#include "nodeunary.h"
 
 class $classname : public NodeUnary
 {
@@ -92,7 +92,7 @@ END_OF_HPP
  ****************************************************************************/
 $include
 #include "$hpp_filename"
-#include "value.hpp"
+#include "value.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -196,8 +196,8 @@ sub generateBinaryOperatorClass
 #ifndef $hpp_define
 #define $hpp_define
 
-#include "general.hpp"
-#include "nodebinary.hpp"
+#include "general.h"
+#include "nodebinary.h"
 
 class $classname : public NodeBinary
 {
@@ -249,7 +249,7 @@ END_OF_HPP
  ****************************************************************************/
 $include
 #include "$hpp_filename"
-#include "value.hpp"
+#include "value.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

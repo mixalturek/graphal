@@ -21,9 +21,9 @@
 #ifndef VARIABLE_HPP
 #define VARIABLE_HPP
 
-#include "general.hpp"
-#include "baseobject.hpp"
-#include "countptr.hpp"
+#include "general.h"
+#include "baseobject.h"
+#include "countptr.h"
 
 class Value;
 class ValueNull;

@@ -22,10 +22,10 @@
 
 #include <stack>
 #include <map>
-#include "general.hpp"
-#include "baseobject.hpp"
-#include "lexaniterator.hpp"
-#include "lexantokens.hpp"
+#include "general.h"
+#include "baseobject.h"
+#include "lexaniterator.h"
+#include "lexantokens.h"
 
 
 class Lexan : public BaseObject

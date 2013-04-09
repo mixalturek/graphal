@@ -23,8 +23,8 @@
 #ifndef NODEEMPTYCOMMAND_HPP
 #define NODEEMPTYCOMMAND_HPP
 
-#include "general.hpp"
-#include "node.hpp"
+#include "general.h"
+#include "node.h"
 
 
 class NodeEmptyCommand : public Node

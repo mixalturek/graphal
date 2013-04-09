@@ -21,8 +21,8 @@
 #ifndef MUTEXLOCKER_HPP
 #define MUTEXLOCKER_HPP
 
-#include "general.hpp"
-#include "mutex.hpp"
+#include "general.h"
+#include "mutex.h"
 
 class MutexLocker
 {

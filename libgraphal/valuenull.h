@@ -21,8 +21,8 @@
 #ifndef VARIABLENULL_HPP
 #define VARIABLENULL_HPP
 
-#include "general.hpp"
-#include "value.hpp"
+#include "general.h"
+#include "value.h"
 
 #define VALUENULL ValueNull::getInstance()
 

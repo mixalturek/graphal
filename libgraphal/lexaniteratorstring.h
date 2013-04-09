@@ -20,8 +20,8 @@
 #ifndef LEXANITERATORSTRING_HPP
 #define LEXANITERATORSTRING_HPP
 
-#include "general.hpp"
-#include "lexaniterator.hpp"
+#include "general.h"
+#include "lexaniterator.h"
 
 class LexanIteratorString : public LexanIterator
 {

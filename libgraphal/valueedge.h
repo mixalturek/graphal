@@ -21,9 +21,9 @@
 #ifndef EDGE_HPP
 #define EDGE_HPP
 
-#include "general.hpp"
-#include "valuestruct.hpp"
-#include "valuegraph.hpp"
+#include "general.h"
+#include "valuestruct.h"
+#include "valuegraph.h"
 
 class ValueVertex;
 

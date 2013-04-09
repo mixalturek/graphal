@@ -19,12 +19,12 @@
 
 
 #include <cassert>
-#include "nodeforeach.hpp"
-#include "context.hpp"
-#include "nodeemptycommand.hpp"
-#include "nodejumpbreak.hpp"
-#include "nodejumpcontinue.hpp"
-#include "valuenull.hpp"
+#include "nodeforeach.h"
+#include "context.h"
+#include "nodeemptycommand.h"
+#include "nodejumpbreak.h"
+#include "nodejumpcontinue.h"
+#include "valuenull.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

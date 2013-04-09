@@ -21,8 +21,8 @@
 #ifndef NODEGLOBAL_HPP
 #define NODEGLOBAL_HPP
 
-#include "general.hpp"
-#include "node.hpp"
+#include "general.h"
+#include "node.h"
 
 
 class NodeGlobal : public Node

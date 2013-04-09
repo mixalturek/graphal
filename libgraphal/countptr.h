@@ -21,8 +21,8 @@
 #define COUNTPTR_HPP
 
 #include <cassert>
-#include "general.hpp"
-#include "objectcreator.hpp"
+#include "general.h"
+#include "objectcreator.h"
 
 
 template<class TYPE> class CountPtr

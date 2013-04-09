@@ -18,10 +18,10 @@
  */
 
 
-#include "callstackitem.hpp"
-#include "context.hpp"
-#include "valuenull.hpp"
-#include "valuereference.hpp"
+#include "callstackitem.h"
+#include "context.h"
+#include "valuenull.h"
+#include "valuereference.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -22,9 +22,9 @@
 #define VALUESET_HPP
 
 #include <deque>
-#include "general.hpp"
-#include "value.hpp"
-#include "countptr.hpp"
+#include "general.h"
+#include "value.h"
+#include "countptr.h"
 
 typedef deque< CountPtr<Value> > set_container;
 

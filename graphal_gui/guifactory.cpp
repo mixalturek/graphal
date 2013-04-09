@@ -18,8 +18,8 @@
  */
 
 
-#include "guifactory.hpp"
-#include "guilogger.hpp"
+#include "guifactory.h"
+#include "guilogger.h"
 #include "guicontext.h"
 #include "guimutex.h"
 #include "guivisualizationconnector.h"

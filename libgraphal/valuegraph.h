@@ -22,9 +22,9 @@
 #define GRAPH_HPP
 
 #include <set>
-#include "general.hpp"
-#include "value.hpp"
-#include "valueset.hpp"
+#include "general.h"
+#include "value.h"
+#include "valueset.h"
 
 class ValueVertex;
 class ValueEdge;

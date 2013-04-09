@@ -25,9 +25,9 @@
 
 #include <list>
 #include <cassert>
-#include "general.hpp"
-#include "node.hpp"
-#include "nodefunctioncall.hpp"
+#include "general.h"
+#include "node.h"
+#include "nodefunctioncall.h"
 
 class NodeBlock : public Node
 {

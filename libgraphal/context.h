@@ -24,14 +24,14 @@
 #include <deque>
 #include <map>
 #include <set>
-#include "general.hpp"
-#include "baseobject.hpp"
-#include "countptr.hpp"
-#include "value.hpp"
-#include "stringtable.hpp"
-#include "codeposition.hpp"
-#include "objectcreator.hpp"
-#include "callstackitem.hpp"
+#include "general.h"
+#include "baseobject.h"
+#include "countptr.h"
+#include "value.h"
+#include "stringtable.h"
+#include "codeposition.h"
+#include "objectcreator.h"
+#include "callstackitem.h"
 
 #define STR2ID(str) CONTEXT.getStringTable()->getID(str)
 #define ID2STR(id) CONTEXT.getStringTable()->getString(id)

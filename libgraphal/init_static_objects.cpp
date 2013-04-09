@@ -25,11 +25,11 @@
  ****************************************************************************/
 
 
-#include "general.hpp"
-#include "baseobject.hpp"
-#include "valuenull.hpp"
-#include "valuebool.hpp"
-#include "objectcreator.hpp"
+#include "general.h"
+#include "baseobject.h"
+#include "valuenull.h"
+#include "valuebool.h"
+#include "objectcreator.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

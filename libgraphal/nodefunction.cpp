@@ -18,8 +18,8 @@
  */
 
 
-#include "nodefunction.hpp"
-#include "context.hpp"
+#include "nodefunction.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

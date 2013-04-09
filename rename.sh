@@ -1,9 +1,7 @@
 #!/bin/bash
 
-for file in `find . -name '*.hpp'`
+for file in `find . -type f`
 do
-	#echo $file
-	name=`echo $file | cut -f 1-2 -d.`
-	echo $name
-	mv $file $name.h
+	echo $file
+	sed -i 's%#include "\(.*\).hpp"%#include "\1.h"%' $file
 done

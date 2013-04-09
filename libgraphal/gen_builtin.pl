@@ -68,8 +68,8 @@ $fileheader
 #ifndef $hpp_define
 #define $hpp_define
 
-#include "general.hpp"
-#include "nodefunctionbuiltin.hpp"
+#include "general.h"
+#include "nodefunctionbuiltin.h"
 
 class $classname : public NodeFunctionBuiltin
 {
@@ -97,9 +97,9 @@ $fileheader
 
 #include <cassert>
 #include "$hpp_filename"
-#include "valuenull.hpp"
-#include "context.hpp"
-#include "logger.hpp"
+#include "valuenull.h"
+#include "context.h"
+#include "logger.h"
 $include
 
 /////////////////////////////////////////////////////////////////////////////
@@ -232,7 +232,7 @@ genBFClass('dump', 'NodeBuiltinDump', 1, $code);
 $funcdecl = 'exit(object) : null';
 
 $include = <<END_OF_CODE;
-#include "exitvalue.hpp"
+#include "exitvalue.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -250,7 +250,7 @@ genBFClass('exit', 'NodeBuiltinExit', 1, $code, $include);
 $funcdecl = 'assert(object) : null';
 
 $include = <<END_OF_CODE;
-#include "exitvalue.hpp"
+#include "exitvalue.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -271,7 +271,7 @@ genBFClass('assert', 'NodeBuiltinAssert', 1, $code, $include);
 $funcdecl = 'verify(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -292,7 +292,7 @@ genBFClass('verify', 'NodeBuiltinVerify', 1, $code, $include);
 $funcdecl = 'breakpoint(object) : null';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -310,7 +310,7 @@ genBFClass('breakpoint', 'NodeBuiltinBreakpoint', 1, $code, $include);
 $funcdecl = 'isNull(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -325,7 +325,7 @@ genBFClass('isNull', 'NodeBuiltinIsNull', 1, $code, $include);
 $funcdecl = 'isBool(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -340,7 +340,7 @@ genBFClass('isBool', 'NodeBuiltinIsBool', 1, $code, $include);
 $funcdecl = 'isInt(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -355,7 +355,7 @@ genBFClass('isInt', 'NodeBuiltinIsInt', 1, $code, $include);
 $funcdecl = 'isFloat(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -370,7 +370,7 @@ genBFClass('isFloat', 'NodeBuiltinIsFloat', 1, $code, $include);
 $funcdecl = 'isString(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -385,7 +385,7 @@ genBFClass('isString', 'NodeBuiltinIsString', 1, $code, $include);
 $funcdecl = 'isStruct(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -400,7 +400,7 @@ genBFClass('isStruct', 'NodeBuiltinIsStruct', 1, $code, $include);
 $funcdecl = 'isArray(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -415,7 +415,7 @@ genBFClass('isArray', 'NodeBuiltinIsArray', 1, $code, $include);
 $funcdecl = 'isSet(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -430,7 +430,7 @@ genBFClass('isSet', 'NodeBuiltinIsSet', 1, $code, $include);
 $funcdecl = 'isGraph(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -445,7 +445,7 @@ genBFClass('isGraph', 'NodeBuiltinIsGraph', 1, $code, $include);
 $funcdecl = 'isVertex(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -460,7 +460,7 @@ genBFClass('isVertex', 'NodeBuiltinIsVertex', 1, $code, $include);
 $funcdecl = 'isEdge(object) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -547,7 +547,7 @@ genBFClass('resetIterator', 'NodeBuiltinResetIterator', 1, $code, $include);
 $funcdecl = 'array(number) : array|null';
 
 $include = <<END_OF_CODE;
-#include "valuearray.hpp"
+#include "valuearray.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -568,7 +568,7 @@ genBFClass('array', 'NodeBuiltinArray', 1, $code, $include);
 $funcdecl = 'set() : set';
 
 $include = <<END_OF_CODE;
-#include "valueset.hpp"
+#include "valueset.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -583,7 +583,7 @@ genBFClass('set', 'NodeBuiltinSet', 0, $code, $include);
 $funcdecl = 'struct() : struct';
 
 $include = <<END_OF_CODE;
-#include "valuestruct.hpp"
+#include "valuestruct.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -598,11 +598,11 @@ genBFClass('struct', 'NodeBuiltinStruct', 0, $code, $include);
 $funcdecl = 'size(array|struct|set|string) : int|null';
 
 $include = <<END_OF_CODE;
-#include "valuearray.hpp"
-#include "valuestruct.hpp"
-#include "valueset.hpp"
-#include "valuestring.hpp"
-#include "valueint.hpp"
+#include "valuearray.h"
+#include "valuestruct.h"
+#include "valueset.h"
+#include "valuestring.h"
+#include "valueint.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -634,7 +634,7 @@ genBFClass('size', 'NodeBuiltinSize', 1, $code, $include);
 $funcdecl = 'pushFront(array, object) : null';
 
 $include = <<END_OF_CODE;
-#include "valuearray.hpp"
+#include "valuearray.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -660,7 +660,7 @@ genBFClass('pushFront', 'NodeBuiltinPushFront', 2, $code, $include);
 $funcdecl = 'pushBack(array, object) : null';
 
 $include = <<END_OF_CODE;
-#include "valuearray.hpp"
+#include "valuearray.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -686,7 +686,7 @@ genBFClass('pushBack', 'NodeBuiltinPushBack', 2, $code, $include);
 $funcdecl = 'popFront(array) : null';
 
 $include = <<END_OF_CODE;
-#include "valuearray.hpp"
+#include "valuearray.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -712,7 +712,7 @@ genBFClass('popFront', 'NodeBuiltinPopFront', 1, $code, $include);
 $funcdecl = 'popBack(array) : null';
 
 $include = <<END_OF_CODE;
-#include "valuearray.hpp"
+#include "valuearray.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -738,7 +738,7 @@ genBFClass('popBack', 'NodeBuiltinPopBack', 1, $code, $include);
 $funcdecl = 'back(array) : object|null';
 
 $include = <<END_OF_CODE;
-#include "valuearray.hpp"
+#include "valuearray.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -761,7 +761,7 @@ genBFClass('back', 'NodeBuiltinBack', 1, $code, $include);
 $funcdecl = 'front(array) : object|null';
 
 $include = <<END_OF_CODE;
-#include "valuearray.hpp"
+#include "valuearray.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -792,9 +792,9 @@ genBFClass('graph', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGr
 $funcdecl = 'loadFromFile(graph, string) : bool';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
-#include "valuestring.hpp"
-#include "valuebool.hpp"
+#include "valuegraph.h"
+#include "valuestring.h"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -818,8 +818,8 @@ genBFClass('loadFromFile', 'NodeBuiltinLoadFromFile', 2, $code, $include);
 $funcdecl = 'isDirected(graph) : bool|null';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
-#include "valuegraph.hpp"
+#include "valuebool.h"
+#include "valuegraph.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -842,8 +842,8 @@ genBFClass('isDirected', 'NodeBuiltinIsDirected', 1, $code, $include);
 $funcdecl = 'setDirected(graph, number) : bool|null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
-#include "valuebool.hpp"
+#include "valuegraph.h"
+#include "valuebool.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -866,7 +866,7 @@ genBFClass('setDirected', 'NodeBuiltinSetDirected', 2, $code, $include);
 $funcdecl = 'invertEdgesDirection(graph) : null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
+#include "valuegraph.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -892,8 +892,8 @@ genBFClass('invertEdgesDirection', 'NodeBuiltinInvertEdgesDirection', 1, $code, 
 $funcdecl = 'generateVertex(graph) : vertex|null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
-#include "valuevertex.hpp"
+#include "valuegraph.h"
+#include "valuevertex.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -916,9 +916,9 @@ genBFClass('generateVertex', 'NodeBuiltinGenerateVertex', 1, $code, $include);
 $funcdecl = 'generateEdge(graph, vertex, vertex) : edge|null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
-#include "valuevertex.hpp"
-#include "valueedge.hpp"
+#include "valuegraph.h"
+#include "valuevertex.h"
+#include "valueedge.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -941,7 +941,7 @@ genBFClass('generateEdge', 'NodeBuiltinGenerateEdge', 3, $code, $include);
 $funcdecl = 'deleteVertex(graph, vertex) : null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
+#include "valuegraph.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -963,7 +963,7 @@ genBFClass('deleteVertex', 'NodeBuiltinDeleteVertex', 2, $code, $include);
 $funcdecl = 'deleteEdge(graph, edge) : null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
+#include "valuegraph.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -985,8 +985,8 @@ genBFClass('deleteEdge', 'NodeBuiltinDeleteEdge', 2, $code, $include);
 $funcdecl = 'getNumVertices(graph) : int|null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
-#include "valueint.hpp"
+#include "valuegraph.h"
+#include "valueint.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1009,8 +1009,8 @@ genBFClass('getNumVertices', 'NodeBuiltinGetNumVertices', 1, $code, $include);
 $funcdecl = 'getNumEdges(graph) : int|null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
-#include "valueint.hpp"
+#include "valuegraph.h"
+#include "valueint.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1033,7 +1033,7 @@ genBFClass('getNumEdges', 'NodeBuiltinGetNumEdges', 1, $code, $include);
 $funcdecl = 'getVertices(graph) : set|null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
+#include "valuegraph.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1056,7 +1056,7 @@ genBFClass('getVertices', 'NodeBuiltinGetVertices', 1, $code, $include);
 $funcdecl = 'getEdges(graph) : set|null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
+#include "valuegraph.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1079,8 +1079,8 @@ genBFClass('getEdges', 'NodeBuiltinGetEdges', 1, $code, $include);
 $funcdecl = 'getDegree(vertex) : int|null';
 
 $include = <<END_OF_CODE;
-#include "valuevertex.hpp"
-#include "valueint.hpp"
+#include "valuevertex.h"
+#include "valueint.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1103,7 +1103,7 @@ genBFClass('getDegree', 'NodeBuiltinGetDegree', 1, $code, $include);
 $funcdecl = 'getNeighbors(vertex) : set|null';
 
 $include = <<END_OF_CODE;
-#include "valuevertex.hpp"
+#include "valuevertex.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1126,8 +1126,8 @@ genBFClass('getNeighbors', 'NodeBuiltinGetNeighbors', 1, $code, $include);
 $funcdecl = 'getBeginVertex(edge) : vertex|null';
 
 $include = <<END_OF_CODE;
-#include "valueedge.hpp"
-#include "valuevertex.hpp"
+#include "valueedge.h"
+#include "valuevertex.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1150,8 +1150,8 @@ genBFClass('getBeginVertex', 'NodeBuiltinGetBeginVertex', 1, $code, $include);
 $funcdecl = 'getEndVertex(edge) : vertex|null';
 
 $include = <<END_OF_CODE;
-#include "valueedge.hpp"
-#include "valuevertex.hpp"
+#include "valueedge.h"
+#include "valuevertex.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1174,7 +1174,7 @@ genBFClass('getEndVertex', 'NodeBuiltinGetEndVertex', 1, $code, $include);
 $funcdecl = 'insert(set, object) : null';
 
 $include = <<END_OF_CODE;
-#include "valueset.hpp"
+#include "valueset.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1196,7 +1196,7 @@ genBFClass('insert', 'NodeBuiltinInsert', 2, $code, $include);
 $funcdecl = 'remove(set, object) : null';
 
 $include = <<END_OF_CODE;
-#include "valueset.hpp"
+#include "valueset.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1218,8 +1218,8 @@ genBFClass('remove', 'NodeBuiltinRemove', 2, $code, $include);
 $funcdecl = 'contains(set, object) : bool|null';
 
 $include = <<END_OF_CODE;
-#include "valuebool.hpp"
-#include "valueset.hpp"
+#include "valuebool.h"
+#include "valueset.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1242,7 +1242,7 @@ genBFClass('contains', 'NodeBuiltinContains', 2, $code, $include);
 $funcdecl = 'union(set, set) : set|null';
 
 $include = <<END_OF_CODE;
-#include "valueset.hpp"
+#include "valueset.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1266,7 +1266,7 @@ genBFClass('union', 'NodeBuiltinUnion', 2, $code, $include);
 $funcdecl = 'intersection(set, set) : set|null';
 
 $include = <<END_OF_CODE;
-#include "valueset.hpp"
+#include "valueset.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1290,7 +1290,7 @@ genBFClass('intersection', 'NodeBuiltinIntersection', 2, $code, $include);
 $funcdecl = 'difference(set, set) : set|null';
 
 $include = <<END_OF_CODE;
-#include "valueset.hpp"
+#include "valueset.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1314,7 +1314,7 @@ genBFClass('difference', 'NodeBuiltinDifference', 2, $code, $include);
 $funcdecl = 'getAdjacencyMatrix(graph) : array';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
+#include "valuegraph.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1337,8 +1337,8 @@ genBFClass('getAdjacencyMatrix', 'NodeBuiltinGetAdjacencyMatrix', 1, $code, $inc
 $funcdecl = 'setPropertyToAllVertices(graph, string, object) : null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
-#include "valuestring.hpp"
+#include "valuegraph.h"
+#include "valuestring.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1361,8 +1361,8 @@ genBFClass('setPropertyToAllVertices', 'NodeBuiltinSetPropertyToAllVertices', 3,
 $funcdecl = 'setPropertyToAllEdges(graph, string, object) : null';
 
 $include = <<END_OF_CODE;
-#include "valuegraph.hpp"
-#include "valuestring.hpp"
+#include "valuegraph.h"
+#include "valuestring.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1385,10 +1385,10 @@ genBFClass('setPropertyToAllEdges', 'NodeBuiltinSetPropertyToAllEdges', 3, $code
 $funcdecl = 'setPropertyToAllStructItems(array|struct|set, string, object) : null';
 
 $include = <<END_OF_CODE;
-#include "valuearray.hpp"
-#include "valuestruct.hpp"
-#include "valueset.hpp"
-#include "valuestring.hpp"
+#include "valuearray.h"
+#include "valuestruct.h"
+#include "valueset.h"
+#include "valuestring.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1417,9 +1417,9 @@ genBFClass('setPropertyToAllStructItems', 'NodeBuiltinSetPropertyToAllStructItem
 $funcdecl = 'visRegister(graph|set, string, number, number, number) : null';
 
 $include = <<END_OF_CODE;
-#include "objectcreator.hpp"
-#include "visualizationconnector.hpp"
-#include "valuestring.hpp"
+#include "objectcreator.h"
+#include "visualizationconnector.h"
+#include "valuestring.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1448,9 +1448,9 @@ genBFClass('visRegister', 'NodeBuiltinVisRegister', 5, $code, $include);
 $funcdecl = 'visSetPos(vertex, number, number, number) : null';
 
 $include = <<END_OF_CODE;
-#include "objectcreator.hpp"
-#include "visualizationconnector.hpp"
-#include "valuevertex.hpp"
+#include "objectcreator.h"
+#include "visualizationconnector.h"
+#include "valuevertex.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1480,10 +1480,10 @@ genBFClass('visSetPos', 'NodeBuiltinVisSetPos', 4, $code, $include);
 $funcdecl = 'visSetColor(vertex|edge, number, number, number) : null';
 
 $include = <<END_OF_CODE;
-#include "objectcreator.hpp"
-#include "visualizationconnector.hpp"
-#include "valuevertex.hpp"
-#include "valueedge.hpp"
+#include "objectcreator.h"
+#include "visualizationconnector.h"
+#include "valuevertex.h"
+#include "valueedge.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1524,8 +1524,8 @@ genBFClass('visSetColor', 'NodeBuiltinVisSetColor', 4, $code, $include);
 $funcdecl = 'visSetView(number, number, number, number, number) : null';
 
 $include = <<END_OF_CODE;
-#include "objectcreator.hpp"
-#include "visualizationconnector.hpp"
+#include "objectcreator.h"
+#include "visualizationconnector.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1550,8 +1550,8 @@ genBFClass('visSetView', 'NodeBuiltinVisSetView', 5, $code, $include);
 $funcdecl = 'visUseWeightWhenPaintingEdges(bool) : null';
 
 $include = <<END_OF_CODE;
-#include "objectcreator.hpp"
-#include "visualizationconnector.hpp"
+#include "objectcreator.h"
+#include "visualizationconnector.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1567,8 +1567,8 @@ genBFClass('visUseWeightWhenPaintingEdges', 'NodeBuiltinVisUseWeightWhenPainting
 $funcdecl = 'visScreenshot(string) : null';
 
 $include = <<END_OF_CODE;
-#include "objectcreator.hpp"
-#include "visualizationconnector.hpp"
+#include "objectcreator.h"
+#include "visualizationconnector.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;
@@ -1584,8 +1584,8 @@ genBFClass('visScreenshot', 'NodeBuiltinVisScreenshot', 1, $code, $include);
 $funcdecl = 'visGetGraph() : graph|null';
 
 $include = <<END_OF_CODE;
-#include "objectcreator.hpp"
-#include "visualizationconnector.hpp"
+#include "objectcreator.h"
+#include "visualizationconnector.h"
 END_OF_CODE
 
 $code = <<END_OF_CODE;

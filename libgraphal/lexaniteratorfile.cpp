@@ -18,8 +18,8 @@
  */
 
 #include <stdexcept>
-#include "lexaniteratorfile.hpp"
-#include "context.hpp"
+#include "lexaniteratorfile.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

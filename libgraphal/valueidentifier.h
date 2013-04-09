@@ -21,9 +21,9 @@
 #ifndef VALUEIDENTIFIER_HPP
 #define VALUEIDENTIFIER_HPP
 
-#include "general.hpp"
-#include "value.hpp"
-#include "context.hpp"
+#include "general.h"
+#include "value.h"
+#include "context.h"
 
 
 class ValueIdentifier : public Value

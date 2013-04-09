@@ -21,8 +21,8 @@
 #ifndef OBJECTCREATOR_HPP
 #define OBJECTCREATOR_HPP
 
-#include "general.hpp"
-#include "mutexlocker.hpp"
+#include "general.h"
+#include "mutexlocker.h"
 
 #define CREATOR ObjectCreator::getInstance()
 #define FACTORY ObjectCreator::getInstance().getFactory()

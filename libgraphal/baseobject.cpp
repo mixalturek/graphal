@@ -18,11 +18,11 @@
  */
 
 
-#include "baseobject.hpp"
+#include "baseobject.h"
 
 #ifdef CHECK_MEMORY_LEAKS
 #include <typeinfo>
-#include "logger.hpp"
+#include "logger.h"
 #endif // CHECK_MEMORY_LEAKS
 
 

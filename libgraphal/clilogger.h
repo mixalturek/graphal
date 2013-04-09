@@ -21,8 +21,8 @@
 #ifndef CLILOGGER_HPP
 #define CLILOGGER_HPP
 
-#include "general.hpp"
-#include "logger.hpp"
+#include "general.h"
+#include "logger.h"
 
 
 class CliLogger : public Logger

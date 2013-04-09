@@ -21,8 +21,8 @@
 #ifndef TESTS_HPP
 #define TESTS_HPP
 
-#include "general.hpp"
-#include "baseobject.hpp"
+#include "general.h"
+#include "baseobject.h"
 
 class Tests : public BaseObject
 {

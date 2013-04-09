@@ -21,8 +21,8 @@
 #ifndef CLIFACTORY_HPP
 #define CLIFACTORY_HPP
 
-#include "general.hpp"
-#include "objectfactory.hpp"
+#include "general.h"
+#include "objectfactory.h"
 
 
 class CliFactory : public ObjectFactory

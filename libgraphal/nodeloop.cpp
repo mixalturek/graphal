@@ -18,14 +18,14 @@
  */
 
 
-#include "nodeloop.hpp"
-#include "value.hpp"
-#include "valuenull.hpp"
-#include "valuebool.hpp"
-#include "nodeemptycommand.hpp"
-#include "nodevalue.hpp"
-#include "nodejumpbreak.hpp"
-#include "nodejumpcontinue.hpp"
+#include "nodeloop.h"
+#include "value.h"
+#include "valuenull.h"
+#include "valuebool.h"
+#include "nodeemptycommand.h"
+#include "nodevalue.h"
+#include "nodejumpbreak.h"
+#include "nodejumpcontinue.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

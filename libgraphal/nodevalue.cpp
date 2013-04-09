@@ -18,8 +18,8 @@
  */
 
 
-#include "nodevalue.hpp"
-#include "value.hpp"
+#include "nodevalue.h"
+#include "value.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

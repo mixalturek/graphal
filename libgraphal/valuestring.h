@@ -21,8 +21,8 @@
 #ifndef VARIABLESTRING_HPP
 #define VARIABLESTRING_HPP
 
-#include "general.hpp"
-#include "value.hpp"
+#include "general.h"
+#include "value.h"
 
 class ValueString: public Value
 {

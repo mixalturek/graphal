@@ -21,9 +21,9 @@
 #define LOGGER_HPP
 
 #include <sstream>
-#include "general.hpp"
-#include "baseobject.hpp"
-#include "objectcreator.hpp"
+#include "general.h"
+#include "baseobject.h"
+#include "objectcreator.h"
 
 #define ERR_P(str) ObjectCreator::getInstance().getLogger()->errorPos(str)
 #define WARN_P(str) ObjectCreator::getInstance().getLogger()->warnPos(str)

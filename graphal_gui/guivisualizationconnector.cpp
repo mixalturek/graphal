@@ -20,8 +20,8 @@
 
 #include "guivisualizationconnector.h"
 #include "guicontext.h"
-#include "valuenull.hpp"
-#include "valuegraph.hpp"
+#include "valuenull.h"
+#include "valuegraph.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

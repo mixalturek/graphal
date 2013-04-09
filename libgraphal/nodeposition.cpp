@@ -18,8 +18,8 @@
  */
 
 
-#include "nodeposition.hpp"
-#include "context.hpp"
+#include "nodeposition.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

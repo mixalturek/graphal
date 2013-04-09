@@ -21,8 +21,8 @@
 #define LEXANITERATORFILE_HPP
 
 #include <fstream>
-#include "general.hpp"
-#include "lexaniterator.hpp"
+#include "general.h"
+#include "lexaniterator.h"
 
 class LexanIteratorFile : public LexanIterator
 {

@@ -21,9 +21,9 @@
 #ifndef NODEPOSITION_HPP
 #define NODEPOSITION_HPP
 
-#include "general.hpp"
-#include "node.hpp"
-#include "codeposition.hpp"
+#include "general.h"
+#include "node.h"
+#include "codeposition.h"
 
 
 class NodePosition : public Node

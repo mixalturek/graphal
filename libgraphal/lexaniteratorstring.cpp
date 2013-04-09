@@ -19,8 +19,8 @@
 
 
 #include <cstdio>
-#include "lexaniteratorstring.hpp"
-#include "context.hpp"
+#include "lexaniteratorstring.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

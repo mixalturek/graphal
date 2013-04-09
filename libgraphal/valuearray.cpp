@@ -19,14 +19,14 @@
 
 
 #include <sstream>
-#include "valuearray.hpp"
-#include "valuebool.hpp"
-#include "valuereference.hpp"
-#include "valuenull.hpp"
-#include "valueint.hpp"
-#include "valuefloat.hpp"
-#include "valuestruct.hpp"
-#include "logger.hpp"
+#include "valuearray.h"
+#include "valuebool.h"
+#include "valuereference.h"
+#include "valuenull.h"
+#include "valueint.h"
+#include "valuefloat.h"
+#include "valuestruct.h"
+#include "logger.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

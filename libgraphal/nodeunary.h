@@ -21,8 +21,8 @@
 #ifndef NODEUNARY_HPP
 #define NODEUNARY_HPP
 
-#include "general.hpp"
-#include "node.hpp"
+#include "general.h"
+#include "node.h"
 
 class NodeUnary : public Node
 {

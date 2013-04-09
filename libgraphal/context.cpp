@@ -21,17 +21,17 @@
 #include <cassert>
 #include <fstream>
 #include <stdexcept>
-#include "context.hpp"
-#include "valuenull.hpp"
-#include "nodefunction.hpp"
-#include "nodefunctioncall.hpp"
-#include "valuearray.hpp"
-#include "valuestring.hpp"
-#include "valuereference.hpp"
-#include "nodevalue.hpp"
-#include "nodeblock.hpp"
-#include "logger.hpp"
-#include "exitvalue.hpp"
+#include "context.h"
+#include "valuenull.h"
+#include "nodefunction.h"
+#include "nodefunctioncall.h"
+#include "valuearray.h"
+#include "valuestring.h"
+#include "valuereference.h"
+#include "nodevalue.h"
+#include "nodeblock.h"
+#include "logger.h"
+#include "exitvalue.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

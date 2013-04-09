@@ -24,9 +24,9 @@
 #include "visualization.h"
 #include "guivisualizationconnector.h"
 #include "settings.h"
-#include "valuevertex.hpp"
-#include "valueedge.hpp"
-#include "valuefloat.hpp"
+#include "valuevertex.h"
+#include "valueedge.h"
+#include "valuefloat.h"
 #include "guicontext.h"
 
 

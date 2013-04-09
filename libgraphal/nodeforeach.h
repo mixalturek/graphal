@@ -21,8 +21,8 @@
 #ifndef NODEFOREACH_HPP
 #define NODEFOREACH_HPP
 
-#include "general.hpp"
-#include "node.hpp"
+#include "general.h"
+#include "node.h"
 
 
 class NodeForeach : public Node

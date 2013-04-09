@@ -22,10 +22,10 @@
 #include <QIcon>
 #include "mainwindow.h"
 #include "settings.h"
-#include "objectcreator.hpp"
-#include "guifactory.hpp"
-#include "valuenull.hpp"
-#include "valuebool.hpp"
+#include "objectcreator.h"
+#include "guifactory.h"
+#include "valuenull.h"
+#include "valuebool.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

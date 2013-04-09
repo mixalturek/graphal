@@ -22,8 +22,8 @@
 #define NODEFUNCTION_HPP
 
 #include <list>
-#include "general.hpp"
-#include "node.hpp"
+#include "general.h"
+#include "node.h"
 
 class CodePosition;
 

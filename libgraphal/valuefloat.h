@@ -22,8 +22,8 @@
 #define VARIABLEFLOAT_HPP
 
 #include <sstream>
-#include "general.hpp"
-#include "value.hpp"
+#include "general.h"
+#include "value.h"
 
 class ValueFloat: public Value
 {

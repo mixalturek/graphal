@@ -21,8 +21,8 @@
 #ifndef NODEJUMPCONTINUE_HPP
 #define NODEJUMPCONTINUE_HPP
 
-#include "general.hpp"
-#include "node.hpp"
+#include "general.h"
+#include "node.h"
 
 
 class NodeJumpContinue : public Node

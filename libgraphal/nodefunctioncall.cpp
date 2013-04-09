@@ -19,12 +19,12 @@
 
 
 #include <list>
-#include "nodefunctioncall.hpp"
-#include "nodefunction.hpp"
-#include "nodeblock.hpp"
-#include "valuenull.hpp"
-#include "logger.hpp"
-#include "context.hpp"
+#include "nodefunctioncall.h"
+#include "nodefunction.h"
+#include "nodeblock.h"
+#include "valuenull.h"
+#include "logger.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

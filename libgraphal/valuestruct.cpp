@@ -19,10 +19,10 @@
 
 
 #include <sstream>
-#include "valuestruct.hpp"
-#include "valuebool.hpp"
-#include "valuereference.hpp"
-#include "context.hpp"
+#include "valuestruct.h"
+#include "valuebool.h"
+#include "valuereference.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

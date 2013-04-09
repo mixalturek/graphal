@@ -19,8 +19,8 @@
 
 
 #include <algorithm>
-#include "nodeblock.hpp"
-#include "valuenull.hpp"
+#include "nodeblock.h"
+#include "valuenull.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

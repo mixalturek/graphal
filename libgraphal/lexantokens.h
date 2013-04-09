@@ -20,9 +20,9 @@
 #ifndef LEXANTOKENS_HPP
 #define LEXANTOKENS_HPP
 
-#include "node.hpp"
-#include "nodeblock.hpp"
-#include "parser.hpp"
+#include "node.h"
+#include "nodeblock.h"
+#include "parser.h"
 
 #define LEX_EOF 0
 #define LEX_OP_PLUS '+'

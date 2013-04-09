@@ -22,8 +22,8 @@
 #define GUIMUTEX_H
 
 #include <QMutex>
-#include "general.hpp"
-#include "mutex.hpp"
+#include "general.h"
+#include "mutex.h"
 
 class GuiMutex : public Mutex
 {

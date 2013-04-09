@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QMutex>
 #include <QWaitCondition>
-#include "context.hpp"
+#include "context.h"
 
 
 enum SteppingType

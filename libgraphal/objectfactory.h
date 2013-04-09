@@ -21,8 +21,8 @@
 #ifndef OBJECTFACTORY_HPP
 #define OBJECTFACTORY_HPP
 
-#include "general.hpp"
-#include "baseobject.hpp"
+#include "general.h"
+#include "baseobject.h"
 
 class Logger;
 class Context;

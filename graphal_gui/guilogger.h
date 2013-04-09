@@ -22,7 +22,7 @@
 #define GUILOGGER_HPP
 
 #include <QObject>
-#include "logger.hpp"
+#include "logger.h"
 
 
 class GuiLogger : public QObject, public Logger

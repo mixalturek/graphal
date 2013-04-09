@@ -19,10 +19,10 @@
 
 
 #include <cassert>
-#include "nodecondition.hpp"
-#include "value.hpp"
-#include "valuenull.hpp"
-#include "nodeemptycommand.hpp"
+#include "nodecondition.h"
+#include "value.h"
+#include "valuenull.h"
+#include "nodeemptycommand.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

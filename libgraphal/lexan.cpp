@@ -19,11 +19,11 @@
 
 #include <stdexcept>
 #include <cmath>
-#include "lexan.hpp"
-#include "lexaniteratorstring.hpp"
-#include "lexaniteratorfile.hpp"
-#include "logger.hpp"
-#include "context.hpp"
+#include "lexan.h"
+#include "lexaniteratorstring.h"
+#include "lexaniteratorfile.h"
+#include "logger.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

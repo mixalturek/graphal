@@ -22,10 +22,10 @@
 #define VERTEX_HPP
 
 #include <set>
-#include "general.hpp"
-#include "value.hpp"
-#include "valuegraph.hpp"
-#include "valuestruct.hpp"
+#include "general.h"
+#include "value.h"
+#include "valuegraph.h"
+#include "valuestruct.h"
 
 class ValueEdge;
 

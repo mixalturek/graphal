@@ -21,7 +21,7 @@
 #ifndef BASEOBJECT_HPP
 #define BASEOBJECT_HPP
 
-#include "general.hpp"
+#include "general.h"
 
 #ifdef CHECK_MEMORY_LEAKS
 #include <set>

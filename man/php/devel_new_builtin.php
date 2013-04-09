@@ -22,7 +22,7 @@ include 'p_begin.php';
 $funcdecl = 'getAdjacencyMatrix(graph) : array';
 
 $include = &lt;&lt;END_OF_CODE;
-#include "valuegraph.hpp"
+#include "valuegraph.h"
 END_OF_CODE
 
 $code = &lt;&lt;END_OF_CODE;

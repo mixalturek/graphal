@@ -22,8 +22,8 @@
 #define STRINGTABLE_HPP
 
 #include <vector>
-#include "general.hpp"
-#include "baseobject.hpp"
+#include "general.h"
+#include "baseobject.h"
 
 
 class StringTable : public BaseObject

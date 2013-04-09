@@ -19,8 +19,8 @@
 
 
 #include <cassert>
-#include "mutexlocker.hpp"
-#include "mutex.hpp"
+#include "mutexlocker.h"
+#include "mutex.h"
 
 MutexLocker::MutexLocker(Mutex* mutex)
 	: m_mutex(mutex)

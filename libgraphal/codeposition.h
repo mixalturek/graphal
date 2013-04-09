@@ -21,8 +21,8 @@
 #ifndef CODEPOSITION_HPP
 #define CODEPOSITION_HPP
 
-#include "general.hpp"
-#include "baseobject.hpp"
+#include "general.h"
+#include "baseobject.h"
 
 
 class CodePosition : public BaseObject

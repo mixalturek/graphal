@@ -18,8 +18,8 @@
  */
 
 
-#include "clilogger.hpp"
-#include "context.hpp"
+#include "clilogger.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

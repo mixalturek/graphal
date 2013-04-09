@@ -22,8 +22,8 @@
 #define VARIABLEINT_HPP
 
 #include <sstream>
-#include "general.hpp"
-#include "value.hpp"
+#include "general.h"
+#include "value.h"
 
 class ValueInt: public Value
 {

@@ -21,10 +21,10 @@
 #ifndef VISUALIZATIONCONNECTOR_HPP
 #define VISUALIZATIONCONNECTOR_HPP
 
-#include "general.hpp"
-#include "baseobject.hpp"
-#include "countptr.hpp"
-#include "value.hpp"
+#include "general.h"
+#include "baseobject.h"
+#include "countptr.h"
+#include "value.h"
 
 
 class VisualizationConnector : public BaseObject

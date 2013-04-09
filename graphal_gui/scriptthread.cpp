@@ -20,9 +20,9 @@
 
 #include <QStringList>
 #include "scriptthread.h"
-#include "context.hpp"
-#include "nodebuiltin_inst.hpp"
-#include "logger.hpp"
+#include "context.h"
+#include "nodebuiltin_inst.h"
+#include "logger.h"
 #include "settings.h"
 
 

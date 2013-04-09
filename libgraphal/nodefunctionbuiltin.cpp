@@ -19,9 +19,9 @@
 
 
 #include <vector>
-#include "nodefunctionbuiltin.hpp"
-#include "context.hpp"
-#include "logger.hpp"
+#include "nodefunctionbuiltin.h"
+#include "context.h"
+#include "logger.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

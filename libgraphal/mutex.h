@@ -21,7 +21,7 @@
 #ifndef MUTEX_HPP
 #define MUTEX_HPP
 
-#include "general.hpp"
+#include "general.h"
 
 class Mutex
 {

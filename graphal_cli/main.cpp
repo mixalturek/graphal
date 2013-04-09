@@ -19,17 +19,17 @@
 
 #include <typeinfo>
 #include <stdexcept>
-#include "general.hpp"
-#include "baseobject.hpp"
-#include "logger.hpp"
-#include "tests.hpp"
-#include "context.hpp"
-#include "nodebuiltin_inst.hpp"
-#include "version.hpp"
-#include "objectcreator.hpp"
-#include "clifactory.hpp"
-#include "valuenull.hpp"
-#include "valuebool.hpp"
+#include "general.h"
+#include "baseobject.h"
+#include "logger.h"
+#include "tests.h"
+#include "context.h"
+#include "nodebuiltin_inst.h"
+#include "version.h"
+#include "objectcreator.h"
+#include "clifactory.h"
+#include "valuenull.h"
+#include "valuebool.h"
 
 
 int parseCode(const string& str);

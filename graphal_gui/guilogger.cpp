@@ -18,8 +18,8 @@
  */
 
 
-#include "guilogger.hpp"
-#include "context.hpp"
+#include "guilogger.h"
+#include "context.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

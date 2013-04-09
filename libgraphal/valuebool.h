@@ -21,8 +21,8 @@
 #ifndef VARIABLEBOOL_HPP
 #define VARIABLEBOOL_HPP
 
-#include "general.hpp"
-#include "value.hpp"
+#include "general.h"
+#include "value.h"
 
 #define VALUEBOOL_TRUE  ValueBool::getInstanceTrue()
 #define VALUEBOOL_FALSE ValueBool::getInstanceFalse()
