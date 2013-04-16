@@ -21,15 +21,16 @@ VERSION_MAJOR = 0
 VERSION_MINOR = 0
 
 TARGET = $(LIBRARY).$(VERSION_MAJOR).$(VERSION_MINOR)
-BUILD_DIR = ../build/$(TARGET)
+BUILD_DIR = ../build/libgraphal
+GENERATED_DIR = generated
 
 CC = g++
 
-SOURCES = $(wildcard *.cpp)
+SOURCES = $(wildcard *.cpp) $(GENERATED_DIR)/parser.cpp
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(SOURCES:.cpp=.o))
 
 CFLAGS = -MMD -std=c++98 -pedantic -Wall
-INCLUDE_DIRS =
+INCLUDE_DIRS = -Igenerated
 LDFLAGS =
 LDLIBS =
 LIB_DIRS =
@@ -57,10 +58,11 @@ all: bison $(BUILD_DIR)/$(TARGET)
 ###############################################################################
 #### Bison
 
-bison: parser.cpp
+bison: $(GENERATED_DIR)/parser.cpp
 
-parser.cpp: parser.y
-	bison --defines=parser.h -o parser.cpp parser.y
+$(GENERATED_DIR)/parser.cpp: parser.y
+	@mkdir -p `dirname $@`
+	bison --defines=$(GENERATED_DIR)/parser.h -o $@ $<
 
 
 ###############################################################################
@@ -94,4 +96,4 @@ $(BUILD_DIR)/%.o: %.cpp
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) $(GENERATED_DIR)
