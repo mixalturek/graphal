@@ -1,3 +1,5 @@
+- Solve all TODOs and FIXMEs.
+- Execute 'make tests'.
 - Update version in libgraphal/Makefile.
 - Update version in libgraphal/version.h.
-- Execute 'make tests'.
+

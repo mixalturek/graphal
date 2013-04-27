@@ -34,7 +34,7 @@ endif
 .PHONY: all
 all:
 	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && qmake-qt4 -spec /usr/share/qt4/mkspecs/linux-g++ -unix CONFIG+=$(CONF) -o Makefile ../../$(TARGET)/$(TARGET).pro
+	cd $(BUILD_DIR) && qmake CONFIG+=$(CONF) -o Makefile ../../$(TARGET)/$(TARGET).pro
 	make -C $(BUILD_DIR)
 ifeq ($(CONF), release)
 	# Two part executable is generated in release

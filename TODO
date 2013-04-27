@@ -18,7 +18,11 @@ Licensing
 Simple ./configure script.
 Global Makefile.
 make install
+	test
+	headers
 
 Replace all occurrences of "bbd" by "graphal".
 Replace links to http://woq.nipax.cz/.
 MainWindow::about().
+Extend sloccount target.
+TODOs and FIXMEs in Makefiles.
