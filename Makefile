@@ -88,6 +88,7 @@ sloccount:
 
 .PHONY: doxygen
 doxygen:
+	mkdir -p $(BUILD_DIR)/doxygen
 	doxygen Doxyfile
 
 
