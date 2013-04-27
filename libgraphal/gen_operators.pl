@@ -5,8 +5,8 @@ sub generateUnaryOperatorClass
 	my ($classname, $operation, $include) = @_;
 	$include = '' if(!defined $include);
 
-	my $hpp_filename = lc($classname).'.hpp';
-	my $cpp_filename = lc($classname).'.cpp';
+	my $hpp_filename = 'generated/'.lc($classname).'.h';
+	my $cpp_filename = 'generated/'.lc($classname).'.cpp';
 	my $hpp_define = uc($classname).'_HPP';
 
 	my $hpp_code = <<END_OF_HPP;
@@ -162,8 +162,8 @@ sub generateBinaryOperatorClass
 	my ($classname, $operation, $include) = @_;
 	$include = '' if(!defined $include);
 
-	my $hpp_filename = lc($classname).'.hpp';
-	my $cpp_filename = lc($classname).'.cpp';
+	my $hpp_filename = 'generated/'.lc($classname).'.h';
+	my $cpp_filename = 'generated/'.lc($classname).'.cpp';
 	my $hpp_define = uc($classname).'_HPP';
 
 	my $hpp_code = <<END_OF_HPP;
@@ -318,10 +318,10 @@ generateUnaryOperatorClass('NodeUnarySub', 'return m_next->execute()->subUn();')
 generateUnaryOperatorClass('NodeUnaryNot', 'return m_next->execute()->logNOT();');
 generateUnaryOperatorClass('NodeUnaryReturn', 'throw m_next->execute();');
 
-generateUnaryOperatorClass('NodeUnaryIncPre', "CountPtr<Value> tmp(m_next->execute());\n\treturn tmp->assign(tmp->add(*VALUEBOOL_TRUE));", "\n#include \"valuebool.hpp\"");
-generateUnaryOperatorClass('NodeUnaryIncPost', "CountPtr<Value> tmp(m_next->execute());\n\tCountPtr<Value> ret(tmp->getReferredValue());\n\ttmp->assign(tmp->add(*VALUEBOOL_TRUE));\n\treturn ret;", "\n#include \"valuebool.hpp\"");
-generateUnaryOperatorClass('NodeUnaryDecPre', "CountPtr<Value> tmp(m_next->execute());\n\treturn tmp->assign(tmp->sub(*VALUEBOOL_TRUE));", "\n#include \"valuebool.hpp\"");
-generateUnaryOperatorClass('NodeUnaryDecPost', "CountPtr<Value> tmp(m_next->execute());\n\tCountPtr<Value> ret(tmp->getReferredValue());\n\ttmp->assign(tmp->sub(*VALUEBOOL_TRUE));\n\treturn ret;", "\n#include \"valuebool.hpp\"");
+generateUnaryOperatorClass('NodeUnaryIncPre', "CountPtr<Value> tmp(m_next->execute());\n\treturn tmp->assign(tmp->add(*VALUEBOOL_TRUE));", "\n#include \"valuebool.h\"");
+generateUnaryOperatorClass('NodeUnaryIncPost', "CountPtr<Value> tmp(m_next->execute());\n\tCountPtr<Value> ret(tmp->getReferredValue());\n\ttmp->assign(tmp->add(*VALUEBOOL_TRUE));\n\treturn ret;", "\n#include \"valuebool.h\"");
+generateUnaryOperatorClass('NodeUnaryDecPre', "CountPtr<Value> tmp(m_next->execute());\n\treturn tmp->assign(tmp->sub(*VALUEBOOL_TRUE));", "\n#include \"valuebool.h\"");
+generateUnaryOperatorClass('NodeUnaryDecPost', "CountPtr<Value> tmp(m_next->execute());\n\tCountPtr<Value> ret(tmp->getReferredValue());\n\ttmp->assign(tmp->sub(*VALUEBOOL_TRUE));\n\treturn ret;", "\n#include \"valuebool.h\"");
 
 generateBinaryOperatorClass('NodeBinaryAdd', 'return m_left->execute()->add(*(m_right->execute()));');
 generateBinaryOperatorClass('NodeBinarySub', 'return m_left->execute()->sub(*(m_right->execute()));');
@@ -351,6 +351,6 @@ $code = <<END_OF_CODE;
 	ValueIdentifier* ident = tmp->toValueIdentifier();
 	return m_left->execute()->assignRef((ident == NULL) ? tmp : ident->getVal());
 END_OF_CODE
-generateBinaryOperatorClass('NodeBinaryAssRef', $code, "\n#include \"valueidentifier.hpp\"");
+generateBinaryOperatorClass('NodeBinaryAssRef', $code, "\n#include \"valueidentifier.h\"");
 
 0;

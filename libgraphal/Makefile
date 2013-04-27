@@ -17,20 +17,25 @@
 
 
 LIBRARY = libgraphal.so
-VERSION_MAJOR = 0
+VERSION_MAJOR = 1
 VERSION_MINOR = 0
 
 TARGET = $(LIBRARY).$(VERSION_MAJOR).$(VERSION_MINOR)
-BUILD_DIR = ../build/libgraphal
+
+PROJECT_DIR = ..
+BUILD_DIR = $(PROJECT_DIR)/build/libgraphal
+DIST_DIR = $(PROJECT_DIR)/build/dist
+
 GENERATED_DIR = generated
 
 CC = g++
 
-SOURCES = $(wildcard *.cpp) $(GENERATED_DIR)/parser.cpp
+OPERATOR_SOURCES = $(wildcard generated/nodeunary*.cpp generated/nodebinary*.cpp)
+SOURCES = $(wildcard *.cpp) $(OPERATOR_SOURCES) $(GENERATED_DIR)/parser.cpp
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(SOURCES:.cpp=.o))
 
-CFLAGS = -MMD -std=c++98 -pedantic -Wall
-INCLUDE_DIRS = -Igenerated
+CFLAGS = -MMD -std=c++98 -pedantic -Wall -fPIC
+INCLUDE_DIRS = -I. -Igenerated
 LDFLAGS =
 LDLIBS =
 LIB_DIRS =
@@ -52,35 +57,47 @@ endif
 #### Default
 
 .PHONY: all
-all: bison $(BUILD_DIR)/$(TARGET)
+all: bison operators $(BUILD_DIR)/$(TARGET)
 
 
 ###############################################################################
 #### Bison
 
+.PHONY: bison
 bison: $(GENERATED_DIR)/parser.cpp
 
 $(GENERATED_DIR)/parser.cpp: parser.y
-	@mkdir -p `dirname $@`
+	mkdir -p $(GENERATED_DIR)
 	bison --defines=$(GENERATED_DIR)/parser.h -o $@ $<
+
+
+###############################################################################
+#### Operators
+
+.PHONY: operators
+operators: $(OPERATOR_SOURCES)
+
+$(OPERATOR_SOURCES): gen_operators.pl
+	mkdir -p $(GENERATED_DIR)
+	perl gen_operators.pl
 
 
 ###############################################################################
 #### Compile
 
 $(BUILD_DIR)/$(TARGET): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) $(LDLIBS) $(LIB_DIRS) -o $@
-	$(CC) $(LDFLAGS) -shared -Wl,-soname,$(LIBRARY).$(VERSION_MAJOR) -o $(TARGET) $(OBJECTS) $(LIB_DIRS) $(LDLIBS)
-	ln -sf $(TARGET) $(LIBRARY).$(VERSION_MAJOR)
-	ln -sf $(TARGET) $(LIBRARY)
+	$(CC) $(LDFLAGS) -shared -Wl,-soname,$(LIBRARY).$(VERSION_MAJOR) -o $@ $(OBJECTS) $(LIB_DIRS) $(LDLIBS)
+	ln -sf $(TARGET) $(BUILD_DIR)/$(LIBRARY).$(VERSION_MAJOR)
+	ln -sf $(TARGET) $(BUILD_DIR)/$(LIBRARY)
 ifeq ($(CONF), release)
 	# Two part executable is generated in release
 	objcopy --only-keep-debug $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET).debug
 	objcopy --strip-unneeded $(BUILD_DIR)/$(TARGET)
 	objcopy --add-gnu-debuglink=$(BUILD_DIR)/$(TARGET).debug $(BUILD_DIR)/$(TARGET)
-	objdump -s -j .gnu_debuglink $(BUILD_DIR)/$(TARGET)
 endif
-
+	# Copy to result to the dist directory
+	mkdir -p $(DIST_DIR)
+	cp -d $(BUILD_DIR)/$(LIBRARY)* $(DIST_DIR)
 
 $(BUILD_DIR)/%.o: %.cpp
 	@mkdir -p `dirname $@`
@@ -96,4 +113,4 @@ $(BUILD_DIR)/%.o: %.cpp
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) $(GENERATED_DIR)
+	rm -rf $(BUILD_DIR) $(DIST_DIR)/$(LIBRARY)*
