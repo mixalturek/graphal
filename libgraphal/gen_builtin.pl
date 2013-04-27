@@ -30,7 +30,7 @@ $fileheader = <<END_OF_HEADER;
 END_OF_HEADER
 
 
-$instantiate_inc = "#include <list>\n#include \"general.hpp\"\n#include \"context.hpp\"\n\n";
+$instantiate_inc = "#include <list>\n#include \"general.h\"\n#include \"context.h\"\n\n";
 $instantiate = <<END_OF_CODE;
 void generateBuiltinFunctions(void)
 {
@@ -58,8 +58,8 @@ sub genBFClass
 	my ($funcname, $classname, $numberofparameters, $operation, $include) = @_;
 	$include = '' if(!defined $include);
 
-	my $hpp_filename = lc($classname).'.hpp';
-	my $cpp_filename = lc($classname).'.cpp';
+	my $hpp_filename = 'generated/'.lc($classname).'.h';
+	my $cpp_filename = 'generated/'.lc($classname).'.cpp';
 	my $hpp_define = uc($classname).'_HPP';
 
 	my $hpp_code = <<END_OF_HPP;
@@ -783,7 +783,7 @@ genBFClass('front', 'NodeBuiltinFront', 1, $code, $include);
 
 $funcdecl = 'graph() : graph';
 
-genBFClass('graph', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph);", "#include \"valuegraph.hpp\"");
+genBFClass('graph', 'NodeBuiltinGraph', 0, "\treturn CountPtr<Value>(new ValueGraph);", "#include \"valuegraph.h\"");
 
 
 #############################################################################
@@ -1599,11 +1599,11 @@ genBFClass('visGetGraph', 'NodeBuiltinVisGetGraph', 0, $code, $include);
 
 print "Generating generateBuiltinFunctions()\n";
 
-open(FILE_HPP, ">nodebuiltin_inst.hpp") or die "Cannot open output file: nodebuiltin_inst.hpp\n";
+open(FILE_HPP, ">generated/nodebuiltin_inst.h") or die "Cannot open output file: nodebuiltin_inst.h\n";
 print FILE_HPP "$fileheader\nvoid generateBuiltinFunctions(void);\n";
 close FILE_HPP;
 
-open(FILE_CPP, ">nodebuiltin_inst.cpp") or die "Cannot open output file: nodebuiltin_inst.cpp\n";
+open(FILE_CPP, ">generated/nodebuiltin_inst.cpp") or die "Cannot open output file: nodebuiltin_inst.cpp\n";
 print FILE_CPP "$fileheader\n$instantiate_inc\n$instantiate}\n";
 close FILE_CPP;
 

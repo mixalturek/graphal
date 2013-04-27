@@ -31,7 +31,8 @@ GENERATED_DIR = generated
 CC = g++
 
 OPERATOR_SOURCES = $(wildcard generated/nodeunary*.cpp generated/nodebinary*.cpp)
-SOURCES = $(wildcard *.cpp) $(OPERATOR_SOURCES) $(GENERATED_DIR)/parser.cpp
+BUILTIN_SOURCES = $(wildcard generated/nodebuiltin*.cpp)
+SOURCES = $(wildcard *.cpp) $(OPERATOR_SOURCES) $(BUILTIN_SOURCES) $(GENERATED_DIR)/parser.cpp
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(SOURCES:.cpp=.o))
 
 CFLAGS = -MMD -std=c++98 -pedantic -Wall -fPIC
@@ -57,7 +58,7 @@ endif
 #### Default
 
 .PHONY: all
-all: bison operators $(BUILD_DIR)/$(TARGET)
+all: bison operators builtin $(BUILD_DIR)/$(TARGET)
 
 
 ###############################################################################
@@ -80,6 +81,17 @@ operators: $(OPERATOR_SOURCES)
 $(OPERATOR_SOURCES): gen_operators.pl
 	mkdir -p $(GENERATED_DIR)
 	perl gen_operators.pl
+
+
+###############################################################################
+#### Builtin functions
+
+.PHONY: builtin
+builtin: $(BUILTIN_SOURCES)
+
+$(BUILTIN_SOURCES): gen_builtin.pl
+	mkdir -p $(GENERATED_DIR)
+	perl gen_builtin.pl
 
 
 ###############################################################################
