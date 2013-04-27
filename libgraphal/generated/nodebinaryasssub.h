@@ -24,7 +24,6 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef NODEBINARYASSSUB_H
 #define NODEBINARYASSSUB_H
 

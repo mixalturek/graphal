@@ -126,3 +126,11 @@ $(BUILD_DIR)/%.o: %.cpp
 .PHONY: clean
 clean:
 	rm -rf $(BUILD_DIR) $(DIST_DIR)/$(LIBRARY)*
+
+
+###############################################################################
+#### List the builtin functions
+
+.PHONY: listbuiltin
+listbuiltin:
+	grep '\$funcdecl =' gen_builtin.pl | sed "s/.*'\(.*\)'.*/\1/"

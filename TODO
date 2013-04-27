@@ -1,7 +1,6 @@
 different shapes of vertices
 built-in function to paint special objects to the scene
 
-create bbd library
 resolve ?gcc bug? - Tests::testValueArray()
 
 Bison
@@ -15,3 +14,14 @@ Bison
 Licensing
 	libgraphal LGPL, fix file headers
 	other GPL
+
+
+Execute script with visualizations in CLI mode. Will it crash?
+
+version:
+	echo '#define SVN_VERSION' $(shell svnversion | tr 'A-Z' ' ' | cut -d ':' -f 1) > version.hpp
+
+memoryleaks:
+	valgrind ./$(TARGET) --unit-tests ../samples/tests.txt
+
+Simple ./configure script.

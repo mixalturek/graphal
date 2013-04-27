@@ -24,7 +24,6 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef NODEBINARYMEMBER_H
 #define NODEBINARYMEMBER_H
 

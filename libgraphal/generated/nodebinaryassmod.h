@@ -24,7 +24,6 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef NODEBINARYASSMOD_H
 #define NODEBINARYASSMOD_H
 

@@ -24,7 +24,6 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef NODEBINARYASSREF_H
 #define NODEBINARYASSREF_H
 

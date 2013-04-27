@@ -24,7 +24,6 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef NODEBINARYASSDIV_H
 #define NODEBINARYASSDIV_H
 

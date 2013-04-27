@@ -24,7 +24,6 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef NODEBINARYINDEX_H
 #define NODEBINARYINDEX_H
 

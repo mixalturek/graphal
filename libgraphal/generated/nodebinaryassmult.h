@@ -24,7 +24,6 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef NODEBINARYASSMULT_H
 #define NODEBINARYASSMULT_H
 

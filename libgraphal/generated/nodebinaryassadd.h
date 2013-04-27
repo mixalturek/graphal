@@ -24,7 +24,6 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef NODEBINARYASSADD_H
 #define NODEBINARYASSADD_H
 

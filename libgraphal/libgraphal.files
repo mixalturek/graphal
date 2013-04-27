@@ -234,7 +234,6 @@
 ./logger.cpp
 ./logger.h
 ./Makefile
-./Makefile_legacy
 ./mutex.cpp
 ./mutex.h
 ./mutexlocker.cpp
