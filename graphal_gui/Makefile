@@ -15,51 +15,27 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-TARGET = graphal_cli
+
+TARGET = graphal_gui
 
 PROJECT_DIR = ..
 BUILD_DIR = $(PROJECT_DIR)/build/$(TARGET)
 DIST_DIR = $(PROJECT_DIR)/build/dist
-
-CC = g++
-
-SOURCES = $(wildcard *.cpp)
-OBJECTS = $(addprefix $(BUILD_DIR)/,$(SOURCES:.cpp=.o))
-
-CFLAGS = -MMD -std=c++98 -pedantic -Wall -Wextra -Werror
-INCLUDE_DIRS = -I. -I$(PROJECT_DIR)/libgraphal/ -I$(PROJECT_DIR)/libgraphal/generated/
-LDFLAGS =
-LDLIBS = -lgraphal
-LIB_DIRS = -L$(DIST_DIR)
 
 # Release is a default configuration
 ifndef CONF
 CONF = release
 endif
 
-ifeq ($(CONF), release)
-# Two part executable is generated in release
-CFLAGS += -DNDEBUG -O2 -g
-else
-CFLAGS += -g
-endif
-
-# Allow load libgraphal.so from the same directory where the binary is stored
-LDFLAGS += -Wl,-rpath,'$$ORIGIN'
-
 
 ###############################################################################
 #### Default
 
 .PHONY: all
-all: $(BUILD_DIR)/$(TARGET)
-
-
-###############################################################################
-#### Compile
-
-$(BUILD_DIR)/$(TARGET): $(OBJECTS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) $(LIB_DIRS) $(LDLIBS)
+all:
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && qmake-qt4 -spec /usr/share/qt4/mkspecs/linux-g++ -unix CONFIG+=$(CONF) -o Makefile ../../$(TARGET)/$(TARGET).pro
+	make -C $(BUILD_DIR)
 ifeq ($(CONF), release)
 	# Two part executable is generated in release
 	objcopy --only-keep-debug $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET).debug
@@ -70,25 +46,10 @@ endif
 	mkdir -p $(DIST_DIR)
 	cp $(BUILD_DIR)/$(TARGET)* $(DIST_DIR)
 
-$(BUILD_DIR)/%.o: %.cpp
-	@mkdir -p `dirname $@`
-	$(CC) $(CFLAGS) $(INCLUDE_DIRS) -c $< -o $@
-
-
-# Dependencies for recompilation
--include $(SOURCES:%.cpp=$(BUILD_DIR)/%.d)
-
 
 ###############################################################################
 #### Clean
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) $(DIST_DIR)/$(TARGET)
-
-###############################################################################
-#### Basic memory leaks check
-
-.PHONY: tests
-tests:
-	valgrind --leak-check=full --show-reachable=yes $(DIST_DIR)/$(TARGET) --unit-tests $(PROJECT_DIR)/samples/tests.txt
+	rm -rf $(BUILD_DIR) $(DIST_DIR)/$(TARGET)*

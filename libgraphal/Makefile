@@ -40,7 +40,7 @@ OBJECTS = $(addprefix $(BUILD_DIR)/,$(SOURCES:.cpp=.o))
 
 CFLAGS = -MMD -std=c++98 -pedantic -Wall -Wextra -Werror -fPIC
 INCLUDE_DIRS = -I. -Igenerated
-LDFLAGS =
+LDFLAGS = -Wl,--no-undefined
 LDLIBS =
 LIB_DIRS =
 
@@ -111,7 +111,7 @@ ifeq ($(CONF), release)
 	objcopy --strip-unneeded $(BUILD_DIR)/$(TARGET)
 	objcopy --add-gnu-debuglink=$(BUILD_DIR)/$(TARGET).debug $(BUILD_DIR)/$(TARGET)
 endif
-	# Copy to result to the dist directory
+	# Copy the result to the dist directory
 	mkdir -p $(DIST_DIR)
 	cp -d $(BUILD_DIR)/$(LIBRARY)* $(DIST_DIR)
 

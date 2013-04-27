@@ -20,3 +20,5 @@ Global Makefile.
 make install
 
 Replace all occurrences of "bbd" by "graphal".
+Replace links to http://woq.nipax.cz/.
+MainWindow::about().

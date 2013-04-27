@@ -30,7 +30,7 @@
 #include "dockvisualization.h"
 #include "objectcreator.h"
 #include "guilogger.h"
-#include "version.h"
+#include "graphal_version.h"
 #include "guicontext.h"
 #include "dialogincludedirs.h"
 #include "dialogscriptparameters.h"
@@ -269,12 +269,12 @@ void MainWindow::selectAll(void)
 void MainWindow::about()
 {
 	QMessageBox::about(this, tr("About bbdgui"),
-		tr("Graph algorithms interpreter<br />"
+		tr("Graph Algorithms Interpreter - graphal<br />"
 			"<br />"
 			"Web: <a href=\"http://woq.nipax.cz/dip/\">http://woq.nipax.cz/dip/</a><br />"
 			"Author: <a href=\"http://woq.nipax.cz/\">Michal Turek</a><br />"
 			"License: GNU GPL<br />"
-			"SVN version: ") + QString::number(SVN_VERSION));
+			"Version: ") + GRAPHAL_VERSION);
 }
 
 
