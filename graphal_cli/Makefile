@@ -15,34 +15,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-
-LIBRARY = libgraphal.so
-
-# See graphal_version.h
-VERSION_MAJOR = 1
-VERSION_MINOR = 0
-VERSION_RELEASE = 0
-
-TARGET = $(LIBRARY).$(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_RELEASE)
+TARGET = graphal_cli
 
 PROJECT_DIR = ..
-BUILD_DIR = $(PROJECT_DIR)/build/libgraphal
+BUILD_DIR = $(PROJECT_DIR)/build/$(TARGET)
 DIST_DIR = $(PROJECT_DIR)/build/dist
-
-GENERATED_DIR = generated
 
 CC = g++
 
-OPERATOR_SOURCES = $(wildcard generated/nodeunary*.cpp generated/nodebinary*.cpp)
-BUILTIN_SOURCES = $(wildcard generated/nodebuiltin*.cpp)
-SOURCES = $(wildcard *.cpp) $(OPERATOR_SOURCES) $(BUILTIN_SOURCES) $(GENERATED_DIR)/parser.cpp
+SOURCES = $(wildcard *.cpp)
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(SOURCES:.cpp=.o))
 
-CFLAGS = -MMD -std=c++98 -pedantic -Wall -Wextra -Werror -fPIC
-INCLUDE_DIRS = -I. -Igenerated
+CFLAGS = -MMD -std=c++98 -pedantic -Wall -Wextra -Werror
+INCLUDE_DIRS = -I. -I$(PROJECT_DIR)/libgraphal/ -I$(PROJECT_DIR)/libgraphal/generated/
 LDFLAGS =
-LDLIBS =
-LIB_DIRS =
+LDLIBS = -lgraphal
+LIB_DIRS = -L$(DIST_DIR)
 
 # Release is a default configuration
 ifndef CONF
@@ -54,6 +42,9 @@ ifeq ($(CONF), release)
 CFLAGS += -DNDEBUG -O2 -g
 else
 CFLAGS += -g
+
+# Allow load libgraphal.so from the same directory in debug
+LDFLAGS += -Wl,-rpath,'$$ORIGIN'
 endif
 
 
@@ -61,50 +52,14 @@ endif
 #### Default
 
 .PHONY: all
-all: bison operators builtin $(BUILD_DIR)/$(TARGET)
-
-
-###############################################################################
-#### Bison
-
-.PHONY: bison
-bison: $(GENERATED_DIR)/parser.cpp
-
-$(GENERATED_DIR)/parser.cpp: parser.y
-	mkdir -p $(GENERATED_DIR)
-	bison --defines=$(GENERATED_DIR)/parser.h -o $@ $<
-
-
-###############################################################################
-#### Operators
-
-.PHONY: operators
-operators: $(OPERATOR_SOURCES)
-
-$(OPERATOR_SOURCES): gen_operators.pl
-	mkdir -p $(GENERATED_DIR)
-	perl gen_operators.pl
-
-
-###############################################################################
-#### Builtin functions
-
-.PHONY: builtin
-builtin: $(BUILTIN_SOURCES)
-
-$(BUILTIN_SOURCES): gen_builtin.pl
-	mkdir -p $(GENERATED_DIR)
-	perl gen_builtin.pl
+all: $(BUILD_DIR)/$(TARGET)
 
 
 ###############################################################################
 #### Compile
 
 $(BUILD_DIR)/$(TARGET): $(OBJECTS)
-	$(CC) $(LDFLAGS) -shared -Wl,-soname,$(LIBRARY).$(VERSION_MAJOR).$(VERSION_MINOR) -o $@ $(OBJECTS) $(LIB_DIRS) $(LDLIBS)
-	ln -sf $(TARGET) $(BUILD_DIR)/$(LIBRARY).$(VERSION_MAJOR).$(VERSION_MINOR)
-	ln -sf $(TARGET) $(BUILD_DIR)/$(LIBRARY).$(VERSION_MAJOR)
-	ln -sf $(TARGET) $(BUILD_DIR)/$(LIBRARY)
+	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) $(LIB_DIRS) $(LDLIBS)
 ifeq ($(CONF), release)
 	# Two part executable is generated in release
 	objcopy --only-keep-debug $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET).debug
@@ -113,7 +68,7 @@ ifeq ($(CONF), release)
 endif
 	# Copy to result to the dist directory
 	mkdir -p $(DIST_DIR)
-	cp -d $(BUILD_DIR)/$(LIBRARY)* $(DIST_DIR)
+	cp -d $(BUILD_DIR)/$(TARGET) $(DIST_DIR)
 
 $(BUILD_DIR)/%.o: %.cpp
 	@mkdir -p `dirname $@`
@@ -129,12 +84,12 @@ $(BUILD_DIR)/%.o: %.cpp
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) $(DIST_DIR)/$(LIBRARY)*
-
+	rm -rf $(BUILD_DIR) $(DIST_DIR)/$(TARGET)
 
 ###############################################################################
-#### List the builtin functions
+#### Basic memory leaks check
 
-.PHONY: listbuiltin
-listbuiltin:
-	grep '\$funcdecl =' gen_builtin.pl | sed "s/.*'\(.*\)'.*/\1/"
+.PHONY: tests
+tests:
+	LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(DIST_DIR)" valgrind \
+		$(DIST_DIR)/$(TARGET) --unit-tests $(PROJECT_DIR)/samples/tests.txt

@@ -216,6 +216,7 @@
 ./generated/parser.cpp
 ./generated/parser.h
 ./gen_operators.pl
+./graphal_version.h
 ./init_static_objects.cpp
 ./lexan.cpp
 ./lexan.h

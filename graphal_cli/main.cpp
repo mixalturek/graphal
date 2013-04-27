@@ -25,7 +25,7 @@
 #include "tests.h"
 #include "context.h"
 #include "nodebuiltin_inst.h"
-#include "version.h"
+#include "graphal_version.h"
 #include "objectcreator.h"
 #include "clifactory.h"
 #include "valuenull.h"
@@ -52,28 +52,30 @@ void runUnitTests(void)
 
 void usage(int /* argc */, char** argv)
 {
+	cout << "Graph Algorithms Interpreter - graphal version " << GRAPHAL_VERSION << endl << endl;
+
 	cout << _("Usage: ") << argv[0]
 		<< _(" [-I<directory>] [-u | --unit-tests] [-a | --ast-dump] [-b | --enable-breakpoints] ")
 		<< _("<filename> [parameters]") << endl
 		<< endl
 		<< "\t-I<directory>" << endl
-		<< "\t\tSpecify include directories (relative to the current working directory)" << endl
+		<< "\t\tSpecify include directories (relative to the current working directory)." << endl
 		<< "\t\t-I<directory_1> -I<directory_2> ... -I<directory_N>" << endl
 		<< endl
 		<< "\t-u | --unit-tests" << endl
-		<< "\t\tRun unit tests" << endl
+		<< "\t\tRun unit tests." << endl
 		<< endl
 		<< "\t-a | --ast-dump" << endl
-		<< "\t\tDump abstract syntax tree of the script" << endl
+		<< "\t\tDump abstract syntax tree of the script." << endl
 		<< endl
 		<< "\t-b | --breakpoints" << endl
-		<< "\t\tEnable breakpoints" << endl
+		<< "\t\tEnable breakpoints." << endl
 		<< endl
 		<< "\tfilename" << endl
-		<< "\t\tFile to be executed" << endl
+		<< "\t\tFile to be executed." << endl
 		<< endl
 		<< "\tparameters" << endl
-		<< "\t\tScript parameters" << endl
+		<< "\t\tScript parameters." << endl
 		<< endl
 		;
 }
@@ -105,8 +107,6 @@ int main(int argc, char** argv)
 {
 	init();
 
-	cout << "bbd [svn version " << SVN_VERSION << "]" << endl;
-
 	if(argc < 2)
 	{
 		usage(argc, argv);
@@ -114,7 +114,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	bool error_occured = false;
+	bool error_occurred = false;
 
 #ifdef CHECK_MEMORY_LEAKS
 	uint number_of_static_objects = BaseObject::getNumberOfLeaks();
@@ -183,24 +183,24 @@ int main(int argc, char** argv)
 			else
 			{
 				ERR(_("Error while parsing"));
-				error_occured = true;
+				error_occurred = true;
 			}
 		}
 	}
 	catch(runtime_error& ex)
 	{
 		ERR(ex.what());
-		error_occured = true;
+		error_occurred = true;
 	}
 	catch(exception& ex)
 	{
 		ERR(ex.what());
-		error_occured = true;
+		error_occurred = true;
 	}
 	catch(...)
 	{
 		ERR(_("Unknown exception caught!"));
-		error_occured = true;
+		error_occurred = true;
 	}
 
 	CONTEXT.clear();
@@ -209,7 +209,7 @@ int main(int argc, char** argv)
 	BaseObject::printMemoryLeaks(number_of_static_objects);
 #endif // CHECK_MEMORY_LEAKS
 
-	if(error_occured)
+	if(error_occurred)
 	{
 		INFO(_("*** EXITING MAIN, FAILED ***"));
 		destroy();

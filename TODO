@@ -15,13 +15,8 @@ Licensing
 	libgraphal LGPL, fix file headers
 	other GPL
 
-
-Execute script with visualizations in CLI mode. Will it crash?
-
-version:
-	echo '#define SVN_VERSION' $(shell svnversion | tr 'A-Z' ' ' | cut -d ':' -f 1) > version.hpp
-
-memoryleaks:
-	valgrind ./$(TARGET) --unit-tests ../samples/tests.txt
-
 Simple ./configure script.
+Global Makefile.
+make install
+
+Replace all occurrences of "bbd" by "graphal".

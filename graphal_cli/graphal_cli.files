@@ -1,0 +1,7 @@
+./graphal_cli.config
+./graphal_cli.creator
+./graphal_cli.creator.user
+./graphal_cli.files
+./graphal_cli.includes
+./main.cpp
+./Makefile
