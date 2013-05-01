@@ -16,6 +16,9 @@ Simple ./configure script.
 make install
 	test
 	headers
+	debug symbols
+
+make CODE_GENERATION=yes
 
 Extend sloccount target.
 TODOs and FIXMEs in Makefiles.

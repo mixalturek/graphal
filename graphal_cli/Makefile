@@ -83,6 +83,20 @@ $(BUILD_DIR)/%.o: %.cpp
 
 
 ###############################################################################
+#### Install, uninstall
+
+.PHONY: install
+install: all
+	install -d $(INSTALL_PREFIX)/bin
+	install -m 755 $(DIST_DIR)/$(TARGET) $(INSTALL_PREFIX)/bin
+
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(INSTALL_PREFIX)/bin/$(TARGET)
+
+
+###############################################################################
 #### Clean
 
 .PHONY: clean

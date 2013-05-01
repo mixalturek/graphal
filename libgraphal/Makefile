@@ -127,6 +127,24 @@ $(BUILD_DIR)/%.o: %.cpp
 
 
 ###############################################################################
+#### Install, uninstall
+
+.PHONY: install
+install: all
+	install -d $(INSTALL_PREFIX)/lib
+	install -m 755 $(DIST_DIR)/$(TARGET) $(INSTALL_PREFIX)/lib
+	/sbin/ldconfig -v -n $(INSTALL_PREFIX)/lib
+	# TODO: header files of the shared library
+
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(INSTALL_PREFIX)/lib/libgraphal.so*
+	/sbin/ldconfig -v -n $(INSTALL_PREFIX)/lib
+	# TODO: header files of the shared library
+
+
+###############################################################################
 #### Clean
 
 .PHONY: clean

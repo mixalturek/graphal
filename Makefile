@@ -22,14 +22,15 @@ PROJECT_DIR = .
 BUILD_DIR = $(PROJECT_DIR)/build
 DIST_DIR = $(PROJECT_DIR)/build/dist
 
-INSTALL_PREFIX = /usr/local
+# Default install directory
+export INSTALL_PREFIX = /usr/local
 
 
 ###############################################################################
 #### Default
 
 .PHONY: all
-all: build
+all: compile
 
 
 .PHONY: extra
@@ -39,41 +40,28 @@ extra: doxygen sloccount
 ###############################################################################
 ####
 
-.PHONY: build
-build:
+.PHONY: compile
+compile:
 	make -C libgraphal all
 	make -C graphal_cli all
 	make -C graphal_gui all
-
-	# TODO:
-	# make -C ./benchmarks/
-	# make -C ./graphs_generator/
-	# make -C ./man/
-	# make -C ./presentation/
-	# make -C ./text/
 
 
 ###############################################################################
 #### Install
 
 .PHONY: install
-install: build
-	install -d $(INSTALL_PREFIX)/lib
-	cp -d $(DIST_DIR)/libgraphal.so* $(INSTALL_PREFIX)/lib
-	install -d $(INSTALL_PREFIX)/bin
-	install -m 755 $(DIST_DIR)/graphal_cli $(INSTALL_PREFIX)/bin
-	install -m 755 $(DIST_DIR)/graphal_gui $(INSTALL_PREFIX)/bin
-	# TODO: header files of the shared library
+install: compile
+	make -C libgraphal install
+	make -C graphal_cli install
+	make -C graphal_gui install
 
 
-###############################################################################
-#### Uninstall
-
+.PHONY: uninstall
 uninstall:
-	rm -f $(INSTALL_PREFIX)/lib/libgraphal.so*
-	rm -f $(INSTALL_PREFIX)/bin/graphal_cli
-	rm -f $(INSTALL_PREFIX)/bin/graphal_gui
-	# TODO: header files of the shared library
+	make -C libgraphal uninstall
+	make -C graphal_cli uninstall
+	make -C graphal_gui uninstall
 
 
 ###############################################################################
@@ -107,11 +95,3 @@ clean:
 	# make -C graphal_cli clean
 	# make -C graphal_gui clean
 	rm -rf $(BUILD_DIR)
-
-	# TODO:
-	# make -C ./benchmarks/ clean
-	# make -C ./graphs_generator/ clean
-	# make -C ./man/ clean
-	# make -C ./presentation/ clean
-	# rm -rf ./doc/
-	# make -C ./text/ clean
