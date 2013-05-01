@@ -53,11 +53,33 @@ void runUnitTests(void)
 
 void usage(int /* argc */, char** argv)
 {
-	cout << "Graph Algorithms Interpreter - graphal version " << GRAPHAL_VERSION << endl << endl;
+	cout
+		<< "Graph Algorithms Interpreter - Graphal" << endl
+		<< "======================================" << endl
+		<< endl
 
-	cout << _("Usage: ") << argv[0]
-		<< _(" [-I<directory>] [-u | --unit-tests] [-a | --ast-dump] [-b | --enable-breakpoints] ")
-		<< _("<filename> [parameters]") << endl
+		<< "About:" << endl
+		<< "\tVersion:    " "  "  GRAPHAL_VERSION << endl
+		<< "\tAuthor:     " "  " "Michal Turek" << endl
+		<< "\tWebsite:    " "  " "http://graphal.sourceforge.net/" << endl
+		<< endl
+
+		<< "License:" << endl
+		<< "\tlibGraphal: " "  " "GNU LGPL v3" << endl
+		<< "\tGraphal CLI:" "  " "GNU GPL v3" << endl
+		<< "\tGraphal GUI:" "  " "GNU GPL v3" << endl
+		<< endl
+
+		<< "Usage:" << endl
+		<< "\t" << argv[0] << "[-h | --help] [-I<directory>] [-u | --unit-tests] [-a | --ast-dump] [-b | --enable-breakpoints] "
+		<< "<filename> [parameters]" << endl
+		<< endl
+
+		<< "\t-h | --help" << endl
+		<< "\t\tShow this help and exit." << endl
+		<< endl
+		<< "\t-v | --version" << endl
+		<< "\t\tShow version and exit." << endl
 		<< endl
 		<< "\t-I<directory>" << endl
 		<< "\t\tSpecify include directories (relative to the current working directory)." << endl
@@ -132,12 +154,30 @@ int main(int argc, char** argv)
 		{
 			string param(argv[i]);
 
+			if(param == "--help" || param == "-h")
+			{
+				usage(argc, argv);
+				destroy();
+				return 0;
+			}
+			if(param == "--version" || param == "-v")
+			{
+				cout << "Graphal " GRAPHAL_VERSION << endl;
+				destroy();
+				return 0;
+			}
 			if(!unit_tests && (param == "--unit-tests" || param == "-u"))
+			{
 				unit_tests = true;
+			}
 			else if(!ast_dump && (param == "--ast-dump" || param == "-a"))
+			{
 				ast_dump = true;
+			}
 			else if(!breakpoints_enabled && (param == "--breakpoints" || param == "-b"))
+			{
 				breakpoints_enabled = true;
+			}
 			else if(param.find("-I") == 0)
 			{
 				param.erase(0, 2);

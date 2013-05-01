@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 	setIconSize(QSize(22, 22));
 	setAnimated(false);
 	setDockNestingEnabled(true);
-//	setDocumentMode(true); // TODO: Qt 4.5
+	setDocumentMode(true);
 
 	createActions();
 	createDocks();
@@ -270,12 +270,26 @@ void MainWindow::selectAll(void)
 void MainWindow::about()
 {
 	QMessageBox::about(this, tr("About Graphal"),
-		tr("Graph Algorithms Interpreter - Graphal<br />"
-			"<br />"
-			"Web: <a href=\"http://graphal.sourceforge.net/\">http://graphal.sourceforge.net/</a><br />"
-			"Author: <a href=\"http://woq.nipax.cz/\">Michal Turek</a><br />"
-			"License: GNU GPL<br />"
-			"Version: ") + GRAPHAL_VERSION);
+		tr(
+			"<h3>" "Graph Algorithms Interpreter - Graphal" "</h3>"
+
+			"<p>"
+			"<table>"
+			"<tr><td><b>" "Version:"     "</b></td><td>"  GRAPHAL_VERSION                   "</td></tr>"
+			"<tr><td><b>" "Author:"      "</b></td><td>" "Michal Turek"                    "</td></tr>"
+			"<tr><td><b>" "Website:"     "</b></td><td>" "http://graphal.sourceforge.net/" "</td></tr>"
+			"</table><b>"
+			"</p>"
+
+			"<h3>" "License" "</h3>"
+			"<p>"
+			"<table>"
+			"<tr><td><b>" "libGraphal:"  "</b></td><td>" "GNU LGPL v3" "</td></tr>"
+			"<tr><td><b>" "Graphal CLI:" "</b></td><td>" "GNU GPL v3"  "</td></tr>"
+			"<tr><td><b>" "Graphal GUI:" "</b></td><td>" "GNU GPL v3"  "</td></tr>"
+			"</table>"
+			"</p>"
+		));
 }
 
 

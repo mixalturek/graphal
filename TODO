@@ -17,7 +17,6 @@ make install
 	test
 	headers
 
-MainWindow::about().
 Extend sloccount target.
 TODOs and FIXMEs in Makefiles.
 Web.
