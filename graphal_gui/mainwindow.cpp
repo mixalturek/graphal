@@ -79,7 +79,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags)
 	scriptFinished();// Update UI
 
 	m_mdiArea->setViewMode(QMdiArea::TabbedView);
-	setWindowTitle(tr("bbdgui"));
+	setWindowTitle(tr("Graphal"));
 
 	connect(m_scriptThread, SIGNAL(started()), this, SLOT(scriptStarted()));
 	connect(m_scriptThread, SIGNAL(finished()), this, SLOT(scriptFinished()));
@@ -269,10 +269,10 @@ void MainWindow::selectAll(void)
 
 void MainWindow::about()
 {
-	QMessageBox::about(this, tr("About bbdgui"),
-		tr("Graph Algorithms Interpreter - graphal<br />"
+	QMessageBox::about(this, tr("About Graphal"),
+		tr("Graph Algorithms Interpreter - Graphal<br />"
 			"<br />"
-			"Web: <a href=\"http://woq.nipax.cz/dip/\">http://woq.nipax.cz/dip/</a><br />"
+			"Web: <a href=\"http://graphal.sourceforge.net/\">http://graphal.sourceforge.net/</a><br />"
 			"Author: <a href=\"http://woq.nipax.cz/\">Michal Turek</a><br />"
 			"License: GNU GPL<br />"
 			"Version: ") + GRAPHAL_VERSION);

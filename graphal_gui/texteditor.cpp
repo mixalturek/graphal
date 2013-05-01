@@ -63,7 +63,7 @@ bool TextEditor::loadFile(const QString& fileName, bool warnIfNotFound)
 	{
 		if(warnIfNotFound)
 		{
-			QMessageBox::warning(this, tr("bbdgui"),
+			QMessageBox::warning(this, tr("Graphal"),
 				tr("Cannot read file %1:\n%2.")
 					.arg(fileName)
 					.arg(file.errorString()));
@@ -125,7 +125,7 @@ bool TextEditor::saveFile(const QString &fileName)
 
 	if(!file.open(QFile::WriteOnly | QFile::Text))
 	{
-		QMessageBox::warning(this, tr("bbdgui"),
+		QMessageBox::warning(this, tr("Graphal"),
 			tr("Cannot write file %1:\n%2.")
 				.arg(fileName)
 				.arg(file.errorString()));

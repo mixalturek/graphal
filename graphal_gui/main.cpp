@@ -56,9 +56,9 @@ int main(int argc, char *argv[])
 	Q_INIT_RESOURCE(resources);
 
 	QApplication app(argc, argv);
-	app.setOrganizationName("bbdgui");
-	app.setOrganizationDomain("woq.nipax.cz");
-	app.setApplicationName("bbdgui");
+	app.setOrganizationName("graphal");
+	app.setOrganizationDomain("graphal.sourceforge.net");
+	app.setApplicationName("graphal");
 	app.setWindowIcon(QIcon(":/applogo.png"));
 
 	SETTINGS.init();
