@@ -29,7 +29,11 @@ INSTALL_PREFIX = /usr/local
 #### Default
 
 .PHONY: all
-all: build doxygen sloccount
+all: build
+
+
+.PHONY: extra
+extra: doxygen sloccount
 
 
 ###############################################################################
