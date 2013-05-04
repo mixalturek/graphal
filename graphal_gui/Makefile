@@ -18,44 +18,59 @@
 #
 
 
+###############################################################################
+#### Options, configuration
+
 TARGET = graphal_gui
 
 PROJECT_DIR = ..
 BUILD_DIR = $(PROJECT_DIR)/build/$(TARGET)
 DIST_DIR = $(PROJECT_DIR)/build/dist
 
-# Release is a default configuration
-ifndef CONF
-CONF = release
+ifeq ($(RPATH_ORIGIN), yes)
+ORIGIN_FLAG = QMAKE_LFLAGS+=-Wl,-rpath,'\\\$$\$$ORIGIN'
+# Command line: QMAKE_LFLAGS+=-Wl,-rpath,'\\\$\$ORIGIN'
+# Generated Makefile: LFLAGS = -Wl,-rpath,\$$ORIGIN
+# Command line: g++ -Wl,-rpath,\$ORIGIN
+# Ufff...
 endif
-
 
 ###############################################################################
 #### Default
 
 .PHONY: all
-all:
-	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && qmake CONFIG+=$(CONF) -o Makefile ../../$(TARGET)/$(TARGET).pro
+all: $(BUILD_DIR)/Makefile
 	make -C $(BUILD_DIR)
-ifeq ($(CONF), release)
-	# Two part executable is generated in release
-	objcopy --only-keep-debug $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET).debug
-	objcopy --strip-unneeded $(BUILD_DIR)/$(TARGET)
-	objcopy --add-gnu-debuglink=$(BUILD_DIR)/$(TARGET).debug $(BUILD_DIR)/$(TARGET)
-endif
-	# Copy the result to the dist directory
-	mkdir -p $(DIST_DIR)
-	cp $(BUILD_DIR)/$(TARGET)* $(DIST_DIR)
+
+
+$(BUILD_DIR)/Makefile: $(TARGET).pro
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && qmake -makefile -Wall CONFIG+=$(CONF) $(ORIGIN_FLAG) -o Makefile ../../$(TARGET)/$(TARGET).pro
 
 
 ###############################################################################
 #### Install, uninstall
 
+.PHONY: strip
+strip: all $(BUILD_DIR)/$(TARGET).debug
+
+$(BUILD_DIR)/$(TARGET).debug: $(BUILD_DIR)/$(TARGET)
+	# Two part executable is generated
+	objcopy --only-keep-debug $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET).debug
+	objcopy --strip-unneeded $(BUILD_DIR)/$(TARGET)
+	objcopy --add-gnu-debuglink=$(BUILD_DIR)/$(TARGET).debug $(BUILD_DIR)/$(TARGET)
+
+
+.PHONY: dist
+dist: all
+	mkdir -p $(DIST_DIR)
+	cp $(BUILD_DIR)/$(TARGET)* $(DIST_DIR)
+
+
 .PHONY: install
 install: all
 	install -d $(INSTALL_PREFIX)/bin
-	install -m 755 $(DIST_DIR)/$(TARGET) $(INSTALL_PREFIX)/bin
+	install -m 755 $(BUILD_DIR)/$(TARGET) $(INSTALL_PREFIX)/bin
 
 
 .PHONY: uninstall

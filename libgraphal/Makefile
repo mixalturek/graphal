@@ -18,6 +18,9 @@
 #
 
 
+###############################################################################
+#### Options, configuration
+
 LIBRARY = libgraphal.so
 
 # See graphal_version.h
@@ -40,22 +43,15 @@ BUILTIN_SOURCES = $(wildcard generated/nodebuiltin*.cpp)
 SOURCES = $(wildcard *.cpp) $(OPERATOR_SOURCES) $(BUILTIN_SOURCES) $(GENERATED_DIR)/parser.cpp
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(SOURCES:.cpp=.o))
 
-CFLAGS = -MMD -std=c++98 -pedantic -Wall -Wextra -Werror -fPIC
+CFLAGS = -MMD -std=c++98 -pedantic -Wall -Wextra -Werror -fPIC -g
 INCLUDE_DIRS = -I. -Igenerated
 LDFLAGS = -Wl,--no-undefined
 LDLIBS =
 LIB_DIRS =
 
-# Release is a default configuration
-ifndef CONF
-CONF = release
-endif
 
 ifeq ($(CONF), release)
-# Two part executable is generated in release
-CFLAGS += -DNDEBUG -O2 -g
-else
-CFLAGS += -g
+CFLAGS += -DNDEBUG -O2
 endif
 
 
@@ -63,7 +59,11 @@ endif
 #### Default
 
 .PHONY: all
+ifeq ($(GEN_CODE), yes)
 all: bison operators builtin $(BUILD_DIR)/$(TARGET)
+else
+all: $(BUILD_DIR)/$(TARGET)
+endif
 
 
 ###############################################################################
@@ -107,15 +107,7 @@ $(BUILD_DIR)/$(TARGET): $(OBJECTS)
 	ln -sf $(TARGET) $(BUILD_DIR)/$(LIBRARY).$(VERSION_MAJOR).$(VERSION_MINOR)
 	ln -sf $(TARGET) $(BUILD_DIR)/$(LIBRARY).$(VERSION_MAJOR)
 	ln -sf $(TARGET) $(BUILD_DIR)/$(LIBRARY)
-ifeq ($(CONF), release)
-	# Two part executable is generated in release
-	objcopy --only-keep-debug $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET).debug
-	objcopy --strip-unneeded $(BUILD_DIR)/$(TARGET)
-	objcopy --add-gnu-debuglink=$(BUILD_DIR)/$(TARGET).debug $(BUILD_DIR)/$(TARGET)
-endif
-	# Copy the result to the dist directory
-	mkdir -p $(DIST_DIR)
-	cp -d $(BUILD_DIR)/$(LIBRARY)* $(DIST_DIR)
+
 
 $(BUILD_DIR)/%.o: %.cpp
 	@mkdir -p `dirname $@`
@@ -129,19 +121,35 @@ $(BUILD_DIR)/%.o: %.cpp
 ###############################################################################
 #### Install, uninstall
 
+.PHONY: strip
+strip: all $(BUILD_DIR)/$(TARGET).debug
+
+$(BUILD_DIR)/$(TARGET).debug: $(BUILD_DIR)/$(TARGET)
+	# Two part executable is generated
+	objcopy --only-keep-debug $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET).debug
+	objcopy --strip-unneeded $(BUILD_DIR)/$(TARGET)
+	objcopy --add-gnu-debuglink=$(BUILD_DIR)/$(TARGET).debug $(BUILD_DIR)/$(TARGET)
+
+
+.PHONY: dist
+dist: all
+	mkdir -p $(DIST_DIR)
+	cp -d $(BUILD_DIR)/$(LIBRARY)* $(DIST_DIR)
+
+
 .PHONY: install
 install: all
 	install -d $(INSTALL_PREFIX)/lib
-	install -m 755 $(DIST_DIR)/$(TARGET) $(INSTALL_PREFIX)/lib
+	install -m 755 $(BUILD_DIR)/$(TARGET) $(INSTALL_PREFIX)/lib
 	/sbin/ldconfig -v -n $(INSTALL_PREFIX)/lib
-	# TODO: header files of the shared library
+	# TODO: optionally install header files of the shared library
 
 
 .PHONY: uninstall
 uninstall:
 	rm -f $(INSTALL_PREFIX)/lib/libgraphal.so*
 	/sbin/ldconfig -v -n $(INSTALL_PREFIX)/lib
-	# TODO: header files of the shared library
+	# TODO: optionally uninstall header files of the shared library
 
 
 ###############################################################################

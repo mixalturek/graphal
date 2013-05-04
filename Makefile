@@ -17,13 +17,32 @@
 # along with Graphal.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+###############################################################################
+#### Options, configuration
+
+# Prefix for installation directory
+# Default: /usr/local.
+export INSTALL_PREFIX = /usr/local
+
+# Build configuration, 'debug' or 'release'.
+# Default: release
+export CONF = release
+
+# Regenerate generated C++ sources, 'yes' or 'no'.
+# Default: yes.
+export GEN_CODE = yes
+
+# Allow load shared libraries from the same directory where executable is stored, 'yes' or 'no'.
+# Default: no.
+export RPATH_ORIGIN = no
+
+
+###############################################################################
+####
 
 PROJECT_DIR = .
 BUILD_DIR = $(PROJECT_DIR)/build
 DIST_DIR = $(PROJECT_DIR)/build/dist
-
-# Default install directory
-export INSTALL_PREFIX = /usr/local
 
 
 ###############################################################################
@@ -48,10 +67,25 @@ compile:
 
 
 ###############################################################################
-#### Install
+#### Install, uninstall
+
+.PHONY: strip
+strip:
+	make -C libgraphal strip
+	make -C graphal_cli strip
+	make -C graphal_gui strip
+
+
+.PHONY: dist
+dist:
+	make -C libgraphal dist
+	make -C graphal_cli dist
+	make -C graphal_gui dist
+	cp -r graphs samples $(BUILD_DIR)
+
 
 .PHONY: install
-install: compile
+install:
 	make -C libgraphal install
 	make -C graphal_cli install
 	make -C graphal_gui install

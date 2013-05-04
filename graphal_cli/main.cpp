@@ -59,15 +59,15 @@ void usage(int /* argc */, char** argv)
 		<< endl
 
 		<< "About:" << endl
-		<< "\tVersion:    " "  "  GRAPHAL_VERSION << endl
-		<< "\tAuthor:     " "  " "Michal Turek" << endl
-		<< "\tWebsite:    " "  " "http://graphal.sourceforge.net/" << endl
+		<< "\tVersion:    " " "  GRAPHAL_VERSION << endl
+		<< "\tAuthor:     " " " "Michal Turek" << endl
+		<< "\tWebsite:    " " " "http://graphal.sourceforge.net/" << endl
 		<< endl
 
 		<< "License:" << endl
-		<< "\tlibGraphal: " "  " "GNU LGPL v3" << endl
-		<< "\tGraphal CLI:" "  " "GNU GPL v3" << endl
-		<< "\tGraphal GUI:" "  " "GNU GPL v3" << endl
+		<< "\tlibGraphal: " " " "GNU LGPL v3" << endl
+		<< "\tGraphal CLI:" " " "GNU  GPL v3" << endl
+		<< "\tGraphal GUI:" " " "GNU  GPL v3" << endl
 		<< endl
 
 		<< "Usage:" << endl

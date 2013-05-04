@@ -18,6 +18,9 @@
 #
 
 
+###############################################################################
+#### Options, configuration
+
 TARGET = graphal_cli
 
 PROJECT_DIR = ..
@@ -29,26 +32,21 @@ CC = g++
 SOURCES = $(wildcard *.cpp)
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(SOURCES:.cpp=.o))
 
-CFLAGS = -MMD -std=c++98 -pedantic -Wall -Wextra -Werror
+CFLAGS = -MMD -std=c++98 -pedantic -Wall -Wextra -Werror -g
 INCLUDE_DIRS = -I. -I$(PROJECT_DIR)/libgraphal/ -I$(PROJECT_DIR)/libgraphal/generated/
 LDFLAGS =
 LDLIBS = -lgraphal
-LIB_DIRS = -L$(DIST_DIR)
+LIB_DIRS = -L$(PROJECT_DIR)/build/libgraphal/
 
-# Release is a default configuration
-ifndef CONF
-CONF = release
-endif
 
 ifeq ($(CONF), release)
-# Two part executable is generated in release
-CFLAGS += -DNDEBUG -O2 -g
-else
-CFLAGS += -g
+CFLAGS += -DNDEBUG -O2
 endif
 
-# Allow load libgraphal.so from the same directory where the binary is stored
+
+ifeq ($(RPATH_ORIGIN), yes)
 LDFLAGS += -Wl,-rpath,'$$ORIGIN'
+endif
 
 
 ###############################################################################
@@ -63,15 +61,7 @@ all: $(BUILD_DIR)/$(TARGET)
 
 $(BUILD_DIR)/$(TARGET): $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) $(LIB_DIRS) $(LDLIBS)
-ifeq ($(CONF), release)
-	# Two part executable is generated in release
-	objcopy --only-keep-debug $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET).debug
-	objcopy --strip-unneeded $(BUILD_DIR)/$(TARGET)
-	objcopy --add-gnu-debuglink=$(BUILD_DIR)/$(TARGET).debug $(BUILD_DIR)/$(TARGET)
-endif
-	# Copy the result to the dist directory
-	mkdir -p $(DIST_DIR)
-	cp $(BUILD_DIR)/$(TARGET)* $(DIST_DIR)
+
 
 $(BUILD_DIR)/%.o: %.cpp
 	@mkdir -p `dirname $@`
@@ -85,10 +75,26 @@ $(BUILD_DIR)/%.o: %.cpp
 ###############################################################################
 #### Install, uninstall
 
+.PHONY: strip
+strip: all $(BUILD_DIR)/$(TARGET).debug
+
+$(BUILD_DIR)/$(TARGET).debug: $(BUILD_DIR)/$(TARGET)
+	# Two part executable is generated
+	objcopy --only-keep-debug $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(TARGET).debug
+	objcopy --strip-unneeded $(BUILD_DIR)/$(TARGET)
+	objcopy --add-gnu-debuglink=$(BUILD_DIR)/$(TARGET).debug $(BUILD_DIR)/$(TARGET)
+
+
+.PHONY: dist
+dist: all
+	mkdir -p $(DIST_DIR)
+	cp $(BUILD_DIR)/$(TARGET)* $(DIST_DIR)
+
+
 .PHONY: install
 install: all
 	install -d $(INSTALL_PREFIX)/bin
-	install -m 755 $(DIST_DIR)/$(TARGET) $(INSTALL_PREFIX)/bin
+	install -m 755 $(BUILD_DIR)/$(TARGET) $(INSTALL_PREFIX)/bin
 
 
 .PHONY: uninstall
@@ -102,6 +108,7 @@ uninstall:
 .PHONY: clean
 clean:
 	rm -rf $(BUILD_DIR) $(DIST_DIR)/$(TARGET)
+
 
 ###############################################################################
 #### Basic memory leaks check
