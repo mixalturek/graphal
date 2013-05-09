@@ -10,11 +10,9 @@ Bison
 		array(size) - array1()
 	add switch
 
-
-Simple ./configure script.
-
 TODOs and FIXMEs.
 Web.
 
 MS Windows port.
 RPM/DEB package.
+Graphal README

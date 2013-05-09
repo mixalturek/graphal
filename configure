@@ -1,0 +1,88 @@
+#!/bin/bash
+#
+# This file is part of Graphal.
+# http://graphal.sourceforge.net/
+#
+# Graphal is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3 of the License.
+#
+# Graphal is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Graphal.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+
+export mandatoryToolsAvailable=1
+
+function checkMandatory
+{
+	binary=$1
+	info=$2
+
+	echo -n "    $binary: "
+	which "$binary" > /dev/null
+	result=$?
+
+	[ $result -eq 0 ] && echo "yes" || echo "no ($info)"
+	[ $result -eq 0 ] || mandatoryToolsAvailable=0
+}
+
+function checkOptional
+{
+	binary=$1
+	info=$2
+
+	echo -n "    $binary: "
+	which "$binary" > /dev/null && echo "yes" || echo "no ($info)"
+}
+
+
+echo 'Checking build tools...'
+
+checkMandatory make             'required for: make'
+checkMandatory g++              'required for: make'
+checkMandatory mkdir            'required for: make'
+checkMandatory cp               'required for: make'
+checkMandatory rm               'required for: make'
+checkMandatory ln               'required for: make'
+checkMandatory qmake            'required for: make'
+checkMandatory bison            'required for: make, disable using: make GEN_CODE=no'
+checkMandatory perl             'required for: make, disable using: make GEN_CODE=no'
+
+
+echo
+echo 'Checking install tools...'
+
+checkMandatory install          'required for: make install'
+checkMandatory /sbin/ldconfig   'required for: make install'
+
+
+echo
+echo 'Checking optional tools...'
+
+checkOptional objcopy           'required for: make strip'
+checkOptional doxygen           'required for: make doxygen'
+checkOptional sloccount         'required for: make sloccount'
+checkOptional cat               'required for: make lines'
+checkOptional find              'required for: make lines'
+checkOptional wc                'required for: make lines'
+checkOptional grep              'required for: make listbuiltin'
+checkOptional valgrind          'required for: make tests'
+
+if [ $mandatoryToolsAvailable -eq 1 ]
+then
+	echo
+	echo 'It seems all mandatory tools are available, build and optionally install the software using:'
+	echo 'make'
+	echo 'make install'
+	exit 0
+else
+	echo
+	echo 'Please check the results above. It seems not all mandatory tools are available.'
+	exit 1
+fi
