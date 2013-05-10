@@ -45,16 +45,10 @@ function Img($path, $alt)
 function Web($addr, $text, $title = '')
 {
 	if(file_exists($addr.'.php'))
-		if(isset($_GET['offline']))
-			if($title != '')
-				echo "<a href=\"$addr.html\" title=\"$title\">$text</a>";
-			else
-				echo "<a href=\"$addr.html\">$text</a>";
+		if($title != '')
+			echo "<a hrf=\"$addr".EXTENSION."\" title=\"$title\">$text</a>";
 		else
-			if($title != '')
-				echo "<a href=\"$addr.php\" title=\"$title\">$text</a>";
-			else
-				echo "<a href=\"$addr.php\">$text</a>";
+			echo "<a href=\"$addr".EXTENSION."\">$text</a>";
 	else
 		echo "<span class=\"invalid_link\">$text</span>";
 }
@@ -84,6 +78,7 @@ function Down($path)
 	}
 }
 
+// Menu item
 function MenuItem($addr, $text, $title = '')
 {
 	echo (basename($_SERVER['PHP_SELF']) == "$addr.php")

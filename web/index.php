@@ -19,7 +19,7 @@
  */
 
 
-$g_title = 'Graph algorithms interpreter';
+$g_title = 'Graph Algorithms Interpreter';
 include 'p_begin.php';
 ?>
 

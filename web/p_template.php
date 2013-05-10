@@ -17,12 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Graphal.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+
+$g_title = 'Title';
+include 'p_begin.php';
 ?>
 
 
-</div><!-- div id="page" -->
 
-<div id="footer">Copyright &copy; 2009 - 2013 <?php Blank('http://woq.nipax.cz/', 'Michal Turek'); ?></div>
 
-</body>
-</html>
+<?php
+include 'p_end.php';
+?>

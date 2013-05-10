@@ -25,14 +25,7 @@
 <ul>
 <li><?php MenuItem('index', 'Home'); ?></li>
 <li><?php MenuItem('license', 'License'); ?></li>
-<?php
-if(!isset($_GET['offline']))
-{
-	echo '<li>';
-	MenuItem('download', 'Download');
-	echo '</li>';
-}
-?>
+<li><?php MenuItem('download', 'Download'); ?></li>
 <li><?php MenuItem('dependencies', 'Dependencies'); ?></li>
 <li><?php MenuItem('compilation', 'Compilation'); ?></li>
 <li><?php MenuItem('execution', 'Execution'); ?></li>

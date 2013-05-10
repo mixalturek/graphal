@@ -460,6 +460,8 @@
 ./samples/19_dfs_visualization.txt
 ./samples/tests.txt
 ./TODO
+./utils/offline_web.sh
+./utils/rsync_web.sh
 ./web/builtin_containers.php
 ./web/builtin_debug.php
 ./web/builtin_graphs.php
@@ -491,6 +493,7 @@
 ./web/preprocessor.php
 ./web/print.css
 ./web/p_sidebar.php
+./web/p_template.php
 ./web/style.css
 ./web/variables.php
 ./web/visualizations.php
