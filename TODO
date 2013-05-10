@@ -11,10 +11,14 @@ Bison
 	add switch
 
 TODOs and FIXMEs.
-Web.
 
 MS Windows port.
 RPM/DEB package.
 Graphal README
 
 qtcreator directory with projects
+
+Web
+	index
+	download
+	license - htmlspecialchars()
