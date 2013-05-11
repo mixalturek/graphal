@@ -42,7 +42,7 @@ function checkOptional
 }
 
 
-echo 'Checking build tools...'
+echo 'Checking build tools for libGraphal and Graphal CLI...'
 
 checkMandatory make             'required for: make'
 checkMandatory g++              'required for: make'
@@ -50,9 +50,14 @@ checkMandatory mkdir            'required for: make'
 checkMandatory cp               'required for: make'
 checkMandatory rm               'required for: make'
 checkMandatory ln               'required for: make'
-checkMandatory qmake            'required for: make'
 checkMandatory bison            'required for: make, disable using: make GEN_CODE=no'
 checkMandatory perl             'required for: make, disable using: make GEN_CODE=no'
+
+
+echo
+echo 'Checking additional build tools for Graphal GUI...'
+
+checkMandatory qmake            'required for: make'
 
 
 echo

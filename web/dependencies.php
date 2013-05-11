@@ -23,44 +23,50 @@ $g_title = 'Dependencies';
 include 'p_begin.php';
 ?>
 
-<h3>Operating systems</h3>
-
-<p>The development was in Debian Lenny GNU/Linux, the application was ported to MS Windows 2000 (VirtualBox) and MS Windows XP.</p>
+<p>Graphal was designed to have as less dependencies as possible. Graphal library and Graphal CLI requires mainly C++ compiler and standard library STL. Code generation using GNU Bison and Perl can be disabled during build, the repository contains pregenerated source codes. Graphal GUI adds only Qt library and relevant tools.</p>
 
 <pre class="screen">
-[woq@evm bbd]$ <strong>uname -a</strong>
-Linux evm 2.6.26-1-686 #1 SMP Wed Nov 26 19:14:11 UTC 2008 i686 GNU/Linux
-[woq@evm bbd]$
+[woq@evm graphal]$ <strong>./configure</strong>
+Checking build tools for libGraphal and Graphal CLI...
+    make: yes
+    g++: yes
+    mkdir: yes
+    cp: yes
+    rm: yes
+    ln: yes
+    bison: yes
+    perl: yes
+
+Checking additional build tools for Graphal GUI...
+    qmake: yes
+
+Checking install tools...
+    install: yes
+    /sbin/ldconfig: yes
+
+Checking optional tools...
+    objcopy: yes
+    doxygen: yes
+    sloccount: yes
+    cat: yes
+    find: yes
+    wc: yes
+    grep: yes
+    valgrind: yes
+
+It seems all mandatory tools are available, build and optionally install the software using:
+make
+make install
+[woq@evm graphal]$
 </pre>
 
 
-<h3>Code::Blocks</h3>
+<h2>Operating systems</h2>
 
-<p><a href="http://www.codeblocks.org/">http://www.codeblocks.org/</a></p>
-
-<pre class="screen">
-[woq@evm bbd]$ <strong>apt-cache show codeblocks | grep Version</strong>
-Version: 8.02
-[woq@evm bbd]$
-</pre>
-
-<p>The version with integrated <em>GCC</em> and <em>GDB</em> (<em>codeblocks-8.02mingw-setup.exe</em>) was used under MS Windows.</p>
+<p>Graphal parts were implemented under Debian Lenny GNU/Linux (2008, 2009) and then Debian Squeeze GNU/Linux (2013) operating systems. The application was successfully ported to MS Windows 2000 (VirtualBox) and MS Windows XP.</p>
 
 
-<h3>Qt, Qt Creator</h3>
-
-<p><a href="http://www.qtsoftware.com/downloads">http://www.qtsoftware.com/downloads</a></p>
-
-<pre class="screen">
-[woq@evm ~]$ <strong>qtcreator -version 2>&amp;1 | grep Creator</strong>
-Qt Creator 1.2.1 based on Qt 4.5.2
-[woq@evm ~]$
-</pre>
-
-<p>The version <em>Qt libraries 4.5 for Windows (167 Mb)</em> (<em>qt-win-opensource-4.5.1-mingw.exe</em>) was used under MS Windows. The installer doesn't set the <em>PATH</em> variable, paths to <em>C:/Qt/4.5.1/bin</em> and <em>C:/MinGW/bin</em> directories have to be <a href="http://vlaurie.com/computers2/Articles/environment.htm">added manually</a>. The installer installs whole Qt including the documentation and the code samples, this parts can be deleted to save disk space.</p>
-
-
-<h3>GNU Make</h3>
+<h2>GNU Make</h2>
 
 <pre class="screen">
 [woq@evm bbd]$ <strong>make -v | grep Make</strong>
@@ -69,7 +75,7 @@ GNU Make 3.81
 </pre>
 
 
-<h3>GCC</h3>
+<h2>GNU gcc</h2>
 
 <pre class="screen">
 [woq@evm bbd]$ <strong>gcc -v | grep version</strong>
@@ -78,7 +84,7 @@ gcc version 4.3.2 (Debian 4.3.2-1.1)
 </pre>
 
 
-<h3>bison</h3>
+<h2>GNU Bison</h2>
 
 <pre class="screen">
 [woq@evm bbd]$ <strong>bison -V | grep bison</strong>
@@ -87,16 +93,7 @@ bison (GNU Bison) 2.3
 </pre>
 
 
-<h3>makedepend</h3>
-
-<pre class="screen">
-[woq@evm bbd]$ <strong>apt-cache show xutils-dev | grep Version</strong>
-Version: 1:7.4+3
-[woq@evm bbd]$
-</pre>
-
-
-<h3>Perl</h3>
+<h2>Perl</h2>
 
 <pre class="screen">
 [woq@evm bbd]$ <strong>perl -v | grep 'This is perl'</strong>
@@ -105,26 +102,16 @@ This is perl, v5.10.0 built for i486-linux-gnu-thread-multi
 </pre>
 
 
-<h3>Doxygen</h3>
+<h2>Qt, Qt Creator</h2>
 
 <pre class="screen">
-[woq@evm bbd]$ <strong>doxygen --versionn</strong>
-1.5.6
-[woq@evm bbd]$ <strong>apt-cache show graphviz | grep Version</strong>
-Version: 2.20.2-3
-[woq@evm bbd]$
+[woq@evm ~]$ <strong>qtcreator -version 2>&amp;1 | grep Creator</strong>
+Qt Creator 1.2.1 based on Qt 4.5.2
+[woq@evm ~]$
 </pre>
 
 
-<h3>SVN, StatSVN</h3>
-
-<pre class="screen">
-[woq@evm bbd]$ <strong>svn --version | grep version</strong>
-svn, version 1.5.1 (r32289)
-[woq@evm bbd]$ <strong>apt-cache show statsvn | grep Version</strong>
-Version: 0.4.0.dfsg-1
-[woq@evm bbd]$
-</pre>
+<p>The version <em>Qt libraries 4.5 for Windows (167 Mb)</em> (<em>qt-win-opensource-4.5.1-mingw.exe</em>) was used under MS Windows. The installer doesn't set the <em>PATH</em> variable, paths to <em>C:/Qt/4.5.1/bin</em> and <em>C:/MinGW/bin</em> directories have to be <a href="http://vlaurie.com/computers2/Articles/environment.htm">added manually</a>. The installer installs whole Qt including the documentation and the code samples, this parts can be deleted to save disk space.</p>
 
 
 <?php

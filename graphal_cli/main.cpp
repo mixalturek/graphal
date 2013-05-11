@@ -55,7 +55,6 @@ void usage(int /* argc */, char** argv)
 {
 	cout
 		<< "Graph Algorithms Interpreter - Graphal" << endl
-		<< "======================================" << endl
 		<< endl
 
 		<< "About:" << endl
@@ -71,7 +70,7 @@ void usage(int /* argc */, char** argv)
 		<< endl
 
 		<< "Usage:" << endl
-		<< "\t" << argv[0] << "[-h | --help] [-I<directory>] [-u | --unit-tests] [-a | --ast-dump] [-b | --enable-breakpoints] "
+		<< "\t" << argv[0] << " [-h | --help] [-I<directory>] [-u | --unit-tests] [-a | --ast-dump] [-b | --enable-breakpoints] "
 		<< "<filename> [parameters]" << endl
 		<< endl
 

@@ -39,6 +39,10 @@ function Img($path, $alt)
 		else
 			echo "<div class=\"img\"><img src=\"$path\" $img[3] alt=\"\" /><br />$alt</div>\n";
 	}
+	else
+	{
+		echo "<div class=\"img\">Not found: $path<br />$alt</div>\n";
+	}
 }
 
 // Link to web
