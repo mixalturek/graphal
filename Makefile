@@ -108,7 +108,7 @@ lines:
 
 .PHONY: sloccount
 sloccount:
-	sloccount --duplicates --wide --details libgraphal graphal_cli graphal_gui > $(BUILD_DIR)/sloccount.sc
+	sloccount --duplicates --wide --details libgraphal graphal_cli graphal_gui web > $(BUILD_DIR)/sloccount.sc
 
 
 ###############################################################################
