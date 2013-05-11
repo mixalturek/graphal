@@ -51,14 +51,14 @@ printStackTrace() : null
 </pre>
 
 
-<p>Immediately end the script execution. The call is equivalent to the return from the <em>main()</em> function.</p>
+<p>Immediately end the script execution. The call is equivalent to return from <em>main()</em> function.</p>
 
 <pre class="spec">
 exit(object) : null
 </pre>
 
 
-<p>Dump the content of the passed object and its subobjects in the XML format.</p>
+<p>Dump the content of the passed object and its subobjects in pseudo XML format.</p>
 
 <pre class="spec">
 dump(object) : object

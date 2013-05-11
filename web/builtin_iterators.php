@@ -25,28 +25,28 @@ include 'p_begin.php';
 
 <p>Arrays, structs, vertices, edges, vertex sets and edge sets data types are iterable. The <em>foreach</em> loop internally uses iterators.</p>
 
-<p>Return the copy of the container and set its inner iterator to the begining.</p>
+<p>Return a copy of a container and set its inner iterator to the beginning.</p>
 
 <pre class="spec">
 iterator(object) : object
 </pre>
 
 
-<p>Check if the contatiner has the next object.</p>
+<p>Check if a container has a next item.</p>
 
 <pre class="spec">
 hasNext(object) : bool
 </pre>
 
 
-<p>Get the next object</p>
+<p>Get the next item.</p>
 
 <pre class="spec">
 next(object) : object
 </pre>
 
 
-<p>Reset the inner iterator to the begining.</p>
+<p>Reset the inner iterator to the beginning.</p>
 
 <pre class="spec">
 resetIterator(object) : object
@@ -56,25 +56,32 @@ resetIterator(object) : object
 <h3>Examples</h3>
 
 <pre class="code">
-st = struct();
-st.number = 42;
-st.pi = 3.14;
-st.str = "bagr";
+function main(argv)
+{
+	// Define and fill an iterable object
+	iterable = struct();
+	iterable.number = 42;
+	iterable.pi = 3.14;
+	iterable.iterabler = "bagr";
 
-// Iterate using foreach loop
-foreach(var; st)
-	println(var);
+	// Iterate using iterators
+	it = iterable.iterator();
+	while(it.hasNext())
+		println(it.next());
 
-// Iterate using iterators
-it = st.iterator();
-while(it.hasNext())
-	println(it.next());
+	println("");
+
+	// Iterate using foreach loop
+	foreach(var; iterable)
+		println(var);
+}
 </pre>
 
 <pre class="screen">
 42
 3.14
 bagr
+
 42
 3.14
 bagr

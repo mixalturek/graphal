@@ -27,7 +27,8 @@ include 'p_begin.php';
 <p>The list of defined built-in functions, their parameters and return values can be displayed using <em>make listbuiltin</em> command.</p>
 
 <pre class="screen">
-[woq@evm bbd]$ <strong>make listbuiltin</s<trong>
+[woq@evm graphal]$ <strong>cd libgraphal/</strong>
+[woq@evm libgraphal]$ <strong>make listbuiltin</strong>
 echo(object) : object
 print(object) : object
 println(object) : object
@@ -96,10 +97,8 @@ visSetView(number, number, number, number, number) : null
 visUseWeightWhenPaintingEdges(bool) : null
 visScreenshot(string) : null
 visGetGraph() : graph|null
-[woq@evm bbd]$
+[woq@evm libgraphal]$
 </pre>
-
-
 
 
 <?php

@@ -23,7 +23,7 @@ $g_title = 'isType functions';
 include 'p_begin.php';
 ?>
 
-<p>Check the type of the parameter.</p>
+<p>Check the type of the passed parameter.</p>
 
 <pre class="spec">isNull(object) : bool</pre>
 <pre class="spec">isBool(object) : bool</pre>

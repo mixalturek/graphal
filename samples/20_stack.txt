@@ -1,0 +1,13 @@
+function main(argv)
+{
+	stack = array(0);
+
+	stack.pushBack(0);
+	stack.pushBack(1);
+	stack.pushBack(2);
+
+	println(stack.back()); stack.popBack();
+	println(stack.back()); stack.popBack();
+	println(stack.back()); stack.popBack();
+	println(stack.back()); stack.popBack();
+}

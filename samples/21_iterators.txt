@@ -1,0 +1,19 @@
+function main(argv)
+{
+	// Define and fill an iterable object
+	iterable = struct();
+	iterable.number = 42;
+	iterable.pi = 3.14;
+	iterable.iterabler = "bagr";
+
+	// Iterate using iterators
+	it = iterable.iterator();
+	while(it.hasNext())
+		println(it.next());
+
+	println("");
+
+	// Iterate using foreach loop
+	foreach(var; iterable)
+		println(var);
+}

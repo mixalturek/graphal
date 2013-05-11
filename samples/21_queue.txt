@@ -1,0 +1,13 @@
+function main(argv)
+{
+	queue = array(0);
+
+	queue.pushBack(0);
+	queue.pushBack(1);
+	queue.pushBack(2);
+
+	println(queue.front()); queue.popFront();
+	println(queue.front()); queue.popFront();
+	println(queue.front()); queue.popFront();
+	println(queue.front()); queue.popFront();
+}

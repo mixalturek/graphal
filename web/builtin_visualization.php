@@ -23,9 +23,9 @@ $g_title = 'Visualization functions';
 include 'p_begin.php';
 ?>
 
-<p>The following functions does nothing in the command line interpreter.</p>
+<p><strong>The following functions does nothing in the command line interpreter.</strong></p>
 
-<p>The visualization painting expects that all registered vertices contatin <em>__x</em>, <em>__y</em> and <em>__z</em> properties for their positioning in 3D space. The center of the whole graph should be at (0, 0, 0) position to guarantee the proper rotations. Vertices and edges can contatin <em>__r</em>, <em>__g</em> and <em>__b</em> color specification, the values are from 0 to 255. Edges can also set theirs <em>__w</em> property, if <em>visUseWeightWhenPaintingEdges()</em> flag is set, the weight will be added to the <em>Z</em> position coordinate.</p>
+<p>The visualization painting expects that all registered vertices contatin <em>__x</em>, <em>__y</em> and <em>__z</em> properties for their positioning in 3D space. The center of the whole graph should be at (0, 0, 0) location to guarantee the proper rotations. Vertices and edges can contatin <em>__r</em>, <em>__g</em> and <em>__b</em> color specification, the value ranges are from 0 to 255. The edges can also set their <em>__w</em> property; if <em>visUseWeightWhenPaintingEdges()</em> flag is set, the weight will be added to the <em>Z</em> position coordinate.</p>
 
 
 <p>Register graph or set for painting. String parameter will be used in the application menu to enable/disable when painting. Three numbers are RGB color components, they can be redefined in the vertex or edge.</p>
@@ -49,7 +49,7 @@ visSetColor(vertex|edge, number, number, number) : null
 </pre>
 
 
-<p>Set the view to the scene using <em>X</em>, <em>Y</em> and <em>Z</em> coordinates together with <em>X</em> and <em>Y</em> rotations. The camera is initialized using the following OpenGL code.</p>
+<p>Set the camera using <em>X</em>, <em>Y</em> and <em>Z</em> coordinates together with <em>X</em> and <em>Y</em> rotations. The camera will be initialized using the OpenGL code below.</p>
 
 <pre class="spec">
 visSetView(number, number, number, number, number) : null
@@ -77,7 +77,7 @@ visScreenshot(string) : null
 </pre>
 
 
-<p>Get the graph specified in the application. Always check the return value for <em>null</em>.</p>
+<p>Get the graph specified in the Graphal GUI application. You should always check the returned value for <em>null</em>.</p>
 
 <pre class="spec">
 visGetGraph() : graph|null
@@ -86,7 +86,7 @@ visGetGraph() : graph|null
 
 <h3>Examples</h3>
 
-<p>Load graph from the file and register the vertices and edges to be painted using different colors.</p>
+<p>Load graph from a file and register the vertices and edges to be painted with different colors.</p>
 
 <pre class="code">
 g = graph();
@@ -126,7 +126,7 @@ g.setDirected(false);
 </pre>
 
 
-<p>Load the graph specified in the application and fallback to default one if no was set.</p>
+<p>Load the graph specified in the Graphal GUI application and fallback to the default one if no one is set.</p>
 
 <pre class="code">
 if((g = visGetGraph()) == null)

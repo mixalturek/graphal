@@ -52,7 +52,7 @@ This is a multiline comment
 
 <h3>Examples</h3>
 
-<p>Original source file contains a comment, defines new <em>tverify</em> macro and uses symbolic constant <em>__FUNCTION__</em>.</p>
+<p>Source code contains a comment, defines new <em>tverify</em> macro and uses symbolic constant <em>__FUNCTION__</em>.</p>
 
 <pre class="code">
 <strong>// From samples/tests.txt</strong>
@@ -70,7 +70,7 @@ function testFactorial()
 }
 </pre>
 
-<p>The constructs are processed inside of the scanner, parser receives tokens that are representing the following code.</p>
+<p>All preprocessor constructs are processed inside the scanner, the parser receives tokens that represents the following code (compare the bold parts).</p>
 
 <pre class="code">
 function testFactorial()

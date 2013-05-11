@@ -197,11 +197,7 @@ Number of failed tests: 0
 
 <p>Dump of AST (Abstract Syntax Tree) is mainly for debugging purposes to check that the script's source code was parsed and stored to the internal form correctly.</p>
 
-<pre class="screen">
-[woq@evm graphal]$ <strong>make RPATH_ORIGIN=yes dist</strong>
-...
-[woq@evm graphal]$ <strong>cd build/dist/</strong>
-[woq@evm dist]$ <strong>cat ../samples/01_factorial.txt</strong>
+<pre class="code">
 /*
  * Copyright 2008 Michal Turek
  *
@@ -238,7 +234,12 @@ function main(argv)
 
 	return 0;
 }
+</pre>
 
+<pre class="screen">
+[woq@evm graphal]$ <strong>make RPATH_ORIGIN=yes dist</strong>
+...
+[woq@evm graphal]$ <strong>cd build/dist/</strong>
 [woq@evm dist]$ <strong>./graphal_cli --ast-dump ../samples/01_factorial.txt</strong>
 &lt;Context&gt;
     &lt;BuiltinFunction name="echo" id="7" /&gt;

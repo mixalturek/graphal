@@ -19,26 +19,26 @@
  */
 
 
-$g_title = 'Function calling';
+$g_title = 'Functions';
 include 'p_begin.php';
 ?>
 
-<p>The functions can be called using two possible, equivalent, methods. If the dot notation is used, the object is passed to the first parameter of the function.</p>
+<p>Functions can be called using two possible and equivalent approaches. If a dot notation is used, the object will be passed as the first parameter to the function, which is very similar to self parameter in Python.</p>
 
 <pre class="code">
-function func(par1, par2, par3)
+function func(<strong>par1</strong>, par2, par3)
 {
 	// Code
 }
 
-func(par1, par2, par3);
-par1.func(par2, par3);
+func(<strong>par1</strong>, par2, par3);
+<strong>par1</strong>.func(par2, par3);
 </pre>
 
 <pre class="code">
-g = graph();
-v1 = generateVertex(g);
-v2 = g.generateVertex();
+<strong>g</strong> = graph();
+v1 = generateVertex(<strong>g</strong>);
+v2 = <strong>g</strong>.generateVertex();
 </pre>
 
 <?php

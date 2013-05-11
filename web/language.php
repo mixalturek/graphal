@@ -23,7 +23,7 @@ $g_title = 'Language';
 include 'p_begin.php';
 ?>
 
-<p>The syntax of the language looks like simplified C programming language, it is case-insensitive. The script enters <em>main(argv)</em> function at start.</p>
+<p>The syntax of the language looks like simplified C or Java programming language, it is case-sensitive. The script enters <em>main(argv)</em> function at the beginning.</p>
 
 
 <h3>Examples</h3>
@@ -40,10 +40,18 @@ function main(argv)
 </pre>
 
 <pre class="screen">
-[woq@woq bbd]$ <strong>./bbd ../samples/12_script_parameters.txt test parameters</strong>
+[woq@evm graphal]$ <strong>make RPATH_ORIGIN=yes dist</strong>
+...
+[woq@evm graphal]$ <strong>cd build/dist/</strong>
+[woq@evm dist]$ <strong>./graphal_cli ../samples/12_script_parameters.txt test parameters</strong>
+[i] *** ENTERING SCRIPT MAIN ***
 argv[0]: ../samples/12_script_parameters.txt
 argv[1]: test
 argv[2]: parameters
+[i] *** EXITING SCRIPT MAIN, OK ***
+[i] Return value: NULL
+[i] *** EXITING MAIN, OK ***
+[woq@evm dist]$
 </pre>
 
 <?php

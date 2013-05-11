@@ -23,7 +23,7 @@ $g_title = 'Output functions';
 include 'p_begin.php';
 ?>
 
-<p>Send the string representation of the object to the standard output.</p>
+<p>Format the object to a string representation and send the result to the standard output.</p>
 
 <pre class="spec">
 echo(object) : object
@@ -34,7 +34,7 @@ print(object) : object
 </pre>
 
 
-<p>Send the string representation of the object to the standard output and append "\n" character.</p>
+<p>Format the object to a string representation and send the result to the standard output and append "\n" character.</p>
 
 <pre class="spec">
 println(object) : object

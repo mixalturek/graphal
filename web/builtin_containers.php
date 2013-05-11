@@ -23,35 +23,35 @@ $g_title = 'Container functions';
 include 'p_begin.php';
 ?>
 
-<p>Return newly created array of the specified size.</p>
+<p>Return a newly created array of the specified size.</p>
 
 <pre class="spec">
 array(number) : array|null
 </pre>
 
 
-<p>Return newly created structure.</p>
+<p>Return a newly created structure.</p>
 
 <pre class="spec">
 struct() : struct
 </pre>
 
 
-<p>Return newly created set.</p>
+<p>Return a newly created set.</p>
 
 <pre class="spec">
 set() : set
 </pre>
 
 
-<p>Insert object to the set.</p>
+<p>Insert an object to a set.</p>
 
 <pre class="spec">
 insert(set, object) : null
 </pre>
 
 
-<p>Remove object from the set.</p>
+<p>Remove an object from a set.</p>
 
 <pre class="spec">
 remove(set, object) : null
@@ -65,76 +65,76 @@ contains(set, object) : bool|null
 </pre>
 
 
-<p>Return size of the array, struct or set. Return string lenght.</p>
+<p>Return number of items in an array, struct or set. Return number of characters in a string.</p>
 
 <pre class="spec">
 size(array|struct|set|string) : int|null
 </pre>
 
 
-<p>Create union from two sets.</p>
+<p>Create union of two sets.</p>
 
 <pre class="spec">
 union(set, set) : set|null
 </pre>
 
 
-<p>Create intersection from two sets.</p>
+<p>Create intersection of two sets.</p>
 
 <pre class="spec">
 intersection(set, set) : set|null
 </pre>
 
 
-<p>Create difference from two sets.</p>
+<p>Create difference of two sets.</p>
 
 <pre class="spec">
 difference(set, set) : set|null
 </pre>
 
 
-<p>Push the item to the front of the array.</p>
+<p>Push an item to the front of an array.</p>
 
 <pre class="spec">
 pushFront(array, object) : null
 </pre>
 
 
-<p>Push the item to the back of the array.</p>
+<p>Push an item to the back of an array.</p>
 
 <pre class="spec">
 pushBack(array, object) : null
 </pre>
 
 
-<p>Remove item from the front of the array.</p>
+<p>Remove an item from the front of an array.</p>
 
 <pre class="spec">
 popFront(array) : null
 </pre>
 
 
-<p>Remove item from the back of the array.</p>
+<p>Remove an item from the back of an array.</p>
 
 <pre class="spec">
 popBack(array) : null
 </pre>
 
 
-<p>Get the front item of the array.</p>
+<p>Get the front item of an array.</p>
 
 <pre class="spec">
 front(array) : object|null
 </pre>
 
 
-<p>Get the back item of the array.</p>
+<p>Get the back item of an array.</p>
 
 <pre class="spec">
 back(array) : object|null
 </pre>
 
-<p>Set property with name <em>string</em> and value <em>object</em> to the all struct-like items (struct, vertex, edge) saved in the array, struct or set.</p>
+<p>Set property with name <em>string</em> and value <em>object</em> to all struct-like items (struct, vertex, edge) saved in the array, struct or set.</p>
 
 <pre class="spec">
 setPropertyToAllStructItems(array|struct|set, string, object) : null
@@ -144,41 +144,55 @@ setPropertyToAllStructItems(array|struct|set, string, object) : null
 
 <h3>Examples</h3>
 
-<p>Stack implementation using arrays</p>
+<p>Stack implementation using array data type.</p>
 
 <pre class="code">
-a = array(0);
-a.pushBack(0);
-a.pushBack(1);
-a.pushBack(2);
-a.popBack();
+function main(argv)
+{
+	stack = array(0);
 
-for(i = 0; i &lt; a.size(); ++i)
-	println(a[i]);
-</pre>
+	stack.pushBack(0);
+	stack.pushBack(1);
+	stack.pushBack(2);
 
-<pre class="screen">
-0
-1
-</pre>
-
-
-<p>Queue implementation using arrays</p>
-
-<pre class="code">
-a = array(0);
-a.pushFront(0);
-a.pushFront(1);
-a.pushFront(2);
-a.popBack();
-
-for(i = 0; i &lt; a.size(); ++i)
-	println(a[i]);
+	println(stack.back()); stack.popBack();
+	println(stack.back()); stack.popBack();
+	println(stack.back()); stack.popBack();
+	println(stack.back()); stack.popBack();
+}
 </pre>
 
 <pre class="screen">
 2
 1
+0
+NULL
+</pre>
+
+
+<p>Queue implementation using array data type.</p>
+
+<pre class="code">
+function main(argv)
+{
+	queue = array(0);
+
+	queue.pushBack(0);
+	queue.pushBack(1);
+	queue.pushBack(2);
+
+	println(queue.front()); queue.popFront();
+	println(queue.front()); queue.popFront();
+	println(queue.front()); queue.popFront();
+	println(queue.front()); queue.popFront();
+}
+</pre>
+
+<pre class="screen">
+0
+1
+2
+NULL
 </pre>
 
 

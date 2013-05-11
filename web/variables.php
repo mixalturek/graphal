@@ -25,7 +25,7 @@ include 'p_begin.php';
 
 <h3>Data types</h3>
 
-<p>The language specify no constructs for variable declaration and type specification. The interpreter uses following inner data types which can be dynamically changed during assigning.</p>
+<p>The language specify no constructs for variable declaration and type specification. The interpreter uses following inner data types which can be dynamically changed with assign command.</p>
 
 <ul>
 <li>null</li>
@@ -37,25 +37,27 @@ include 'p_begin.php';
 
 <h3>Global variables</h3>
 
-<p>All variables are defined as local in the function scope. To define/use a global variable, use keyword <em>global</em> with the variable name.</p>
+<p>All variables are defined as local and are valid only it the scope of the current function. To define/use a global variable, use <em>global</em> keyword with the variable name.</p>
 
 <pre class="code">
 function setGlobal(val)
 {
-	global g_var;
-	g_var = val;
+	<strong>global g_var;</strong>
+	g_var = val;         // g_var is global
 }
 
 function main(argv)
 {
+	println(g_var);      // g_var is local
 	setGlobal("test");
-	println(g_var);
-	global g_var;
-	println(g_var);
+	println(g_var);      // g_var is local
+	<strong>global g_var;</strong>
+	println(g_var);      // g_var is global
 }
 </pre>
 
 <pre class="screen">
+NULL
 NULL
 test
 </pre>
@@ -63,11 +65,11 @@ test
 
 <h3>References</h3>
 
-<p>Use special <em>&amp;=</em> operator to assign the reference to the variable.</p>
+<p>Use special <em>&amp;=</em> operator to assign a reference to the variable and to create an alias.</p>
 
 <pre class="code">
 var = 1;
-ref &amp;= var;
+<strong>ref &amp;= var;</strong>               // ref is now alias of var
 println("var = " + var);
 println("ref = " + ref);
 var = 2;

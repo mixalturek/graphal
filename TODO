@@ -1,7 +1,12 @@
-different shapes of vertices
-built-in function to paint special objects to the scene
+Solve TODOs and FIXMEs.
+MS Windows port.
+RPM/DEB packages.
+Graphal README.
+QtCreator directory with projects.
 
-resolve ?gcc bug? - Tests::testValueArray()
+Language
+	Extend scanner to allow multiline comment inside another one /* /* */ */.
+	# Add another type of a comment.
 
 Bison
 	rewrite parser to C++ (it is in documentation)
@@ -10,13 +15,25 @@ Bison
 		array(size) - array1()
 	add switch
 
-TODOs and FIXMEs.
+Resources
+	Define file format and load graphs from XML files.
 
-MS Windows port.
-RPM/DEB package.
-Graphal README
+Built-in functions
+	Functions to paint special objects to the visualization scene, optionally add whole OpenGL binding.
+	Functions for sorting.
+	popBack() and popFront() should return the value.
+	sleep(milliseconds), currentTimeMillis().
 
-qtcreator directory with projects
+Graphal GUI
+	Tab key press with multiple selected lines should indent them.
+	Shift+Tab key press with multiple selected lines should unindent them.
+	Highlight Tab characters in the editor.
+	Shortcuts doesn't work in the Script output (try Ctrl+a, Ctrl+c, Ctrl+v).
+	Update list of files in Files view after a new file is saved (e.g. Save As).
+	Allow different shapes of vertices in vizualizations.
+
+Other
+	Try to resolve ?gcc bug? - Tests::testValueArray().
 
 Web
 	index
