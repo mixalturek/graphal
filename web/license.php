@@ -70,7 +70,7 @@ GNU General Public License for more details.</p>
 
 <pre>
 <?php
-readfile('../COPYING');
+safeReadFile('../COPYING');
 ?>
 </pre>
 
@@ -79,7 +79,7 @@ readfile('../COPYING');
 
 <pre>
 <?php
-readfile('../COPYING.LESSER');
+safeReadFile('../COPYING.LESSER');
 ?>
 </pre>
 

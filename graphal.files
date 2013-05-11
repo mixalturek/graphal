@@ -458,6 +458,9 @@
 ./samples/17_graphs.txt
 ./samples/18_get_graph.txt
 ./samples/19_dfs_visualization.txt
+./samples/20_stack.txt
+./samples/21_iterators.txt
+./samples/21_queue.txt
 ./samples/tests.txt
 ./TODO
 ./utils/offline_web.sh
@@ -478,8 +481,10 @@
 ./web/functions.php
 ./web/grammar.php
 ./web/graphs_format.php
-./web/images/screenshot/2009-09-09_23-35-04.png
-./web/images/screenshot/2009-09-09_23-35-04_sm.png
+./web/images/screenshots/2009-09-09_23-35-04.png
+./web/images/screenshots/2009-09-09_23-35-04_sm.png
+./web/images/screenshots/graphal_gui_dfs.png
+./web/images/screenshots/graphal_gui_dfs_sm.png
 ./web/images/website/blank.gif
 ./web/images/website/down.gif
 ./web/images/website/logo.png

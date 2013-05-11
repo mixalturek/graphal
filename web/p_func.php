@@ -88,4 +88,10 @@ function MenuItem($addr, $text, $title = '')
 	echo (basename($_SERVER['PHP_SELF']) == "$addr.php")
 		? "<a class=\"active\">$text</a>" : Web($addr, $text, $title);
 }
+
+// Read file and escape html special characters
+function safeReadFile($path)
+{
+	echo htmlspecialchars(file_get_contents($path));
+}
 ?>
