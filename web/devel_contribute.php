@@ -1,5 +1,6 @@
+<?php
 /*
- * Copyright 2008 Michal Turek
+ * Copyright 2013 Michal Turek
  *
  * This file is part of Graphal.
  * http://graphal.sourceforge.net/
@@ -18,19 +19,14 @@
  */
 
 
-function main(argv)
-{
-	g = graph();
-//	assert(g.loadFromFile("../graphs/02_graph_1_2_3.txt"));
-//	assert(g.loadFromFile("../graphs/02_graph_2_2_2.txt"));
-//	assert(g.loadFromFile("../graphs/02_graph_3_2_3.txt"));
-//	assert(g.loadFromFile("../graphs/02_graph_4_3_2.txt"));
-	assert(g.loadFromFile("../graphs/02_graph_6_4_3.txt"));
-//	assert(g.loadFromFile("../graphs/02_graph_5_5_5.txt"));
+$g_title = 'Contribute';
+include_once 'p_begin.php';
+?>
 
-	visRegister(g.getVertices(), "vertices", 255, 0, 0);
-	visRegister(g.getEdges(), "edges", 0, 255, 0);
-	breakpoint(true);
+<p>I would be very glad for any help with Graphal. If you want to code, write documentation, maintain the website, package the software and similar, please send me an email to <?php Email('mixalturek@users.sourceforge.net'); ?> or <?php Email('WOQ@seznam.cz'); ?>.</p>
 
-	return;
-}
+<p>Thank you very much in advance.</p>
+
+<?php
+include_once 'p_end.php';
+?>

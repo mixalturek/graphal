@@ -116,6 +116,7 @@
 ./graphal.includes
 ./graphs/00_simple.txt
 ./graphs/01_house.txt
+./graphs/02_graph_1_2_3.txt
 ./graphs/02_graph_2_2_2.txt
 ./graphs/02_graph_3_2_3.txt
 ./graphs/02_graph_4_3_2.txt
@@ -475,6 +476,7 @@
 ./web/builtin_visualization.php
 ./web/compilation.php
 ./web/dependencies.php
+./web/devel_contribute.php
 ./web/devel_new_builtin.php
 ./web/download.php
 ./web/execution.php

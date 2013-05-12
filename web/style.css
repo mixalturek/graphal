@@ -32,10 +32,11 @@ body
 #header		{ width: 100%; text-align: center; margin-bottom: 50px; border-bottom: 1px solid gray; }
 #footer		{ clear: both; width: 100%; text-align: center; margin-top: 50px; border-top: 1px solid gray; }
 
-#sidebar	{ background: transparent url("images/website/logo.png") no-repeat; width: 17%; margin-left: 3%; padding-top: 100px; display: inline; float: left; text-align: left; }
+#sidebar	{ background: transparent url("images/website/logo.png") no-repeat; width: 17%; margin-left: 3%; padding-top: 130px; padding-bottom: 30px; display: inline; float: left; text-align: left; }
 #page		{ margin: 0px 3% 50px 20%; }
 
 #sidebar ul		{ margin-left: 1.5em; padding: 0px; }
+#sidebar .label		{ font-weight: bold; }
 #screenshot		{ float: right; }
 
 

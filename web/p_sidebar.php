@@ -22,10 +22,20 @@
 
 <div id="sidebar">
 
+<div class="label">Graphal</div>
+
 <ul>
 <li><?php MenuItem('index', 'Home'); ?></li>
 <li><?php MenuItem('license', 'License'); ?></li>
 <li><?php MenuItem('download', 'Download'); ?></li>
+<li><?php Blank('http://sourceforge.net/projects/graphal/files/', 'Download');?></li>
+<li><?php Blank('http://sourceforge.net/projects/graphal/support', 'Support');?></li>
+</ul>
+
+
+<div class="label">Documentation</div>
+
+<ul>
 <li><?php MenuItem('dependencies', 'Dependencies'); ?></li>
 <li><?php MenuItem('compilation', 'Compilation'); ?></li>
 <li><?php MenuItem('execution', 'Execution'); ?></li>
@@ -50,7 +60,22 @@
 </li>
 <li><?php MenuItem('visualizations', 'Vizualizations'); ?></li>
 <li><?php MenuItem('graphs_format', 'Graphs file format'); ?></li>
-<li><?php MenuItem('devel_new_builtin', 'Add built-in function'); ?></li>
 </ul>
+
+
+<div class="label">Development</div>
+
+<ul>
+<li><?php MenuItem('devel_contribute', 'Contribute');?></li>
+<li><?php MenuItem('devel_new_builtin', 'Add built-in function'); ?></li>
+<li><?php Blank('http://sourceforge.net/projects/graphal/', 'Project');?></li>
+<li><?php Blank('http://sourceforge.net/p/graphal/code/', 'Repository');?></li>
+<li><?php Blank('http://sourceforge.net/p/graphal/code/commit_browser', 'Commits');?></li>
+<li><?php Blank('http://sourceforge.net/p/graphal/tickets/', 'Tickets');?></li>
+</ul>
+
+<div id="sf_logo"><a href="http://sourceforge.net/">
+<img src="http://sflogo.sourceforge.net/sflogo.php?group_id=1461989&amp;type=2" alt="SourceForge.net" />
+</a></div>
 
 </div><!-- div id="sidebar" -->

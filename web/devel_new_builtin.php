@@ -19,7 +19,7 @@
  */
 
 
-$g_title = 'Add new built-in function';
+$g_title = 'Add a new built-in function';
 include 'p_begin.php';
 ?>
 
