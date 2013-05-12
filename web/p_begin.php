@@ -42,8 +42,6 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 
 <body>
 
-<div id="header"><a href="http://graphal.sourceforge.net/">Graph Algorithms Interpreter</a></div>
-
 <?php
 include_once 'p_sidebar.php';
 ?>

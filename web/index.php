@@ -28,7 +28,7 @@ include 'p_begin.php';
 
 <h3>Features</h3>
 
-<div id="screenshot"><?php Img('images/screenshots/2009-09-09_23-35-04_sm.png', 'Screenshot'); ?></div>
+<div id="screenshot"><?php Img('images/screenshots/graphal_gui_dfs_sm.png', 'Screenshot'); ?></div>
 
 <ul>
 <li>The code is very similar to C language</li>

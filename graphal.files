@@ -478,13 +478,10 @@
 ./web/dependencies.php
 ./web/devel_contribute.php
 ./web/devel_new_builtin.php
-./web/download.php
 ./web/execution.php
 ./web/functions.php
 ./web/grammar.php
 ./web/graphs_format.php
-./web/images/screenshots/2009-09-09_23-35-04.png
-./web/images/screenshots/2009-09-09_23-35-04_sm.png
 ./web/images/screenshots/graphal_gui_dfs.png
 ./web/images/screenshots/graphal_gui_dfs_sm.png
 ./web/images/website/blank.gif

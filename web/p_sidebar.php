@@ -22,12 +22,13 @@
 
 <div id="sidebar">
 
+<a href="http://graphal.sourceforge.net/"><?php Img('images/website/logo.png', ''); ?></a>
+
 <div class="label">Graphal</div>
 
 <ul>
 <li><?php MenuItem('index', 'Home'); ?></li>
 <li><?php MenuItem('license', 'License'); ?></li>
-<li><?php MenuItem('download', 'Download'); ?></li>
 <li><?php Blank('http://sourceforge.net/projects/graphal/files/', 'Download');?></li>
 <li><?php Blank('http://sourceforge.net/projects/graphal/support', 'Support');?></li>
 </ul>
