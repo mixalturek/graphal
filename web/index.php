@@ -25,8 +25,10 @@ include 'p_begin.php';
 
 <p><em>Graphal project</em> is an interpreter of a programming language mainly oriented to graph algorithms. There is a command line interpreter and a graphical integrated development environtment. The IDE contains a text editor for programmers, compilation and script output, advanced debugger and vizualization window. The progress of the interpreted and debugged graph algorithm can be displayed in 3D scene.</p>
 
+<p>The project was founded as a diploma thesis at <?php Blank('http://www.fel.cvut.cz/', 'Faculty of Electrical Engineering'); ?> of <?php Blank('http://www.cvut.cz/', 'Czech Technical University in Prague'); ?>.</p>
 
-<h3>Main Features</h3>
+
+<h2>Main Features</h2>
 
 <div id="screenshot"><?php Img('images/screenshots/graphal_gui_dfs_sm.png', 'Screenshot of Graphal GUI'); ?></div>
 
@@ -55,6 +57,30 @@ include 'p_begin.php';
 <li>Vizualization view with graph in 3D space.</li>
 <li>Advanced debugging of the scripts.</li>
 </ul>
+
+
+<h2>News</h2>
+
+<h3>2 April 2013</h3>
+<ul>
+<li>The project moved to <?php Blank('http://www.sourceforge.net/', 'SourceForge.net'); ?> site.</li>
+<li>Subversion repository replaced by GIT.</li>
+<li>The core of interpreter moved to a shared library licensed under GNU LGPL.</li>
+<li>Build scripts completely rewritten to be more powerful.</li>
+<li>Various fixes and code updates.</li>
+</ul>
+
+<h3>12 December 2009</h3>
+<ul>
+<li>The first version released and the exam successfully passed.</li>
+<li>No update for a long time.</li>
+</ul>
+
+<h3>27 October 2008</h3>
+<ul>
+<li>The project was founded as a diploma thesis, first commit to the repository.</li>
+</ul>
+
 
 <?php
 include 'p_end.php';

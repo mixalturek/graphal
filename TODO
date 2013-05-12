@@ -2,21 +2,20 @@ Solve TODOs and FIXMEs.
 MS Windows port.
 RPM/DEB packages.
 Graphal README.
-QtCreator directory with projects.
 
 Language
 	Extend scanner to allow multiline comment inside another one /* /* */ */.
 	# Add another type of a comment.
 
 Bison
-	rewrite parser to C++ (it is in documentation)
-	function overloading (save names like "name<numberofparameters>")
+	Rewrite parser to C++ (it is in documentation).
+	Function overloading (save names like "name<numberofparameters>").
 		array() - array0()
 		array(size) - array1()
-	add switch
+	Add switch.
 
 Resources
-	Define file format and load graphs from XML files.
+	Define a new file format and load graphs from XML files.
 
 Built-in functions
 	Functions to paint special objects to the visualization scene, optionally add whole OpenGL binding.
@@ -36,7 +35,4 @@ Other
 	Try to resolve ?gcc bug? - Tests::testValueArray().
 
 Web
-	index
-	download
-	history
-	icon from graph image, remove toast
+	Icon from graph image, remove toast.

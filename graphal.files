@@ -494,6 +494,7 @@
 ./web/p_begin.php
 ./web/p_end.php
 ./web/p_func.php
+./web/plans.php
 ./web/preprocessor.php
 ./web/print.css
 ./web/p_sidebar.php
