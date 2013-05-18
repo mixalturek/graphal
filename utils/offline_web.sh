@@ -19,7 +19,7 @@
 #
 # One purpose script to generate offline website.
 
-SERVER_PATH=http://localhost/~woq/graphal
+SERVER_PATH=http://localhost/~$USER/graphal
 
 for file in `ls -1 web/*.php | grep -v 'p_.*php'`
 do

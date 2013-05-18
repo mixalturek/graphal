@@ -130,6 +130,11 @@ web:
 	bash utils/offline_web.sh
 
 
+.PHONY: deployweb
+deployweb: web
+	bash utils/rsync_web.sh
+
+
 ###############################################################################
 #### Clean
 

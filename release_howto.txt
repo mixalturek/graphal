@@ -1,5 +1,13 @@
 - Solve all TODOs and FIXMEs.
-- Execute 'make tests'.
+- Check 'make tests'.
+- Update web pages.
+- Update ChangeLog.
 - Update version in libgraphal/Makefile.
 - Update version in libgraphal/version.h.
-
+- GIT tag.
+- Build at Jenkins CI.
+- Build MS Windows port.
+- Upload files.
+- Deploy web.
+- Update version in libgraphal/Makefile.
+- Update version in libgraphal/version.h.

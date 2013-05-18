@@ -26,5 +26,4 @@
 # sshfs mixalturek@web.sourceforge.net:/home/project-web/graphal mnt
 # fusermount -u mnt
 
-make clean web
 rsync -aP -e ssh build/web/ mixalturek@web.sourceforge.net:/home/project-web/graphal/htdocs/

@@ -28,6 +28,7 @@
 
 <ul>
 <li><?php MenuItem('index', 'Home'); ?></li>
+<li><?php MenuItem('changelog', 'ChangeLog'); ?></li>
 <li><?php MenuItem('plans', 'Plans'); ?></li>
 <li><?php MenuItem('license', 'License'); ?></li>
 <li><?php MenuItem('screenshots', 'Screenshots'); ?></li>

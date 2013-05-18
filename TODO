@@ -1,8 +1,3 @@
-Solve TODOs and FIXMEs.
-MS Windows port.
-RPM/DEB packages.
-Graphal README.
-
 Language
 	Extend scanner to allow multiline comment inside another one /* /* */ */.
 	# Add another type of a comment.
@@ -33,3 +28,6 @@ Graphal GUI
 
 Other
 	Try to resolve ?gcc bug? - Tests::testValueArray().
+	Solve TODOs and FIXMEs.
+	MS Windows port.
+	RPM/DEB packages.

@@ -1,4 +1,4 @@
-./class_hierarchy.txt
+./ChangeLog
 ./configure
 ./COPYING
 ./COPYING.LESSER
@@ -434,8 +434,8 @@
 ./libgraphal/visualizationconnector.h
 ./Makefile
 ./qtcreator_update.sh
+./README
 ./release_howto.txt
-./rename.sh
 ./samples/01_factorial.txt
 ./samples/02_included.txt
 ./samples/02_include.txt
@@ -474,6 +474,7 @@
 ./web/builtin_output.php
 ./web/builtin.php
 ./web/builtin_visualization.php
+./web/changelog.php
 ./web/compilation.php
 ./web/dependencies.php
 ./web/devel_contribute.php

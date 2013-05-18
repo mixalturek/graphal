@@ -1,0 +1,12 @@
+Change log for Graphal project
+==============================
+
+Version 1.0.0 (18 April 2013)
+-----------------------------
+
+* Initial public release.
+* The project moved to SourceForge.net site and renamed to Graphal.
+* Subversion repository replaced by GIT and cleaned.
+* The core of interpreter moved to a shared library and licensed under GNU LGPL.
+* Build scripts completely rewritten.
+* Various fixes and code updates.
