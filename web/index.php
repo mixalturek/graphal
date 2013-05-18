@@ -23,7 +23,7 @@ $g_title = 'Graph Algorithms Interpreter';
 include 'p_begin.php';
 ?>
 
-<p><em>Graphal project</em> is an interpreter of a programming language that is mainly oriented to graph algorithms. There is a command line interpreter and a graphical integrated development environtment. The IDE contains text editor for programmers, compilation and script output, advanced debugger and visualization window. The progress of the interpreted and debugged graph algorithm can be displayed in 3D scene.</p>
+<p><em>Graphal</em> is an interpreter of a programming language that is mainly oriented to graph algorithms. There is a command line interpreter and a graphical integrated development environment. The IDE contains text editor for programmers, compilation and script output, advanced debugger and visualization window. The progress of the interpreted and debugged graph algorithm can be displayed in 3D scene.</p>
 
 
 <h2>Main Features</h2>
