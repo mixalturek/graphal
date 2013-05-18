@@ -23,6 +23,7 @@ $g_title = 'TODO &amp; Plans';
 include 'p_begin.php';
 ?>
 
+<p>There is no active development on Graphal at the moment. If you like idea of this software and if you want something to be fixed or added, <?php Web('devel_contribute', 'please contact me'); ?>. Graphal has no active users at the moment and I don't simply want to spend my free time to fix the bugs for nobody ;-)</p>
 
 <pre>
 <?php

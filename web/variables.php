@@ -23,21 +23,21 @@ $g_title = 'Variables';
 include 'p_begin.php';
 ?>
 
-<h3>Data types</h3>
+<h2>Data Types</h2>
 
 <p>The language specify no constructs for variable declaration and type specification. The interpreter uses following inner data types which can be dynamically changed with assign command.</p>
 
 <ul>
-<li>null</li>
-<li>bool, int, float</li>
-<li>string, array, struct</li>
-<li>graph, vertex, edge, vertex set, edge set</li>
+<li>Null.</li>
+<li>Bool, int, float.</li>
+<li>String, array, struct, set.</li>
+<li>Graph, vertex, edge.</li>
 </ul>
 
 
-<h3>Global variables</h3>
+<h2>Global Variables</h2>
 
-<p>All variables are defined as local and are valid only it the scope of the current function. To define/use a global variable, use <em>global</em> keyword with the variable name.</p>
+<p>All variables are defined as local and are valid only it the scope of the current function (function not block). To define/use a global variable, use <em>global</em> keyword with the variable name.</p>
 
 <pre class="code">
 function setGlobal(val)
@@ -63,7 +63,7 @@ test
 </pre>
 
 
-<h3>References</h3>
+<h2>References</h2>
 
 <p>Use special <em>&amp;=</em> operator to assign a reference to the variable and to create an alias.</p>
 

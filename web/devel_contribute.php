@@ -19,13 +19,15 @@
  */
 
 
-$g_title = 'Contribute';
+$g_title = 'Contribute/Contact';
 include_once 'p_begin.php';
 ?>
 
-<p>I would be very glad for any help with Graphal. If you want to code, write documentation, maintain the website, package the software and similar, please send me an email to <?php Email('mixalturek@users.sourceforge.net'); ?> or <?php Email('WOQ@seznam.cz'); ?>.</p>
+<p>I would be very glad for any help with Graphal. If you want to code, write documentation, maintain the website, package the software, publish a script you develop, or similar, please send me an email to <?php Email('mixalturek@users.sourceforge.net'); ?> or <?php Email('WOQ@seznam.cz'); ?>.</p>
 
-<p>Thank you very much in advance.</p>
+<p>If you want something to be fixed or added to the applications or just to tell me that you are using Graphal and optionally how, contact me too, please. The developer is always happy to know that somebody uses his software.</p>
+
+<p>Thank you very much in advance.<br />Michal Turek</p>
 
 <?php
 include_once 'p_end.php';

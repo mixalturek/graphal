@@ -19,7 +19,7 @@
  */
 
 
-$g_title = 'Visualization functions';
+$g_title = 'Visualization Functions';
 include 'p_begin.php';
 ?>
 
@@ -28,14 +28,14 @@ include 'p_begin.php';
 <p>The visualization painting expects that all registered vertices contatin <em>__x</em>, <em>__y</em> and <em>__z</em> properties for their positioning in 3D space. The center of the whole graph should be at (0, 0, 0) location to guarantee the proper rotations. Vertices and edges can contatin <em>__r</em>, <em>__g</em> and <em>__b</em> color specification, the value ranges are from 0 to 255. The edges can also set their <em>__w</em> property; if <em>visUseWeightWhenPaintingEdges()</em> flag is set, the weight will be added to the <em>Z</em> position coordinate.</p>
 
 
-<p>Register graph or set for painting. String parameter will be used in the application menu to enable/disable when painting. Three numbers are RGB color components, they can be redefined in the vertex or edge.</p>
+<p>Register graph or set for painting. String parameter will be used in the application menu to enable/disable when painting. Three numbers are RGB color components, they can be locally redefined in any vertex or edge.</p>
 
 <pre class="spec">
 visRegister(graph|set, string, number, number, number) : null
 </pre>
 
 
-<p>Set the vertex position in 3D space. Actually set <em>__x</em>, <em>__y</em> and <em>__z</em> properties.</p>
+<p>Set a vertex position in 3D space. Actually set <em>__x</em>, <em>__y</em> and <em>__z</em> properties.</p>
 
 <pre class="spec">
 visSetPos(vertex, number, number, number) : null
@@ -49,7 +49,7 @@ visSetColor(vertex|edge, number, number, number) : null
 </pre>
 
 
-<p>Set the camera using <em>X</em>, <em>Y</em> and <em>Z</em> coordinates together with <em>X</em> and <em>Y</em> rotations. The camera will be initialized using the OpenGL code below.</p>
+<p>Set position of camera using <em>X</em>, <em>Y</em> and <em>Z</em> coordinates together with <em>X</em> and <em>Y</em> rotations. The camera will be initialized using the OpenGL code below.</p>
 
 <pre class="spec">
 visSetView(number, number, number, number, number) : null
@@ -84,9 +84,9 @@ visGetGraph() : graph|null
 </pre>
 
 
-<h3>Examples</h3>
+<h2>Examples</h2>
 
-<p>Load graph from a file and register the vertices and edges to be painted with different colors.</p>
+<p>Load a graph from a file and register the vertices and edges to be painted with different colors.</p>
 
 <pre class="code">
 g = graph();
@@ -97,7 +97,7 @@ visRegister(g.getEdges(), "edges", 0, 255, 0);
 </pre>
 
 
-<p>Paint the <em>house</em> edge by edge.</p>
+<p>Paint a <em>house graph</em> edge by edge.</p>
 
 <pre class="code">
 define("ZPOS", "0.0");
@@ -126,7 +126,7 @@ g.setDirected(false);
 </pre>
 
 
-<p>Load the graph specified in the Graphal GUI application and fallback to the default one if no one is set.</p>
+<p>Load a graph specified in Graphal GUI application and fallback to the default one if no one is set.</p>
 
 <pre class="code">
 if((g = visGetGraph()) == null)

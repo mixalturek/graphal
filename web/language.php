@@ -26,7 +26,7 @@ include 'p_begin.php';
 <p>The syntax of the language looks like simplified C or Java programming language, it is case-sensitive. The script enters <em>main(argv)</em> function at the beginning.</p>
 
 
-<h3>Examples</h3>
+<h2>Examples</h2>
 
 <p>List the script parameters.</p>
 

@@ -19,7 +19,7 @@
  */
 
 
-$g_title = 'Graph functions';
+$g_title = 'Graph Functions';
 include 'p_begin.php';
 ?>
 
@@ -33,14 +33,14 @@ graph() : graph
 </pre>
 
 
-<p>Load a graph from the specified file.</p>
+<p>Load a graph from a file (<?php Web('graphs_format', 'file format'); ?>).</p>
 
 <pre class="spec">
 loadFromFile(graph, string) : bool
 </pre>
 
 
-<p>Check if the graph is directed.</p>
+<p>Check if a graph is directed.</p>
 
 <pre class="spec">
 isDirected(graph) : bool|null
@@ -54,49 +54,49 @@ setDirected(graph, number) : bool|null
 </pre>
 
 
-<p>Invert the direction of the edges in the graph.</p>
+<p>Invert the direction of edges in a graph.</p>
 
 <pre class="spec">
 invertEdgesDirection(graph) : null
 </pre>
 
 
-<p>Create a new vertex in the graph.</p>
+<p>Create a new vertex in a graph.</p>
 
 <pre class="spec">
 generateVertex(graph) : vertex|null
 </pre>
 
 
-<p>Create a new edge in the graph.</p>
+<p>Create a new edge in a graph.</p>
 
 <pre class="spec">
 generateEdge(graph, vertex, vertex) : edge|null
 </pre>
 
 
-<p>Delete the vertex from the graph.</p>
+<p>Delete a vertex from a graph.</p>
 
 <pre class="spec">
 deleteVertex(graph, vertex) : null
 </pre>
 
 
-<p>Delete the edge from the graph.</p>
+<p>Delete an edge from a graph.</p>
 
 <pre class="spec">
 deleteEdge(graph, edge) : null
 </pre>
 
 
-<p>Get count of vertices in the graph.</p>
+<p>Get count of vertices in a graph.</p>
 
 <pre class="spec">
 getNumVertices(graph) : int|null
 </pre>
 
 
-<p>Get count of edges in the graph.</p>
+<p>Get count of edges in a graph.</p>
 
 <pre class="spec">
 getNumEdges(graph) : int|null
@@ -117,58 +117,58 @@ getEdges(graph) : set|null
 </pre>
 
 
-<p>Get degree of the vertex.</p>
+<p>Get degree of a vertex.</p>
 
 <pre class="spec">
 getDegree(vertex) : int|null
 </pre>
 
 
-<p>Get the neighbors of the vertex as a set object.</p>
+<p>Get all neighbors of a vertex as a set object.</p>
 
 <pre class="spec">
 getNeighbors(vertex) : set|null
 </pre>
 
 
-<p>Get the begin vertex of the edge. If the graph is not directed, one of the edge's vertices will be returned.</p>
+<p>Get the begin vertex of an edge. If the graph is not directed, one of the edge's vertices will be returned.</p>
 
 <pre class="spec">
 getBeginVertex(edge) : vertex|null
 </pre>
 
 
-<p>Get the end vertex of the edge. If the graph is not directed, one of the edge's vertices will be returned.</p>
+<p>Get the end vertex of an edge. If the graph is not directed, one of the edge's vertices will be returned.</p>
 
 <pre class="spec">
 getEndVertex(edge) : vertex|null
 </pre>
 
 
-<p>Create the adjacency matrix from the graph. 2D array (array containing arrays in all items) is returned.</p>
+<p>Create adjacency matrix from a graph. 2D array (array containing arrays in all items) will be returned.</p>
 
 <pre class="spec">
 getAdjacencyMatrix(graph) : array
 </pre>
 
 
-<p>Set property with name <em>string</em> and value <em>object</em> to all vertices of the graph.</p>
+<p>Set property with name <em>string</em> and value <em>object</em> to all vertices of a graph.</p>
 
 <pre class="spec">
 setPropertyToAllVertices(graph, string, object) : null
 </pre>
 
 
-<p>Set property with name <em>string</em> and value <em>object</em> to all edges of the graph.</p>
+<p>Set property with name <em>string</em> and value <em>object</em> to all edges of a graph.</p>
 
 <pre class="spec">
 setPropertyToAllEdges(graph, string, object) : null
 </pre>
 
 
-<h3>Examples</h3>
+<h2>Examples</h2>
 
-<p>Graph generation and recursive depth first search.</p>
+<p>Manual graph generation and recursive depth first search.</p>
 
 <pre class="code">
 define("NUM_VERTICES", "10"); // In one layer
@@ -223,7 +223,7 @@ function main(argv)
 	foreach(v; g.getVertices())
 		v.state = NEW;
 
-	// Run (any vertex first)
+	// Run dfs algorithm (pass any vertex)
 	dfs(first);
 }
 </pre>

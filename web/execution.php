@@ -25,7 +25,7 @@ include 'p_begin.php';
 
 <h2>Graphal GUI</h2>
 
-<p>GUI application doesn't parse any parameters, it shows the main application window with integrated development environment for graph algorithms.</p>
+<p>GUI application doesn't parse any parameters, it shows the main application window with integrated development environment.</p>
 
 <pre class="screen">
 [woq@evm graphal]$ <strong>make RPATH_ORIGIN=yes dist</strong>
@@ -41,7 +41,7 @@ include 'p_begin.php';
 
 <h3>Usage</h3>
 
-<p>Application executed without parameters shows usage and exits.</p>
+<p>Application that is executed without parameters shows usage and exits.</p>
 
 <pre class="screen">
 [woq@evm graphal]$ <strong>make RPATH_ORIGIN=yes dist</strong>
@@ -92,7 +92,7 @@ Usage:
 </pre>
 
 
-<h3>Script execution</h3>
+<h3>Script Execution</h3>
 
 <p>Pass a path as the last parameter to execute the script.</p>
 
@@ -119,9 +119,9 @@ Factorial of 9 is 362880
 </pre>
 
 
-<h3>Unit tests</h3>
+<h3>Unit Tests</h3>
 
-<p>Unit tests mode is suitable to check that the application was compiled and works correctly.</p>
+<p>Unit test mode is suitable to check that the application was compiled and works correctly.</p>
 
 <pre class="screen">
 [woq@evm graphal]$ <strong>make RPATH_ORIGIN=yes dist</strong>
@@ -195,7 +195,7 @@ Number of failed tests: 0
 
 <h3>Dump of AST</h3>
 
-<p>Dump of AST (Abstract Syntax Tree) is mainly for debugging purposes to check that the script's source code was parsed and stored to the internal form correctly.</p>
+<p>Dump of Abstract Syntax Tree is mainly for debugging purposes to check that the script's source code was parsed and stored to the internal form correctly.</p>
 
 <pre class="code">
 /*

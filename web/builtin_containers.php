@@ -19,7 +19,7 @@
  */
 
 
-$g_title = 'Container functions';
+$g_title = 'Container Functions';
 include 'p_begin.php';
 ?>
 
@@ -58,7 +58,7 @@ remove(set, object) : null
 </pre>
 
 
-<p>Check if the set contains the object.</p>
+<p>Check if a set contains an object.</p>
 
 <pre class="spec">
 contains(set, object) : bool|null
@@ -142,7 +142,7 @@ setPropertyToAllStructItems(array|struct|set, string, object) : null
 
 
 
-<h3>Examples</h3>
+<h2>Examples</h2>
 
 <p>Stack implementation using array data type.</p>
 

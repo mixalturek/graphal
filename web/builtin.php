@@ -24,7 +24,7 @@ include 'p_begin.php';
 ?>
 
 
-<p>The list of defined built-in functions, their parameters and return values can be displayed using <em>make listbuiltin</em> command.</p>
+<p>The list of defined built-in functions, their parameters and return values can be displayed using <em>make listbuiltin</em> command executed from <em>libgraphal</em> directory.</p>
 
 <pre class="screen">
 [woq@evm graphal]$ <strong>cd libgraphal/</strong>

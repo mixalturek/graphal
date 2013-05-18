@@ -26,13 +26,13 @@ include 'p_begin.php';
 
 <h2>Command Line Build</h2>
 
-<p>To build and install Graphal just run <em>./configure</em>, <em>make</em> and <em>make install</em> commands in the top level package directory. They expect <?php Web('dependencies', 'all neccessary tools'); ?> are installed. The configure script processes only very basic checks, please see content of the top level <em>Makefile</em> for possible build options - e.g. prefix of installation directory or disabling of optional tools and similar.</p>
+<p>To build and install Graphal just run <em>./configure</em>, <em>make</em> and <em>make install</em> commands in the top level package directory. They expect <?php Web('dependencies', 'all neccessary tools'); ?> are installed. The configure script processes only very basic checks, please see content of the top level <em>Makefile</em> for possible build options - e.g. prefix of installation directory or disable optional tools.</p>
 
 
 
 <h2>Qt Creator IDE</h2>
 
-<p>Open the project and click on <em>Build</em> - <em>Build All</em> menu item, you can choose between debug and release versions. The project in IDE is configured to use the same Makefiles as the command line build.</p>
+<p>Open the project and click <em>Build</em> - <em>Build All</em> menu item. You can also choose between debug and release version. The project in IDE is configured to use the same Makefiles as the command line build.</p>
 
 
 <?php

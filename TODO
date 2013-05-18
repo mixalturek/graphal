@@ -9,12 +9,12 @@ Language
 
 Bison
 	Rewrite parser to C++ (it is in documentation).
-	Function overloading (save names like "name<numberofparameters>").
+	Function overloading (generate names like "name<numberofparameters>").
 		array() - array0()
 		array(size) - array1()
-	Add switch.
+	Add switch statement.
 
-Resources
+Graph resources
 	Define a new file format and load graphs from XML files.
 
 Built-in functions
@@ -27,7 +27,7 @@ Graphal GUI
 	Tab key press with multiple selected lines should indent them.
 	Shift+Tab key press with multiple selected lines should unindent them.
 	Highlight Tab characters in the editor.
-	Shortcuts doesn't work in the Script output (try Ctrl+a, Ctrl+c, Ctrl+v).
+	Shortcuts doesn't work in the Script output (try ctrl+a, ctrl+c, ctrl+v).
 	Update list of files in Files view after a new file is saved (e.g. Save As).
 	Allow different shapes of vertices in vizualizations.
 
@@ -36,3 +36,5 @@ Other
 
 Web
 	Icon from graph image, remove toast.
+	Architecture page with PDFs.
+	Screenshots.

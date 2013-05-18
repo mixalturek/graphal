@@ -19,7 +19,7 @@
  */
 
 
-$g_title = 'Add a new built-in function';
+$g_title = 'Add a New Built-in Function';
 include 'p_begin.php';
 ?>
 
@@ -32,8 +32,8 @@ include 'p_begin.php';
 <li>Define the body of the built-in function.</li>
 <li>Call <em>genBFClass('built-in name', 'class name', number of parameters, code, includes)</em> function.</li>
 <li>Run <em>make</em> to regenerate the classes and rebuild the related code.</li>
-<li>Add the newly generated files <em>classname.h</em> and <em>classname.cpp</em> to the project (Qt Creator).</li>
-<li>Check the changes for memory leaks using <em>valgrind ./bbd --unit-tests ../samples/tests.txt</em>.</li>
+<li>Add the newly generated files <em>classname.h</em> and <em>classname.cpp</em> to Qt Creator project.</li>
+<li>Check the changes for memory leaks using <em>valgrind ./graphal_cli --unit-tests ../samples/tests.txt</em>.</li>
 <li>Commit/send me the code.</li>
 </ul>
 

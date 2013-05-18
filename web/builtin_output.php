@@ -19,7 +19,7 @@
  */
 
 
-$g_title = 'Output functions';
+$g_title = 'Output Functions';
 include 'p_begin.php';
 ?>
 
@@ -41,9 +41,9 @@ println(object) : object
 </pre>
 
 
-<h3>Examples</h3>
+<h2>Examples</h2>
 
-<p>Print the value of a variable.</p>
+<p>Print a value of a variable.</p>
 
 <pre class="code">
 a = 5;

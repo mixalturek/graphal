@@ -23,7 +23,7 @@ $g_title = 'Dependencies';
 include 'p_begin.php';
 ?>
 
-<p>Graphal was designed to have as less dependencies as possible. Graphal library and Graphal CLI requires mainly C++ compiler and standard library STL. Code generation using GNU Bison and Perl can be disabled during build, the repository contains pregenerated source codes. Graphal GUI adds only Qt library and relevant tools.</p>
+<p>Graphal was designed to have as less dependencies as possible. Graphal library and Graphal CLI requires only C++ compiler and standard C++ library STL. Source code generation using GNU Bison and Perl can be disabled during build, the repository contains pregenerated source codes. Graphal GUI adds only Qt library and relevant Qt tools to the dependencies.</p>
 
 <pre class="screen">
 [woq@evm graphal]$ <strong>./configure</strong>
@@ -61,44 +61,44 @@ make install
 </pre>
 
 
-<h2>Operating systems</h2>
+<h2>Operating Systems</h2>
 
-<p>Graphal parts were implemented under Debian Lenny GNU/Linux (2008, 2009) and then Debian Squeeze GNU/Linux (2013) operating systems. The application was successfully ported to MS Windows 2000 (VirtualBox) and MS Windows XP.</p>
+<p>Graphal was implemented under Debian Lenny GNU/Linux (2008, 2009) and then Debian Squeeze GNU/Linux (2013) operating systems. The application was successfully ported to MS Windows 2000 and MS Windows XP.</p>
 
 
 <h2>GNU Make</h2>
 
 <pre class="screen">
-[woq@evm bbd]$ <strong>make -v | grep Make</strong>
+[woq@evm graphal]$ <strong>make -v | grep Make</strong>
 GNU Make 3.81
-[woq@evm bbd]$
+[woq@evm graphal]$
 </pre>
 
 
 <h2>GNU gcc</h2>
 
 <pre class="screen">
-[woq@evm bbd]$ <strong>gcc -v | grep version</strong>
+[woq@evm graphal]$ <strong>gcc -v | grep version</strong>
 gcc version 4.3.2 (Debian 4.3.2-1.1)
-[woq@evm bbd]$
+[woq@evm graphal]$
 </pre>
 
 
 <h2>GNU Bison</h2>
 
 <pre class="screen">
-[woq@evm bbd]$ <strong>bison -V | grep bison</strong>
+[woq@evm graphal]$ <strong>bison -V | grep bison</strong>
 bison (GNU Bison) 2.3
-[woq@evm bbd]$
+[woq@evm graphal]$
 </pre>
 
 
 <h2>Perl</h2>
 
 <pre class="screen">
-[woq@evm bbd]$ <strong>perl -v | grep 'This is perl'</strong>
+[woq@evm graphal]$ <strong>perl -v | grep 'This is perl'</strong>
 This is perl, v5.10.0 built for i486-linux-gnu-thread-multi
-[woq@evm bbd]$
+[woq@evm graphal]$
 </pre>
 
 

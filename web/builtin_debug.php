@@ -19,32 +19,32 @@
  */
 
 
-$g_title = 'Debug functions';
+$g_title = 'Debug Functions';
 include 'p_begin.php';
 ?>
 
-<p>Test the object's value. If it is <em>false</em>, the script execution will be stopped with and error message.</p>
+<p>Test the object's value. If it is <em>false</em>, the script execution will be stopped with an error message.</p>
 
 <pre class="spec">
 assert(object) : null
 </pre>
 
 
-<p>Test the object's value. If it is <em>false</em>, the script will display an error message.</p>
+<p>Test the object's value. If it is <em>false</em>, the script will display an error message but it will continue.</p>
 
 <pre class="spec">
 verify(object) : bool
 </pre>
 
 
-<p>Test the object's value. If it is <em>true</em>, the script will wait the user interaction.</p>
+<p>Test the object's value. If it is <em>true</em>, the script will wait user interaction.</p>
 
 <pre class="spec">
 breakpoint(object) : null
 </pre>
 
 
-<p>Print the current stack trace to the standard output.</p>
+<p>Print the current stack trace.</p>
 
 <pre class="spec">
 printStackTrace() : null
@@ -58,14 +58,14 @@ exit(object) : null
 </pre>
 
 
-<p>Dump the content of the passed object and its subobjects in pseudo XML format.</p>
+<p>Dump a content of a passed object and its subobjects in pseudo XML format.</p>
 
 <pre class="spec">
 dump(object) : object
 </pre>
 
 
-<h3>Examples</h3>
+<h2>Examples</h2>
 
 <p>Check if the operation was successful or not. <em>Verify()</em> only displays an error message, <em>assert()</em> ends the script.</p>
 
@@ -73,6 +73,7 @@ dump(object) : object
 test = false;
 verify(test);
 assert(test);
+println("This will be never executed.");
 </pre>
 
 <pre class="screen">

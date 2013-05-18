@@ -19,11 +19,11 @@
  */
 
 
-$g_title = 'Graphs file format';
+$g_title = 'Graphs File Format';
 include 'p_begin.php';
 ?>
 
-<p>The graphs can be loaded from the text files with the following format. You can use whatever white character (space, tabulator, new line) for the delimiters.</p>
+<p>A graph can be loaded from a text file with the format below. Whatever white character (space, tabulator, new line) can be used as a delimiter of the values.</p>
 
 <pre class="spec">
 is_directed
@@ -45,7 +45,7 @@ vertex_id   vertex_id   values_of_properties
 </pre>
 
 
-<h3>Examples</h3>
+<h2>Examples</h2>
 
 <p>An <em>one line house</em> graph.</p>
 

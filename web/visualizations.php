@@ -19,25 +19,25 @@
  */
 
 
-$g_title = 'Visualizations tips and tricks';
+$g_title = 'Visualizations';
 include 'p_begin.php';
 ?>
 
-<h3>Visualizations mouse control</h3>
+<h2>Mouse Control</h2>
 
 <ul>
-<li>Left button - X and Y position of the object</li>
-<li>Mouse wheel - Z position of the object, zoom</li>
-<li>Right button - rotations
+<li>Left button - set X and Y position of the object.</li>
+<li>Mouse wheel - set Z position of the object, zoom.</li>
+<li>Right button - rotations.
 	<ul>
-	<li>Ctrl modifier - rotations only on the X axis</li>
-	<li>Shift modifier - rotations only on the Y axis</li>
+	<li>Ctrl modifier - rotations only on the X axis.</li>
+	<li>Shift modifier - rotations only on the Y axis.</li>
 	</ul>
 </li>
 </ul>
 
 
-<h3>How to display content of the item in a structured variable?</h3>
+<h2>Display Values in a Structured Variable</h2>
 
 <p>The <em>variables dock</em> does not display values of the items saved in the structured data types. You can use <em>assign-reference</em> operator together with another variable.</p>
 
@@ -48,9 +48,9 @@ structure.some_array[57] = "some new value";
 </pre>
 
 
-<h3>Call stack dock</h3>
+<h2>Call Stack Dock</h2>
 
-<p>The file name provides tool tip to display full path to the file. Use double click to open the file and roll to the specified line.</p>
+<p>The file name provides a tool tip to display full filesystem path. Use double click to open the file and roll to the specified line.</p>
 
 
 <?php

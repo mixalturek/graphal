@@ -23,9 +23,7 @@ $g_title = 'Graph Algorithms Interpreter';
 include 'p_begin.php';
 ?>
 
-<p><em>Graphal project</em> is an interpreter of a programming language mainly oriented to graph algorithms. There is a command line interpreter and a graphical integrated development environtment. The IDE contains a text editor for programmers, compilation and script output, advanced debugger and vizualization window. The progress of the interpreted and debugged graph algorithm can be displayed in 3D scene.</p>
-
-<p>The project was founded as a diploma thesis at <?php Blank('http://www.fel.cvut.cz/', 'Faculty of Electrical Engineering'); ?> of <?php Blank('http://www.cvut.cz/', 'Czech Technical University in Prague'); ?>.</p>
+<p><em>Graphal project</em> is an interpreter of a programming language that is mainly oriented to graph algorithms. There is a command line interpreter and a graphical integrated development environtment. The IDE contains text editor for programmers, compilation and script output, advanced debugger and visualization window. The progress of the interpreted and debugged graph algorithm can be displayed in 3D scene.</p>
 
 
 <h2>Main Features</h2>
@@ -37,25 +35,29 @@ include 'p_begin.php';
 <li>Shared library and CLI application is written in C++ with STL.</li>
 <li>GUI application uses Qt library.</li>
 <li>There is no other dependency to any external library.</li>
-<li>CLI and GUI applications are separated.</li>
+<li>Core library, CLI and GUI applications are separated.</li>
 </ul>
 
 <ul>
-<li>Null, bool, int, float, string, array, struct, set, vertex, edge, graph and other data types.</li>
+<li>Null, bool, int, float, string, array, struct, set, vertex, edge and graph data types.</li>
 <li>Global and local variables.</li>
 <li>C/C++ like evaluation of expressions.</li>
 <li>If-else, for, while and foreach statements.</li>
-<li>Built-in and user defined functions.</li>
 <li>Return, break and continue structured jumps.</li>
+<li>Built-in and user defined functions.</li>
 <li>Preprocessor includes and defines.</li>
 </ul>
 
 <ul>
-<li>File system view.</li>
 <li>Text editor for programmers with syntax highlighting.</li>
-<li>View with compilation and script output.</li>
-<li>Vizualization view with graph in 3D space.</li>
+<li>Window with compilation and script output.</li>
+<li>Interactive visualization Window with graph in 3D space.</li>
 <li>Advanced debugging of the scripts.</li>
+</ul>
+
+<ul>
+<li>Runnable on GNU/Linux and MS Windows, other operating systems are probably supported too.</li>
+<li>Core library licensed unded GNU LGPL, applications under GNU GPL.</li>
 </ul>
 
 
@@ -63,22 +65,24 @@ include 'p_begin.php';
 
 <h3>2 April 2013</h3>
 <ul>
-<li>The project moved to <?php Blank('http://www.sourceforge.net/', 'SourceForge.net'); ?> site.</li>
-<li>Subversion repository replaced by GIT.</li>
-<li>The core of interpreter moved to a shared library licensed under GNU LGPL.</li>
-<li>Build scripts completely rewritten to be more powerful.</li>
+<li>The project moved to <?php Blank('http://www.sourceforge.net/', 'SourceForge.net'); ?> site and renamed to <em>Graphal</em>.</li>
+<li>Subversion repository replaced by GIT and cleaned.</li>
+<li>The core of interpreter moved to a shared library and licensed under GNU LGPL.</li>
+<li>Build scripts completely rewritten.</li>
 <li>Various fixes and code updates.</li>
 </ul>
 
 <h3>12 December 2009</h3>
 <ul>
-<li>The first version released and the exam successfully passed.</li>
+<li>The first version released, final exam successfully passed.</li>
 <li>No update for a long time.</li>
 </ul>
 
 <h3>27 October 2008</h3>
 <ul>
-<li>The project was founded as a diploma thesis, first commit to the repository.</li>
+<li>The project was founded as a diploma thesis at <?php Blank('http://www.fel.cvut.cz/', 'Faculty of Electrical Engineering'); ?> of <?php Blank('http://www.cvut.cz/', 'Czech Technical University in Prague'); ?>.</li>
+<li>Most parts of Graphal was written during cold winter and student exchange stay at <?php Blank('http://www.sibsau.ru/', 'Siberian State Aerospace University'); ?>.</li>
+<li><em>Graphal</em> was originally named <em>bbd</em> or <em>bbdgui</em> respectively. bbd was acronym for russian word бутерброд/buterbrod that can be translated as <em>bread and butter</em> or <em>sandwich</em>. I used three-letter names for my software at that time.</li>
 </ul>
 
 

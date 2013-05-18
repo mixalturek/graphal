@@ -19,11 +19,11 @@
  */
 
 
-$g_title = 'Iterator functions';
+$g_title = 'Iterator Functions';
 include 'p_begin.php';
 ?>
 
-<p>Arrays, structs, vertices, edges, vertex sets and edge sets data types are iterable. The <em>foreach</em> loop internally uses iterators.</p>
+<p>Array, struct, set, vertex and edge data types are iterable. The <em>foreach</em> loop uses iterators internally.</p>
 
 <p>Return a copy of a container and set its inner iterator to the beginning.</p>
 
@@ -53,7 +53,7 @@ resetIterator(object) : object
 </pre>
 
 
-<h3>Examples</h3>
+<h2>Examples</h2>
 
 <pre class="code">
 function main(argv)

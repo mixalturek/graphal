@@ -30,6 +30,7 @@
 <li><?php MenuItem('index', 'Home'); ?></li>
 <li><?php MenuItem('plans', 'Plans'); ?></li>
 <li><?php MenuItem('license', 'License'); ?></li>
+<li><?php MenuItem('devel_contribute', 'Contact');?></li>
 <li><?php Blank('http://sourceforge.net/projects/graphal/files/', 'Download');?></li>
 <li><?php Blank('http://sourceforge.net/projects/graphal/support', 'Support');?></li>
 </ul>
@@ -60,7 +61,7 @@
 	</li>
 	</ul>
 </li>
-<li><?php MenuItem('visualizations', 'Vizualizations'); ?></li>
+<li><?php MenuItem('visualizations', 'Visualizations'); ?></li>
 <li><?php MenuItem('graphs_format', 'Graphs file format'); ?></li>
 </ul>
 

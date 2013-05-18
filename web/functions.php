@@ -23,7 +23,9 @@ $g_title = 'Functions';
 include 'p_begin.php';
 ?>
 
-<p>Functions can be called using two possible and equivalent approaches. If a dot notation is used, the object will be passed as the first parameter to the function, which is very similar to self parameter in Python.</p>
+<h2>Function Calls</h2>
+
+<p>Functions can be called using two possible and equivalent approaches. If a dot notation is used, the object will be passed as the first parameter to the function. This approach is very similar to self parameter in Python.</p>
 
 <pre class="code">
 function func(<strong>par1</strong>, par2, par3)
@@ -40,6 +42,12 @@ func(<strong>par1</strong>, par2, par3);
 v1 = generateVertex(<strong>g</strong>);
 v2 = <strong>g</strong>.generateVertex();
 </pre>
+
+
+<h2>Built-in Functions</h2>
+
+<p>Built-in functions behave the same as the functions defined in the script code.</p>
+
 
 <?php
 include 'p_end.php';
