@@ -482,8 +482,14 @@
 ./web/functions.php
 ./web/grammar.php
 ./web/graphs_format.php
+./web/images/screenshots/graphal_cli_scripts.png
+./web/images/screenshots/graphal_cli_scripts_sm.png
 ./web/images/screenshots/graphal_gui_dfs.png
 ./web/images/screenshots/graphal_gui_dfs_sm.png
+./web/images/screenshots/graphal_gui_docks.png
+./web/images/screenshots/graphal_gui_docks_sm.png
+./web/images/screenshots/graphal_gui_house.png
+./web/images/screenshots/graphal_gui_house_sm.png
 ./web/images/website/blank.gif
 ./web/images/website/down.gif
 ./web/images/website/logo.png
@@ -499,6 +505,7 @@
 ./web/print.css
 ./web/p_sidebar.php
 ./web/p_template.php
+./web/screenshots.php
 ./web/style.css
 ./web/variables.php
 ./web/visualizations.php

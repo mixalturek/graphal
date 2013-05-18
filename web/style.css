@@ -75,3 +75,6 @@ tr			{ background-color: rgb(200,200,255); }
 tr:hover		{ background-color: rgb(150,150,255); }
 th, td			{ padding-left: 1em; padding-right: 1em; text-align: left; }
 th			{ border: 1px solid rgb(180,180,180); background-color: rgb(170,170,255); }
+
+.screenshots .img	{ float: left; padding: 1em; margin: 1em; border: 1px dotted silver; }
+.screenshots .img:hover	{ border: 1px solid silver; }

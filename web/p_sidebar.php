@@ -30,6 +30,7 @@
 <li><?php MenuItem('index', 'Home'); ?></li>
 <li><?php MenuItem('plans', 'Plans'); ?></li>
 <li><?php MenuItem('license', 'License'); ?></li>
+<li><?php MenuItem('screenshots', 'Screenshots'); ?></li>
 <li><?php MenuItem('devel_contribute', 'Contact');?></li>
 <li><?php Blank('http://sourceforge.net/projects/graphal/files/', 'Download');?></li>
 <li><?php Blank('http://sourceforge.net/projects/graphal/support', 'Support');?></li>
