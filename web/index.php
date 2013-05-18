@@ -57,7 +57,7 @@ include 'p_begin.php';
 
 <ul>
 <li>Runnable on GNU/Linux and MS Windows, other operating systems are probably supported too.</li>
-<li>Core library licensed unded GNU LGPL, applications under GNU GPL.</li>
+<li>Core library licensed under GNU LGPL, applications under GNU GPL.</li>
 </ul>
 
 
