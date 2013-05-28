@@ -65,6 +65,7 @@ pre
 	border: 1px solid silver;
 }
 
+img			{ border: none; }
 pre:hover	{ border: 1px solid gray; }
 pre.spec	{ background-color: rgb(200, 200, 255); border: 1px solid black; }
 pre.code	{ background-color: rgb(200, 255, 200); border: 1px solid black; }
