@@ -29,5 +29,4 @@ Graphal GUI
 Other
 	Try to resolve ?gcc bug? - Tests::testValueArray().
 	Solve TODOs and FIXMEs.
-	MS Windows port.
 	RPM/DEB packages.

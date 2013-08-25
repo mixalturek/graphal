@@ -36,7 +36,7 @@ public:
 	virtual bool     toBool(void) const { return m_val; }
 	virtual string toString(void) const { ostringstream os; os << m_val; return os.str(); }
 	virtual bool  isNumeric(void) const { return true; }
-	virtual float     toInt(void) const { return m_val; }
+	virtual int       toInt(void) const { return m_val; }
 	virtual float   toFloat(void) const { return m_val; }
 
 	virtual ValueInt*             toValueInt(void) { return this; }

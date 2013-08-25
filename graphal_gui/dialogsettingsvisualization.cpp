@@ -33,8 +33,8 @@ DialogSettingsVisualization::DialogSettingsVisualization(QWidget* parent)
 {
 	m_ui.setupUi(this);
 
-	m_ui.m_edgesWidth->setValue(SETTINGS.getVisualizationLineWidth());
-	m_ui.m_verticesSize->setValue(SETTINGS.getVisualizationPointSize());
+	m_ui.m_edgesWidth->setValue((int)SETTINGS.getVisualizationLineWidth());
+	m_ui.m_verticesSize->setValue((int)SETTINGS.getVisualizationPointSize());
 	m_ui.m_screenshotDirectory->setText(SETTINGS.getScreenshotsDirectory());
 
 	connect(m_ui.m_browseButton, SIGNAL(clicked()), this, SLOT(selectDirectory()));

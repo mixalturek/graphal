@@ -53,7 +53,7 @@ public:
 	virtual bool isLValue(void)    const { return false; }
 	virtual bool isNumeric(void)   const { return false; }
 	virtual string toString(void)  const = 0;
-	virtual float toInt(void)      const { return 0; }
+	virtual int toInt(void)        const { return 0; }
 	virtual float toFloat(void)    const { return 0.0f; }
 
 	virtual ValueBool*           toValueBool(void) { return NULL; }
