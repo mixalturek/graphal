@@ -63,6 +63,17 @@ include 'p_begin.php';
 
 <h2>News</h2>
 
+<h3>25 August 2013</h3>
+<ul>
+<li>Version 1.0.1 released.</li>
+<li>MS Windows port.</li>
+</ul>
+
+<h3>18 April 2013</h3>
+<ul>
+<li>Version 1.0.0 released.</li>
+</ul>
+
 <h3>2 April 2013</h3>
 <ul>
 <li>The project moved to <?php Blank('http://www.sourceforge.net/', 'SourceForge.net'); ?> site and renamed to <em>Graphal</em>.</li>

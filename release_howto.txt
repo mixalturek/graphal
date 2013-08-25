@@ -3,11 +3,11 @@
 - Update web pages.
 - Update ChangeLog.
 - Update version in libgraphal/Makefile.
-- Update version in libgraphal/version.h.
+- Update version in libgraphal/graphal_version.h.
 - GIT tag.
 - Build at Jenkins CI.
 - Build MS Windows port.
 - Upload files.
 - Deploy web.
 - Update version in libgraphal/Makefile.
-- Update version in libgraphal/version.h.
+- Update version in libgraphal/graphal_version.h.
