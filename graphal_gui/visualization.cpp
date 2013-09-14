@@ -21,6 +21,7 @@
 #include <set>
 #include <QMetaType>
 #include <QMouseEvent>
+#include <GL/glu.h>
 #include "visualization.h"
 #include "guivisualizationconnector.h"
 #include "settings.h"

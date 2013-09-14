@@ -34,7 +34,7 @@ CONFIG += qt thread warn_on
 DEFINES += QTGUI
 RC_FILE = graphal_gui.rc
 ICON = images/toast/toast.icns
-LIBS += -L$$PWD/../build/libgraphal/ -lgraphal
+LIBS += -L$$PWD/../build/libgraphal/ -lgraphal -lGLU
 
 SOURCES += main.cpp\
     mainwindow.cpp \
