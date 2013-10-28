@@ -50,7 +50,7 @@ function Web($addr, $text, $title = '')
 {
 	if(file_exists($addr.'.php'))
 		if($title != '')
-			echo "<a hrf=\"$addr".EXTENSION."\" title=\"$title\">$text</a>";
+			echo "<a href=\"$addr".EXTENSION."\" title=\"$title\">$text</a>";
 		else
 			echo "<a href=\"$addr".EXTENSION."\">$text</a>";
 	else
