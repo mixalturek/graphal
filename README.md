@@ -6,6 +6,10 @@ About
 
 Graphal is an interpreter of a programming language that is mainly oriented to graph algorithms. There is a command line interpreter and a graphical integrated development environment. The IDE contains text editor for programmers, compilation and script output, advanced debugger and visualization window. The progress of the interpreted and debugged graph algorithm can be displayed in 3D scene.
 
+![Screenshot of Graphal GUI](http://graphal.sourceforge.net/images/screenshots/graphal_gui_dfs_sm.png "Screenshot of Graphal GUI")
+
+[http://graphal.sourceforge.net/](http://graphal.sourceforge.net/)
+
 
 Main Features
 -------------
@@ -86,9 +90,10 @@ graphal_gui
 Contribute/Contact
 ------------------
 
-Graphal is a free software, I would be very glad for any help with its improving. If you want to code, write documentation, maintain the website, package the software, publish a script you develop, or similar, please send me an email to <mixalturek (at) users.sourceforge.net> or <WOQ (at) seznam.cz>.
+Graphal is a free software, I would be very glad for any help with its improving. If you want to code, write documentation, maintain the website, package the software, publish a script you develop, or similar, please send me an email to mixalturek (at) users.sourceforge.net or WOQ (at) seznam.cz.
 
 If you want something to be fixed or added to the applications or just to tell me that you are using Graphal and optionally how, contact me too, please. The developer is always happy to know that somebody uses his software.
 
 Thank you very much in advance.
+
 Michal Turek
