@@ -317,7 +317,7 @@ CountPtr<Value> ValueArray::gt(const Value& right)      const { return right.gt(
 CountPtr<Value> ValueArray::member(const Value& right)  const { return right.member(*this); } // .
 
 /*
-TODO: ??? gcc bug ???
+// TODO: ??? gcc bug ???
 Tests::testValueArray()
 
 right.index(*this) in ValueArray::index(const Value& right) calls

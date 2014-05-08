@@ -222,7 +222,7 @@ CountPtr<Value> ValueInt::index(const ValueString& left) const
 
 
 /*
-TODO: ??? gcc bug ???
+// TODO: ??? gcc bug ???
 Tests::testValueArray()
 
 right.index(*this) in ValueArray::index(const Value& right) calls

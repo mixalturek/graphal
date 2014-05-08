@@ -311,7 +311,7 @@ bool Tests::testValueArray(void)
 	bool result = true;
 
 	/*
-	TODO: ??? gcc bug ???
+	// TODO: ??? gcc bug ???
 	Tests::testValueArray()
 
 	right.index(*this) in ValueArray::index(const Value& right) calls
