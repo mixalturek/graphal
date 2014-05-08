@@ -46,20 +46,24 @@ Installation
 
 To extract the downloaded archive:
 
+```shell
 tar -xzvf graphal-VERSION.tar.gz
 cd graphal-VERSION
-
+```
 
 To compile the source codes (please see top level Makefile for possible options):
 
+```shell
 ./configure
 make
-
+```
 
 To install the application:
 
+```shell
 su
 make install
+```
 
 
 Run
@@ -67,12 +71,16 @@ Run
 
 To execute Graphal CLI:
 
+```shell
 graphal_cli
+```
 
 
 To execute Graphal GUI:
 
+```shell
 graphal_gui
+```
 
 
 Contribute/Contact
